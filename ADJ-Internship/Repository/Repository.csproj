@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <AssemblyName>ADJ.Repository</AssemblyName>
+    <RootNamespace>ADJ.Repository</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="LinqKit.Microsoft.EntityFrameworkCore" Version="1.1.15" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.1.1" />
+    <PackageReference Include="System.Linq.Dynamic.Core" Version="1.0.9" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Common\Common.csproj" PrivateAssets="All" />
+    <ProjectReference Include="..\DataAccess\DataAccess.csproj" PrivateAssets="All" />
+    <ProjectReference Include="..\DataModel\DataModel.csproj" PrivateAssets="All" />
+  </ItemGroup>
+
+</Project>

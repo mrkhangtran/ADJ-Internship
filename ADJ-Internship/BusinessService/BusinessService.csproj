@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <AssemblyName>ADJ.BusinessService</AssemblyName>
+    <RootNamespace>ADJ.BusinessService</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="8.0.0" />
+    <PackageReference Include="FluentValidation" Version="8.1.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Common\Common.csproj" PrivateAssets="All" />
+    <ProjectReference Include="..\DataModel\DataModel.csproj" PrivateAssets="All" />
+    <ProjectReference Include="..\Repository\Repository.csproj" PrivateAssets="All" />
+  </ItemGroup>
+
+</Project>

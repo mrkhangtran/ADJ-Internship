@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <AssemblyName>ADJ.Infrastructure</AssemblyName>
+    <RootNamespace>ADJ.Infrastructure</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Autofac" Version="4.8.1" />
+    <PackageReference Include="AutoMapper" Version="8.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\BusinessService\BusinessService.csproj" PrivateAssets="All"/>
+    <ProjectReference Include="..\Common\Common.csproj" PrivateAssets="All"/>
+    <ProjectReference Include="..\DataAccess\DataAccess.csproj" PrivateAssets="All"/>
+    <ProjectReference Include="..\DataModel\DataModel.csproj" PrivateAssets="All"/>
+    <ProjectReference Include="..\Repository\Repository.csproj" PrivateAssets="All"/>
+  </ItemGroup>
+
+</Project>
