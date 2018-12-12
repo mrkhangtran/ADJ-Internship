@@ -73,5 +73,6 @@ namespace ADJ.DataModel.OrderTrack
 
         //Default value = "New"
         public string Status { get; set; } = "New";
+        public ICollection<OrderDetail> orderDetails { get; set; } 
     }
 }
