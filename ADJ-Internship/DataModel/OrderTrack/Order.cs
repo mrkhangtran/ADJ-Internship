@@ -1,9 +1,9 @@
-﻿using ADJ.DataModel.Core;
+﻿using ADJ.Common;
+using ADJ.DataModel.Core;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
-
 namespace ADJ.DataModel.OrderTrack
 {
     public class Order : EntityBase
@@ -41,7 +41,10 @@ namespace ADJ.DataModel.OrderTrack
         [StringLength(30)]
         public string Factory { get; set; }
 
-        public enum Currency { USD, Euro, VND };
+        Currency Currency = Currency.USD;
+
+
+
 
         public DateTime ShipDate { get; set; }
 
@@ -56,6 +59,6 @@ namespace ADJ.DataModel.OrderTrack
 
         public float POQuantity { get; set; }
 
-        public enum Status { New };
+        Status Status = Status.New;
     }
 }
