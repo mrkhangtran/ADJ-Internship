@@ -21,19 +21,14 @@ namespace ADJ.DataModel.DeliveryTrack
         [StringLength(50)]
         public string Item { get; set; }
 
-        //[ForeignKey("Order")]
         public int OrderId { get; set; }
 
-        //[ForeignKey("ManifestModel")]
         [StringLength(20)]
         public string Container { get; set; }
 
-        //[ForeignKey("DCBookingModel")]
         public int DCBookingId { get; set; }
 
         public virtual Order Order { get; set; }
-
-        //public virtual ManifestModel ManifestModel  { get; set; }
 
         public virtual DCBooking DCBooking { get; set; }
     }

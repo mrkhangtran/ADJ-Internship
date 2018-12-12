@@ -8,7 +8,6 @@ namespace ADJ.DataModel.DeliveryTrack
 {
     public class DCConfirmation : EntityBase
     {
-        [DisplayFormat(DataFormatString = "{0:MM/dd/yyyy}")]
         public DateTime DeliveryDate { get; set; }
 
         [StringLength(12)]

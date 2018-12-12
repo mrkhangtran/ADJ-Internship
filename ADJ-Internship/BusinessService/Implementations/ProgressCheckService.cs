@@ -2,6 +2,10 @@
 using ADJ.BusinessService.Dtos;
 using ADJ.BusinessService.Interfaces;
 using ADJ.Common;
+using ADJ.DataModel.OrderTrack;
+using ADJ.Repository.Core;
+using ADJ.Repository.Interfaces;
+using AutoMapper;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -11,10 +15,14 @@ namespace ADJ.BusinessService.Implementations
 {
     public class ProgressCheckService : ServiceBase, IProgressCheckService
     {
-        public PurchaseOrderService(IUnitOfWork unitOfWork, IMapper mapper, ApplicationContext appContext, IDataProvider<PurchaseOrder> poDataProvider, IPurchaseOrderRepository poRepository) : base(unitOfWork, mapper, appContext)
+        private readonly IDataProvider<Order> _odDataProvider;
+        private readonly IProgressCheckRepository _prcRepository;
+        private readonly IDataProvider<OrderDetail> _oddDataProvider;
+        public ProgressCheckService(IUnitOfWork unitOfWork, IMapper mapper, ApplicationContext appContext, IDataProvider<Order> odDataProvider,IDataProvider<OrderDetail> oddDataProvider, IProgressCheckRepository prcRepository) : base(unitOfWork, mapper, appContext)
         {
-            _poDataProvider = poDataProvider;
-            _poRepository = poRepository;
+            _odDataProvider = odDataProvider;
+            _prcRepository = prcRepository;
+            _oddDataProvider = oddDataProvider;
         }
         public void checkComplete(int progressId)
         {

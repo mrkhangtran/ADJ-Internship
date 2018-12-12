@@ -18,7 +18,6 @@ namespace ADJ.DataModel.DeliveryTrack
         [StringLength(12)]
         public string BookingRef { get; set; }
 
-        [DisplayFormat(DataFormatString = "{0:MM/dd/yyyy}")]
         public DateTime BookingDate { get; set; }
 
         [StringLength(12)]
@@ -28,7 +27,6 @@ namespace ADJ.DataModel.DeliveryTrack
         public string Haulier { get; set; }
 
 
-        [DisplayFormat(DataFormatString = "{0:MM/dd/yyyy}")]
         public DateTime Created { get; set; }
 
         public virtual ICollection<DCBookingDetail> DCBookingDetails { get; set; }
