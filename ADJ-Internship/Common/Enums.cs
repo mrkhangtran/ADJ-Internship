@@ -1,4 +1,6 @@
-﻿namespace ADJ.Common
+﻿using System.ComponentModel;
+
+namespace ADJ.Common
 {
     public enum SchoolReviewStatus
     {
@@ -17,5 +19,22 @@
     {
         New,
         Contacted
+    }
+
+    public enum Currency
+    {
+        USD,
+        VND,
+    }
+
+    public enum OrderStatus
+    {
+        New,
+    }
+
+    public enum Ports
+    {
+        [Description("Cẩm Phả")] p1,
+        [Description("Hòn Gai")] p2,
     }
 }

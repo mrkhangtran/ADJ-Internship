@@ -128,7 +128,7 @@
                 </td>
                 <td>
                     <div class="col-md-10">
-                        @Html.EditorFor(model => model.Currency, new { htmlAttributes = new { @class = "uk-input" } })
+                        @Html.DropDownListFor(model => model.Currency, Model.Currencies, new { @class = "uk-input" })
                         @Html.ValidationMessageFor(model => model.Currency, "", new { @class = "text-danger" })
                     </div>
                 </td>
@@ -328,140 +328,143 @@
             }
             @if (Model.PODetails != null)
             {
-                @Html.HiddenFor(model => model.orderDetailDTO.ItemNumber, new { Value = Model.PODetails[0].ItemNumber })
-
-                for (int i = 0; i < Model.PODetails.Count(); i++)
+                @if (Model.PODetails.Count > 0)
                 {
-                    @Html.HiddenFor(model => model.PODetails[i].Id, Model.PODetails[i].Id)
-                    @Html.HiddenFor(model => model.PODetails[i].ItemNumber, Model.PODetails[i].ItemNumber)
-                    @Html.HiddenFor(model => model.PODetails[i].Description, Model.PODetails[i].Description)
-                    @Html.HiddenFor(model => model.PODetails[i].Warehouse, Model.PODetails[i].Warehouse)
-                    @Html.HiddenFor(model => model.PODetails[i].Colour, Model.PODetails[i].Colour)
-                    @Html.HiddenFor(model => model.PODetails[i].Size, Model.PODetails[i].Size)
-                    @Html.HiddenFor(model => model.PODetails[i].Quantity, Model.PODetails[i].Quantity)
-                    @Html.HiddenFor(model => model.PODetails[i].Cartons, Model.PODetails[i].Cartons)
-                    @Html.HiddenFor(model => model.PODetails[i].Cube, Model.PODetails[i].Cube)
-                    @Html.HiddenFor(model => model.PODetails[i].KGS, Model.PODetails[i].KGS)
-                    @Html.HiddenFor(model => model.PODetails[i].UnitPrice, Model.PODetails[i].UnitPrice)
-                    @Html.HiddenFor(model => model.PODetails[i].RetailPrice, Model.PODetails[i].RetailPrice)
-                    @Html.HiddenFor(model => model.PODetails[i].Tariff, Model.PODetails[i].Tariff)
-                    @Html.HiddenFor(model => model.PODetails[i].OrderId, Model.PODetails[i].OrderId)
+                    @Html.HiddenFor(model => model.orderDetailDTO.ItemNumber, new { Value = Model.PODetails[0].ItemNumber })
 
-                    if (i != ViewBag.ItemId)
+                    for (int i = 0; i < Model.PODetails.Count(); i++)
                     {
-                        <tr>
-                            <td>
-                                @Html.DisplayFor(modelItem => Model.PODetails[i].ItemNumber)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => Model.PODetails[i].Description)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => Model.PODetails[i].Tariff)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => Model.PODetails[i].Quantity)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => Model.PODetails[i].Cartons)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => Model.PODetails[i].Cube)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => Model.PODetails[i].KGS)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => Model.PODetails[i].UnitPrice)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => Model.PODetails[i].TotalPrice)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => Model.PODetails[i].RetailPrice)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => Model.PODetails[i].TotalRetailPrice)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => Model.PODetails[i].Warehouse)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => Model.PODetails[i].Size)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => Model.PODetails[i].Colour)
-                            </td>
-                            <td>
-                                <button type="submit" value="@i" name="method" class="uk-button uk-button-default">Edit Item</button>
-                                <button type="submit" value="Delete @i" name="method" class="uk-button uk-button-default">Delete Item</button>
-                            </td>
-                        </tr>
-                    }
-                    else
-                    {
-                        <tr>
-                            <td>
-                                @Html.EditorFor(model => model.orderDetailDTO.ItemNumber, new { htmlAttributes = new { @class = "uk-input" } })
-                                @Html.ValidationMessageFor(model => model.orderDetailDTO.ItemNumber, "", new { @class = "text-danger" })
-                                @ViewBag.ItemNumberError
-                            </td>
-                            <td>
-                                @Html.EditorFor(model => model.orderDetailDTO.Description, new { htmlAttributes = new { @class = "uk-input" } })
-                                @Html.ValidationMessageFor(model => model.orderDetailDTO.Description, "", new { @class = "text-danger" })
-                            </td>
-                            <td>
-                                @Html.EditorFor(model => model.orderDetailDTO.Tariff, new { htmlAttributes = new { @class = "uk-input" } })
-                                @Html.ValidationMessageFor(model => model.orderDetailDTO.Tariff, "", new { @class = "text-danger" })
-                            </td>
+                        @Html.HiddenFor(model => model.PODetails[i].Id, Model.PODetails[i].Id)
+                        @Html.HiddenFor(model => model.PODetails[i].ItemNumber, Model.PODetails[i].ItemNumber)
+                        @Html.HiddenFor(model => model.PODetails[i].Description, Model.PODetails[i].Description)
+                        @Html.HiddenFor(model => model.PODetails[i].Warehouse, Model.PODetails[i].Warehouse)
+                        @Html.HiddenFor(model => model.PODetails[i].Colour, Model.PODetails[i].Colour)
+                        @Html.HiddenFor(model => model.PODetails[i].Size, Model.PODetails[i].Size)
+                        @Html.HiddenFor(model => model.PODetails[i].Quantity, Model.PODetails[i].Quantity)
+                        @Html.HiddenFor(model => model.PODetails[i].Cartons, Model.PODetails[i].Cartons)
+                        @Html.HiddenFor(model => model.PODetails[i].Cube, Model.PODetails[i].Cube)
+                        @Html.HiddenFor(model => model.PODetails[i].KGS, Model.PODetails[i].KGS)
+                        @Html.HiddenFor(model => model.PODetails[i].UnitPrice, Model.PODetails[i].UnitPrice)
+                        @Html.HiddenFor(model => model.PODetails[i].RetailPrice, Model.PODetails[i].RetailPrice)
+                        @Html.HiddenFor(model => model.PODetails[i].Tariff, Model.PODetails[i].Tariff)
+                        @Html.HiddenFor(model => model.PODetails[i].OrderId, Model.PODetails[i].OrderId)
 
-                            <td>
-                                @Html.EditorFor(model => model.orderDetailDTO.Quantity, new { htmlAttributes = new { @class = "uk-input", @id = "Quantity", @onkeyup = "getTotalUnit(); getTotalRetail()" } })
-                                @Html.ValidationMessageFor(model => model.orderDetailDTO.Quantity, "", new { @class = "text-danger" })
-                            </td>
-                            <td>
-                                @Html.EditorFor(model => model.orderDetailDTO.Cartons, new { htmlAttributes = new { @class = "uk-input" } })
-                                @Html.ValidationMessageFor(model => model.orderDetailDTO.Cartons, "", new { @class = "text-danger" })
-                            </td>
-                            <td>
-                                @Html.EditorFor(model => model.orderDetailDTO.Cube, new { htmlAttributes = new { @class = "uk-input" } })
-                                @Html.ValidationMessageFor(model => model.orderDetailDTO.Cube, "", new { @class = "text-danger" })
-                            </td>
+                        if (i != ViewBag.ItemId)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => Model.PODetails[i].ItemNumber)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => Model.PODetails[i].Description)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => Model.PODetails[i].Tariff)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => Model.PODetails[i].Quantity)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => Model.PODetails[i].Cartons)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => Model.PODetails[i].Cube)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => Model.PODetails[i].KGS)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => Model.PODetails[i].UnitPrice)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => Model.PODetails[i].TotalPrice)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => Model.PODetails[i].RetailPrice)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => Model.PODetails[i].TotalRetailPrice)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => Model.PODetails[i].Warehouse)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => Model.PODetails[i].Size)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => Model.PODetails[i].Colour)
+                                </td>
+                                <td>
+                                    <button type="submit" value="@i" name="method" class="uk-button uk-button-default">Edit Item</button>
+                                    <button type="submit" value="Delete @i" name="method" class="uk-button uk-button-default">Delete Item</button>
+                                </td>
+                            </tr>
+                        }
+                        else
+                        {
+                            <tr>
+                                <td>
+                                    @Html.EditorFor(model => model.orderDetailDTO.ItemNumber, new { htmlAttributes = new { @class = "uk-input" } })
+                                    @Html.ValidationMessageFor(model => model.orderDetailDTO.ItemNumber, "", new { @class = "text-danger" })
+                                    @ViewBag.ItemNumberError
+                                </td>
+                                <td>
+                                    @Html.EditorFor(model => model.orderDetailDTO.Description, new { htmlAttributes = new { @class = "uk-input" } })
+                                    @Html.ValidationMessageFor(model => model.orderDetailDTO.Description, "", new { @class = "text-danger" })
+                                </td>
+                                <td>
+                                    @Html.EditorFor(model => model.orderDetailDTO.Tariff, new { htmlAttributes = new { @class = "uk-input" } })
+                                    @Html.ValidationMessageFor(model => model.orderDetailDTO.Tariff, "", new { @class = "text-danger" })
+                                </td>
 
-                            <td>
-                                @Html.EditorFor(model => model.orderDetailDTO.KGS, new { htmlAttributes = new { @class = "uk-input" } })
-                                @Html.ValidationMessageFor(model => model.orderDetailDTO.KGS, "", new { @class = "text-danger" })
-                            </td>
-                            <td>
-                                @Html.EditorFor(model => model.orderDetailDTO.UnitPrice, new { htmlAttributes = new { @class = "uk-input", @id = "UnitPrice", @onkeyup = "getTotalUnit()" } })
-                                @Html.ValidationMessageFor(model => model.orderDetailDTO.UnitPrice, "", new { @class = "text-danger" })
-                            </td>
-                            <td>
-                                <div id="TotalUnit">0</div>
-                            </td>
-                            <td>
-                                @Html.EditorFor(model => model.orderDetailDTO.RetailPrice, new { htmlAttributes = new { @class = "uk-input", @id = "RetailPrice", @onkeyup = "getTotalRetail()" } })
-                                @Html.ValidationMessageFor(model => model.orderDetailDTO.RetailPrice, "", new { @class = "text-danger" })
-                            </td>
-                            <td>
-                                <div id="TotalRetail">0</div>
-                            </td>
-                            <td>
-                                @Html.EditorFor(model => model.orderDetailDTO.Warehouse, new { htmlAttributes = new { @class = "uk-input" } })
-                                @Html.ValidationMessageFor(model => model.orderDetailDTO.Warehouse, "", new { @class = "text-danger" })
-                            </td>
-                            <td>
-                                @Html.EditorFor(model => model.orderDetailDTO.Size, new { htmlAttributes = new { @class = "uk-input" } })
-                                @Html.ValidationMessageFor(model => model.orderDetailDTO.Size, "", new { @class = "text-danger" })
-                            </td>
-                            <td>
-                                @Html.EditorFor(model => model.orderDetailDTO.Colour, new { htmlAttributes = new { @class = "uk-input" } })
-                                @Html.ValidationMessageFor(model => model.orderDetailDTO.Colour, "", new { @class = "text-danger" })
-                            </td>
-                            <td>
-                                <button type="submit" value="Update @i" name="method" class="uk-button uk-button-default">Update Item</button>
-                            </td>
-                        </tr>
+                                <td>
+                                    @Html.EditorFor(model => model.orderDetailDTO.Quantity, new { htmlAttributes = new { @class = "uk-input", @id = "Quantity", @onkeyup = "getTotalUnit(); getTotalRetail()" } })
+                                    @Html.ValidationMessageFor(model => model.orderDetailDTO.Quantity, "", new { @class = "text-danger" })
+                                </td>
+                                <td>
+                                    @Html.EditorFor(model => model.orderDetailDTO.Cartons, new { htmlAttributes = new { @class = "uk-input" } })
+                                    @Html.ValidationMessageFor(model => model.orderDetailDTO.Cartons, "", new { @class = "text-danger" })
+                                </td>
+                                <td>
+                                    @Html.EditorFor(model => model.orderDetailDTO.Cube, new { htmlAttributes = new { @class = "uk-input" } })
+                                    @Html.ValidationMessageFor(model => model.orderDetailDTO.Cube, "", new { @class = "text-danger" })
+                                </td>
+
+                                <td>
+                                    @Html.EditorFor(model => model.orderDetailDTO.KGS, new { htmlAttributes = new { @class = "uk-input" } })
+                                    @Html.ValidationMessageFor(model => model.orderDetailDTO.KGS, "", new { @class = "text-danger" })
+                                </td>
+                                <td>
+                                    @Html.EditorFor(model => model.orderDetailDTO.UnitPrice, new { htmlAttributes = new { @class = "uk-input", @id = "UnitPrice", @onkeyup = "getTotalUnit()" } })
+                                    @Html.ValidationMessageFor(model => model.orderDetailDTO.UnitPrice, "", new { @class = "text-danger" })
+                                </td>
+                                <td>
+                                    <div id="TotalUnit">0</div>
+                                </td>
+                                <td>
+                                    @Html.EditorFor(model => model.orderDetailDTO.RetailPrice, new { htmlAttributes = new { @class = "uk-input", @id = "RetailPrice", @onkeyup = "getTotalRetail()" } })
+                                    @Html.ValidationMessageFor(model => model.orderDetailDTO.RetailPrice, "", new { @class = "text-danger" })
+                                </td>
+                                <td>
+                                    <div id="TotalRetail">0</div>
+                                </td>
+                                <td>
+                                    @Html.EditorFor(model => model.orderDetailDTO.Warehouse, new { htmlAttributes = new { @class = "uk-input" } })
+                                    @Html.ValidationMessageFor(model => model.orderDetailDTO.Warehouse, "", new { @class = "text-danger" })
+                                </td>
+                                <td>
+                                    @Html.EditorFor(model => model.orderDetailDTO.Size, new { htmlAttributes = new { @class = "uk-input" } })
+                                    @Html.ValidationMessageFor(model => model.orderDetailDTO.Size, "", new { @class = "text-danger" })
+                                </td>
+                                <td>
+                                    @Html.EditorFor(model => model.orderDetailDTO.Colour, new { htmlAttributes = new { @class = "uk-input" } })
+                                    @Html.ValidationMessageFor(model => model.orderDetailDTO.Colour, "", new { @class = "text-danger" })
+                                </td>
+                                <td>
+                                    <button type="submit" value="Update @i" name="method" class="uk-button uk-button-default">Update Item</button>
+                                </td>
+                            </tr>
+                        }
                     }
                 }
             }

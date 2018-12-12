@@ -8,7 +8,6 @@ namespace ADJ.DataModel.OrderTrack
 {
     public class OrderDetail : EntityBase
     {
-        //unknown
         public string ItemNumber { get; set; }
 
         public string Line { get; set; }
@@ -25,11 +24,9 @@ namespace ADJ.DataModel.OrderTrack
         [StringLength(30)]
         public string Size { get; set; }
 
-        //unknown
         public string Item { get; set; }
 
         [Required]
-        //[Display(Name = "Item Quantity")]
         public float Quantity { get; set; }
 
         public float ReviseQuantity { get; set; }
@@ -44,10 +41,8 @@ namespace ADJ.DataModel.OrderTrack
         public float KGS { get; set; }
 
         [Required]
-        //[Display(Name = "Unit Price")]
         public float UnitPrice { get; set; }
 
-        //Item Quantity*Unit Price = Total Price
         public float TotalPrice
         {
             get
@@ -57,10 +52,8 @@ namespace ADJ.DataModel.OrderTrack
         }
 
         [Required]
-        //[Display(Name = "Retail Price")]
         public float RetailPrice { get; set; }
 
-        //Item Quantity*Retail Price = Total Retail Price
         public float TotalRetailPrice
         {
             get
@@ -69,11 +62,9 @@ namespace ADJ.DataModel.OrderTrack
             }
         }
 
-        //[RegularExpression("[^0-9]", ErrorMessage = "Tariff must be numeric")]
         public string Tariff { get; set; }
 
         [Required]
-        //[ForeignKey("OrderModel")]
         public int OrderId { get; set; }
 
         //public virtual Order Order { get; set; }

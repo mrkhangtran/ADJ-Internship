@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Text;
 using ADJ.BusinessService.Core;
 using ADJ.BusinessService.Validators;
+using ADJ.Common;
 using ADJ.DataModel;
 using ADJ.DataModel.Core;
 using ADJ.DataModel.OrderTrack;
@@ -56,7 +57,8 @@ namespace ADJ.BusinessService.Dtos
         public string Buyer { get; set; }
 
         //Default value = USD
-        public string Currency { get; set; } = "USD";
+        public Currency Currency { get; set; }
+        public IEnumerable<SelectListItem> Currencies { get; set; }
 
         //Droplist from 2010 to 2020
         public string Season { get; set; }
@@ -115,7 +117,8 @@ namespace ADJ.BusinessService.Dtos
         public float POQuantity { get; set; }
 
         //Default value = "New"
-        public string Status { get; set; } = "New";
+        public OrderStatus Status { get; set; }
+        public IEnumerable<SelectListItem> Statuses { get; set; }
 
         public OrderDetailDTO orderDetailDTO { get; set; }
 

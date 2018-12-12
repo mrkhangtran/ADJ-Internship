@@ -1,5 +1,6 @@
 ﻿using ADJ.BusinessService.Dtos;
 using ADJ.BusinessService.Interfaces;
+using ADJ.Common;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
@@ -325,6 +326,17 @@ namespace ADJ.WebApp.Controllers
             init.Ports = GetSelectListItems(new List<string> { "Port 1", "Port 2", "Port 3" });
             init.Modes = GetSelectListItems(new List<string> { "Road", "Sea", "Air" });
 
+            //init.Statuses
+            
+            List<string> test = new List<string>();
+
+            foreach (var i in Enum.GetValues(typeof(Currency)))
+            {
+                test.Add(i.ToString());
+            }
+
+            init.Currencies = GetSelectListItems(test);
+        
             return init;
         }
 
