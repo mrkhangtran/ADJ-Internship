@@ -41,7 +41,7 @@ namespace ADJ.DataModel.OrderTrack
         [StringLength(30)]
         public string Factory { get; set; }
 
-        Currency Currency = Currency.USD;
+        public Currency Currency { get; set; }
 
 
 
@@ -59,6 +59,6 @@ namespace ADJ.DataModel.OrderTrack
 
         public float POQuantity { get; set; }
 
-        Status Status = Status.New;
+        public Status Status { get; set; }
     }
 }
