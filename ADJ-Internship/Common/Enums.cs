@@ -18,4 +18,14 @@
         New,
         Contacted
     }
+
+    public enum Currency
+    {
+        USD,
+    }
+
+    public enum OrderStatus
+    {
+        New,
+    }
 }

@@ -8,7 +8,6 @@ namespace ADJ.DataModel.DeliveryTrack
 {
     public class DCConfirmationDetail : EntityBase
     {
-        //foreign key
         public int DCConfirmationId { get; set; }
 
         [StringLength(30)]
@@ -25,10 +24,7 @@ namespace ADJ.DataModel.DeliveryTrack
         public string Item { get; set; }
 
         [StringLength(20)]
-        //[ForeignKey("ManifestModel")]
         public string Container { get; set; }
-
-        //public virtual ManifestModel ManifestModel { get; set; }
 
         public virtual DCConfirmation DCConfirmation { get; set; }
 
