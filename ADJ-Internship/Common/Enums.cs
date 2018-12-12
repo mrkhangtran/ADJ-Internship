@@ -24,7 +24,7 @@
         USD,
     }
 
-    public enum Status
+    public enum OrderStatus
     {
         New,
     }

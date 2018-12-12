@@ -59,6 +59,6 @@ namespace ADJ.DataModel.OrderTrack
 
         public float POQuantity { get; set; }
 
-        public Status Status { get; set; }
+        public OrderStatus Status { get; set; }
     }
 }
