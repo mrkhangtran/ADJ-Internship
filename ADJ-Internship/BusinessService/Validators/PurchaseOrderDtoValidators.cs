@@ -15,6 +15,22 @@ namespace ADJ.BusinessService.Validators
         }
     }
 
+    /*class UniquePONumberValidator: AbstractValidator<OrderDTO>
+    {
+        /*public bool UniquePONum(string PONumber, int? id)
+        {
+            if (id == null || id == 0)
+            {
+                return !db.GetDB().Orders.Any(x => x.PONumber == PONumber);
+            }
+            else
+            {
+                return !db.GetDB().Orders.Any(x => x.PONumber == PONumber && x.Id != id);
+            }
+        }
+    }*/
+    
+
     public class PortIsDifferent : ValidationAttribute
     {
         private readonly string _otherProperty;
@@ -40,11 +56,11 @@ namespace ADJ.BusinessService.Validators
         }
     }
 
-    public class SimilarOrLaterThanShipDateAttribute : ValidationAttribute
+    public class SimilarOrLaterThanOtherDateAttribute : ValidationAttribute
     {
         private readonly string _otherProperty;
 
-        public SimilarOrLaterThanShipDateAttribute(string otherProperty)
+        public SimilarOrLaterThanOtherDateAttribute(string otherProperty)
         {
             _otherProperty = otherProperty;
         }

@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
 using ADJ.BusinessService.Core;
+using ADJ.BusinessService.Validators;
 using ADJ.DataModel;
 using ADJ.DataModel.Core;
+using ADJ.DataModel.OrderTrack;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
@@ -19,7 +21,7 @@ namespace ADJ.BusinessService.Dtos
             profile.CreateMap<PurchaseOrder, PurchaseOrderDto>().IncludeBase<EntityBase, EntityDtoBase>();
             profile.CreateMap<PurchaseOrderDto, PurchaseOrder>().IncludeBase<EntityDtoBase, EntityBase>();
         }
-    }
+    } 
 
     public class CreateOrUpdatePurchaseOrderRq : EntityDtoBase, ICreateMapping
     {
@@ -31,9 +33,13 @@ namespace ADJ.BusinessService.Dtos
         }
     }
 
-    public class OrderDTO
+    public class OrderDTO : EntityDtoBase, ICreateMapping
     {
-        public int Id { get; set; }
+        public void CreateMapping(Profile profile)
+        {
+            profile.CreateMap<Order, OrderDTO>().IncludeBase<EntityBase, EntityDtoBase>();
+            profile.CreateMap<OrderDTO, Order>().IncludeBase<EntityDtoBase, EntityBase>();
+        }
 
         [Display(Name = "PO Number")]
         [StringLength(10, ErrorMessage = "Cannot be longer than 10 characters")]
@@ -98,11 +104,11 @@ namespace ADJ.BusinessService.Dtos
         public DateTime ShipDate { get; set; }
 
         [Display(Name = "Latest Ship Date")]
-        [SimilarOrLaterThanShipDate("ShipDate")]
+        [SimilarOrLaterThanOtherDate("ShipDate")]
         public DateTime LatestShipDate { get; set; }
 
         [Display(Name = "Delivery Date")]
-        [SimilarOrLaterThanShipDate("ShipDate")]
+        [SimilarOrLaterThanOtherDate("ShipDate")]
         public DateTime DeliveryDate { get; set; }
 
         //sum of all PODetails Quantity 
@@ -114,5 +120,85 @@ namespace ADJ.BusinessService.Dtos
         public OrderDetailDTO orderDetailDTO { get; set; }
 
         public virtual List<OrderDetailDTO> PODetails { get; set; }
+    }
+
+    public class OrderDetailDTO : EntityDtoBase, ICreateMapping
+    {
+        public void CreateMapping(Profile profile)
+        {
+            profile.CreateMap<OrderDetail, OrderDetailDTO>().IncludeBase<EntityBase, EntityDtoBase>();
+            profile.CreateMap<OrderDetailDTO, OrderDetail>().IncludeBase<EntityDtoBase, EntityBase>();
+        } 
+
+        [Required]
+        [Display(Name = "Item Number")]
+        [StringLength(10, ErrorMessage = "Cannot be longer than 10 characters")]
+        [RegularExpression("^[a-zA-Z0-9]+$", ErrorMessage = "Letters and numbers only")]
+        public string ItemNumber { get; set; }
+
+        [StringLength(255)]
+        public string Description { get; set; } = "";
+
+        [StringLength(30)]
+        public string Warehouse { get; set; } = "";
+
+        [StringLength(30)]
+        public string Colour { get; set; } = "";
+
+        [StringLength(30)]
+        public string Size { get; set; } = "";
+
+        [Required]
+        [Display(Name = "Item Quantity")]
+        [Range(0, float.MaxValue, ErrorMessage = "Value should not be negative")]
+        public float Quantity { get; set; }
+
+        [Required]
+        [Range(0, float.MaxValue, ErrorMessage = "Value should not be negative")]
+        public float Cartons { get; set; }
+
+        [Required]
+        [Range(0, float.MaxValue, ErrorMessage = "Value should not be negative")]
+        public float Cube { get; set; }
+
+        [Required]
+        [Range(0, float.MaxValue, ErrorMessage = "Value should not be negative")]
+        public float KGS { get; set; }
+
+        [Required]
+        [Display(Name = "Unit Price")]
+        [Range(0, float.MaxValue, ErrorMessage = "Value should not be negative")]
+        public float UnitPrice { get; set; }
+
+        //Item Quantity*Unit Price = Total Price
+        public float TotalPrice
+        {
+            get
+            {
+                return Quantity * UnitPrice;
+            }
+        }
+
+        [Required]
+        [Display(Name = "Retail Price")]
+        [Range(0, float.MaxValue, ErrorMessage = "Value should not be negative")]
+        public float RetailPrice { get; set; }
+
+        //Item Quantity*Retail Price = Total Retail Price
+        public float TotalRetailPrice
+        {
+            get
+            {
+                return Quantity * RetailPrice;
+            }
+        }
+
+        [Display(Name = "Tariff Code")]
+        [RegularExpression("^[0-9]*$", ErrorMessage = "Tariff must be numeric")]
+        public string Tariff { get; set; } = "";
+
+        [Required]
+        //[ForeignKey("OrderModel")]
+        public int OrderId { get; set; }
     }
 }

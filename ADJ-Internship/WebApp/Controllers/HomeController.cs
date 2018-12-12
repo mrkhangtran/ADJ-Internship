@@ -21,11 +21,13 @@ namespace ADJ.WebApp.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var createPurchaseOrderRq = new CreateOrUpdatePurchaseOrderRq {Test = "111"};
+            //var createPurchaseOrderRq = new CreateOrUpdatePurchaseOrderRq {Test = "111"};
 
-            await _poService.CreateOrUpdatePurchaseOrderAsync(createPurchaseOrderRq);
+            //await _poService.CreateOrUpdatePurchaseOrderAsync(createPurchaseOrderRq);
 
-            var test = await _poService.ListPurchaseOrdersAsync(null);
+            //var test = await _poService.ListPurchaseOrdersAsync(null);
+
+            //var test = await _poService.ListOrderAsync(null);
 
             return View();
         }

@@ -9,8 +9,15 @@ namespace ADJ.BusinessService.Interfaces
 {
     public interface IPurchaseOrderService
     {
-        Task<PagedListResult<PurchaseOrderDto>> ListPurchaseOrdersAsync(string searchTerm);
+        /*Task<PagedListResult<PurchaseOrderDto>> ListPurchaseOrdersAsync(string searchTerm);
         Task<PurchaseOrderDto> CreateOrUpdatePurchaseOrderAsync(CreateOrUpdatePurchaseOrderRq rq);
-        Task DeletePurchaseOrderAsync(int id);
+        Task DeletePurchaseOrderAsync(int id);*/
+
+        Task<PagedListResult<OrderDTO>> ListOrderAsync(string searchTerm);
+        Task<OrderDTO> CreateOrUpdateOrderAsync(OrderDTO orderDTO);
+        Task<OrderDetailDTO> CreateOrUpdateOrderDetailAsync(OrderDetailDTO orderDetailDTO);
+        Task<bool> UniquePONumAsync(string PONumber, int? id);
+        Task<bool> UniqueItemNumAsync(string itemNum, int? id);
+        Task<int> GetLastOrderId();
     }
 }
