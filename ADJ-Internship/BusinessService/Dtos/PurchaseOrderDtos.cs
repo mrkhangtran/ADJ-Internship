@@ -42,6 +42,7 @@ namespace ADJ.BusinessService.Dtos
             profile.CreateMap<OrderDTO, Order>().IncludeBase<EntityDtoBase, EntityBase>();
         }
 
+        [Required]
         [Display(Name = "PO Number")]
         [StringLength(10, ErrorMessage = "Cannot be longer than 10 characters")]
         [RegularExpression("^[a-zA-Z0-9]+$", ErrorMessage = "Letters and numbers only")]
@@ -132,7 +133,7 @@ namespace ADJ.BusinessService.Dtos
 
         public OrderDetailDTO orderDetailDTO { get; set; }
 
-        public virtual List<OrderDetailDTO> PODetails { get; set; }
+        public virtual PagedListResult<OrderDetailDTO> PODetails { get; set; }
     }
 
     public class OrderDetailDTO : EntityDtoBase, ICreateMapping

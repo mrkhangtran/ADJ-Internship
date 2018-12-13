@@ -328,74 +328,74 @@
             }
             @if (Model.PODetails != null)
             {
-                @if (Model.PODetails.Count > 0)
+                @if (Model.PODetails.Items.Count > 0)
                 {
-                    if (ViewBag.ItemId < 0)
+                    if ((ViewBag.ItemId < 0) || (ViewBag.ItemId == null))
                     {
-                        @Html.HiddenFor(model => model.orderDetailDTO.ItemNumber, new { Value = Model.PODetails[0].ItemNumber })
+                        @Html.HiddenFor(model => model.orderDetailDTO.ItemNumber, new { Value = Model.PODetails.Items[0].ItemNumber })
                     }
 
-                    for (int i = 0; i < Model.PODetails.Count(); i++)
+                    for (int i = 0; i < Model.PODetails.Items.Count(); i++)
                     {
-                        @Html.HiddenFor(model => model.PODetails[i].Id, Model.PODetails[i].Id)
-                        @Html.HiddenFor(model => model.PODetails[i].ItemNumber, Model.PODetails[i].ItemNumber)
-                        @Html.HiddenFor(model => model.PODetails[i].Description, Model.PODetails[i].Description)
-                        @Html.HiddenFor(model => model.PODetails[i].Warehouse, Model.PODetails[i].Warehouse)
-                        @Html.HiddenFor(model => model.PODetails[i].Colour, Model.PODetails[i].Colour)
-                        @Html.HiddenFor(model => model.PODetails[i].Size, Model.PODetails[i].Size)
-                        @Html.HiddenFor(model => model.PODetails[i].Quantity, Model.PODetails[i].Quantity)
-                        @Html.HiddenFor(model => model.PODetails[i].Cartons, Model.PODetails[i].Cartons)
-                        @Html.HiddenFor(model => model.PODetails[i].Cube, Model.PODetails[i].Cube)
-                        @Html.HiddenFor(model => model.PODetails[i].KGS, Model.PODetails[i].KGS)
-                        @Html.HiddenFor(model => model.PODetails[i].UnitPrice, Model.PODetails[i].UnitPrice)
-                        @Html.HiddenFor(model => model.PODetails[i].RetailPrice, Model.PODetails[i].RetailPrice)
-                        @Html.HiddenFor(model => model.PODetails[i].Tariff, Model.PODetails[i].Tariff)
-                        @Html.HiddenFor(model => model.PODetails[i].OrderId, Model.PODetails[i].OrderId)
+                        @Html.HiddenFor(model => model.PODetails.Items[i].Id, Model.PODetails.Items[i].Id)
+                        @Html.HiddenFor(model => model.PODetails.Items[i].ItemNumber, Model.PODetails.Items[i].ItemNumber)
+                        @Html.HiddenFor(model => model.PODetails.Items[i].Description, Model.PODetails.Items[i].Description)
+                        @Html.HiddenFor(model => model.PODetails.Items[i].Warehouse, Model.PODetails.Items[i].Warehouse)
+                        @Html.HiddenFor(model => model.PODetails.Items[i].Colour, Model.PODetails.Items[i].Colour)
+                        @Html.HiddenFor(model => model.PODetails.Items[i].Size, Model.PODetails.Items[i].Size)
+                        @Html.HiddenFor(model => model.PODetails.Items[i].Quantity, Model.PODetails.Items[i].Quantity)
+                        @Html.HiddenFor(model => model.PODetails.Items[i].Cartons, Model.PODetails.Items[i].Cartons)
+                        @Html.HiddenFor(model => model.PODetails.Items[i].Cube, Model.PODetails.Items[i].Cube)
+                        @Html.HiddenFor(model => model.PODetails.Items[i].KGS, Model.PODetails.Items[i].KGS)
+                        @Html.HiddenFor(model => model.PODetails.Items[i].UnitPrice, Model.PODetails.Items[i].UnitPrice)
+                        @Html.HiddenFor(model => model.PODetails.Items[i].RetailPrice, Model.PODetails.Items[i].RetailPrice)
+                        @Html.HiddenFor(model => model.PODetails.Items[i].Tariff, Model.PODetails.Items[i].Tariff)
+                        @Html.HiddenFor(model => model.PODetails.Items[i].OrderId, Model.PODetails.Items[i].OrderId)
 
                         if (i != ViewBag.ItemId)
                         {
                             <tr>
                                 <td>
-                                    @Html.DisplayFor(modelItem => Model.PODetails[i].ItemNumber)
+                                    @Html.DisplayFor(modelItem => Model.PODetails.Items[i].ItemNumber)
                                 </td>
                                 <td>
-                                    @Html.DisplayFor(modelItem => Model.PODetails[i].Description)
+                                    @Html.DisplayFor(modelItem => Model.PODetails.Items[i].Description)
                                 </td>
                                 <td>
-                                    @Html.DisplayFor(modelItem => Model.PODetails[i].Tariff)
+                                    @Html.DisplayFor(modelItem => Model.PODetails.Items[i].Tariff)
                                 </td>
                                 <td>
-                                    @Html.DisplayFor(modelItem => Model.PODetails[i].Quantity)
+                                    @Html.DisplayFor(modelItem => Model.PODetails.Items[i].Quantity)
                                 </td>
                                 <td>
-                                    @Html.DisplayFor(modelItem => Model.PODetails[i].Cartons)
+                                    @Html.DisplayFor(modelItem => Model.PODetails.Items[i].Cartons)
                                 </td>
                                 <td>
-                                    @Html.DisplayFor(modelItem => Model.PODetails[i].Cube)
+                                    @Html.DisplayFor(modelItem => Model.PODetails.Items[i].Cube)
                                 </td>
                                 <td>
-                                    @Html.DisplayFor(modelItem => Model.PODetails[i].KGS)
+                                    @Html.DisplayFor(modelItem => Model.PODetails.Items[i].KGS)
                                 </td>
                                 <td>
-                                    @Html.DisplayFor(modelItem => Model.PODetails[i].UnitPrice)
+                                    @Html.DisplayFor(modelItem => Model.PODetails.Items[i].UnitPrice)
                                 </td>
                                 <td>
-                                    @Html.DisplayFor(modelItem => Model.PODetails[i].TotalPrice)
+                                    @Html.DisplayFor(modelItem => Model.PODetails.Items[i].TotalPrice)
                                 </td>
                                 <td>
-                                    @Html.DisplayFor(modelItem => Model.PODetails[i].RetailPrice)
+                                    @Html.DisplayFor(modelItem => Model.PODetails.Items[i].RetailPrice)
                                 </td>
                                 <td>
-                                    @Html.DisplayFor(modelItem => Model.PODetails[i].TotalRetailPrice)
+                                    @Html.DisplayFor(modelItem => Model.PODetails.Items[i].TotalRetailPrice)
                                 </td>
                                 <td>
-                                    @Html.DisplayFor(modelItem => Model.PODetails[i].Warehouse)
+                                    @Html.DisplayFor(modelItem => Model.PODetails.Items[i].Warehouse)
                                 </td>
                                 <td>
-                                    @Html.DisplayFor(modelItem => Model.PODetails[i].Size)
+                                    @Html.DisplayFor(modelItem => Model.PODetails.Items[i].Size)
                                 </td>
                                 <td>
-                                    @Html.DisplayFor(modelItem => Model.PODetails[i].Colour)
+                                    @Html.DisplayFor(modelItem => Model.PODetails.Items[i].Colour)
                                 </td>
                                 <td>
                                     <button type="submit" value="@i" name="method" class="uk-button uk-button-default">Edit Item</button>

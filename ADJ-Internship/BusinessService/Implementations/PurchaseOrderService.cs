@@ -121,6 +121,35 @@ namespace ADJ.BusinessService.Implementations
             return rs;
         }
 
+        public async void DeleteOrderDetailAsync(PagedListResult<OrderDetailDTO> orderDetailsView, int orderId)
+        {
+            var orderDetailResult = await _orderDetailDataProvider.ListAsync();
+            List<OrderDetail> orderDetails = orderDetailResult.Items;
+            
+
+            bool delete;
+            foreach (var item1 in orderDetails)
+            {
+                if (item1.OrderId == orderId)
+                {
+                    delete = true;
+                    foreach (var item2 in orderDetailsView.Items)
+                    {
+                        if ((item2.Id != 0) && (item1.Id == item2.Id))
+                        {
+                            delete = false;
+                        }
+                    }
+
+                    if (delete)
+                    {
+                        _orderDetailRepository.Delete(item1);
+                    }
+                }
+            }
+        }
+
+
         public async Task<bool> UniquePONumAsync(string PONumber, int? id)
         {
             var orderResult = await _orderDataProvider.ListAsync();
@@ -198,15 +227,19 @@ namespace ADJ.BusinessService.Implementations
             var orderDetailResult = await _orderDetailDataProvider.ListAsync();
             List<OrderDetail> orderDetails = orderDetailResult.Items;
             OrderDetailDTO temp;
-            result.PODetails = new List<OrderDetailDTO>();
+            result.PODetails = new PagedListResult<OrderDetailDTO>();
+            result.PODetails.Items = new List<OrderDetailDTO>();
             foreach (var item in orderDetails)
             {
                 if (item.OrderId == result.Id)
                 {
                     temp = Mapper.Map<OrderDetailDTO>(item);
-                    result.PODetails.Add(temp);
+                    result.PODetails.Items.Add(temp);
                 }
             }
+
+            result.PODetails.PageCount = 1;
+            result.PODetails.TotalCount = 5;
 
             return result;
         }

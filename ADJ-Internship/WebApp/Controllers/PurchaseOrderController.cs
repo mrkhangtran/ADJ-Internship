@@ -20,7 +20,7 @@ namespace ADJ.WebApp.Controllers
             _poService = poService;
         }
 
-        public ActionResult Index(int? id, int? method)
+        public ActionResult Index(string id, int? method)
         {
             if ((id != null) && (method != null))
             {
@@ -82,7 +82,7 @@ namespace ADJ.WebApp.Controllers
                     if (ModelState.IsValid)
                     {
                         await _poService.CreateOrUpdateOrderAsync(addModel);
-                        foreach (var i in addModel.PODetails)
+                        foreach (var i in addModel.PODetails.Items)
                         {
                             i.OrderId = await _poService.GetLastOrderId();
                             await _poService.CreateOrUpdateOrderDetailAsync(i);
@@ -92,16 +92,20 @@ namespace ADJ.WebApp.Controllers
                     }
                     break;
                 case "Save":
-                    if (addModel.PODetails == null) { addModel.PODetails = new List<OrderDetailDTO>(); }
+                    if (addModel.PODetails == null)
+                    {
+                        addModel.PODetails = new PagedListResult<OrderDetailDTO>();
+                        addModel.PODetails.Items = new List<OrderDetailDTO>();
+                    }
 
-                    if ((!UniqueItemNumber(-1, addModel.orderDetailDTO.ItemNumber, addModel.PODetails)) || (!(await _poService.UniqueItemNumAsync(addModel.orderDetailDTO.ItemNumber, addModel.orderDetailDTO.Id))))
+                    if ((!UniqueItemNumber(-1, addModel.orderDetailDTO.ItemNumber, addModel.PODetails.Items)) || (!(await _poService.UniqueItemNumAsync(addModel.orderDetailDTO.ItemNumber, addModel.orderDetailDTO.Id))))
                     {
                         ViewBag.ItemNumberError = "Item Number must be unique.";
                         ViewBag.ItemId = -1;
                         return View(addModel);
                     }
 
-                    addModel.PODetails.Add(addModel.orderDetailDTO);
+                    addModel.PODetails.Items.Add(addModel.orderDetailDTO);
                     ViewBag.ItemId = -2;
                     break;
                 case "AddItem":
@@ -112,23 +116,23 @@ namespace ADJ.WebApp.Controllers
                     ModelState.Clear();
                     if (method.Contains("Update"))
                     {
-                        if ((!UniqueItemNumber(itemId, addModel.orderDetailDTO.ItemNumber, addModel.PODetails)) || (!(await _poService.UniqueItemNumAsync(addModel.orderDetailDTO.ItemNumber, addModel.orderDetailDTO.Id))))
+                        if ((!UniqueItemNumber(itemId, addModel.orderDetailDTO.ItemNumber, addModel.PODetails.Items)) || (!(await _poService.UniqueItemNumAsync(addModel.orderDetailDTO.ItemNumber, addModel.orderDetailDTO.Id))))
                         {
                             ViewBag.ItemNumberError = "Item Number must be unique.";
                             ViewBag.ItemId = itemId;
                             return View(addModel);
                         }
 
-                        addModel.PODetails[itemId] = addModel.orderDetailDTO;
+                        addModel.PODetails.Items[itemId] = addModel.orderDetailDTO;
                         ViewBag.ItemId = -2;
                     }
                     else if (method.Contains("Delete"))
                     {
-                        addModel.PODetails.Remove(addModel.PODetails[itemId]);
+                        addModel.PODetails.Items.Remove(addModel.PODetails.Items[itemId]);
                     }
                     else
                     {
-                        addModel.orderDetailDTO = addModel.PODetails[itemId];
+                        addModel.orderDetailDTO = addModel.PODetails.Items[itemId];
                         ViewBag.ItemId = itemId;
                     }
                     break;
@@ -149,7 +153,7 @@ namespace ADJ.WebApp.Controllers
 
             editModel.orderDetailDTO = new OrderDetailDTO();
             editModel.orderDetailDTO.OrderId = editModel.Id;
-            editModel.orderDetailDTO.ItemNumber = editModel.PODetails[0].ItemNumber;
+            editModel.orderDetailDTO.ItemNumber = editModel.PODetails.Items[0].ItemNumber;
             ViewBag.Method = "Edit Order Number: " + editModel.PONumber;
             editModel = SetDropDownList(editModel);
             ViewBag.ItemId = -2;
@@ -166,6 +170,13 @@ namespace ADJ.WebApp.Controllers
             switch (method)
             {
                 case "Apply":
+                    if (addModel.PODetails == null)
+                    {
+                        ViewBag.OrderDetailError = "Please add at least 1 item detail.";
+                        ViewBag.ItemId = -1;
+                        return View(addModel);
+                    }
+
                     if (!(await _poService.UniquePONumAsync(addModel.PONumber, addModel.Id)))
                     {
                         ViewBag.PONumberError = "PO Number must be unique.";
@@ -175,7 +186,8 @@ namespace ADJ.WebApp.Controllers
                     if (ModelState.IsValid)
                     {
                         await _poService.CreateOrUpdateOrderAsync(addModel);
-                        foreach (var i in addModel.PODetails)
+                        _poService.DeleteOrderDetailAsync(addModel.PODetails, addModel.Id);
+                        foreach (var i in addModel.PODetails.Items)
                         {
                             i.OrderId = addModel.Id;
                             await _poService.CreateOrUpdateOrderDetailAsync(i);
@@ -185,16 +197,20 @@ namespace ADJ.WebApp.Controllers
                     }
                     break;
                 case "Save":
-                    if (addModel.PODetails == null) { addModel.PODetails = new List<OrderDetailDTO>(); }
+                    if (addModel.PODetails == null)
+                    {
+                        addModel.PODetails = new PagedListResult<OrderDetailDTO>();
+                        addModel.PODetails.Items = new List<OrderDetailDTO>();
+                    }
 
-                    if ((!UniqueItemNumber(-1, addModel.orderDetailDTO.ItemNumber, addModel.PODetails)) || (!(await _poService.UniqueItemNumAsync(addModel.orderDetailDTO.ItemNumber, addModel.orderDetailDTO.Id))))
+                    if ((!UniqueItemNumber(-1, addModel.orderDetailDTO.ItemNumber, addModel.PODetails.Items)) || (!(await _poService.UniqueItemNumAsync(addModel.orderDetailDTO.ItemNumber, addModel.orderDetailDTO.Id))))
                     {
                         ViewBag.ItemNumberError = "Item Number must be unique.";
                         ViewBag.ItemId = -1;
                         return View(addModel);
                     }
 
-                    addModel.PODetails.Add(addModel.orderDetailDTO);
+                    addModel.PODetails.Items.Add(addModel.orderDetailDTO);
                     ViewBag.ItemId = -2;
                     break;
                 case "AddItem":
@@ -205,23 +221,23 @@ namespace ADJ.WebApp.Controllers
                     ModelState.Clear();
                     if (method.Contains("Update"))
                     {
-                        if ((!UniqueItemNumber(itemId, addModel.orderDetailDTO.ItemNumber, addModel.PODetails)) || (!(await _poService.UniqueItemNumAsync(addModel.orderDetailDTO.ItemNumber, addModel.orderDetailDTO.Id))))
+                        if ((!UniqueItemNumber(itemId, addModel.orderDetailDTO.ItemNumber, addModel.PODetails.Items)) || (!(await _poService.UniqueItemNumAsync(addModel.orderDetailDTO.ItemNumber, addModel.orderDetailDTO.Id))))
                         {
                             ViewBag.ItemNumberError = "Item Number must be unique.";
                             ViewBag.ItemId = itemId;
                             return View(addModel);
                         }
 
-                        addModel.PODetails[itemId] = addModel.orderDetailDTO;
+                        addModel.PODetails.Items[itemId] = addModel.orderDetailDTO;
                         ViewBag.ItemId = -2;
                     }
                     else if (method.Contains("Delete"))
                     {
-                        addModel.PODetails.Remove(addModel.PODetails[itemId]);
+                        addModel.PODetails.Items.Remove(addModel.PODetails.Items[itemId]);
                     }
                     else
                     {
-                        addModel.orderDetailDTO = addModel.PODetails[itemId];
+                        addModel.orderDetailDTO = addModel.PODetails.Items[itemId];
                         ViewBag.ItemId = itemId;
                     }
                     break;
@@ -230,7 +246,7 @@ namespace ADJ.WebApp.Controllers
             return View(addModel);
         }
 
-        public async Task<ActionResult> Copy(string PONumber)
+        public async Task<ActionResult> Copy(string PONumber, int? page)
         {
             ModelState.Clear();
             OrderDTO copyModel = new OrderDTO();
@@ -247,7 +263,10 @@ namespace ADJ.WebApp.Controllers
             copyModel.ShipDate = DateTime.Now;
             copyModel.LatestShipDate = DateTime.Now;
             copyModel.DeliveryDate = DateTime.Now;
-            copyModel.PODetails = new List<OrderDetailDTO>();
+            copyModel.PODetails = new PagedListResult<OrderDetailDTO>();
+            copyModel.PODetails.Items = new List<OrderDetailDTO>();
+            copyModel.PODetails.PageCount = 1;
+            copyModel.PODetails.TotalCount = 5;
             copyModel.orderDetailDTO = new OrderDetailDTO();
             copyModel = SetDropDownList(copyModel);
 
@@ -259,7 +278,7 @@ namespace ADJ.WebApp.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> Copy(OrderDTO addModel, string method)
+        public async Task<ActionResult> Copy(OrderDTO addModel, string method, int? page)
         {
             addModel = SetDropDownList(addModel);
 
@@ -282,7 +301,7 @@ namespace ADJ.WebApp.Controllers
                     if (ModelState.IsValid)
                     {
                         await _poService.CreateOrUpdateOrderAsync(addModel);
-                        foreach (var i in addModel.PODetails)
+                        foreach (var i in addModel.PODetails.Items)
                         {
                             i.OrderId = await _poService.GetLastOrderId();
                             await _poService.CreateOrUpdateOrderDetailAsync(i);
@@ -292,16 +311,20 @@ namespace ADJ.WebApp.Controllers
                     }
                     break;
                 case "Save":
-                    if (addModel.PODetails == null) { addModel.PODetails = new List<OrderDetailDTO>(); }
+                    if (addModel.PODetails == null)
+                    {
+                        addModel.PODetails = new PagedListResult<OrderDetailDTO>();
+                        addModel.PODetails.Items = new List<OrderDetailDTO>();
+                    }
 
-                    if ((!UniqueItemNumber(-1, addModel.orderDetailDTO.ItemNumber, addModel.PODetails)) || (!(await _poService.UniqueItemNumAsync(addModel.orderDetailDTO.ItemNumber, addModel.orderDetailDTO.Id))))
+                    if ((!UniqueItemNumber(-1, addModel.orderDetailDTO.ItemNumber, addModel.PODetails.Items)) || (!(await _poService.UniqueItemNumAsync(addModel.orderDetailDTO.ItemNumber, addModel.orderDetailDTO.Id))))
                     {
                         ViewBag.ItemNumberError = "Item Number must be unique.";
                         ViewBag.ItemId = -1;
                         return View(addModel);
                     }
 
-                    addModel.PODetails.Add(addModel.orderDetailDTO);
+                    addModel.PODetails.Items.Add(addModel.orderDetailDTO);
                     ViewBag.ItemId = -2;
                     break;
                 case "AddItem":
@@ -312,23 +335,23 @@ namespace ADJ.WebApp.Controllers
                     ModelState.Clear();
                     if (method.Contains("Update"))
                     {
-                        if ((!UniqueItemNumber(itemId, addModel.orderDetailDTO.ItemNumber, addModel.PODetails)) || (!(await _poService.UniqueItemNumAsync(addModel.orderDetailDTO.ItemNumber, addModel.orderDetailDTO.Id))))
+                        if ((!UniqueItemNumber(itemId, addModel.orderDetailDTO.ItemNumber, addModel.PODetails.Items)) || (!(await _poService.UniqueItemNumAsync(addModel.orderDetailDTO.ItemNumber, addModel.orderDetailDTO.Id))))
                         {
                             ViewBag.ItemNumberError = "Item Number must be unique.";
                             ViewBag.ItemId = itemId;
                             return View(addModel);
                         }
 
-                        addModel.PODetails[itemId] = addModel.orderDetailDTO;
+                        addModel.PODetails.Items[itemId] = addModel.orderDetailDTO;
                         ViewBag.ItemId = -2;
                     }
                     else if (method.Contains("Delete"))
                     {
-                        addModel.PODetails.Remove(addModel.PODetails[itemId]);
+                        addModel.PODetails.Items.Remove(addModel.PODetails.Items[itemId]);
                     }
                     else
                     {
-                        addModel.orderDetailDTO = addModel.PODetails[itemId];
+                        addModel.orderDetailDTO = addModel.PODetails.Items[itemId];
                         ViewBag.ItemId = itemId;
                     }
                     break;
