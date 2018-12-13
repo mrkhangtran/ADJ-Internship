@@ -62,5 +62,6 @@ namespace ADJ.DataModel.OrderTrack
         public OrderStatus Status { get; set; }
 
         public ICollection<OrderDetail> orderDetails { get; set; } 
+        public virtual ProgressCheck ProgressCheck { get; set; }
     }
 }

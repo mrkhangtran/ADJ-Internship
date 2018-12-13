@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ADJ.BusinessService.Dtos;
+using ADJ.BusinessService.Interfaces;
+using ADJ.Common;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,86 +12,57 @@ namespace WebApp.Controllers
 {
     public class ProgressCheckController : Controller
     {
-        
-        // GET: ProgressCheck
-        public ActionResult Index()
-        {
-            return View();
-        }
+        private readonly IProgressCheckService _prcService;
+        public ProgressCheckController(IProgressCheckService prcService)
+        {           
+            _prcService = prcService;
 
-        // GET: ProgressCheck/Details/5
-        public ActionResult Details(int id)
-        {
-            return View();
         }
-
-        // GET: ProgressCheck/Create
-        public ActionResult Create()
+        // GET: ProgressCheckDto
+        public async Task<ActionResult> Index(string PONumberSearch, string ItemSearch, string Suppliers, string Factories, string Origins, string OriginPorts, string Depts)
         {
-            return View();
-        }
+            //GetSearchItemDTO getSearchItem = ProcheckRepository.SearchItem();
+            //ViewBag.Suppliers = getSearchItem.Suppliers;
+            //ViewBag.Origins = getSearchItem.Origins;
+            //ViewBag.OriginPorts = getSearchItem.OriginPorts;
+            //ViewBag.Factories = getSearchItem.Factories;
+            //ViewBag.Depts = getSearchItem.Depts;
+            //ViewBag.ErrorList = "No result match, please try again";
+            PagedListResult<ProgressCheckDto> lstPrc = await _prcService.ListProgressCheckDtoAsync();
+            List<ProgressCheckDto> progressCheckDtos = lstPrc.Items;
+            if (PONumberSearch != null)
+            {
+                progressCheckDtos = progressCheckDtos.Where(p => p.PONumber == PONumberSearch).ToList();
+            }
+            if (!String.IsNullOrEmpty(Suppliers) || !String.IsNullOrEmpty(Factories))
+            {
+                progressCheckDtos = progressCheckDtos.Where(p => p.Supplier == Suppliers || p.Factory == Factories).ToList();
 
-        // POST: ProgressCheck/Create
+            }
+            if (!String.IsNullOrEmpty(Origins) || !String.IsNullOrEmpty(OriginPorts))
+            {
+                progressCheckDtos = progressCheckDtos.Where(p => p.Origin == Origins || p.OriginPort == OriginPorts).ToList();
+            }
+            return View(progressCheckDtos);
+        }
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public async Task<ActionResult> Index(List<ProgressCheckDto> progressCheckDTOs)
         {
-            try
+            for (int i = 0; i < progressCheckDTOs.Count(); i++)
             {
-                // TODO: Add insert logic here
-
-                return RedirectToAction(nameof(Index));
+                _prcService.Update(progressCheckDTOs[i]);
             }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: ProgressCheck/Edit/5
-        public ActionResult Edit(int id)
-        {
-            return View();
-        }
-
-        // POST: ProgressCheck/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
-        {
-            try
-            {
-                // TODO: Add update logic here
-
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: ProgressCheck/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: ProgressCheck/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                // TODO: Add delete logic here
-
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
+            //GetSearchItemDTO getSearchItem = ProcheckRepository.SearchItem();
+            //ViewBag.Suppliers = getSearchItem.Suppliers;
+            //ViewBag.Origins = getSearchItem.Origins;
+            //ViewBag.OriginPorts = getSearchItem.OriginPorts;
+            //ViewBag.Factories = getSearchItem.Factories;
+            //ViewBag.Depts = getSearchItem.Depts;
+            //ViewBag.ErrorList = "No result match, please try again";
+            PagedListResult<ProgressCheckDto> lstPrc = await _prcService.ListProgressCheckDtoAsync();
+            List<ProgressCheckDto> progressCheckDtos = lstPrc.Items;
+           
+            return View("Index", progressCheckDtos);
         }
     }
 }

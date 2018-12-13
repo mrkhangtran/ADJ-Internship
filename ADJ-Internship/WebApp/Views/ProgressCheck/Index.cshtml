@@ -1,0 +1,249 @@
+﻿@model List<ADJ.BusinessService.Dtos.ProgressCheckDto>
+<link href="~/css/font-awesome.css" rel="stylesheet" />
+<link href="~/css/style.css" rel="stylesheet" />
+<link href="~/css/uikit.min.css" rel="stylesheet" />
+@using (Html.BeginForm())
+{
+    /*<div class="uk-container">
+        <div class="uk-grid">
+            <div class="uk-width-1-3">
+                <table class="uk-table">
+                    <tbody>
+                        <tr>
+                            <td><label>Origin</label></td>
+                            <td>
+                                <div class="uk-form-select" data-uk-form-select>
+                                    @Html.DropDownList("Origins", new SelectList(ViewBag.Origins), "Any", new { @id = "Origins" })
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><label>Origin Port</label></td>
+                            <td>
+                                <div class="uk-form-select" data-uk-form-select>
+                                    @Html.DropDownList("OriginPorts", new SelectList(ViewBag.OriginPorts), "Any", new { @id = "OriginPorts" })
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><label>Factory</label></td>
+                            <td>
+                                <div class="uk-form-select" data-uk-form-select>
+                                    <span></span>
+                                    @Html.DropDownList("Factories", new SelectList(ViewBag.Factories), "Any", new { @id = "Factories" })
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><label>Supplier</label></td>
+                            <td>
+                                <div class="uk-form-select" data-uk-form-select>
+                                    @Html.DropDownList("Suppliers", new SelectList(ViewBag.Suppliers), "Any", new { @id = "Suppliers" })
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><label>Status</label></td>
+                            <td>
+                                <div class="uk-form-select" data-uk-form-select>
+                                    <span></span>
+                                    <select>
+                                        <option value="">...</option>
+                                        <option value="">...</option>
+                                    </select>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="uk-width-1-3">
+                <table class="uk-table">
+                    <tbody>
+                        <tr>
+                            <td><label>Dept</label></td>
+                            <td>
+                                <div class="uk-form-select" data-uk-form-select>
+                                    @Html.DropDownList("Depts", new SelectList(ViewBag.Depts), "Any", new { @id = "Depts" })
+
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><label>PO Number</label></td>
+                            <td>
+                                <input id="PONumberSearch" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><label>Item</label></td>
+                            <td>
+                                <input id="ItemSearch" />
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+            </div>
+            */
+            <div class="uk-width-1-3">
+                <table class="uk-table">
+                    <tbody>
+                        <tr>
+                            <td>
+                                <input id="Search" style="height:50px;width:150px" class="uk-button uk-button-primary" type="button" data-uk-button value="Search">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <input id="Achieve" style="height:50px;width:150px" class="uk-button uk-button-danger" type="submit" data-uk-button value="Achieve">
+
+                            </td>
+                        </tr>
+
+                    </tbody>
+                </table>
+
+            </div>
+            @*
+        </div>
+    </div>*@
+    if (Model.Count() == 0)
+    {
+        <h1>@ViewBag.ErrorList</h1>
+    }
+    for (int i = 0; i < Model.Count(); i++)
+    {
+        <div class="uk-container" style="margin-top:50px">
+            @Html.HiddenFor(model => model[i].OrderId, new { Value = Model[i].OrderId })
+            @Html.HiddenFor(model => model[i].Id, new { Value = Model[i].Id })
+            <table border="1">
+                <thead style="color:white">
+                    <tr style="background-color:#333">
+                        <td>
+                            Supplier
+                        </td>
+                        <td>
+                            Factory
+                        </td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>@Model[i].Supplier</td>
+                        @Html.HiddenFor(model => model[i].Supplier)
+                        <td>@Model[i].Factory</td>
+                        @Html.HiddenFor(model => model[i].Factory)
+
+                    </tr>
+
+                </tbody>
+            </table>
+            <table border="1">
+                <thead style="color:white">
+                    <tr style="background-color:#333">
+                        <td>
+                            PO Number
+                        </td>
+                        <td>
+                            PO Quantity
+                        </td>
+                        <td>
+                            PO Check Quantity
+                        </td>
+                        <td>
+                            PO Ship Date
+                        </td>
+                        <td>
+                            Inspection Date
+                        </td>
+                        <td>
+                            Int Ship Date
+                        </td>
+                        <td>
+                            PO Quantity Complete
+                        </td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>@Model[i].PONumber</td>
+                        @Html.HiddenFor(model => model[i].POQuantity)
+                        <td>@Model[i].POQuantity</td>
+                        @Html.HiddenFor(model => model[i].POQuantity)
+                        <td>@Model[i].EstQtyToShip</td>
+                        @Html.HiddenFor(model => model[i].EstQtyToShip)
+                        <td>@Model[i].ShipDate</td>
+                        <td>
+                            @Html.TextBoxFor(model => model[i].InspectionDate, Model[i].InspectionDate.ToString("yyyy-MM-dd"), new { type = "date", @class = "uk-input" })
+                            @Html.ValidationMessageFor(model => model[i].InspectionDate, "", new { @class = "text-danger" })
+
+                        </td>
+                        <td>
+
+                            @Html.TextBoxFor(model => model[i].IntendedShipDate, Model[i].IntendedShipDate.ToString("yyyy-MM-dd"), new { type = "date", @class = "uk-input" })
+                            @Html.ValidationMessageFor(model => model[i].IntendedShipDate, "", new { @class = "text-danger" })
+                        </td>
+                        <td>
+                            @Model[i].Complete
+                            @Html.HiddenFor(model => model[i].Complete)
+                        </td>
+                    </tr>
+
+                </tbody>
+            </table>
+            <table border="1">
+                <thead style="color:white">
+                    <tr style="background-color:#333">
+                        <td></td>
+                        <td>
+                            Item Number
+                        </td>
+                        <td>
+                            Item Quantity
+                        </td>
+                        <td>
+                            Revise Quantity
+                        </td>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (int j = 0; j < Model[i].ListOrderDetail.Count(); j++)
+                    {
+                        <tr>
+                            <td><input class="uk-checkbox" type="checkbox" value="@Model[i].ListOrderDetail[j].Id"></td>
+                            @Html.HiddenFor(model => model[i].ListOrderDetail[j].Id)
+                            <td>@Model[i].ListOrderDetail[j].ItemNumber</td>
+                            <td>@Model[i].ListOrderDetail[j].Quantity</td>
+                            <td>
+                                @Html.TextBoxFor(model => model[i].ListOrderDetail[j].ReviseQuantity, new { @class = "uk-input" ,Type="Number"})
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+    <br />
+}
+<script src="~/js/jquery-3.3.1.js"></script>
+<script src="~/js/uikit.min.js"></script>
+<script type="text/javascript">
+    $('#Search').click(function () {
+        $.ajax({
+            url: "@Url.Action("Index","ProgressCheck")",
+            data: {
+                Suppliers: $('#Suppliers').val(),
+                Factories: $('#Factories').val(),
+                Origins: $('#Origins').val(),
+                OriginPorts: $('#OriginPorts').val(),
+                Depts: $('#Depts').val(),
+                PONumberSearch: $('PONumberSearch').val(),
+                ItemSearch: $('ItemSearch').val()
+            },
+        });
+    });
+</script>
+
+
+

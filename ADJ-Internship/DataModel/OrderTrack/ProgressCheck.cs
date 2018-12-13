@@ -22,7 +22,5 @@ namespace ADJ.DataModel.OrderTrack
 
         [Required]
         public int OrderId { get; set; }
-
-        public virtual Order Order { get; set; }
     }
 }
