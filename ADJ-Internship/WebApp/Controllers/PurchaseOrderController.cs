@@ -38,7 +38,7 @@ namespace ADJ.WebApp.Controllers
                         break;
 
                 }
-                message += "successfully.Thank you.";
+                message += " successfully.Thank you.";
                 ViewBag.Message = message;
             }
 
@@ -94,7 +94,7 @@ namespace ADJ.WebApp.Controllers
                 case "Save":
                     if (addModel.PODetails == null) { addModel.PODetails = new List<OrderDetailDTO>(); }
 
-                    if ((!UniqueItemNumber(addModel.orderDetailDTO.ItemNumber, addModel.PODetails)) || (!(await _poService.UniqueItemNumAsync(addModel.orderDetailDTO.ItemNumber, addModel.orderDetailDTO.Id))))
+                    if ((!UniqueItemNumber(-1, addModel.orderDetailDTO.ItemNumber, addModel.PODetails)) || (!(await _poService.UniqueItemNumAsync(addModel.orderDetailDTO.ItemNumber, addModel.orderDetailDTO.Id))))
                     {
                         ViewBag.ItemNumberError = "Item Number must be unique.";
                         ViewBag.ItemId = -1;
@@ -112,6 +112,13 @@ namespace ADJ.WebApp.Controllers
                     ModelState.Clear();
                     if (method.Contains("Update"))
                     {
+                        if ((!UniqueItemNumber(itemId, addModel.orderDetailDTO.ItemNumber, addModel.PODetails)) || (!(await _poService.UniqueItemNumAsync(addModel.orderDetailDTO.ItemNumber, addModel.orderDetailDTO.Id))))
+                        {
+                            ViewBag.ItemNumberError = "Item Number must be unique.";
+                            ViewBag.ItemId = itemId;
+                            return View(addModel);
+                        }
+
                         addModel.PODetails[itemId] = addModel.orderDetailDTO;
                         ViewBag.ItemId = -2;
                     }
@@ -130,10 +137,10 @@ namespace ADJ.WebApp.Controllers
             return View(addModel);
         }
 
-        /*public ActionResult Edit(string PONumber)
+        public async Task<ActionResult> Edit(string PONumber)
         {
             OrderDTO editModel = new OrderDTO();
-            editModel = PurchaseOrder.Find(PONumber);
+            editModel = await _poService.GetOrderByPONumber(PONumber);
 
             if (editModel.Id == 0)
             {
@@ -142,6 +149,7 @@ namespace ADJ.WebApp.Controllers
 
             editModel.orderDetailDTO = new OrderDetailDTO();
             editModel.orderDetailDTO.OrderId = editModel.Id;
+            editModel.orderDetailDTO.ItemNumber = editModel.PODetails[0].ItemNumber;
             ViewBag.Method = "Edit Order Number: " + editModel.PONumber;
             editModel = SetDropDownList(editModel);
             ViewBag.ItemId = -2;
@@ -150,14 +158,15 @@ namespace ADJ.WebApp.Controllers
         }
 
         [HttpPost]
-        public ActionResult Edit(OrderDTO addModel, string method)
+        public async Task<ActionResult> Edit(OrderDTO addModel, string method)
         {
+            ViewBag.Method = "Edit Order Number: " + addModel.PONumber;
             addModel = SetDropDownList(addModel);
 
             switch (method)
             {
                 case "Apply":
-                    if (!(PurchaseOrder.UniquePONum(addModel.PONumber, addModel.Id)))
+                    if (!(await _poService.UniquePONumAsync(addModel.PONumber, addModel.Id)))
                     {
                         ViewBag.PONumberError = "PO Number must be unique.";
                         return View(addModel);
@@ -165,10 +174,11 @@ namespace ADJ.WebApp.Controllers
 
                     if (ModelState.IsValid)
                     {
-                        PurchaseOrder.AddOrUpdate(addModel);
+                        await _poService.CreateOrUpdateOrderAsync(addModel);
                         foreach (var i in addModel.PODetails)
                         {
-                            PurchaseOrder.AddOrUpdateItem(i);
+                            i.OrderId = addModel.Id;
+                            await _poService.CreateOrUpdateOrderDetailAsync(i);
                         }
 
                         return RedirectToAction("Index", new { id = addModel.PONumber, method = 2 });
@@ -177,13 +187,11 @@ namespace ADJ.WebApp.Controllers
                 case "Save":
                     if (addModel.PODetails == null) { addModel.PODetails = new List<OrderDetailDTO>(); }
 
-                    if (!UniqueItemNumber(addModel.orderDetailDTO.ItemNumber, addModel.PODetails))
+                    if ((!UniqueItemNumber(-1, addModel.orderDetailDTO.ItemNumber, addModel.PODetails)) || (!(await _poService.UniqueItemNumAsync(addModel.orderDetailDTO.ItemNumber, addModel.orderDetailDTO.Id))))
                     {
-                        if (!(PurchaseOrder.UniqueItemNum(addModel.orderDetailDTO.ItemNumber, addModel.orderDetailDTO.Id)))
-                        {
-                            ViewBag.ItemNumberError = "Item Number must be unique.";
-                            return View(addModel);
-                        }
+                        ViewBag.ItemNumberError = "Item Number must be unique.";
+                        ViewBag.ItemId = -1;
+                        return View(addModel);
                     }
 
                     addModel.PODetails.Add(addModel.orderDetailDTO);
@@ -197,6 +205,13 @@ namespace ADJ.WebApp.Controllers
                     ModelState.Clear();
                     if (method.Contains("Update"))
                     {
+                        if ((!UniqueItemNumber(itemId, addModel.orderDetailDTO.ItemNumber, addModel.PODetails)) || (!(await _poService.UniqueItemNumAsync(addModel.orderDetailDTO.ItemNumber, addModel.orderDetailDTO.Id))))
+                        {
+                            ViewBag.ItemNumberError = "Item Number must be unique.";
+                            ViewBag.ItemId = itemId;
+                            return View(addModel);
+                        }
+
                         addModel.PODetails[itemId] = addModel.orderDetailDTO;
                         ViewBag.ItemId = -2;
                     }
@@ -215,39 +230,50 @@ namespace ADJ.WebApp.Controllers
             return View(addModel);
         }
 
-        public ActionResult Copy(string PONumber)
+        public async Task<ActionResult> Copy(string PONumber)
         {
-            OrderDTO editModel = new OrderDTO();
-            //int Id = id ?? default(int);
-            editModel = PurchaseOrder.Find(PONumber);
+            ModelState.Clear();
+            OrderDTO copyModel = new OrderDTO();
+            copyModel = await _poService.GetOrderByPONumber(PONumber);
 
-            if (editModel.Id == 0)
+            if (copyModel.Id == 0)
             {
                 return StatusCode(404);
             }
 
-            editModel.Id = 0;
-            ViewBag.Method = "Copy from Order Number: " + editModel.PONumber;
+            copyModel.Id = 0;
+            
+            copyModel.OrderDate = DateTime.Now;
+            copyModel.ShipDate = DateTime.Now;
+            copyModel.LatestShipDate = DateTime.Now;
+            copyModel.DeliveryDate = DateTime.Now;
+            copyModel.PODetails = new List<OrderDetailDTO>();
+            copyModel.orderDetailDTO = new OrderDetailDTO();
+            copyModel = SetDropDownList(copyModel);
 
-            editModel.PONumber = "";
-            foreach (var item in editModel.PODetails) { item.Id = 0; }
-
-            editModel.orderDetailDTO = new OrderDetailDTO();
-            editModel = SetDropDownList(editModel);
+            ViewBag.Method = "Copy from Order Number: " + copyModel.PONumber;
+            copyModel.PONumber = "";
             ViewBag.ItemId = -2;
 
-            return View(editModel);
+            return View(copyModel);
         }
 
         [HttpPost]
-        public ActionResult Copy(OrderDTO addModel, string method)
+        public async Task<ActionResult> Copy(OrderDTO addModel, string method)
         {
             addModel = SetDropDownList(addModel);
 
             switch (method)
             {
                 case "Apply":
-                    if (!(PurchaseOrder.UniquePONum(addModel.PONumber, addModel.Id)))
+                    if (addModel.PODetails == null)
+                    {
+                        ViewBag.OrderDetailError = "Please add at least 1 item detail.";
+                        ViewBag.ItemId = -1;
+                        return View(addModel);
+                    }
+
+                    if (!(await _poService.UniquePONumAsync(addModel.PONumber, addModel.Id)))
                     {
                         ViewBag.PONumberError = "PO Number must be unique.";
                         return View(addModel);
@@ -255,10 +281,11 @@ namespace ADJ.WebApp.Controllers
 
                     if (ModelState.IsValid)
                     {
-                        PurchaseOrder.AddOrUpdate(addModel);
+                        await _poService.CreateOrUpdateOrderAsync(addModel);
                         foreach (var i in addModel.PODetails)
                         {
-                            PurchaseOrder.AddOrUpdateItem(i);
+                            i.OrderId = await _poService.GetLastOrderId();
+                            await _poService.CreateOrUpdateOrderDetailAsync(i);
                         }
 
                         return RedirectToAction("Index", new { id = addModel.PONumber, method = 3 });
@@ -267,13 +294,11 @@ namespace ADJ.WebApp.Controllers
                 case "Save":
                     if (addModel.PODetails == null) { addModel.PODetails = new List<OrderDetailDTO>(); }
 
-                    if (!UniqueItemNumber(addModel.orderDetailDTO.ItemNumber, addModel.PODetails))
+                    if ((!UniqueItemNumber(-1, addModel.orderDetailDTO.ItemNumber, addModel.PODetails)) || (!(await _poService.UniqueItemNumAsync(addModel.orderDetailDTO.ItemNumber, addModel.orderDetailDTO.Id))))
                     {
-                        if (!(PurchaseOrder.UniqueItemNum(addModel.orderDetailDTO.ItemNumber, addModel.orderDetailDTO.Id)))
-                        {
-                            ViewBag.ItemNumberError = "Item Number must be unique.";
-                            return View(addModel);
-                        }
+                        ViewBag.ItemNumberError = "Item Number must be unique.";
+                        ViewBag.ItemId = -1;
+                        return View(addModel);
                     }
 
                     addModel.PODetails.Add(addModel.orderDetailDTO);
@@ -287,6 +312,13 @@ namespace ADJ.WebApp.Controllers
                     ModelState.Clear();
                     if (method.Contains("Update"))
                     {
+                        if ((!UniqueItemNumber(itemId, addModel.orderDetailDTO.ItemNumber, addModel.PODetails)) || (!(await _poService.UniqueItemNumAsync(addModel.orderDetailDTO.ItemNumber, addModel.orderDetailDTO.Id))))
+                        {
+                            ViewBag.ItemNumberError = "Item Number must be unique.";
+                            ViewBag.ItemId = itemId;
+                            return View(addModel);
+                        }
+
                         addModel.PODetails[itemId] = addModel.orderDetailDTO;
                         ViewBag.ItemId = -2;
                     }
@@ -303,13 +335,23 @@ namespace ADJ.WebApp.Controllers
             }
 
             return View(addModel);
-        }*/
+        }
 
-        private bool UniqueItemNumber(string itemNum, List<OrderDetailDTO> orderDetails)
+        private bool UniqueItemNumber(int id, string itemNum, List<OrderDetailDTO> orderDetails)
         {
-            foreach (var item in orderDetails)
+            if (id == -1)
             {
-                if (itemNum == item.ItemNumber) { return false; }
+                foreach (var item in orderDetails)
+                {
+                    if (itemNum == item.ItemNumber) { return false; }
+                }
+            }
+            else
+            {
+                for (var i=0; i<orderDetails.Count(); i++)
+                {
+                    if ((itemNum == orderDetails[i].ItemNumber) && (id != i)) { return false; }
+                }
             }
 
             return true;
@@ -322,21 +364,50 @@ namespace ADJ.WebApp.Controllers
             init = addModel;
 
             init.Seasons = GetSelectListItems(SeasonList());
-            init.Origins = GetSelectListItems(new List<string> { "HongKong", "Vietnam" });
-            init.Ports = GetSelectListItems(new List<string> { "Port 1", "Port 2", "Port 3" });
+            init.Ports = GetSelectListItems(new List<string> { "Cẩm Phả", "Hòn Gai", "Hải Phòng", "Nghi Sơn", "Cửa Lò," });
             init.Modes = GetSelectListItems(new List<string> { "Road", "Sea", "Air" });
-
-            //init.Statuses
+            init.Origins = GetSelectListItems(new List<string> { "HongKong", "Vietnam" });
             
-            List<string> test = new List<string>();
+            //Currency
+            List<string> temp = new List<string>();
 
             foreach (var i in Enum.GetValues(typeof(Currency)))
             {
-                test.Add(i.ToString());
+                temp.Add(i.ToString());
             }
 
-            init.Currencies = GetSelectListItems(test);
-        
+            init.Currencies = GetSelectListItems(temp);
+
+            //Status
+            temp = new List<string>();
+
+            foreach (var i in Enum.GetValues(typeof(OrderStatus)))
+            {
+                temp.Add(i.ToString());
+            }
+
+            init.Statuses = GetSelectListItems(temp);
+
+            //Port
+            //temp = new List<string>();
+
+            //foreach (var i in Enum.GetValues(typeof(Ports)))
+            //{
+            //    temp.Add(i.ToString());
+            //}
+
+            //init.Ports = GetSelectListItems(temp);
+
+            ////Mode
+            //temp = new List<string>();
+
+            //foreach (var i in Enum.GetValues(typeof(Modes)))
+            //{
+            //    temp.Add(i.ToString());
+            //}
+
+            //init.Modes = GetSelectListItems(temp);
+
             return init;
         }
 

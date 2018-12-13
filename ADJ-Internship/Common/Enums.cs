@@ -34,7 +34,22 @@ namespace ADJ.Common
 
     public enum Ports
     {
-        [Description("Cẩm Phả")] p1,
-        [Description("Hòn Gai")] p2,
+        Cẩm_Phả,
+        Hòn_Gai,
+        Hải_Phòng,
+        Nghi_Sơn,
+        Cửa_Lò,
+    }
+
+    public enum Origins
+    {
+
+    }
+
+    public enum Modes
+    {
+        Road,
+        Sea,
+        Air,
     }
 }

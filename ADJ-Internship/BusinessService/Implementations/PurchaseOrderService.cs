@@ -59,7 +59,16 @@ namespace ADJ.BusinessService.Implementations
                     throw new AppException("Purchase Order Not Found");
                 }
 
+                var temp = entity.RowVersion;
                 entity = Mapper.Map(order, entity);
+                entity.RowVersion = temp;
+
+                //foreach (var item in entity.orderDetails)
+                //{
+                //    _orderDetailRepository.Delete(item);
+                //}
+
+                //entity = Mapper.Map<Order>(order);
                 _orderRepository.Update(entity);
             }
             else
@@ -88,13 +97,16 @@ namespace ADJ.BusinessService.Implementations
             OrderDetail entity;
             if (orderDetail.Id > 0)
             {
-                entity = await _orderDetailRepository.GetByIdAsync(orderDetail.Id, true);
+                entity = await _orderDetailRepository.GetByIdAsync(orderDetail.Id, false);
                 if (entity == null)
                 {
                     throw new AppException("Purchase Order Detail Not Found");
                 }
 
+                var temp = entity.RowVersion;
                 entity = Mapper.Map(orderDetail, entity);
+                entity.RowVersion = temp;
+
                 _orderDetailRepository.Update(entity);
             }
             else
@@ -165,6 +177,38 @@ namespace ADJ.BusinessService.Implementations
             }
 
             return true;
+        }
+
+        public async Task<OrderDTO> GetOrderByPONumber(string poNumber)
+        {
+            var orderResult = await _orderDataProvider.ListAsync();
+            List<Order> orders = orderResult.Items;
+            Order entity = new Order();
+            foreach (var item in orders)
+            {
+                if (item.PONumber == poNumber)
+                {
+                    entity = item;
+                    break;
+                }
+            }
+
+            OrderDTO result = Mapper.Map<OrderDTO>(entity);
+
+            var orderDetailResult = await _orderDetailDataProvider.ListAsync();
+            List<OrderDetail> orderDetails = orderDetailResult.Items;
+            OrderDetailDTO temp;
+            result.PODetails = new List<OrderDetailDTO>();
+            foreach (var item in orderDetails)
+            {
+                if (item.OrderId == result.Id)
+                {
+                    temp = Mapper.Map<OrderDetailDTO>(item);
+                    result.PODetails.Add(temp);
+                }
+            }
+
+            return result;
         }
 
         /*public PurchaseOrderService(IUnitOfWork unitOfWork, IMapper mapper, ApplicationContext appContext, IDataProvider<PurchaseOrder> poDataProvider, IPurchaseOrderRepository poRepository) : base(unitOfWork, mapper, appContext)

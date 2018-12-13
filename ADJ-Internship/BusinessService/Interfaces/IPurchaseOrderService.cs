@@ -19,5 +19,6 @@ namespace ADJ.BusinessService.Interfaces
         Task<bool> UniquePONumAsync(string PONumber, int? id);
         Task<bool> UniqueItemNumAsync(string itemNum, int? id);
         Task<int> GetLastOrderId();
+        Task<OrderDTO> GetOrderByPONumber(string poNumber);
     }
 }

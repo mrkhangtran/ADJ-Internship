@@ -51,9 +51,11 @@ namespace ADJ.BusinessService.Dtos
         //Default value is Current Date
         [Display(Name = "Order Date")]
         [DisplayFormat(DataFormatString = "{0:mm/dd/yyyy}", ApplyFormatInEditMode = true)]
+        [NotInThePast(ErrorMessage = "Cannot be set in the past")]
         public DateTime OrderDate { get; set; } = DateTime.Now;
 
         [StringLength(30, ErrorMessage = "Cannot be longer than 30 character")]
+        [RegularExpression("^[a-zA-Z0-9]+$", ErrorMessage = "Letters and numbers only")]
         public string Buyer { get; set; }
 
         //Default value = USD
@@ -65,12 +67,15 @@ namespace ADJ.BusinessService.Dtos
         public IEnumerable<SelectListItem> Seasons { get; set; }
 
         [StringLength(30, ErrorMessage = "Cannot be longer than 30 characters")]
+        [RegularExpression("^[a-zA-Z0-9]+$", ErrorMessage = "Letters and numbers only")]
         public string Department { get; set; }
 
         [StringLength(30, ErrorMessage = "Cannot be longer than 30 characters")]
+        [RegularExpression("^[a-zA-Z0-9]+$", ErrorMessage = "Letters and numbers only")]
         public string Vendor { get; set; }
 
         [StringLength(30, ErrorMessage = "Cannot be longer than 30 characters")]
+        [RegularExpression("^[a-zA-Z0-9]+$", ErrorMessage = "Letters and numbers only")]
         public string Company { get; set; }
 
         //Droplist Vietnam-HongKong
@@ -92,9 +97,11 @@ namespace ADJ.BusinessService.Dtos
 
         [Display(Name = "Order Type")]
         [StringLength(30, ErrorMessage = "Cannot be longer than 30 characters")]
+        [RegularExpression("^[a-zA-Z0-9]+$", ErrorMessage = "Letters and numbers only")]
         public string OrderType { get; set; }
 
         [StringLength(30, ErrorMessage = "Cannot be longer than 30 characters")]
+        [RegularExpression("^[a-zA-Z0-9]+$", ErrorMessage = "Letters and numbers only")]
         public string Factory { get; set; }
 
         //DropList Road-Sea-Air
@@ -103,14 +110,17 @@ namespace ADJ.BusinessService.Dtos
         public IEnumerable<SelectListItem> Modes { get; set; }
 
         [Display(Name = "Ship Date")]
+        [NotInThePast(ErrorMessage = "Cannot be set in the past")]
         public DateTime ShipDate { get; set; }
 
         [Display(Name = "Latest Ship Date")]
         [SimilarOrLaterThanOtherDate("ShipDate")]
+        [NotInThePast(ErrorMessage = "Cannot be set in the past")]
         public DateTime LatestShipDate { get; set; }
 
         [Display(Name = "Delivery Date")]
         [SimilarOrLaterThanOtherDate("ShipDate")]
+        [NotInThePast(ErrorMessage = "Cannot be set in the past")]
         public DateTime DeliveryDate { get; set; }
 
         //sum of all PODetails Quantity 
@@ -140,15 +150,19 @@ namespace ADJ.BusinessService.Dtos
         public string ItemNumber { get; set; }
 
         [StringLength(255)]
+        [RegularExpression("^[a-zA-Z0-9]+$", ErrorMessage = "Letters and numbers only")]
         public string Description { get; set; } = "";
 
         [StringLength(30)]
+        [RegularExpression("^[a-zA-Z0-9]+$", ErrorMessage = "Letters and numbers only")]
         public string Warehouse { get; set; } = "";
 
         [StringLength(30)]
+        [RegularExpression("^[a-zA-Z0-9]+$", ErrorMessage = "Letters and numbers only")]
         public string Colour { get; set; } = "";
 
         [StringLength(30)]
+        [RegularExpression("^[a-zA-Z0-9]+$", ErrorMessage = "Letters and numbers only")]
         public string Size { get; set; } = "";
 
         [Required]

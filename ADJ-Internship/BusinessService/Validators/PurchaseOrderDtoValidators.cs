@@ -15,22 +15,6 @@ namespace ADJ.BusinessService.Validators
         }
     }
 
-    /*class UniquePONumberValidator: AbstractValidator<OrderDTO>
-    {
-        /*public bool UniquePONum(string PONumber, int? id)
-        {
-            if (id == null || id == 0)
-            {
-                return !db.GetDB().Orders.Any(x => x.PONumber == PONumber);
-            }
-            else
-            {
-                return !db.GetDB().Orders.Any(x => x.PONumber == PONumber && x.Id != id);
-            }
-        }
-    }*/
-    
-
     public class PortIsDifferent : ValidationAttribute
     {
         private readonly string _otherProperty;
@@ -77,9 +61,31 @@ namespace ADJ.BusinessService.Validators
                 {
                     return new ValidationResult(ErrorMessage = "Cannot be before Ship Date");
                 }
+                if ((date1-date2).Days > 30)
+                {
+                    return new ValidationResult(ErrorMessage = "Cannot be more than 30 days apart");
+                }
             }
 
             return ValidationResult.Success;
+        }
+    }
+
+    public class NotInThePast : ValidationAttribute
+    {
+        public override bool IsValid(object value)
+        {
+            if (value != null)
+            {
+                DateTime date1 = Convert.ToDateTime(value);
+                DateTime date2 = DateTime.Now.Date;
+                if (date1 < date2)
+                {
+                    return false;
+                }
+            }
+
+            return true;
         }
     }
 }
