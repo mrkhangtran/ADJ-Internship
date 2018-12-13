@@ -1,10 +1,7 @@
 ﻿@model List<ADJ.BusinessService.Dtos.ProgressCheckDto>
-<link href="~/css/font-awesome.css" rel="stylesheet" />
-<link href="~/css/style.css" rel="stylesheet" />
-<link href="~/css/uikit.min.css" rel="stylesheet" />
 @using (Html.BeginForm())
 {
-    /*<div class="uk-container">
+    <div class="uk-container">
         <div class="uk-grid">
             <div class="uk-width-1-3">
                 <table class="uk-table">
@@ -85,7 +82,7 @@
                 </table>
 
             </div>
-            */
+
             <div class="uk-width-1-3">
                 <table class="uk-table">
                     <tbody>
@@ -105,9 +102,9 @@
                 </table>
 
             </div>
-            @*
+
         </div>
-    </div>*@
+    </div>
     if (Model.Count() == 0)
     {
         <h1>@ViewBag.ErrorList</h1>
@@ -208,15 +205,19 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @for (int j = 0; j < Model[i].ListOrderDetail.Count(); j++)
+                    @for (int j = 0; j < Model[i].ListOrderDetailProgress.Count(); j++)
                     {
                         <tr>
-                            <td><input class="uk-checkbox" type="checkbox" value="@Model[i].ListOrderDetail[j].Id"></td>
-                            @Html.HiddenFor(model => model[i].ListOrderDetail[j].Id)
-                            <td>@Model[i].ListOrderDetail[j].ItemNumber</td>
-                            <td>@Model[i].ListOrderDetail[j].Quantity</td>
+                            <td><input class="uk-checkbox" type="checkbox" value="@Model[i].ListOrderDetailProgress[j].Id"></td>
+                            @Html.HiddenFor(model => model[i].ListOrderDetailProgress[j].Id)
+                            <td>@Model[i].ListOrderDetailProgress[j].ItemNumber</td>
+                            <td>@Model[i].ListOrderDetailProgress[j].Quantity</td>
+                            @Html.HiddenFor(model => model[i].ListOrderDetailProgress[j].Quantity)
+
                             <td>
-                                @Html.TextBoxFor(model => model[i].ListOrderDetail[j].ReviseQuantity, new { @class = "uk-input" ,Type="Number"})
+                                @Html.TextBoxFor(model => model[i].ListOrderDetailProgress[j].ReviseQuantity, new { @class = "uk-input", Type = "Number" })
+                                @Html.ValidationMessageFor(model => model[i].ListOrderDetailProgress[j].ReviseQuantity, "", new { @class = "text-danger" })
+
                             </td>
                         </tr>
                     }
@@ -226,20 +227,19 @@
     }
     <br />
 }
-<script src="~/js/jquery-3.3.1.js"></script>
-<script src="~/js/uikit.min.js"></script>
+<script type="text/javascript" src="~/js/jquery-3.3.1.js" asp-append-version="true"></script>
 <script type="text/javascript">
     $('#Search').click(function () {
         $.ajax({
-            url: "@Url.Action("Index","ProgressCheck")",
+            url: "/ProgressCheck/Index",
             data: {
                 Suppliers: $('#Suppliers').val(),
                 Factories: $('#Factories').val(),
                 Origins: $('#Origins').val(),
                 OriginPorts: $('#OriginPorts').val(),
                 Depts: $('#Depts').val(),
-                PONumberSearch: $('PONumberSearch').val(),
-                ItemSearch: $('ItemSearch').val()
+                PONumberSearch: $('#PONumberSearch').val(),
+                ItemSearch: $('#ItemSearch').val()
             },
         });
     });

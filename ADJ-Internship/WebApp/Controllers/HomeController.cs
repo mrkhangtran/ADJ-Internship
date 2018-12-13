@@ -24,8 +24,7 @@ namespace ADJ.WebApp.Controllers
         public async Task<IActionResult> Index()
         {
             var createPurchaseOrderRq = new CreateOrUpdatePurchaseOrderRq {Test = "111"};
-            await _prcService.CheckOrderHaventProgress(1);
-            _prcService.CreateDefaultModel(1);
+        
             await _poService.CreateOrUpdatePurchaseOrderAsync(createPurchaseOrderRq);
 
             var test = await _poService.ListPurchaseOrdersAsync(null);

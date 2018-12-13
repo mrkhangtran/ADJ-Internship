@@ -19,15 +19,15 @@ namespace WebApp.Controllers
 
         }
         // GET: ProgressCheckDto
-        public async Task<ActionResult> Index(string PONumberSearch, string ItemSearch, string Suppliers, string Factories, string Origins, string OriginPorts, string Depts)
+        public async Task<ActionResult> Index(string PONumberSearch=null, string ItemSearch=null, string Suppliers=null, string Factories=null, string Origins=null, string OriginPorts=null, string Depts=null)
         {
-            //GetSearchItemDTO getSearchItem = ProcheckRepository.SearchItem();
-            //ViewBag.Suppliers = getSearchItem.Suppliers;
-            //ViewBag.Origins = getSearchItem.Origins;
-            //ViewBag.OriginPorts = getSearchItem.OriginPorts;
-            //ViewBag.Factories = getSearchItem.Factories;
-            //ViewBag.Depts = getSearchItem.Depts;
-            //ViewBag.ErrorList = "No result match, please try again";
+            GetItemSearchDto getSearchItem = await _prcService.SearchItem();
+            ViewBag.Suppliers = getSearchItem.Suppliers;
+            ViewBag.Origins = getSearchItem.Origins;
+            ViewBag.OriginPorts = getSearchItem.OriginPorts;
+            ViewBag.Factories = getSearchItem.Factories;
+            ViewBag.Depts = getSearchItem.Depts;
+            ViewBag.ErrorList = "No result match, please try again";
             PagedListResult<ProgressCheckDto> lstPrc = await _prcService.ListProgressCheckDtoAsync();
             List<ProgressCheckDto> progressCheckDtos = lstPrc.Items;
             if (PONumberSearch != null)
@@ -48,17 +48,20 @@ namespace WebApp.Controllers
         [HttpPost]
         public async Task<ActionResult> Index(List<ProgressCheckDto> progressCheckDTOs)
         {
-            for (int i = 0; i < progressCheckDTOs.Count(); i++)
+            if (ModelState.IsValid)
             {
-                _prcService.Update(progressCheckDTOs[i]);
+                for (int i = 0; i < progressCheckDTOs.Count(); i++)
+                {
+                    _prcService.Update(progressCheckDTOs[i]);
+                }
             }
-            //GetSearchItemDTO getSearchItem = ProcheckRepository.SearchItem();
-            //ViewBag.Suppliers = getSearchItem.Suppliers;
-            //ViewBag.Origins = getSearchItem.Origins;
-            //ViewBag.OriginPorts = getSearchItem.OriginPorts;
-            //ViewBag.Factories = getSearchItem.Factories;
-            //ViewBag.Depts = getSearchItem.Depts;
-            //ViewBag.ErrorList = "No result match, please try again";
+            GetItemSearchDto getSearchItem = await _prcService.SearchItem();
+            ViewBag.Suppliers = getSearchItem.Suppliers;
+            ViewBag.Origins = getSearchItem.Origins;
+            ViewBag.OriginPorts = getSearchItem.OriginPorts;
+            ViewBag.Factories = getSearchItem.Factories;
+            ViewBag.Depts = getSearchItem.Depts;
+            ViewBag.ErrorList = "No result match, please try again";
             PagedListResult<ProgressCheckDto> lstPrc = await _prcService.ListProgressCheckDtoAsync();
             List<ProgressCheckDto> progressCheckDtos = lstPrc.Items;
            

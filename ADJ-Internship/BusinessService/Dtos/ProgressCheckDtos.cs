@@ -23,6 +23,7 @@ namespace ADJ.BusinessService.Dtos
         [Display(Name = "PO Ship Date")]
         public DateTime ShipDate { get; set; }
         public List<OrderDetail> ListOrderDetail { get; set; }
+        public List<OrderDetailDto_Progress> ListOrderDetailProgress { get; set; }
         [Display(Name = "Inspection Date")]
         [InspectionDateValidation("IntendedShipDate")]
         public DateTime InspectionDate { get; set; }
@@ -48,12 +49,12 @@ namespace ADJ.BusinessService.Dtos
     }
     public class GetItemSearchDto : EntityDtoBase
     {
-        public List<string> Origins { get; set; }
-        public List<string> OriginPorts { get; set; }
-        public List<string> Factories { get; set; }
-        public List<string> Suppliers { get; set; }
-        public List<string> Status { get; set; }
-        public List<string> Depts { get; set; }
+        public IEnumerable<string> Origins { get; set; }
+        public IEnumerable<string> OriginPorts { get; set; }
+        public IEnumerable<string> Factories { get; set; }
+        public IEnumerable<string> Suppliers { get; set; }
+        public IEnumerable<string> Status { get; set; }
+        public IEnumerable<string> Depts { get; set; }
         
     }
     public class OrderDetailDto_Progress : EntityDtoBase, ICreateMapping
@@ -79,6 +80,7 @@ namespace ADJ.BusinessService.Dtos
         [Required]
         public float Quantity { get; set; }
 
+        [ReviseQuantityvalidate("Quantity")]
         public float ReviseQuantity { get; set; }
 
         [Required]
@@ -120,8 +122,8 @@ namespace ADJ.BusinessService.Dtos
         public virtual Order Order { get; set; }
         public void CreateMapping(Profile profile)
         {
-            profile.CreateMap<OrderDetailDto_Progress,OrderDetail>().IncludeBase<EntityBase, EntityDtoBase>();
-            profile.CreateMap<OrderDetail,OrderDetailDto_Progress>().IncludeBase<EntityDtoBase, EntityBase>();
+            profile.CreateMap<OrderDetailDto_Progress,OrderDetail>().IncludeBase<EntityDtoBase, EntityBase>();
+            profile.CreateMap<OrderDetail,OrderDetailDto_Progress>().IncludeBase<EntityBase, EntityDtoBase>();
         }
     }
 }

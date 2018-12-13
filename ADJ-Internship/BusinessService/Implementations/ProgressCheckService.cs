@@ -8,6 +8,7 @@ using ADJ.Repository.Interfaces;
 using AutoMapper;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -62,27 +63,26 @@ namespace ADJ.BusinessService.Implementations
                 OrderId = orderId
             };
              _prcRepository.Insert(progressCheck);
-            //await UnitOfWork.SaveChangesAsync();
+            
         }
-        public async void checkComplete(ProgressCheck progressCheck)
-        {
-            var result = await _oddDataProvider.ListAsync();
-            List<OrderDetail> prcList = result.Items;
-            float check = 0;
-            foreach (var item in prcList)
-            {
-                if (item.OrderId == progressCheck.OrderId)
-                {
-                    check += item.Quantity;
-                }
-            }
-            if (progressCheck.EstQtyToShip != check && progressCheck.Complete == true)
-            {
-                progressCheck.Complete = false;
-            }
-            _prcRepository.Update(progressCheck);
-            await UnitOfWork.SaveChangesAsync();
-        }
+        //public async void checkComplete(ProgressCheck progressCheck)
+        //{
+        //    var result = await _oddDataProvider.ListAsync();
+        //    List<OrderDetail> prcList = result.Items;
+        //    float check = 0;
+        //    foreach (var item in prcList)
+        //    {
+        //        if (item.OrderId == progressCheck.OrderId)
+        //        {
+        //            check += item.Quantity;
+        //        }
+        //    }
+        //    if (progressCheck.EstQtyToShip != check && progressCheck.Complete == true)
+        //    {
+        //        progressCheck.Complete = false;
+        //    }
+        //    _prcRepository.Update(progressCheck);
+        //}
         public async Task<PagedListResult<ProgressCheckDto>> ListProgressCheckDtoAsync()
         {
             List<ProgressCheckDto> progressCheckDTOs = new List<ProgressCheckDto>();
@@ -90,50 +90,55 @@ namespace ADJ.BusinessService.Implementations
             var lstOrDetail =await _oddDataProvider.ListAsync();
             var lstProgress = await _prcDataProvider.ListAsync();
             List<Order> orders = lstOrder.Items;
-            foreach (var i in orders)
+            foreach (var order in orders)
             {
-                if (await CheckOrderHaventProgress(i.Id) ==0)
+                if (await CheckOrderHaventProgress(order.Id) ==0)
                 {
-                    CreateDefaultModel(i.Id);
+                    CreateDefaultModel(order.Id);
                 }
                 float POQuantity = 0;
                 List<OrderDetail> orderDetails = lstOrDetail.Items;
                 List<OrderDetail> orderDetailModels = new List<OrderDetail>();
-                foreach (var j in orderDetails)
+                //tinh PO Quantity
+                foreach (var orderDetail in orderDetails)
                 {
-                    if (j.OrderId == i.Id)
+                    if (orderDetail.OrderId == order.Id)
                     {
-                        orderDetailModels.Add(j);
-                        POQuantity += j.Quantity;
+                        orderDetailModels.Add(orderDetail);
+                        POQuantity += orderDetail.Quantity;
                     }
                 }
                 List<ProgressCheck> progressChecks = lstProgress.Items;
                 ProgressCheck progressCheck = new ProgressCheck();
                 foreach (var item in progressChecks)
                 {
-                    if (item.OrderId == i.Id)
+                    if (item.OrderId == order.Id)
                     {
                         progressCheck = item;
                     }
                 }
-                checkComplete(progressCheck);
+                if (progressCheck.EstQtyToShip != POQuantity)
+                {
+                    progressCheck.Complete = false;
+                }             
                 ProgressCheckDto temp = new ProgressCheckDto()
                 {
                     Id = progressCheck.Id,
-                    Factory = i.Factory,
-                    PONumber = i.PONumber,
-                    ShipDate = i.ShipDate,
+                    Factory = order.Factory,
+                    PONumber = order.PONumber,
+                    ShipDate = order.ShipDate,
                     InspectionDate = progressCheck.InspectionDate,
                     IntendedShipDate = progressCheck.IntendedShipDate,
                     Complete = progressCheck.Complete,
                     POQuantity = POQuantity,
                     EstQtyToShip = progressCheck.EstQtyToShip,
-                    Supplier = i.Supplier,
-                    ListOrderDetail = orderDetailModels,
-                    OrderId = i.Id,
-                    Origin = i.Origin,
-                    OriginPort = i.PortOfDelivery,
-                    Department = i.Department
+                    Supplier = order.Supplier,
+                    ListOrderDetail = orderDetailModels, //Pa
+                    ListOrderDetailProgress=Mapper.Map<List<OrderDetailDto_Progress>>(orderDetailModels),
+                    OrderId = order.Id,
+                    Origin = order.Origin,
+                    OriginPort = order.PortOfDelivery,
+                    Department = order.Department
                 };
                 progressCheckDTOs.Add(temp);
             }
@@ -144,11 +149,9 @@ namespace ADJ.BusinessService.Implementations
                 PageCount = 2,
                 Items = progressCheckDTOs
             };
+            await UnitOfWork.SaveChangesAsync();
             return lstProChDto;
-            //await UnitOfWork.SaveChangesAsync();
-
         }
-
         public async void Update(ProgressCheckDto progressCheckDTO)
         {
             var lstOrder = await _odDataProvider.ListAsync();
@@ -169,7 +172,8 @@ namespace ADJ.BusinessService.Implementations
             check.InspectionDate = progressCheckDTO.InspectionDate;
             check.IntendedShipDate = progressCheckDTO.IntendedShipDate;
             float temp = 0;
-            foreach (var item in progressCheckDTO.ListOrderDetail)
+            progressCheckDTO.ListOrderDetail = Mapper.Map<List<OrderDetail>>(progressCheckDTO.ListOrderDetailProgress);
+            foreach (var item in progressCheckDTO.ListOrderDetail) //MappingList
             {
                 temp += item.ReviseQuantity;
                 //OrderDetail orderDetail = await _oddRepository.GetByIdAsync(item.Id,true);
@@ -194,7 +198,25 @@ namespace ADJ.BusinessService.Implementations
                 check.Complete = false;
             }
             _prcRepository.Update(check);
-            //await UnitOfWork.SaveChangesAsync();
+        }
+        public async Task<GetItemSearchDto> SearchItem()
+        {
+            var lstOrder = await _odDataProvider.ListAsync();
+            List<Order> orderModels = lstOrder.Items;
+            var suppliers = orderModels.Select(x => x.Supplier).Distinct();
+            var origins = orderModels.Select(x => x.Origin).Distinct();
+            var originports = orderModels.Select(x => x.PortOfLoading).Distinct();
+            var factories = orderModels.Select(x => x.Factory).Distinct();
+            var depts = orderModels.Select(x => x.Department).Distinct();
+            GetItemSearchDto getSearchItemDTO = new GetItemSearchDto()
+            {
+                Suppliers = suppliers,
+                Origins = origins,
+                OriginPorts = originports,
+                Factories = factories,
+                Depts = depts
+            };
+            return getSearchItemDTO;
         }
     }
 }

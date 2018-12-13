@@ -6,11 +6,11 @@
   <title>Adjuno Internship</title>
 
   <environment include="Development">
-    <link rel="stylesheet" href="css/main.css" />
+    <link rel="stylesheet" href="/css/main.css" />
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
   </environment>
   <environment exclude="Development">
-    <link rel="stylesheet" href="css/main.min.css" />
+    <link rel="stylesheet" href="/css/main.min.css" />
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
   </environment>
 </head>
@@ -155,6 +155,7 @@
                 asp-fallback-test="window.jQuery">
         </script>
         <script src="~/js/site.min.js" asp-append-version="true"></script>
+
     </environment>
 
     @RenderSection("Scripts", required: false)

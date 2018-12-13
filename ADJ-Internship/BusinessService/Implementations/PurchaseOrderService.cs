@@ -73,5 +73,6 @@ namespace ADJ.BusinessService.Implementations
             _poRepository.Delete(id);
             await UnitOfWork.SaveChangesAsync();
         }
+      
     }
 }
