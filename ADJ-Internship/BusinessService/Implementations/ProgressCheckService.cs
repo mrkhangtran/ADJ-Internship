@@ -39,31 +39,6 @@ namespace ADJ.BusinessService.Implementations
             _progresscheckRepository = progresscheckRepository;
             _progresscheckDataProvider = progresscheckDataProvider;
         }
-        public async Task<bool> CheckOrderHasProgress(int orderId)
-        {
-            List<ProgressCheck> progress = await _progresscheckRepository.Query(p=>p.OrderId==orderId,false).SelectAsync();
-            bool result;
-            if (progress == null)
-            {
-                 result = true;
-                return result;
-            }
-             result = false;
-            return result;          
-        }
-        public void CreateDefaultModel(int orderId)
-        {
-            ProgressCheck progressCheck = new ProgressCheck
-            {
-                InspectionDate = DateTime.Now.Date,
-                IntendedShipDate = DateTime.Now.Date,
-                Complete = false,
-                OrderId = orderId
-            };
-             _progresscheckRepository.Insert(progressCheck);
-            UnitOfWork.SaveChangesAsync();
-
-        }
         public async Task<PagedListResult<ProgressCheckDto>> ListProgressCheckDtoAsync()
         {
             List<ProgressCheckDto> progressCheckDTOs = new List<ProgressCheckDto>();
@@ -127,35 +102,8 @@ namespace ADJ.BusinessService.Implementations
                 PageCount = 2,
                 Items = progressCheckDTOs
             };
-            //await UnitOfWork.SaveChangesAsync();
             return lstProChDto;
         }
-        //public async void Update(ProgressCheckDto progressCheckDTO)
-        //{
-        //    ProgressCheck check = await _progresscheckRepository.GetByIdAsync(progressCheckDTO.Id, false);
-        //    check.InspectionDate = progressCheckDTO.InspectionDate;
-        //    check.IntendedShipDate = progressCheckDTO.IntendedShipDate;
-        //    float temp = 0;
-        //    progressCheckDTO.ListOrderDetail = Mapper.Map<List<OrderDetail>>(progressCheckDTO.ListOrderDetailDto);
-        //    foreach (var item in progressCheckDTO.ListOrderDetail) //MappingList
-        //    {
-        //        temp += item.ReviseQuantity;
-        //        OrderDetail orderDetail = await _orderdetailRepository.GetByIdAsync(item.Id,false);
-        //        orderDetail.ReviseQuantity = item.ReviseQuantity;
-        //        _orderdetailRepository.Update(orderDetail);               
-        //    }
-        //    check.EstQtyToShip = (int)temp;
-        //    if (check.EstQtyToShip == progressCheckDTO.POQuantity)
-        //    {
-        //        check.Complete = true;
-        //    }
-        //    else
-        //    {
-        //        check.Complete = false;
-        //    }
-        //    _progresscheckRepository.Update(check);
-        //    await UnitOfWork.SaveChangesAsync();
-        //}
         public async Task<ProgressCheckDto> CreateOrUpdatePurchaseOrderAsync(ProgressCheckDto rq)
         {
             ProgressCheck entity = new ProgressCheck();
