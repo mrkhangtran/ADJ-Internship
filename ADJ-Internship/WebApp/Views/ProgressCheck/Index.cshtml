@@ -88,7 +88,7 @@
                     <tbody>
                         <tr>
                             <td>
-                                <input id="Search" style="height:50px;width:150px" class="uk-button uk-button-primary" type="button" data-uk-button value="Search">
+                                <input id="Search" style="height:50px;width:150px" class="uk-button uk-button-primary" type="submit" data-uk-button value="Search">
                             </td>
                         </tr>
                         <tr>
@@ -205,18 +205,18 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @for (int j = 0; j < Model[i].ListOrderDetailProgress.Count(); j++)
+                    @for (int j = 0; j < Model[i].ListOrderDetailDto.Count(); j++)
                     {
                         <tr>
-                            <td><input class="uk-checkbox" type="checkbox" value="@Model[i].ListOrderDetailProgress[j].Id"></td>
-                            @Html.HiddenFor(model => model[i].ListOrderDetailProgress[j].Id)
-                            <td>@Model[i].ListOrderDetailProgress[j].ItemNumber</td>
-                            <td>@Model[i].ListOrderDetailProgress[j].Quantity</td>
-                            @Html.HiddenFor(model => model[i].ListOrderDetailProgress[j].Quantity)
+                            <td><input class="uk-checkbox" type="checkbox" value="@Model[i].ListOrderDetailDto[j].Id"></td>
+                            @Html.HiddenFor(model => model[i].ListOrderDetailDto[j].Id)
+                            <td>@Model[i].ListOrderDetailDto[j].ItemNumber</td>
+                            <td>@Model[i].ListOrderDetailDto[j].Quantity</td>
+                            @Html.HiddenFor(model => model[i].ListOrderDetailDto[j].Quantity)
 
                             <td>
-                                @Html.TextBoxFor(model => model[i].ListOrderDetailProgress[j].ReviseQuantity, new { @class = "uk-input", Type = "Number" })
-                                @Html.ValidationMessageFor(model => model[i].ListOrderDetailProgress[j].ReviseQuantity, "", new { @class = "text-danger" })
+                                @Html.TextBoxFor(model => model[i].ListOrderDetailDto[j].ReviseQuantity, new { @class = "uk-input", Type = "Number" })
+                                @Html.ValidationMessageFor(model => model[i].ListOrderDetailDto[j].ReviseQuantity, "", new { @class = "text-danger" })
 
                             </td>
                         </tr>

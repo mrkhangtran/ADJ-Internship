@@ -116,7 +116,7 @@ namespace ADJ.BusinessService.Implementations
                     EstQtyToShip = progressCheck.EstQtyToShip,
                     Supplier = order.Supplier,
                     ListOrderDetail = orderDetailModels, //Pa
-                    ListOrderDetailProgress=Mapper.Map<List<OrderDetailDto_Progress>>(orderDetailModels),
+                    ListOrderDetailDto=Mapper.Map<List<OrderDetailDto>>(orderDetailModels),
                     OrderId = order.Id,
                     Origin = order.Origin,
                     OriginPort = order.PortOfDelivery,
@@ -154,7 +154,7 @@ namespace ADJ.BusinessService.Implementations
             check.InspectionDate = progressCheckDTO.InspectionDate;
             check.IntendedShipDate = progressCheckDTO.IntendedShipDate;
             float temp = 0;
-            progressCheckDTO.ListOrderDetail = Mapper.Map<List<OrderDetail>>(progressCheckDTO.ListOrderDetailProgress);
+            progressCheckDTO.ListOrderDetail = Mapper.Map<List<OrderDetail>>(progressCheckDTO.ListOrderDetailDto);
             foreach (var item in progressCheckDTO.ListOrderDetail) //MappingList
             {
                 temp += item.ReviseQuantity;

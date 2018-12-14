@@ -23,7 +23,7 @@ namespace ADJ.BusinessService.Dtos
         [Display(Name = "PO Ship Date")]
         public DateTime ShipDate { get; set; }
         public List<OrderDetail> ListOrderDetail { get; set; }
-        public List<OrderDetailDto_Progress> ListOrderDetailProgress { get; set; }
+        public List<OrderDetailDto> ListOrderDetailDto { get; set; }
         [Display(Name = "Inspection Date")]
         [InspectionDateValidation("IntendedShipDate")]
         public DateTime InspectionDate { get; set; }
@@ -47,7 +47,7 @@ namespace ADJ.BusinessService.Dtos
             profile.CreateMap<ProgressCheckDto, ProgressCheck>().IncludeBase<EntityDtoBase, EntityBase>();
         }
     }
-    public class GetItemSearchDto : EntityDtoBase
+    public class GetItemSearchDto
     {
         public IEnumerable<string> Origins { get; set; }
         public IEnumerable<string> OriginPorts { get; set; }
@@ -57,7 +57,7 @@ namespace ADJ.BusinessService.Dtos
         public IEnumerable<string> Depts { get; set; }
         
     }
-    public class OrderDetailDto_Progress : EntityDtoBase, ICreateMapping
+    public class OrderDetailDto : EntityDtoBase, ICreateMapping
     {
         public string ItemNumber { get; set; }
 
@@ -122,8 +122,8 @@ namespace ADJ.BusinessService.Dtos
         public virtual Order Order { get; set; }
         public void CreateMapping(Profile profile)
         {
-            profile.CreateMap<OrderDetailDto_Progress,OrderDetail>().IncludeBase<EntityDtoBase, EntityBase>();
-            profile.CreateMap<OrderDetail,OrderDetailDto_Progress>().IncludeBase<EntityBase, EntityDtoBase>();
+            profile.CreateMap<OrderDetailDto,OrderDetail>().IncludeBase<EntityDtoBase, EntityBase>();
+            profile.CreateMap<OrderDetail,OrderDetailDto>().IncludeBase<EntityBase, EntityDtoBase>();
         }
     }
 }

@@ -41,10 +41,11 @@ namespace WebApp.Controllers
             {
                 progressCheckDtos = progressCheckDtos.Where(p => p.Origin == Origins || p.OriginPort == OriginPorts).ToList();      
             }
-            return View(progressCheckDtos);
+            List<ProgressCheckDto> model = progressCheckDtos;
+            return View("Index",model);
         }
         [HttpPost]
-        public async Task<ActionResult> Index(List<ProgressCheckDto> progressCheckDTOs)
+        public async Task<ActionResult> Update(List<ProgressCheckDto> progressCheckDTOs)
         {
             if (ModelState.IsValid)
             {
@@ -62,7 +63,7 @@ namespace WebApp.Controllers
             ViewBag.ErrorList = "No result match, please try again";
             PagedListResult<ProgressCheckDto> lstPrc = await _prcService.ListProgressCheckDtoAsync();
             List<ProgressCheckDto> progressCheckDtos = lstPrc.Items;
-            return View(progressCheckDtos);
+            return View("Index",progressCheckDtos);
         }
     }
 }
