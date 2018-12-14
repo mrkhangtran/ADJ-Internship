@@ -9,7 +9,6 @@ using ADJ.DataModel;
 using ADJ.DataModel.Core;
 using ADJ.DataModel.OrderTrack;
 using AutoMapper;
-using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace ADJ.BusinessService.Dtos
 {
@@ -61,11 +60,9 @@ namespace ADJ.BusinessService.Dtos
 
         //Default value = USD
         public Currency Currency { get; set; }
-        public IEnumerable<SelectListItem> Currencies { get; set; }
 
         //Droplist from 2010 to 2020
         public string Season { get; set; }
-        public IEnumerable<SelectListItem> Seasons { get; set; }
 
         [StringLength(30, ErrorMessage = "Cannot be longer than 30 characters")]
         [RegularExpression("^[a-zA-Z0-9]+$", ErrorMessage = "Letters and numbers only")]
@@ -82,7 +79,6 @@ namespace ADJ.BusinessService.Dtos
         //Droplist Vietnam-HongKong
         [Required]
         public string Origin { get; set; }
-        public IEnumerable<SelectListItem> Origins { get; set; }
 
         //Droplist of Ports
         [Required]
@@ -94,7 +90,6 @@ namespace ADJ.BusinessService.Dtos
         [Display(Name = "Port of Delivery")]
         [PortIsDifferent("PortOfLoading")]
         public string PortOfDelivery { get; set; }
-        public IEnumerable<SelectListItem> Ports { get; set; }
 
         [Display(Name = "Order Type")]
         [StringLength(30, ErrorMessage = "Cannot be longer than 30 characters")]
@@ -108,7 +103,6 @@ namespace ADJ.BusinessService.Dtos
         //DropList Road-Sea-Air
         [Display(Name = "Ship Method")]
         public string Mode { get; set; }
-        public IEnumerable<SelectListItem> Modes { get; set; }
 
         [Display(Name = "Ship Date")]
         [NotInThePast(ErrorMessage = "Cannot be set in the past")]
@@ -129,7 +123,6 @@ namespace ADJ.BusinessService.Dtos
 
         //Default value = "New"
         public OrderStatus Status { get; set; }
-        public IEnumerable<SelectListItem> Statuses { get; set; }
 
         public OrderDetailDTO orderDetailDTO { get; set; }
 

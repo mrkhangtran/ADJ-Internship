@@ -16,7 +16,7 @@ namespace ADJ.BusinessService.Interfaces
         Task<PagedListResult<OrderDTO>> ListOrderAsync(string searchTerm);
         Task<OrderDTO> CreateOrUpdateOrderAsync(OrderDTO orderDTO);
         Task<OrderDetailDTO> CreateOrUpdateOrderDetailAsync(OrderDetailDTO orderDetailDTO);
-        void DeleteOrderDetailAsync(PagedListResult<OrderDetailDTO> orderDetailsView, int orderId);
+        Task<List<OrderDetailDTO>> DeleteOrderDetailAsync(List<OrderDetailDTO> orderDetailsView, int orderId);
         Task<bool> UniquePONumAsync(string PONumber, int? id);
         Task<bool> UniqueItemNumAsync(string itemNum, int? id);
         Task<int> GetLastOrderId();

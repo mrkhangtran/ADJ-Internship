@@ -4,510 +4,521 @@
 
 @using (Html.BeginForm())
 {
-    @Html.AntiForgeryToken()
+  <input asp-for="Id" value = "" />
+  @Html.HiddenFor(model => model.Id, new { Value = Model.Id })
+  @Html.HiddenFor(model => model.orderDetailDTO.Id, new { Value = Model.orderDetailDTO.Id })
 
-    @Html.HiddenFor(model => model.Id, new { Value = Model.Id })
-    @Html.HiddenFor(model => model.orderDetailDTO.Id, new { Value = Model.orderDetailDTO.Id })
+  <h4>@ViewBag.Method</h4>
+  <hr />
+  @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+  @ViewBag.OrderDetailError
+  <div>
+    <table class="uk-table PO">
+      <tr>
+        <td>
+          <label asp-for="PONumber"></label>
+        </td>
+        <td>
+          @Html.EditorFor(model => model.PONumber, new { htmlAttributes = new { @class = "uk-input", @id = "from", @onkeyup = "copy()" } })
+          @Html.ValidationMessageFor(model => model.PONumber, "", new { @class = "text-danger" })
+          @ViewBag.PONumberError
+        </td>
+        <td colspan="3"></td>
+        <td>
+          <input type="submit" value="Apply" class="uk-button uk-button-default" name="method" />
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <label asp-for="PONumber"></label>
+        </td>
+        <td>
+          <div class="col-md-10">
+            @Html.EditorFor(model => model.PONumber, new { htmlAttributes = new { @class = "uk-input", @id = "to", @onkeyup = "copy2()" } })
+            @Html.ValidationMessageFor(model => model.PONumber, "", new { @class = "text-danger" })
+            @ViewBag.ErrorMessage
+          </div>
+        </td>
+        <td>
+          <label asp-for="Vendor"></label>
+        </td>
+        <td>
+          <div>
+            @Html.EditorFor(model => model.Vendor, new { htmlAttributes = new { @class = "uk-input" } })
+            @Html.ValidationMessageFor(model => model.Vendor, "", new { @class = "text-danger" })
+          </div>
+        </td>
+        <td>
+          <label asp-for="Mode"></label>
+        </td>
+        <td>
+          <div class="col-md-10">
+            <select asp-for="Mode" asp-items="new SelectList(ViewBag.Modes)" class="uk-input"></select>
+            @Html.ValidationMessageFor(model => model.Mode, "", new { @class = "text-danger" })
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <label asp-for="OrderDate"></label>
+        </td>
+        <td>
+          <div class="col-md-10">
+            @Html.TextBoxFor(model => model.OrderDate, DateTime.Now.ToString("yyyy-MM-dd"), new { type = "date", @class = "uk-input" })
+            @Html.ValidationMessageFor(model => model.OrderDate, "", new { @class = "text-danger" })
+          </div>
+        </td>
+        <td>
+          <label asp-for="Company"></label>
+        </td>
+        <td>
+          <div class="col-md-10">
+            @Html.EditorFor(model => model.Company, new { htmlAttributes = new { @class = "uk-input" } })
+            @Html.ValidationMessageFor(model => model.Company, "", new { @class = "text-danger" })
+          </div>
+        </td>
+        <td>
+          <label asp-for="ShipDate"></label>
+        </td>
+        <td>
+          <div class="col-md-10">
+            @Html.TextBoxFor(model => model.ShipDate, DateTime.Now.ToString("yyyy-MM-dd"), new { type = "date", @class = "uk-input" })
 
-    <h4>@ViewBag.Method</h4>
-    <hr />
-    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-    @ViewBag.OrderDetailError
-    <div>
-        <table class="uk-table PO">
-            <tr>
-                <td>
-                    @Html.LabelFor(model => model.PONumber, htmlAttributes: new { @class = "control-label col-md-2" })
-                </td>
-                <td>
-                    @Html.EditorFor(model => model.PONumber, new { htmlAttributes = new { @class = "uk-input", @id = "from", @onkeyup = "copy()" } })
-                    @Html.ValidationMessageFor(model => model.PONumber, "", new { @class = "text-danger" })
-                    @ViewBag.PONumberError
-                </td>
-                <td colspan="3"></td>
-                <td>
-                    <input type="submit" value="Apply" class="uk-button uk-button-default" name="method" />
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    @Html.LabelFor(model => model.PONumber, htmlAttributes: new { @class = "control-label col-md-2" })
-                </td>
-                <td>
-                    <div class="col-md-10">
-                        @Html.EditorFor(model => model.PONumber, new { htmlAttributes = new { @class = "uk-input", @id = "to", @onkeyup = "copy2()" } })
-                        @Html.ValidationMessageFor(model => model.PONumber, "", new { @class = "text-danger" })
-                        @ViewBag.ErrorMessage
-                    </div>
-                </td>
-                <td>
-                    @Html.LabelFor(model => model.Vendor, htmlAttributes: new { @class = "control-label col-md-2" })
-                </td>
-                <td>
-                    <div>
-                        @Html.EditorFor(model => model.Vendor, new { htmlAttributes = new { @class = "uk-input" } })
-                        @Html.ValidationMessageFor(model => model.Vendor, "", new { @class = "text-danger" })
-                    </div>
-                </td>
-                <td>
+            @Html.ValidationMessageFor(model => model.ShipDate, "", new { @class = "text-danger" })
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <label asp-for="Buyer"></label>
+        </td>
+        <td>
+          <div class="col-md-10">
+            @Html.EditorFor(model => model.Buyer, new { htmlAttributes = new { @class = "uk-input" } })
+            @Html.ValidationMessageFor(model => model.Buyer, "", new { @class = "text-danger" })
+          </div>
+        </td>
+        <td>
+          <label asp-for="Origin"></label>
+        </td>
+        <td>
+          <div class="col-md-10">
+            <select asp-for="Origin" asp-items="new SelectList(ViewBag.Origins)" class="uk-input"></select>
+            @Html.ValidationMessageFor(model => model.Origin, "", new { @class = "text-danger" })
+          </div>
+        </td>
+        <td>
+          <label asp-for="LatestShipDate"></label>
+        </td>
+        <td>
+          <div class="col-md-10">
+            @Html.TextBoxFor(model => model.LatestShipDate, DateTime.Now.ToString("yyyy-MM-dd"), new { type = "date", @class = "uk-input" })
 
-                    @Html.LabelFor(model => model.Mode, htmlAttributes: new { @class = "control-label col-md-2" })
-                </td>
-                <td>
-                    <div class="col-md-10">
-                        @Html.DropDownListFor(model => model.Mode, Model.Modes, new { @class = "uk-input" })
-                        @Html.ValidationMessageFor(model => model.Mode, "", new { @class = "text-danger" })
-                    </div>
-                </td>
-            </tr>
-            <tr>
-                <td>
+            @Html.ValidationMessageFor(model => model.LatestShipDate, "", new { @class = "text-danger" })
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <label asp-for="Currency"></label>
+        </td>
+        <td>
+          <div class="col-md-10">
+            <select asp-for="Currency" asp-items="new SelectList(ViewBag.Currencies)" class="uk-input"></select>
+            @Html.ValidationMessageFor(model => model.Currency, "", new { @class = "text-danger" })
+          </div>
+        </td>
+        <td>
+          <label asp-for="PortOfLoading"></label>
+        </td>
+        <td>
+          <div class="col-md-10">
+            <select asp-for="PortOfLoading" asp-items="new SelectList(ViewBag.Ports)" class="uk-input"></select>
+            @Html.ValidationMessageFor(model => model.PortOfLoading, "", new { @class = "text-danger" })
+          </div>
+        </td>
+        <td>
+          <label asp-for="DeliveryDate"></label>
+        </td>
+        <td>
+          <div class="col-md-10">
+            @Html.TextBoxFor(model => model.DeliveryDate, DateTime.Now.ToString("yyyy-MM-dd"), new { type = "date", @class = "uk-input" })
 
-                    @Html.LabelFor(model => model.OrderDate, htmlAttributes: new { @class = "control-label col-md-2" })
-                </td>
-                <td>
-                    <div class="col-md-10">
-                        @Html.TextBoxFor(model => model.OrderDate, DateTime.Now.ToString("yyyy-MM-dd"), new { type = "date", @class = "uk-input" })
-                        @Html.ValidationMessageFor(model => model.OrderDate, "", new { @class = "text-danger" })
-                    </div>
-                </td>
-                <td>
-                    @Html.LabelFor(model => model.Company, htmlAttributes: new { @class = "control-label col-md-2" })
-                </td>
-                <td>
-                    <div class="col-md-10">
-                        @Html.EditorFor(model => model.Company, new { htmlAttributes = new { @class = "uk-input" } })
-                        @Html.ValidationMessageFor(model => model.Company, "", new { @class = "text-danger" })
-                    </div>
-                </td>
-                <td>
-                    @Html.LabelFor(model => model.ShipDate, htmlAttributes: new { @class = "control-label col-md-2" })
-                </td>
-                <td>
-                    <div class="col-md-10">
-                        @Html.TextBoxFor(model => model.ShipDate, DateTime.Now.ToString("yyyy-MM-dd"), new { type = "date", @class = "uk-input" })
+            @Html.ValidationMessageFor(model => model.DeliveryDate, "", new { @class = "text-danger" })
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <label asp-for="Season"></label>
+        </td>
+        <td>
+          <div class="col-md-10">
+            <select asp-for="Season" asp-items="new SelectList(ViewBag.Seasons)" class="uk-input"></select>
+            @Html.ValidationMessageFor(model => model.Season, "", new { @class = "text-danger" })
+          </div>
+        </td>
+        <td>
+          <label asp-for="PortOfDelivery"></label>
+        </td>
+        <td>
+          <div class="col-md-10">
+            <select asp-for="PortOfDelivery" asp-items="new SelectList(ViewBag.Ports)" class="uk-input"></select>
+            @Html.ValidationMessageFor(model => model.PortOfDelivery, "", new { @class = "text-danger" })
+          </div>
+        </td>
+        <td>
+          <label asp-for="OrderType"></label>
+        </td>
+        <td>
+          <div class="col-md-10">
+            @Html.EditorFor(model => model.OrderType, new { htmlAttributes = new { @class = "uk-input" } })
+            @Html.ValidationMessageFor(model => model.OrderType, "", new { @class = "text-danger" })
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <label asp-for="Department"></label>
+        </td>
+        <td>
+          <div class="col-md-10">
+            @Html.EditorFor(model => model.Department, new { htmlAttributes = new { @class = "uk-input" } })
+            @Html.ValidationMessageFor(model => model.Department, "", new { @class = "text-danger" })
+          </div>
+        </td>
+        <td>
+          <label asp-for="Factory"></label>
+        </td>
+        <td>
+          <div class="col-md-10">
+            @Html.EditorFor(model => model.Factory, new { htmlAttributes = new { @class = "uk-input" } })
+            @Html.ValidationMessageFor(model => model.Factory, "", new { @class = "text-danger" })
+          </div>
+        </td>
+        <td>
+          <label asp-for="Status"></label>
+        </td>
+        <td>
+          <div class="col-md-10">
+            <select asp-for="Status" asp-items="new SelectList(ViewBag.Statuses)" class="uk-input"></select>
+            @Html.ValidationMessageFor(model => model.Status, "", new { @class = "text-danger" })
+          </div>
+        </td>
+      </tr>
+    </table>
 
-                        @Html.ValidationMessageFor(model => model.ShipDate, "", new { @class = "text-danger" })
-                    </div>
-                </td>
-            </tr>
-            <tr>
-                <td>
+    <button type="submit" value="AddItem" name="method" class="uk-button uk-button-default">Add Item</button>
+    @if (Model.PODetails != null)
+    {
+      @Html.HiddenFor(model => model.PODetails.TotalCount, new { Value = Model.PODetails.TotalCount })
+      @Html.HiddenFor(model => model.PODetails.PageCount, new { Value = Model.PODetails.PageCount })
+      if (Model.PODetails.Items != null)
+      {
+        if (Model.PODetails.PageCount > 1)
+        {<button type="submit" value="Previous" name="method" class="uk-button uk-button-default">Previous</button>}
+        int maxPage = Model.PODetails.Items.Count / Model.PODetails.TotalCount;
+        if (Model.PODetails.Items.Count % Model.PODetails.TotalCount > 0) { maxPage++; }
+        if (Model.PODetails.PageCount < maxPage)
+        {<button type="submit" value="Next" name="method" class="uk-button uk-button-default">Next</button>}
+      }
+    }
 
-                    @Html.LabelFor(model => model.Buyer, htmlAttributes: new { @class = "control-label col-md-2" })
-                </td>
-                <td>
-                    <div class="col-md-10">
-                        @Html.EditorFor(model => model.Buyer, new { htmlAttributes = new { @class = "uk-input" } })
-                        @Html.ValidationMessageFor(model => model.Buyer, "", new { @class = "text-danger" })
-                    </div>
-                </td>
-                <td>
-                    @Html.LabelFor(model => model.Origin, htmlAttributes: new { @class = "control-label col-md-2" })
-                </td>
-                <td>
-                    <div class="col-md-10">
-                        @Html.DropDownListFor(model => model.Origin, Model.Origins, new { @class = "uk-input" })
-                        @Html.ValidationMessageFor(model => model.Origin, "", new { @class = "text-danger" })
-                    </div>
-                </td>
-                <td>
-                    @Html.LabelFor(model => model.LatestShipDate, htmlAttributes: new { @class = "control-label col-md-2" })
-                </td>
-                <td>
-                    <div class="col-md-10">
-                        @Html.TextBoxFor(model => model.LatestShipDate, DateTime.Now.ToString("yyyy-MM-dd"), new { type = "date", @class = "uk-input" })
+    <table class="uk-table PODetail" id="ItemDetail">
+      <tr>
+        <th>
+          <label asp-for="orderDetailDTO.ItemNumber"></label>
+        </th>
+        <th>
+          <label asp-for="orderDetailDTO.Description"></label>
+        </th>
+        <th>
+          <label asp-for="orderDetailDTO.Tariff"></label>
+        </th>
+        <th>
+          <label asp-for="orderDetailDTO.Quantity"></label>
+        </th>
+        <th>
+          <label asp-for="orderDetailDTO.Cartons"></label>
+        </th>
+        <th>
+          <label asp-for="orderDetailDTO.Cube"></label>
+        </th>
+        <th>
+          <label asp-for="orderDetailDTO.KGS"></label>
+        </th>
+        <th>
+          <label asp-for="orderDetailDTO.UnitPrice"></label>
+        </th>
+        <th>
+          <label asp-for="orderDetailDTO.TotalPrice"></label>
+        </th>
+        <th>
+          <label asp-for="orderDetailDTO.RetailPrice"></label>
+        </th>
+        <th>
+          <label asp-for="orderDetailDTO.TotalRetailPrice"></label>
+        </th>
+        <th>
+          <label asp-for="orderDetailDTO.Warehouse"></label>
+        </th>
+        <th>
+          <label asp-for="orderDetailDTO.Size"></label>
+        </th>
+        <th>
+          <label asp-for="orderDetailDTO.Colour"></label>
+        </th>
+        <th></th>
+      </tr>
+      @if (ViewBag.ItemId == -1)
+      {
+        <tr>
+          <td>
+            @Html.EditorFor(model => model.orderDetailDTO.ItemNumber, new { htmlAttributes = new { @class = "uk-input" } })
+            @Html.ValidationMessageFor(model => model.orderDetailDTO.ItemNumber, "", new { @class = "text-danger" })
+            @ViewBag.ItemNumberError
+          </td>
+          <td>
+            @Html.EditorFor(model => model.orderDetailDTO.Description, new { htmlAttributes = new { @class = "uk-input" } })
+            @Html.ValidationMessageFor(model => model.orderDetailDTO.Description, "", new { @class = "text-danger" })
+          </td>
+          <td>
+            @Html.EditorFor(model => model.orderDetailDTO.Tariff, new { htmlAttributes = new { @class = "uk-input" } })
+            @Html.ValidationMessageFor(model => model.orderDetailDTO.Tariff, "", new { @class = "text-danger" })
+          </td>
 
-                        @Html.ValidationMessageFor(model => model.LatestShipDate, "", new { @class = "text-danger" })
-                    </div>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    @Html.LabelFor(model => model.Currency, htmlAttributes: new { @class = "control-label col-md-2" })
-                </td>
-                <td>
-                    <div class="col-md-10">
-                        @Html.DropDownListFor(model => model.Currency, Model.Currencies, new { @class = "uk-input" })
-                        @Html.ValidationMessageFor(model => model.Currency, "", new { @class = "text-danger" })
-                    </div>
-                </td>
-                <td>
-                    @Html.LabelFor(model => model.PortOfLoading, htmlAttributes: new { @class = "control-label col-md-2" })
-                </td>
-                <td>
-                    <div class="col-md-10">
-                        @Html.DropDownListFor(model => model.PortOfLoading, Model.Ports, new { @class = "uk-input" })
-                        @Html.ValidationMessageFor(model => model.PortOfLoading, "", new { @class = "text-danger" })
-                    </div>
-                </td>
-                <td>
-                    @Html.LabelFor(model => model.DeliveryDate, htmlAttributes: new { @class = "control-label col-md-2" })
-                </td>
-                <td>
-                    <div class="col-md-10">
-                        @Html.TextBoxFor(model => model.DeliveryDate, DateTime.Now.ToString("yyyy-MM-dd"), new { type = "date", @class = "uk-input" })
+          <td>
+            @Html.EditorFor(model => model.orderDetailDTO.Quantity, new { htmlAttributes = new { @class = "uk-input", @id = "Quantity", @onkeyup = "getTotalUnit(); getTotalRetail()" } })
+            @Html.ValidationMessageFor(model => model.orderDetailDTO.Quantity, "", new { @class = "text-danger" })
+          </td>
+          <td>
+            @Html.EditorFor(model => model.orderDetailDTO.Cartons, new { htmlAttributes = new { @class = "uk-input" } })
+            @Html.ValidationMessageFor(model => model.orderDetailDTO.Cartons, "", new { @class = "text-danger" })
+          </td>
+          <td>
+            @Html.EditorFor(model => model.orderDetailDTO.Cube, new { htmlAttributes = new { @class = "uk-input" } })
+            @Html.ValidationMessageFor(model => model.orderDetailDTO.Cube, "", new { @class = "text-danger" })
+          </td>
 
-                        @Html.ValidationMessageFor(model => model.DeliveryDate, "", new { @class = "text-danger" })
-                    </div>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    @Html.LabelFor(model => model.Season, htmlAttributes: new { @class = "control-label col-md-2" })
-                </td>
-                <td>
-                    <div class="col-md-10">
-                        @Html.DropDownListFor(model => model.Season, Model.Seasons, new { @class = "uk-input" })
-                        @Html.ValidationMessageFor(model => model.Season, "", new { @class = "text-danger" })
-                    </div>
-                </td>
-                <td>
-                    @Html.LabelFor(model => model.PortOfDelivery, htmlAttributes: new { @class = "control-label col-md-2" })
-                </td>
-                <td>
-                    <div class="col-md-10">
-                        @Html.DropDownListFor(model => model.PortOfDelivery, Model.Ports, new { @class = "uk-input" })
-                        @Html.ValidationMessageFor(model => model.PortOfDelivery, "", new { @class = "text-danger" })
-                    </div>
-                </td>
-                <td>
-                    @Html.LabelFor(model => model.OrderType, htmlAttributes: new { @class = "control-label col-md-2" })
-                </td>
-                <td>
-                    <div class="col-md-10">
-                        @Html.EditorFor(model => model.OrderType, new { htmlAttributes = new { @class = "uk-input" } })
-                        @Html.ValidationMessageFor(model => model.OrderType, "", new { @class = "text-danger" })
-                    </div>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    @Html.LabelFor(model => model.Department, htmlAttributes: new { @class = "control-label col-md-2" })
-                </td>
-                <td>
-                    <div class="col-md-10">
-                        @Html.EditorFor(model => model.Department, new { htmlAttributes = new { @class = "uk-input" } })
-                        @Html.ValidationMessageFor(model => model.Department, "", new { @class = "text-danger" })
-                    </div>
-                </td>
-                <td>
-                    @Html.LabelFor(model => model.Factory, htmlAttributes: new { @class = "control-label col-md-2" })
-                </td>
-                <td>
-                    <div class="col-md-10">
-                        @Html.EditorFor(model => model.Factory, new { htmlAttributes = new { @class = "uk-input" } })
-                        @Html.ValidationMessageFor(model => model.Factory, "", new { @class = "text-danger" })
-                    </div>
-                </td>
-                <td>
-                    @Html.LabelFor(model => model.Status, htmlAttributes: new { @class = "control-label col-md-2" })
-                </td>
-                <td>
-                    <div class="col-md-10">
-                        @Html.DropDownListFor(model => model.Status, Model.Statuses, new { @class = "uk-input" })
-                        @Html.ValidationMessageFor(model => model.Status, "", new { @class = "text-danger" })
-                    </div>
-                </td>
-            </tr>
-        </table>
+          <td>
+            @Html.EditorFor(model => model.orderDetailDTO.KGS, new { htmlAttributes = new { @class = "uk-input" } })
+            @Html.ValidationMessageFor(model => model.orderDetailDTO.KGS, "", new { @class = "text-danger" })
+          </td>
+          <td>
+            @Html.EditorFor(model => model.orderDetailDTO.UnitPrice, new { htmlAttributes = new { @class = "uk-input", @id = "UnitPrice", @onkeyup = "getTotalUnit()" } })
+            @Html.ValidationMessageFor(model => model.orderDetailDTO.UnitPrice, "", new { @class = "text-danger" })
+          </td>
+          <td>
+            <div id="TotalUnit">0</div>
+          </td>
+          <td>
+            @Html.EditorFor(model => model.orderDetailDTO.RetailPrice, new { htmlAttributes = new { @class = "uk-input", @id = "RetailPrice", @onkeyup = "getTotalRetail()" } })
+            @Html.ValidationMessageFor(model => model.orderDetailDTO.RetailPrice, "", new { @class = "text-danger" })
+          </td>
+          <td>
+            <div id="TotalRetail">0</div>
+          </td>
 
-        <button type="submit" value="AddItem" name="method" class="uk-button uk-button-default">Add Item</button>
+          <td>
+            @Html.EditorFor(model => model.orderDetailDTO.Warehouse, new { htmlAttributes = new { @class = "uk-input" } })
+            @Html.ValidationMessageFor(model => model.orderDetailDTO.Warehouse, "", new { @class = "text-danger" })
+          </td>
+          <td>
+            @Html.EditorFor(model => model.orderDetailDTO.Size, new { htmlAttributes = new { @class = "uk-input" } })
+            @Html.ValidationMessageFor(model => model.orderDetailDTO.Size, "", new { @class = "text-danger" })
+          </td>
+          <td>
+            @Html.EditorFor(model => model.orderDetailDTO.Colour, new { htmlAttributes = new { @class = "uk-input" } })
+            @Html.ValidationMessageFor(model => model.orderDetailDTO.Colour, "", new { @class = "text-danger" })
+          </td>
+          <td>
+            <button type="submit" value="Save" name="method" class="uk-button uk-button-default">Save Item</button>
+          </td>
+        </tr>
+      }
+      @if (Model.PODetails.Items != null)
+      {
+        @if (Model.PODetails.Items.Count > 0)
+        {
+          if ((ViewBag.ItemId < 0) || (ViewBag.ItemId == null))
+          {
+            @Html.HiddenFor(model => model.orderDetailDTO.ItemNumber, new { Value = Model.PODetails.Items[0].ItemNumber })
+          }
 
-        <table class="uk-table PODetail" id="ItemDetail">
-            <tr>
-                <th>
-                    @Html.LabelFor(model => model.orderDetailDTO.ItemNumber, htmlAttributes: new { @class = "control-label col-md-2" })
-                </th>
-                <th>
-                    @Html.LabelFor(model => model.orderDetailDTO.Description, htmlAttributes: new { @class = "control-label col-md-2" })
-                </th>
-                <th>
-                    @Html.LabelFor(model => model.orderDetailDTO.Tariff, htmlAttributes: new { @class = "control-label col-md-2" })
-                </th>
-                <th>
-                    @Html.LabelFor(model => model.orderDetailDTO.Quantity, htmlAttributes: new { @class = "control-label col-md-2" })
-                </th>
-                <th>
-                    @Html.LabelFor(model => model.orderDetailDTO.Cartons, htmlAttributes: new { @class = "control-label col-md-2" })
-                </th>
-                <th>
-                    @Html.LabelFor(model => model.orderDetailDTO.Cube, htmlAttributes: new { @class = "control-label col-md-2" })
-                </th>
-                <th>
-                    @Html.LabelFor(model => model.orderDetailDTO.KGS, htmlAttributes: new { @class = "control-label col-md-2" })
-                </th>
-                <th>
-                    @Html.LabelFor(model => model.orderDetailDTO.UnitPrice, htmlAttributes: new { @class = "control-label col-md-2" })
-                </th>
-                <th>
-                    @Html.LabelFor(model => model.orderDetailDTO.TotalPrice, htmlAttributes: new { @class = "control-label col-md-2" })
-                </th>
-                <th>
-                    @Html.LabelFor(model => model.orderDetailDTO.RetailPrice, htmlAttributes: new { @class = "control-label col-md-2" })
-                </th>
-                <th>
-                    @Html.LabelFor(model => model.orderDetailDTO.TotalRetailPrice, htmlAttributes: new { @class = "control-label col-md-2" })
-                </th>
-                <th>
-                    @Html.LabelFor(model => model.orderDetailDTO.Warehouse, htmlAttributes: new { @class = "control-label col-md-2" })
-                </th>
-                <th>
-                    @Html.LabelFor(model => model.orderDetailDTO.Size, htmlAttributes: new { @class = "control-label col-md-2" })
-                </th>
-                <th>
-                    @Html.LabelFor(model => model.orderDetailDTO.Colour, htmlAttributes: new { @class = "control-label col-md-2" })
-                </th>
-                <th></th>
-            </tr>
-            @if (ViewBag.ItemId == -1)
+          for (int i = 0; i < Model.PODetails.Items.Count(); i++)
+          //for (int i = ((Model.PODetails.PageCount - 1) * Model.PODetails.TotalCount); i < ((Model.PODetails.PageCount) * Model.PODetails.TotalCount); i++)
+          {
+            @Html.HiddenFor(model => model.PODetails.Items[i].Id, Model.PODetails.Items[i].Id)
+            @Html.HiddenFor(model => model.PODetails.Items[i].ItemNumber, Model.PODetails.Items[i].ItemNumber)
+            @Html.HiddenFor(model => model.PODetails.Items[i].Description, Model.PODetails.Items[i].Description)
+            @Html.HiddenFor(model => model.PODetails.Items[i].Warehouse, Model.PODetails.Items[i].Warehouse)
+            @Html.HiddenFor(model => model.PODetails.Items[i].Colour, Model.PODetails.Items[i].Colour)
+            @Html.HiddenFor(model => model.PODetails.Items[i].Size, Model.PODetails.Items[i].Size)
+            @Html.HiddenFor(model => model.PODetails.Items[i].Quantity, Model.PODetails.Items[i].Quantity)
+            @Html.HiddenFor(model => model.PODetails.Items[i].Cartons, Model.PODetails.Items[i].Cartons)
+            @Html.HiddenFor(model => model.PODetails.Items[i].Cube, Model.PODetails.Items[i].Cube)
+            @Html.HiddenFor(model => model.PODetails.Items[i].KGS, Model.PODetails.Items[i].KGS)
+            @Html.HiddenFor(model => model.PODetails.Items[i].UnitPrice, Model.PODetails.Items[i].UnitPrice)
+            @Html.HiddenFor(model => model.PODetails.Items[i].RetailPrice, Model.PODetails.Items[i].RetailPrice)
+            @Html.HiddenFor(model => model.PODetails.Items[i].Tariff, Model.PODetails.Items[i].Tariff)
+            @Html.HiddenFor(model => model.PODetails.Items[i].OrderId, Model.PODetails.Items[i].OrderId)
+
+            if (i != ViewBag.ItemId)
             {
-                <tr>
-                    <td>
-                        @Html.EditorFor(model => model.orderDetailDTO.ItemNumber, new { htmlAttributes = new { @class = "uk-input" } })
-                        @Html.ValidationMessageFor(model => model.orderDetailDTO.ItemNumber, "", new { @class = "text-danger" })
-                        @ViewBag.ItemNumberError
-                    </td>
-                    <td>
-                        @Html.EditorFor(model => model.orderDetailDTO.Description, new { htmlAttributes = new { @class = "uk-input" } })
-                        @Html.ValidationMessageFor(model => model.orderDetailDTO.Description, "", new { @class = "text-danger" })
-                    </td>
-                    <td>
-                        @Html.EditorFor(model => model.orderDetailDTO.Tariff, new { htmlAttributes = new { @class = "uk-input" } })
-                        @Html.ValidationMessageFor(model => model.orderDetailDTO.Tariff, "", new { @class = "text-danger" })
-                    </td>
-
-                    <td>
-                        @Html.EditorFor(model => model.orderDetailDTO.Quantity, new { htmlAttributes = new { @class = "uk-input", @id = "Quantity", @onkeyup = "getTotalUnit(); getTotalRetail()" } })
-                        @Html.ValidationMessageFor(model => model.orderDetailDTO.Quantity, "", new { @class = "text-danger" })
-                    </td>
-                    <td>
-                        @Html.EditorFor(model => model.orderDetailDTO.Cartons, new { htmlAttributes = new { @class = "uk-input" } })
-                        @Html.ValidationMessageFor(model => model.orderDetailDTO.Cartons, "", new { @class = "text-danger" })
-                    </td>
-                    <td>
-                        @Html.EditorFor(model => model.orderDetailDTO.Cube, new { htmlAttributes = new { @class = "uk-input" } })
-                        @Html.ValidationMessageFor(model => model.orderDetailDTO.Cube, "", new { @class = "text-danger" })
-                    </td>
-
-                    <td>
-                        @Html.EditorFor(model => model.orderDetailDTO.KGS, new { htmlAttributes = new { @class = "uk-input" } })
-                        @Html.ValidationMessageFor(model => model.orderDetailDTO.KGS, "", new { @class = "text-danger" })
-                    </td>
-                    <td>
-                        @Html.EditorFor(model => model.orderDetailDTO.UnitPrice, new { htmlAttributes = new { @class = "uk-input", @id = "UnitPrice", @onkeyup = "getTotalUnit()" } })
-                        @Html.ValidationMessageFor(model => model.orderDetailDTO.UnitPrice, "", new { @class = "text-danger" })
-                    </td>
-                    <td>
-                        <div id="TotalUnit">0</div>
-                    </td>
-                    <td>
-                        @Html.EditorFor(model => model.orderDetailDTO.RetailPrice, new { htmlAttributes = new { @class = "uk-input", @id = "RetailPrice", @onkeyup = "getTotalRetail()" } })
-                        @Html.ValidationMessageFor(model => model.orderDetailDTO.RetailPrice, "", new { @class = "text-danger" })
-                    </td>
-                    <td>
-                        <div id="TotalRetail">0</div>
-                    </td>
-
-                    <td>
-                        @Html.EditorFor(model => model.orderDetailDTO.Warehouse, new { htmlAttributes = new { @class = "uk-input" } })
-                        @Html.ValidationMessageFor(model => model.orderDetailDTO.Warehouse, "", new { @class = "text-danger" })
-                    </td>
-                    <td>
-                        @Html.EditorFor(model => model.orderDetailDTO.Size, new { htmlAttributes = new { @class = "uk-input" } })
-                        @Html.ValidationMessageFor(model => model.orderDetailDTO.Size, "", new { @class = "text-danger" })
-                    </td>
-                    <td>
-                        @Html.EditorFor(model => model.orderDetailDTO.Colour, new { htmlAttributes = new { @class = "uk-input" } })
-                        @Html.ValidationMessageFor(model => model.orderDetailDTO.Colour, "", new { @class = "text-danger" })
-                    </td>
-                    <td>
-                        <button type="submit" value="Save" name="method" class="uk-button uk-button-default">Save Item</button>
-                    </td>
-                </tr>
+              <tr>
+                <td>
+                  @Html.DisplayFor(modelItem => Model.PODetails.Items[i].ItemNumber)
+                </td>
+                <td>
+                  @Html.DisplayFor(modelItem => Model.PODetails.Items[i].Description)
+                </td>
+                <td>
+                  @Html.DisplayFor(modelItem => Model.PODetails.Items[i].Tariff)
+                </td>
+                <td>
+                  @Html.DisplayFor(modelItem => Model.PODetails.Items[i].Quantity)
+                </td>
+                <td>
+                  @Html.DisplayFor(modelItem => Model.PODetails.Items[i].Cartons)
+                </td>
+                <td>
+                  @Html.DisplayFor(modelItem => Model.PODetails.Items[i].Cube)
+                </td>
+                <td>
+                  @Html.DisplayFor(modelItem => Model.PODetails.Items[i].KGS)
+                </td>
+                <td>
+                  @Html.DisplayFor(modelItem => Model.PODetails.Items[i].UnitPrice)
+                </td>
+                <td>
+                  @Html.DisplayFor(modelItem => Model.PODetails.Items[i].TotalPrice)
+                </td>
+                <td>
+                  @Html.DisplayFor(modelItem => Model.PODetails.Items[i].RetailPrice)
+                </td>
+                <td>
+                  @Html.DisplayFor(modelItem => Model.PODetails.Items[i].TotalRetailPrice)
+                </td>
+                <td>
+                  @Html.DisplayFor(modelItem => Model.PODetails.Items[i].Warehouse)
+                </td>
+                <td>
+                  @Html.DisplayFor(modelItem => Model.PODetails.Items[i].Size)
+                </td>
+                <td>
+                  @Html.DisplayFor(modelItem => Model.PODetails.Items[i].Colour)
+                </td>
+                <td>
+                  <button type="submit" value="@i" name="method" class="uk-button uk-button-default">Edit Item</button>
+                  <button type="submit" value="Delete @i" name="method" class="uk-button uk-button-default">Delete Item</button>
+                </td>
+              </tr>
             }
-            @if (Model.PODetails != null)
+            else
             {
-                @if (Model.PODetails.Items.Count > 0)
-                {
-                    if ((ViewBag.ItemId < 0) || (ViewBag.ItemId == null))
-                    {
-                        @Html.HiddenFor(model => model.orderDetailDTO.ItemNumber, new { Value = Model.PODetails.Items[0].ItemNumber })
-                    }
+              <tr>
+                <td>
+                  @Html.EditorFor(model => model.orderDetailDTO.ItemNumber, new { htmlAttributes = new { @class = "uk-input" } })
+                  @Html.ValidationMessageFor(model => model.orderDetailDTO.ItemNumber, "", new { @class = "text-danger" })
+                  @ViewBag.ItemNumberError
+                </td>
+                <td>
+                  @Html.EditorFor(model => model.orderDetailDTO.Description, new { htmlAttributes = new { @class = "uk-input" } })
+                  @Html.ValidationMessageFor(model => model.orderDetailDTO.Description, "", new { @class = "text-danger" })
+                </td>
+                <td>
+                  @Html.EditorFor(model => model.orderDetailDTO.Tariff, new { htmlAttributes = new { @class = "uk-input" } })
+                  @Html.ValidationMessageFor(model => model.orderDetailDTO.Tariff, "", new { @class = "text-danger" })
+                </td>
 
-                    for (int i = 0; i < Model.PODetails.Items.Count(); i++)
-                    {
-                        @Html.HiddenFor(model => model.PODetails.Items[i].Id, Model.PODetails.Items[i].Id)
-                        @Html.HiddenFor(model => model.PODetails.Items[i].ItemNumber, Model.PODetails.Items[i].ItemNumber)
-                        @Html.HiddenFor(model => model.PODetails.Items[i].Description, Model.PODetails.Items[i].Description)
-                        @Html.HiddenFor(model => model.PODetails.Items[i].Warehouse, Model.PODetails.Items[i].Warehouse)
-                        @Html.HiddenFor(model => model.PODetails.Items[i].Colour, Model.PODetails.Items[i].Colour)
-                        @Html.HiddenFor(model => model.PODetails.Items[i].Size, Model.PODetails.Items[i].Size)
-                        @Html.HiddenFor(model => model.PODetails.Items[i].Quantity, Model.PODetails.Items[i].Quantity)
-                        @Html.HiddenFor(model => model.PODetails.Items[i].Cartons, Model.PODetails.Items[i].Cartons)
-                        @Html.HiddenFor(model => model.PODetails.Items[i].Cube, Model.PODetails.Items[i].Cube)
-                        @Html.HiddenFor(model => model.PODetails.Items[i].KGS, Model.PODetails.Items[i].KGS)
-                        @Html.HiddenFor(model => model.PODetails.Items[i].UnitPrice, Model.PODetails.Items[i].UnitPrice)
-                        @Html.HiddenFor(model => model.PODetails.Items[i].RetailPrice, Model.PODetails.Items[i].RetailPrice)
-                        @Html.HiddenFor(model => model.PODetails.Items[i].Tariff, Model.PODetails.Items[i].Tariff)
-                        @Html.HiddenFor(model => model.PODetails.Items[i].OrderId, Model.PODetails.Items[i].OrderId)
+                <td>
+                  @Html.EditorFor(model => model.orderDetailDTO.Quantity, new { htmlAttributes = new { @class = "uk-input", @id = "Quantity", @onkeyup = "getTotalUnit(); getTotalRetail()" } })
+                  @Html.ValidationMessageFor(model => model.orderDetailDTO.Quantity, "", new { @class = "text-danger" })
+                </td>
+                <td>
+                  @Html.EditorFor(model => model.orderDetailDTO.Cartons, new { htmlAttributes = new { @class = "uk-input" } })
+                  @Html.ValidationMessageFor(model => model.orderDetailDTO.Cartons, "", new { @class = "text-danger" })
+                </td>
+                <td>
+                  @Html.EditorFor(model => model.orderDetailDTO.Cube, new { htmlAttributes = new { @class = "uk-input" } })
+                  @Html.ValidationMessageFor(model => model.orderDetailDTO.Cube, "", new { @class = "text-danger" })
+                </td>
 
-                        if (i != ViewBag.ItemId)
-                        {
-                            <tr>
-                                <td>
-                                    @Html.DisplayFor(modelItem => Model.PODetails.Items[i].ItemNumber)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => Model.PODetails.Items[i].Description)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => Model.PODetails.Items[i].Tariff)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => Model.PODetails.Items[i].Quantity)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => Model.PODetails.Items[i].Cartons)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => Model.PODetails.Items[i].Cube)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => Model.PODetails.Items[i].KGS)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => Model.PODetails.Items[i].UnitPrice)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => Model.PODetails.Items[i].TotalPrice)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => Model.PODetails.Items[i].RetailPrice)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => Model.PODetails.Items[i].TotalRetailPrice)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => Model.PODetails.Items[i].Warehouse)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => Model.PODetails.Items[i].Size)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => Model.PODetails.Items[i].Colour)
-                                </td>
-                                <td>
-                                    <button type="submit" value="@i" name="method" class="uk-button uk-button-default">Edit Item</button>
-                                    <button type="submit" value="Delete @i" name="method" class="uk-button uk-button-default">Delete Item</button>
-                                </td>
-                            </tr>
-                        }
-                        else
-                        {
-                            <tr>
-                                <td>
-                                    @Html.EditorFor(model => model.orderDetailDTO.ItemNumber, new { htmlAttributes = new { @class = "uk-input" } })
-                                    @Html.ValidationMessageFor(model => model.orderDetailDTO.ItemNumber, "", new { @class = "text-danger" })
-                                    @ViewBag.ItemNumberError
-                                </td>
-                                <td>
-                                    @Html.EditorFor(model => model.orderDetailDTO.Description, new { htmlAttributes = new { @class = "uk-input" } })
-                                    @Html.ValidationMessageFor(model => model.orderDetailDTO.Description, "", new { @class = "text-danger" })
-                                </td>
-                                <td>
-                                    @Html.EditorFor(model => model.orderDetailDTO.Tariff, new { htmlAttributes = new { @class = "uk-input" } })
-                                    @Html.ValidationMessageFor(model => model.orderDetailDTO.Tariff, "", new { @class = "text-danger" })
-                                </td>
-
-                                <td>
-                                    @Html.EditorFor(model => model.orderDetailDTO.Quantity, new { htmlAttributes = new { @class = "uk-input", @id = "Quantity", @onkeyup = "getTotalUnit(); getTotalRetail()" } })
-                                    @Html.ValidationMessageFor(model => model.orderDetailDTO.Quantity, "", new { @class = "text-danger" })
-                                </td>
-                                <td>
-                                    @Html.EditorFor(model => model.orderDetailDTO.Cartons, new { htmlAttributes = new { @class = "uk-input" } })
-                                    @Html.ValidationMessageFor(model => model.orderDetailDTO.Cartons, "", new { @class = "text-danger" })
-                                </td>
-                                <td>
-                                    @Html.EditorFor(model => model.orderDetailDTO.Cube, new { htmlAttributes = new { @class = "uk-input" } })
-                                    @Html.ValidationMessageFor(model => model.orderDetailDTO.Cube, "", new { @class = "text-danger" })
-                                </td>
-
-                                <td>
-                                    @Html.EditorFor(model => model.orderDetailDTO.KGS, new { htmlAttributes = new { @class = "uk-input" } })
-                                    @Html.ValidationMessageFor(model => model.orderDetailDTO.KGS, "", new { @class = "text-danger" })
-                                </td>
-                                <td>
-                                    @Html.EditorFor(model => model.orderDetailDTO.UnitPrice, new { htmlAttributes = new { @class = "uk-input", @id = "UnitPrice", @onkeyup = "getTotalUnit()" } })
-                                    @Html.ValidationMessageFor(model => model.orderDetailDTO.UnitPrice, "", new { @class = "text-danger" })
-                                </td>
-                                <td>
-                                    <div id="TotalUnit">0</div>
-                                </td>
-                                <td>
-                                    @Html.EditorFor(model => model.orderDetailDTO.RetailPrice, new { htmlAttributes = new { @class = "uk-input", @id = "RetailPrice", @onkeyup = "getTotalRetail()" } })
-                                    @Html.ValidationMessageFor(model => model.orderDetailDTO.RetailPrice, "", new { @class = "text-danger" })
-                                </td>
-                                <td>
-                                    <div id="TotalRetail">0</div>
-                                </td>
-                                <td>
-                                    @Html.EditorFor(model => model.orderDetailDTO.Warehouse, new { htmlAttributes = new { @class = "uk-input" } })
-                                    @Html.ValidationMessageFor(model => model.orderDetailDTO.Warehouse, "", new { @class = "text-danger" })
-                                </td>
-                                <td>
-                                    @Html.EditorFor(model => model.orderDetailDTO.Size, new { htmlAttributes = new { @class = "uk-input" } })
-                                    @Html.ValidationMessageFor(model => model.orderDetailDTO.Size, "", new { @class = "text-danger" })
-                                </td>
-                                <td>
-                                    @Html.EditorFor(model => model.orderDetailDTO.Colour, new { htmlAttributes = new { @class = "uk-input" } })
-                                    @Html.ValidationMessageFor(model => model.orderDetailDTO.Colour, "", new { @class = "text-danger" })
-                                </td>
-                                <td>
-                                    <button type="submit" value="Update @i" name="method" class="uk-button uk-button-default">Update Item</button>
-                                </td>
-                            </tr>
-                        }
-                    }
-                }
+                <td>
+                  @Html.EditorFor(model => model.orderDetailDTO.KGS, new { htmlAttributes = new { @class = "uk-input" } })
+                  @Html.ValidationMessageFor(model => model.orderDetailDTO.KGS, "", new { @class = "text-danger" })
+                </td>
+                <td>
+                  @Html.EditorFor(model => model.orderDetailDTO.UnitPrice, new { htmlAttributes = new { @class = "uk-input", @id = "UnitPrice", @onkeyup = "getTotalUnit()" } })
+                  @Html.ValidationMessageFor(model => model.orderDetailDTO.UnitPrice, "", new { @class = "text-danger" })
+                </td>
+                <td>
+                  <div id="TotalUnit">0</div>
+                </td>
+                <td>
+                  @Html.EditorFor(model => model.orderDetailDTO.RetailPrice, new { htmlAttributes = new { @class = "uk-input", @id = "RetailPrice", @onkeyup = "getTotalRetail()" } })
+                  @Html.ValidationMessageFor(model => model.orderDetailDTO.RetailPrice, "", new { @class = "text-danger" })
+                </td>
+                <td>
+                  <div id="TotalRetail">0</div>
+                </td>
+                <td>
+                  @Html.EditorFor(model => model.orderDetailDTO.Warehouse, new { htmlAttributes = new { @class = "uk-input" } })
+                  @Html.ValidationMessageFor(model => model.orderDetailDTO.Warehouse, "", new { @class = "text-danger" })
+                </td>
+                <td>
+                  @Html.EditorFor(model => model.orderDetailDTO.Size, new { htmlAttributes = new { @class = "uk-input" } })
+                  @Html.ValidationMessageFor(model => model.orderDetailDTO.Size, "", new { @class = "text-danger" })
+                </td>
+                <td>
+                  @Html.EditorFor(model => model.orderDetailDTO.Colour, new { htmlAttributes = new { @class = "uk-input" } })
+                  @Html.ValidationMessageFor(model => model.orderDetailDTO.Colour, "", new { @class = "text-danger" })
+                </td>
+                <td>
+                  <button type="submit" value="Update @i" name="method" class="uk-button uk-button-default">Update Item</button>
+                </td>
+              </tr>
             }
-            @*<a asp-action="Copy"
-               asp-route-page="@(Model.PODetails.PageCount - 1)"
-               class="btn btn-default">
-                Previous
-            </a>
-            <a asp-action="Copy"
-               asp-route-page="@(Model.PODetails.PageCount + 1)"
-               class="btn btn-default">
-                Next
-            </a>*@
-        </table>
+          }
+        }
+      }
 
-    </div>
+      @*<a asp-action="Copy"
+           asp-route-page="@(Model.PODetails.PageCount - 1)"
+           class="btn btn-default">
+            Previous
+        </a>
+        <a asp-action="Copy"
+           asp-route-page="@(Model.PODetails.PageCount + 1)"
+           class="btn btn-default">
+            Next
+        </a>*@
+    </table>
+  </div>
 }
 
 <div>
-    @Html.ActionLink("Back to List", "Index")
+  @Html.ActionLink("Back to List", "Index")
 </div>
 
 @section Scripts
-    {
-    <script src="@Url.Content("~/Scripts/jquery.validate.min.js")"></script>
-    <script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")"></script>
-    <script type="text/javascript">
+  {
+  <script src="@Url.Content("~/Scripts/jquery.validate.min.js")"></script>
+  <script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")"></script>
+  <script type="text/javascript">
 
-        function copy() {
-            document.getElementById("to").value = document.getElementById("from").value;
-        };
-        function copy2() {
-            document.getElementById("from").value = document.getElementById("to").value;
-        };
-        function getTotalUnit() {
-            document.getElementById("TotalUnit").innerHTML = document.getElementById("Quantity").value * document.getElementById("UnitPrice").value;
-        };
-        function getTotalRetail() {
-            document.getElementById("TotalRetail").innerHTML = document.getElementById("Quantity").value * document.getElementById("RetailPrice").value;
-        };
+    function copy() {
+      document.getElementById("to").value = document.getElementById("from").value;
+    };
+    function copy2() {
+      document.getElementById("from").value = document.getElementById("to").value;
+    };
+    function getTotalUnit() {
+      document.getElementById("TotalUnit").innerHTML = document.getElementById("Quantity").value * document.getElementById("UnitPrice").value;
+    };
+    function getTotalRetail() {
+      document.getElementById("TotalRetail").innerHTML = document.getElementById("Quantity").value * document.getElementById("RetailPrice").value;
+    };
 
-    </script>
+  </script>
 }
