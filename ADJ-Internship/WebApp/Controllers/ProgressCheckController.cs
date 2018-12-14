@@ -16,7 +16,6 @@ namespace WebApp.Controllers
         public ProgressCheckController(IProgressCheckService prcService)
         {           
             _prcService = prcService;
-
         }
         // GET: ProgressCheckDto
         public async Task<ActionResult> Index(string PONumberSearch=null, string ItemSearch=null, string Suppliers=null, string Factories=null, string Origins=null, string OriginPorts=null, string Depts=null)
@@ -37,11 +36,10 @@ namespace WebApp.Controllers
             if (!String.IsNullOrEmpty(Suppliers) || !String.IsNullOrEmpty(Factories))
             {
                 progressCheckDtos = progressCheckDtos.Where(p => p.Supplier == Suppliers || p.Factory == Factories).ToList();
-
             }
             if (!String.IsNullOrEmpty(Origins) || !String.IsNullOrEmpty(OriginPorts))
             {
-                progressCheckDtos = progressCheckDtos.Where(p => p.Origin == Origins || p.OriginPort == OriginPorts).ToList();
+                progressCheckDtos = progressCheckDtos.Where(p => p.Origin == Origins || p.OriginPort == OriginPorts).ToList();      
             }
             return View(progressCheckDtos);
         }
@@ -64,8 +62,7 @@ namespace WebApp.Controllers
             ViewBag.ErrorList = "No result match, please try again";
             PagedListResult<ProgressCheckDto> lstPrc = await _prcService.ListProgressCheckDtoAsync();
             List<ProgressCheckDto> progressCheckDtos = lstPrc.Items;
-           
-            return View("Index", progressCheckDtos);
+            return View(progressCheckDtos);
         }
     }
 }

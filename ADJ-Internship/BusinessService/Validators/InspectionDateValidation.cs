@@ -23,11 +23,11 @@ namespace ADJ.BusinessService.Validators
                 DateTime InspecDate = Convert.ToDateTime(value);
                 DateTime IntDate = Convert.ToDateTime(otherValue);
                 DateTime today = Convert.ToDateTime(DateTime.Now.Date);
-                if (InspecDate.CompareTo(IntDate) > 1)
+                if (InspecDate.CompareTo(IntDate) > 2)
                 {
                     return new ValidationResult(ErrorMessage = " Inspection Date Date must be equal or less than Int Ship Date");
                 }
-                if (InspecDate.CompareTo(today) < 1)
+                if (InspecDate.CompareTo(today) < 0)
                 {
                     return new ValidationResult(ErrorMessage = " Inspection Date must be equal or  greater than Today ");
                 }

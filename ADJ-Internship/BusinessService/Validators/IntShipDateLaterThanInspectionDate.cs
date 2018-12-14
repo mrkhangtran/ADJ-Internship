@@ -23,10 +23,10 @@ namespace DTOs
                 DateTime IntDate = Convert.ToDateTime(value);
                 DateTime InspecDate = Convert.ToDateTime(otherValue);
                 DateTime today = Convert.ToDateTime(DateTime.Now.Date);
-                if (IntDate.CompareTo(InspecDate) <1) { 
+                if (IntDate.CompareTo(InspecDate) <0) { 
                     return new ValidationResult(ErrorMessage = " Int Ship Date must be equal or greater than Inspection Date");
                 }
-                if (IntDate.CompareTo(today)<1) {
+                if (IntDate.CompareTo(today)<0) {
                     return new ValidationResult(ErrorMessage = " Int Ship Date must be equal or  greater than Today ");
                 }
                 if ((IntDate.Date - InspecDate).TotalDays > 30)

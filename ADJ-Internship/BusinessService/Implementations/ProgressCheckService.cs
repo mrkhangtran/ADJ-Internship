@@ -63,26 +63,9 @@ namespace ADJ.BusinessService.Implementations
                 OrderId = orderId
             };
              _prcRepository.Insert(progressCheck);
-            
+            UnitOfWork.SaveChangesAsync();
+
         }
-        //public async void checkComplete(ProgressCheck progressCheck)
-        //{
-        //    var result = await _oddDataProvider.ListAsync();
-        //    List<OrderDetail> prcList = result.Items;
-        //    float check = 0;
-        //    foreach (var item in prcList)
-        //    {
-        //        if (item.OrderId == progressCheck.OrderId)
-        //        {
-        //            check += item.Quantity;
-        //        }
-        //    }
-        //    if (progressCheck.EstQtyToShip != check && progressCheck.Complete == true)
-        //    {
-        //        progressCheck.Complete = false;
-        //    }
-        //    _prcRepository.Update(progressCheck);
-        //}
         public async Task<PagedListResult<ProgressCheckDto>> ListProgressCheckDtoAsync()
         {
             List<ProgressCheckDto> progressCheckDTOs = new List<ProgressCheckDto>();
@@ -99,7 +82,6 @@ namespace ADJ.BusinessService.Implementations
                 float POQuantity = 0;
                 List<OrderDetail> orderDetails = lstOrDetail.Items;
                 List<OrderDetail> orderDetailModels = new List<OrderDetail>();
-                //tinh PO Quantity
                 foreach (var orderDetail in orderDetails)
                 {
                     if (orderDetail.OrderId == order.Id)
