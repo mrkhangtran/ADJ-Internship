@@ -17,9 +17,9 @@ namespace ADJ.BusinessService.Dtos
         [Display(Name = "PO Number")]
         public string PONumber { get; set; }
         [Display(Name = "PO Quantity")]
-        public float POQuantity { get; set; }
+        public decimal POQuantity { get; set; }
         [Display(Name = "PO Check Quantity")]
-        public float EstQtyToShip { get; set; }
+        public decimal EstQtyToShip { get; set; }
         [Display(Name = "PO Ship Date")]
         public DateTime ShipDate { get; set; }
         public List<OrderDetail> ListOrderDetail { get; set; }
@@ -78,10 +78,10 @@ namespace ADJ.BusinessService.Dtos
         public string Item { get; set; }
 
         [Required]
-        public float Quantity { get; set; }
+        public decimal Quantity { get; set; }
 
         [ReviseQuantityvalidate("Quantity")]
-        public float ReviseQuantity { get; set; }
+        public decimal ReviseQuantity { get; set; }
 
         [Required]
         public float Cartons { get; set; }
@@ -99,7 +99,7 @@ namespace ADJ.BusinessService.Dtos
         {
             get
             {
-                return Quantity * UnitPrice;
+                return (float) Quantity * UnitPrice;
             }
         }
 
@@ -110,7 +110,7 @@ namespace ADJ.BusinessService.Dtos
         {
             get
             {
-                return Quantity * RetailPrice;
+                return (float)Quantity * RetailPrice;
             }
         }
 

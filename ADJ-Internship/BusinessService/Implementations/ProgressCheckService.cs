@@ -46,7 +46,7 @@ namespace ADJ.BusinessService.Implementations
             List<Order> orders = lst.Items;
             foreach (var order in orders)
             {
-                float POQuantity = 0;
+                decimal POQuantity = 0;
                 List<OrderDetail> orderDetails = await _orderdetailRepository.Query(x => x.OrderId == order.Id,false).SelectAsync();
                 foreach (var orderDetail in orderDetails)
                 {
@@ -118,7 +118,7 @@ namespace ADJ.BusinessService.Implementations
                 //entity = Mapper.Map(rq, entity);
                 entity.InspectionDate = rq.InspectionDate;
                 entity.IntendedShipDate = rq.IntendedShipDate;
-                float temp = 0;
+                decimal temp = 0;
                 rq.ListOrderDetail = Mapper.Map<List<OrderDetail>>(rq.ListOrderDetailDto);
                 foreach (var item in rq.ListOrderDetail)
                 {
@@ -142,7 +142,7 @@ namespace ADJ.BusinessService.Implementations
             {
                 entity.InspectionDate = rq.InspectionDate;
 
-                float temp = 0;
+                decimal temp = 0;
                 foreach (var item in rq.ListOrderDetail)
                 {
                     temp += item.ReviseQuantity;

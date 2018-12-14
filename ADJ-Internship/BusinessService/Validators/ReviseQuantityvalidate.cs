@@ -19,8 +19,8 @@ namespace ADJ.BusinessService.Validators
 
             if ((value != null) && (otherValue != null))
             {
-                int Quantity =int.Parse(otherValue.ToString());
-                int Revise = int.Parse(value.ToString());             
+                decimal Quantity =decimal.Parse(otherValue.ToString());
+                decimal Revise = decimal.Parse(value.ToString());             
                 if (Revise < 0)
                 {
                     return new ValidationResult(ErrorMessage = " Revise must be greater or equal zero ");

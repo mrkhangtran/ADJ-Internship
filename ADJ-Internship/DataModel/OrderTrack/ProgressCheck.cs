@@ -14,7 +14,7 @@ namespace ADJ.DataModel.OrderTrack
 
         public DateTime IntendedShipDate { get; set; }
 
-        public float EstQtyToShip { get; set; }
+        public decimal EstQtyToShip { get; set; }
 
         public DateTime InspectionDate { get; set; }
 
