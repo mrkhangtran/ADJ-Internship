@@ -11,8 +11,8 @@ namespace ADJ.BusinessService.Interfaces
     public interface IProgressCheckService
     {
         Task<PagedListResult<ProgressCheckDto>> ListProgressCheckDtoAsync();
-        void Update(ProgressCheckDto progressCheckDto);
         Task<GetItemSearchDto> SearchItem();
+        Task<ProgressCheckDto> CreateOrUpdatePurchaseOrderAsync(ProgressCheckDto rq);
 
     }
 }

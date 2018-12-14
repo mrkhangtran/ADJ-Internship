@@ -45,13 +45,13 @@ namespace WebApp.Controllers
             return View("Index",model);
         }
         [HttpPost]
-        public async Task<ActionResult> Update(List<ProgressCheckDto> progressCheckDTOs)
+        public async Task<ActionResult> Index(List<ProgressCheckDto> progressCheckDTOs)
         {
             if (ModelState.IsValid)
             {
                 for (int i = 0; i < progressCheckDTOs.Count(); i++)
                 {
-                    _prcService.Update(progressCheckDTOs[i]);
+                   await _prcService.CreateOrUpdatePurchaseOrderAsync(progressCheckDTOs[i]);
                 }
             }
             GetItemSearchDto getSearchItem = await _prcService.SearchItem();
