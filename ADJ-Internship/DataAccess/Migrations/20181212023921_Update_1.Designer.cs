@@ -4,14 +4,16 @@ using ADJ.DataAccess;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace ADJ.DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20181212023921_Update_1")]
+    partial class Update_1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -96,7 +98,7 @@ namespace ADJ.DataAccess.Migrations
 
                     b.Property<int>("OrderId");
 
-                    b.Property<decimal>("Quantity");
+                    b.Property<int>("Quantity");
 
                     b.Property<byte[]>("RowVersion")
                         .IsConcurrencyToken()
@@ -173,7 +175,7 @@ namespace ADJ.DataAccess.Migrations
                     b.Property<string>("Order")
                         .HasMaxLength(30);
 
-                    b.Property<decimal>("Quantity");
+                    b.Property<int>("Quantity");
 
                     b.Property<byte[]>("RowVersion")
                         .IsConcurrencyToken()
@@ -203,7 +205,7 @@ namespace ADJ.DataAccess.Migrations
 
                     b.Property<DateTime>("CreatedDateUtc");
 
-                    b.Property<int>("Currency");
+                    b.Property<string>("Currency");
 
                     b.Property<DateTime>("DeliveryDate");
 
@@ -247,7 +249,7 @@ namespace ADJ.DataAccess.Migrations
 
                     b.Property<DateTime>("ShipDate");
 
-                    b.Property<int>("Status");
+                    b.Property<string>("Status");
 
                     b.Property<string>("Supplier")
                         .HasMaxLength(30);
@@ -295,11 +297,9 @@ namespace ADJ.DataAccess.Migrations
 
                     b.Property<int>("OrderId");
 
-                    b.Property<decimal>("Quantity");
+                    b.Property<float>("Quantity");
 
                     b.Property<float>("RetailPrice");
-
-                    b.Property<decimal>("ReviseQuantity");
 
                     b.Property<byte[]>("RowVersion")
                         .IsConcurrencyToken()
@@ -337,7 +337,7 @@ namespace ADJ.DataAccess.Migrations
 
                     b.Property<DateTime>("CreatedDateUtc");
 
-                    b.Property<decimal>("EstQtyToShip");
+                    b.Property<int>("EstQtyToShip");
 
                     b.Property<DateTime>("InspectionDate");
 
@@ -357,8 +357,7 @@ namespace ADJ.DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("OrderId")
-                        .IsUnique();
+                    b.HasIndex("OrderId");
 
                     b.ToTable("ProgressChecks");
                 });
@@ -514,7 +513,7 @@ namespace ADJ.DataAccess.Migrations
 
                     b.Property<string>("PackType");
 
-                    b.Property<decimal>("Quantity");
+                    b.Property<int>("Quantity");
 
                     b.Property<byte[]>("RowVersion")
                         .IsConcurrencyToken()
@@ -551,6 +550,9 @@ namespace ADJ.DataAccess.Migrations
                     b.Property<byte[]>("RowVersion")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate();
+
+                    b.Property<string>("UpdatedBy")
+                        .HasMaxLength(20);
 
                     b.HasKey("Id");
 
@@ -600,7 +602,7 @@ namespace ADJ.DataAccess.Migrations
 
                     b.Property<string>("PackType");
 
-                    b.Property<decimal>("Quantity");
+                    b.Property<int>("Quantity");
 
                     b.Property<byte[]>("RowVersion")
                         .IsConcurrencyToken()
@@ -643,16 +645,16 @@ namespace ADJ.DataAccess.Migrations
             modelBuilder.Entity("ADJ.DataModel.OrderTrack.OrderDetail", b =>
                 {
                     b.HasOne("ADJ.DataModel.OrderTrack.Order", "Order")
-                        .WithMany("orderDetails")
+                        .WithMany()
                         .HasForeignKey("OrderId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("ADJ.DataModel.OrderTrack.ProgressCheck", b =>
                 {
-                    b.HasOne("ADJ.DataModel.OrderTrack.Order")
-                        .WithOne("ProgressCheck")
-                        .HasForeignKey("ADJ.DataModel.OrderTrack.ProgressCheck", "OrderId")
+                    b.HasOne("ADJ.DataModel.OrderTrack.Order", "Order")
+                        .WithMany()
+                        .HasForeignKey("OrderId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

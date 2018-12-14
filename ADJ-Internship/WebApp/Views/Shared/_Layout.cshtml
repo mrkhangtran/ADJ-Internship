@@ -6,85 +6,158 @@
   <title>Adjuno Internship</title>
 
   <environment include="Development">
-    <link rel="stylesheet" href="css/main.css" />
+    <link rel="stylesheet" href="/css/main.css" />
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
   </environment>
   <environment exclude="Development">
-    <link rel="stylesheet" href="css/main.min.css" />
+    <link rel="stylesheet" href="/css/main.min.css" />
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
   </environment>
 </head>
 <body>
-  <nav class="navbar navbar-inverse navbar-fixed-top">
-    <div class="container">
-      <div class="navbar-header">
-        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-          <span class="sr-only">Toggle navigation</span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-        </button>
-        <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">ADJ.WebApp</a>
-      </div>
-      <div class="navbar-collapse collapse">
-        <ul class="nav navbar-nav">
-          <li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
-          <li><a asp-area="" asp-controller="Home" asp-action="About">About</a></li>
-          <li><a asp-area="" asp-controller="Home" asp-action="Contact">Contact</a></li>
-        </ul>
-        <partial name="_LoginPartial" />
-      </div>
-    </div>
-  </nav>
+    <div uk-grid class="divtong">
+        <!-- start menu-left -->
+        <div class="uk-width-1-4@m uk-width-1-4@s uk-width-1-4@l uk-width-1-4@x left">
+            <!-- start menu-left -->
+            <div class="menu-left">
+                <div uk-grid>
+                    <div class="uk-width-4-4@m uk-width-4-4@s uk-width-4-4@l uk-width-4-4@x  left">
+                        <div class="menu-left-header">
+                            <span class="fa fa-home"><p>Adjuno Internship</p></span>
+                        </div> <!-- end menu-left-header -->
+                    </div>
+                </div>
+                <div uk-grid class="welcome">
+                    <div class="uk-width-1-4@m uk-width-1-4@s uk-width-1-4@l uk-width-1-4@x  ">
+                        <span class="fa fa-bus"></span>
+                    </div>
+                    <div class="uk-width-3-4@m uk-width-3-4@s uk-width-3-4@l uk-width-3-4@x  ">
+                        <p>Welcome to Groove</p>
+                    </div>
+                </div>	<!-- end welcome -->
+                <ul uk-accordion class="list-left" >
+                    <li class="orders-item">
+                        <!-- start orders -->
+                        <div uk-grid class="welcome uk-accordion-title">
+                            <span class="fa fa-phone"><p>Order</p></span>
+                        </div>	<!-- end welcome -->
+                        <div class="uk-accordion-content">
+                            <p>@Html.ActionLink("PO Manager", "Display", "DisplayAndFilter")</p>
+                            <p><a href="#">PO Progress</a></p>
+                        </div>
+                    </li>
+                    <li class="shipment-item">
+                        <!-- start orders -->
+                        <div uk-grid class="welcome uk-accordion-title">
+                            <span class="fa fa-bus"><p>Shipment</p></span>
+                        </div>	<!-- end welcome -->
+                        <div class="uk-accordion-content">
+                            <p>PO Manager</p>
+                            <p>PO Progress</p>
+                        </div>
+                    </li>
+                    <li class="delivery-item">
+                        <!-- start orders -->
+                        <div uk-grid class="welcome uk-accordion-title">
 
-  <partial name="_CookieConsentPartial" />
+                            <span class="fa fa-plane"><p>Delivery</p></span>
+                        </div>	<!-- end welcome -->
+                        <div class="uk-accordion-content">
+                            <p>PO Manager</p>
+                            <p>PO Progress</p>
+                        </div>
+                    </li>
+                    <li class="report-item">
+                        <!-- start orders -->
+                        <div uk-grid class="welcome uk-accordion-title">
+                            <span class="fa fa-bus"><p>Report</p></span>
+                        </div>	<!-- end welcome -->
+                        <div class="uk-accordion-content">
+                            <p>PO Manager</p>
+                            <p>PO Progress</p>
+                        </div>
+                    </li>
+                </ul>
+            </div>	<!-- end menu-left -->
+        </div>
+        <div class="uk-width-3-4@m uk-width-3-4@s uk-width-3-4@l uk-width-3-4@x  content-right">
+            <!-- star header -->
+            <div class="content-header">
+                <span class="fa fa-bars"></span>
+                <div class="uk-inline dropdown-username">
+                    <button class="uk-button uk-button-default" type="button">User Name</button>
+                    <div uk-dropdown="pos: bottom-right">
+                        <ul class="uk-nav uk-dropdown-nav">
+                            <li><a href="#">Active</a></li>
+                            <li><a href="#">Item</a></li>
+                            <li>Header</li>
+                            <li><a href="#">Item</a></li>
+                            <li><a href="#">Item</a></li>
+                            <li></li>
+                            <li><a href="#">Item</a></li>
+                        </ul>
+                    </div>
+                </div><!-- end dropdown username -->
 
-  <div class="container body-content">
-    @RenderBody()
-    <hr />
-    <footer>
-      <p>&copy; 2018 - ADJ.WebApp</p>
-    </footer>
-  </div>
+            </div>	<!-- end content-header -->
+            <!-- start content -->
+            <div class="content">
+                <div class="filter-createnew">
+                    @*Text box filter*@
+                    <div id="txtFilter">
+                        @using (Html.BeginForm("Filter", "DisplayAndFilter", FormMethod.Post))
+                        {
+                            @Html.TextBox("txtFilter", "", htmlAttributes: new { @class = "txtFilter", @placeholder = "Enter PO number" })
+                            <button type="submit" class="uk-button uk-button-danger btnSearch" style="display:inline;text-align:center"><p>Filter</p></button>
+                        }
+                        <button class="uk-button uk-button-primary btnNew" style="float:right;"><p>New order <span class="fa fa-plus"></span></p></button>
+                    </div>
+                </div>
+                <!-- start table -->
+                @RenderBody()
+               <!-- end content-table -->
+            </div>
+        </div>
+    </div><!-- /uk-grid -->
+    <environment include="Development">
+        <script src="~/lib/jquery/dist/jquery.js"></script>
+        <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
+        <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
+        <script src="~/lib/jquery-ajax-unobtrusive/jquery.unobtrusive-ajax.js"></script>
+        <script src="~/lib/uikit/uikit.min.js"></script>
+        <script src="~/lib/uikit/uikit-icons.min.js"></script>
+    </environment>
+    <environment exclude="Development">
+        <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-3.3.1.min.js"
+                asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
+                asp-fallback-test="window.jQuery"
+                crossorigin="anonymous"
+                integrity="sha384-tsQFqpEReu7ZLhBV2VZlAu7zcOV+rXbYlF2cqB8txI/8aZajjp4Bqd+V6D5IgvKT">
+        </script>
+        <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.17.0/dist/jquery.validate.min.js"
+                asp-fallback-src="~/lib/jquery-validation/dist/jquery.validate.min.js"
+                asp-fallback-test="window.jQuery">
+        </script>
+        <script src="https://cdn.jsdelivr.net/npm/jquery-validation-unobtrusive@3.2.9/dist/jquery.validate.unobtrusive.min.js"
+                asp-fallback-src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"
+                asp-fallback-test="window.jQuery">
+        </script>
+        <script src="https://cdn.jsdelivr.net/npm/jquery-ajax-unobtrusive@3.2.6/dist/jquery.unobtrusive-ajax.min.js"
+                asp-fallback-src="~/lib/jquery-ajax-unobtrusive/jquery.unobtrusive-ajax.js"
+                asp-fallback-test="window.jQuery">
+        </script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.0-rc.19/js/uikit.min.js"
+                asp-fallback-src="~/lib/uikit/uikit.min.js"
+                asp-fallback-test="window.jQuery">
+        </script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.0-rc.19/js/uikit-icons.min.js"
+                asp-fallback-src="~/lib/uikit/uikit-icons.min.js"
+                asp-fallback-test="window.jQuery">
+        </script>
+        <script src="~/js/site.min.js" asp-append-version="true"></script>
 
-  <environment include="Development">
-    <script src="~/lib/jquery/dist/jquery.js"></script>
-    <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
-    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
-    <script src="~/lib/jquery-ajax-unobtrusive/jquery.unobtrusive-ajax.js"></script>
-    <script src="~/lib/uikit/uikit.min.js"></script>
-    <script src="~/lib/uikit/uikit-icons.min.js"></script>
-  </environment>
-  <environment exclude="Development">
-    <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-3.3.1.min.js"
-            asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
-            asp-fallback-test="window.jQuery"
-            crossorigin="anonymous"
-            integrity="sha384-tsQFqpEReu7ZLhBV2VZlAu7zcOV+rXbYlF2cqB8txI/8aZajjp4Bqd+V6D5IgvKT">
-    </script>
-    <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.17.0/dist/jquery.validate.min.js"
-            asp-fallback-src="~/lib/jquery-validation/dist/jquery.validate.min.js"
-            asp-fallback-test="window.jQuery">
-    </script>
-    <script src="https://cdn.jsdelivr.net/npm/jquery-validation-unobtrusive@3.2.9/dist/jquery.validate.unobtrusive.min.js"
-            asp-fallback-src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"
-            asp-fallback-test="window.jQuery">
-    </script>
-    <script src="https://cdn.jsdelivr.net/npm/jquery-ajax-unobtrusive@3.2.6/dist/jquery.unobtrusive-ajax.min.js"
-            asp-fallback-src="~/lib/jquery-ajax-unobtrusive/jquery.unobtrusive-ajax.js"
-            asp-fallback-test="window.jQuery">
-    </script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.0-rc.19/js/uikit.min.js"
-            asp-fallback-src="~/lib/uikit/uikit.min.js"
-            asp-fallback-test="window.jQuery">
-    </script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.0-rc.19/js/uikit-icons.min.js"
-            asp-fallback-src="~/lib/uikit/uikit-icons.min.js"
-            asp-fallback-test="window.jQuery">
-    </script>
-    <script src="~/js/site.min.js" asp-append-version="true"></script>
-  </environment>
+    </environment>
 
-  @RenderSection("Scripts", required: false)
+    @RenderSection("Scripts", required: false)
 </body>
 </html>

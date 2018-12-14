@@ -13,16 +13,18 @@ namespace ADJ.WebApp.Controllers
     public class HomeController : Controller
     {
         private readonly IPurchaseOrderService _poService;
-
-        public HomeController(IPurchaseOrderService poService)
+        private readonly IProgressCheckService _prcService;
+        public HomeController(IPurchaseOrderService poService, IProgressCheckService prcService)
         {
             _poService = poService;
+            _prcService = prcService;
+         
         }
 
         public async Task<IActionResult> Index()
         {
             var createPurchaseOrderRq = new CreateOrUpdatePurchaseOrderRq {Test = "111"};
-
+        
             await _poService.CreateOrUpdatePurchaseOrderAsync(createPurchaseOrderRq);
 
             var test = await _poService.ListPurchaseOrdersAsync(null);
