@@ -12,11 +12,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\BusinessService\BusinessService.csproj" PrivateAssets="All"/>
-    <ProjectReference Include="..\Common\Common.csproj" PrivateAssets="All"/>
-    <ProjectReference Include="..\DataAccess\DataAccess.csproj" PrivateAssets="All"/>
-    <ProjectReference Include="..\DataModel\DataModel.csproj" PrivateAssets="All"/>
-    <ProjectReference Include="..\Repository\Repository.csproj" PrivateAssets="All"/>
+    <ProjectReference Include="..\BusinessService\BusinessService.csproj" PrivateAssets="All" />
+    <ProjectReference Include="..\Common\Common.csproj" PrivateAssets="All" />
+    <ProjectReference Include="..\DataAccess\DataAccess.csproj" PrivateAssets="All" />
+    <ProjectReference Include="..\DataModel\DataModel.csproj" PrivateAssets="All" />
+    <ProjectReference Include="..\Repository\Repository.csproj" PrivateAssets="All" />
   </ItemGroup>
 
 </Project>

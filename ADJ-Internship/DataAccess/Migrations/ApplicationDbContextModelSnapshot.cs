@@ -203,7 +203,7 @@ namespace ADJ.DataAccess.Migrations
 
                     b.Property<DateTime>("CreatedDateUtc");
 
-                    b.Property<string>("Currency");
+                    b.Property<int>("Currency");
 
                     b.Property<DateTime>("DeliveryDate");
 
@@ -247,7 +247,7 @@ namespace ADJ.DataAccess.Migrations
 
                     b.Property<DateTime>("ShipDate");
 
-                    b.Property<string>("Status");
+                    b.Property<int>("Status");
 
                     b.Property<string>("Supplier")
                         .HasMaxLength(30);
@@ -299,6 +299,8 @@ namespace ADJ.DataAccess.Migrations
 
                     b.Property<float>("RetailPrice");
 
+                    b.Property<float>("ReviseQuantity");
+
                     b.Property<byte[]>("RowVersion")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate();
@@ -335,7 +337,7 @@ namespace ADJ.DataAccess.Migrations
 
                     b.Property<DateTime>("CreatedDateUtc");
 
-                    b.Property<int>("EstQtyToShip");
+                    b.Property<float>("EstQtyToShip");
 
                     b.Property<DateTime>("InspectionDate");
 
@@ -548,9 +550,6 @@ namespace ADJ.DataAccess.Migrations
                     b.Property<byte[]>("RowVersion")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate();
-
-                    b.Property<string>("UpdatedBy")
-                        .HasMaxLength(20);
 
                     b.HasKey("Id");
 

@@ -6,11 +6,11 @@
   <title>Adjuno Internship</title>
 
   <environment include="Development">
-    <link rel="stylesheet" href="css/main.css" />
+    <link rel="stylesheet" href="../css/main.css" />
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
   </environment>
   <environment exclude="Development">
-    <link rel="stylesheet" href="css/main.min.css" />
+    <link rel="stylesheet" href="../css/main.min.css" />
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
   </environment>
 </head>
@@ -23,7 +23,7 @@
                 <div uk-grid>
                     <div class="uk-width-4-4@m uk-width-4-4@s uk-width-4-4@l uk-width-4-4@x  left">
                         <div class="menu-left-header">
-                            <span class="fa fa-home"><p>Adjuno Internship</p></span>
+                            <span class="fa fa-home">Adjuno Internship</span>
                         </div> <!-- end menu-left-header -->
                     </div>
                 </div>
@@ -39,7 +39,7 @@
                     <li class="orders-item">
                         <!-- start orders -->
                         <div uk-grid class="welcome uk-accordion-title">
-                            <span class="fa fa-phone"><p>Order</p></span>
+                            <span class="fa fa-phone">Orde</span>
                         </div>	<!-- end welcome -->
                         <div class="uk-accordion-content">
                             <p>@Html.ActionLink("PO Manager", "Display", "DisplayAndFilter")</p>
@@ -49,7 +49,7 @@
                     <li class="shipment-item">
                         <!-- start orders -->
                         <div uk-grid class="welcome uk-accordion-title">
-                            <span class="fa fa-bus"><p>Shipment</p></span>
+                            <span class="fa fa-bus">Shipmen</span>
                         </div>	<!-- end welcome -->
                         <div class="uk-accordion-content">
                             <p>PO Manager</p>
@@ -60,7 +60,7 @@
                         <!-- start orders -->
                         <div uk-grid class="welcome uk-accordion-title">
 
-                            <span class="fa fa-plane"><p>Delivery</p></span>
+                            <span class="fa fa-plane">Delivery</span>
                         </div>	<!-- end welcome -->
                         <div class="uk-accordion-content">
                             <p>PO Manager</p>
@@ -70,7 +70,7 @@
                     <li class="report-item">
                         <!-- start orders -->
                         <div uk-grid class="welcome uk-accordion-title">
-                            <span class="fa fa-bus"><p>Report</p></span>
+                            <span class="fa fa-bus">Report</span>
                         </div>	<!-- end welcome -->
                         <div class="uk-accordion-content">
                             <p>PO Manager</p>
@@ -105,17 +105,31 @@
                 <div class="filter-createnew">
                     @*Text box filter*@
                     <div id="txtFilter">
-                        @using (Html.BeginForm("Filter", "DisplayAndFilter", FormMethod.Post))
+                        @*@using (Html.BeginForm("FilterPO", "DisplayAndFilter", FormMethod.Post))
                         {
                             @Html.TextBox("txtFilter", "", htmlAttributes: new { @class = "txtFilter", @placeholder = "Enter PO number" })
                             <button type="submit" class="uk-button uk-button-danger btnSearch" style="display:inline;text-align:center"><p>Filter</p></button>
-                        }
+                        }*@
+                        <form asp-action="FilterPO"
+                              asp-controller="DisplayAndFilter" method="post">
+                            <input type="text" name="filter" placeholder="Enter PO Number" />
+                            <input type="submit" value="Serach" />
+                        </form>
+                        <h4>@ViewBag.Message</h4>
+
+
+
+
+
                         <button class="uk-button uk-button-primary btnNew" style="float:right;"><p>New order <span class="fa fa-plus"></span></p></button>
                     </div>
                 </div>
                 <!-- start table -->
                 @RenderBody()
                <!-- end content-table -->
+
+                
+
             </div>
         </div>
     </div><!-- /uk-grid -->

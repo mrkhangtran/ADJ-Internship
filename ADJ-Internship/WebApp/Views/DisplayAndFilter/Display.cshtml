@@ -1,0 +1,61 @@
+﻿
+@model IEnumerable<ADJ.BusinessService.Dtos.PODisplayDto>
+
+@{
+    ViewData["Title"] = "Display";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<!-- start table -->
+<table class="uk-table uk-table-striped content-table" style="border:1px solid #333">
+    <thead style="background:#333">
+        <tr>
+            <th>PO Number</th>
+            <th>PO Date</th>
+            <th>Origin</th>
+            <th>Part Of Loading</th>
+            <th>Part Of Delivery</th>
+            <th>Suppier</th>
+            <th>PO Ship Date</th>
+            <th>PO Qty</th>
+            <th>Status</th>
+            <th>PO Delivery Date</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var i in Model)
+        {
+            <tr>
+                <td>@i.PONumber</td>
+                <td>@i.PODate.ToString("dd MMM yyyy")</td>
+                <td>@i.Origin</td>
+                <td>@i.PortOfLoading</td>
+                <td>@i.PortOfDelivery</td>
+                <td>@i.Supplier</td>
+                <td>@i.POShipDate.ToString("dd MMM yyyy")</td>
+                <td>@i.POQuantity</td>
+                <td>@i.Status</td>
+                <td>@i.PODeliveryDate.ToString("dd MMM yyyy")</td>
+                <td><a href="#">Edit</a><a href="#"> Detail</a></td>
+            </tr>
+        }
+
+    </tbody>
+</table> <!-- end content-table -->
+<div class="massage-null"><p>@ViewBag.Massage</p></div>
+<div style="clear:both"></div>
+<ul class="uk-pagination pageList" uk-margin>
+    <li><a href="#"><span uk-pagination-previous></span></a></li>
+    <li><a href="#">1</a></li>
+    <li class="uk-disabled"><span>...</span></li>
+    <li><a href="#">4</a></li>
+    <li><a href="#">5</a></li>
+    <li><a href="#">6</a></li>
+    <li class="uk-active"><span>7</span></li>
+    <li><a href="#">8</a></li>
+    <li><a href="#">9</a></li>
+    <li><a href="#">10</a></li>
+    <li class="uk-disabled"><span>...</span></li>
+    <li><a href="#">20</a></li>
+    <li><a href="#"><span uk-pagination-next></span></a></li>
+</ul>
