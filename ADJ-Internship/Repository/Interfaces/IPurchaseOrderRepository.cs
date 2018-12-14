@@ -10,12 +10,4 @@ namespace ADJ.Repository.Interfaces
     public interface IPurchaseOrderRepository : IRepository<PurchaseOrder>
     {
     }
-
-    public interface IOrderRepository : IRepository<Order>
-    {
-    }
-
-    public interface IOrderDetailRepository : IRepository<OrderDetail>
-    {
-    }
 }

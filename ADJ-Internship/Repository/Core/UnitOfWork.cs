@@ -35,7 +35,8 @@ namespace ADJ.Repository.Core
                     try
                     {
                         // https://stackoverflow.com/questions/4402586/optimisticconcurrencyexception-does-not-work-in-entity-framework-in-certain-situ
-                        var isRowVersionChanged = _dbContext.ChangeTracker.Entries()
+                        
+var isRowVersionChanged = _dbContext.ChangeTracker.Entries()
                             .Any(x => x.Properties.Any(m => m.Metadata.Name == "RowVersion") && x.CurrentValues.GetValue<byte[]>("RowVersion") != null && !x.CurrentValues.GetValue<byte[]>("RowVersion").SequenceEqual(x.OriginalValues.GetValue<byte[]>("RowVersion")));
                         if (isRowVersionChanged)
                         {

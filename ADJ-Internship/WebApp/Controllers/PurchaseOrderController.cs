@@ -248,7 +248,7 @@ namespace ADJ.WebApp.Controllers
 
     public async Task<ActionResult> Copy(string PONumber)
     {
-      _poService.GetLastOrderId();
+      //_poService.GetLastOrderId();
 
       ModelState.Clear();
       OrderDTO copyModel = new OrderDTO();

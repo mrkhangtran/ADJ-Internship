@@ -4,7 +4,6 @@
 
 @using (Html.BeginForm())
 {
-  <input asp-for="Id" value = "" />
   @Html.HiddenFor(model => model.Id, new { Value = Model.Id })
   @Html.HiddenFor(model => model.orderDetailDTO.Id, new { Value = Model.orderDetailDTO.Id })
 

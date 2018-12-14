@@ -19,7 +19,7 @@ namespace ADJ.DataModel.ShipmentTrack
 
         public string Equipment { get; set; }
 
-        public int Quantity { get; set; }
+        public decimal Quantity { get; set; }
 
         public int Cartoons { get; set; }
 

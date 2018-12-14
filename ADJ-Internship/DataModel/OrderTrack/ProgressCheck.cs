@@ -14,7 +14,7 @@ namespace ADJ.DataModel.OrderTrack
 
         public DateTime IntendedShipDate { get; set; }
 
-        public float EstQtyToShip { get; set; }
+        public decimal EstQtyToShip { get; set; }
 
         public DateTime InspectionDate { get; set; }
 
@@ -22,7 +22,5 @@ namespace ADJ.DataModel.OrderTrack
 
         [Required]
         public int OrderId { get; set; }
-
-        public virtual Order Order { get; set; }
     }
 }
