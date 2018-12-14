@@ -14,23 +14,23 @@ using FluentValidation;
 
 namespace ADJ.BusinessService.Implementations
 {
-    public class DisplayAndFilterPOService : ServiceBase, IDisplayAndFilterService
+    public class OrderService : ServiceBase, IOrderService
     {
-        private readonly IDataProvider<Order> _order;
+        private readonly IDataProvider<Order> _orderDataProvider;
         private readonly IOrderRepository _orderRepository;
 
-        private readonly IDataProvider<OrderDetail> _orderDetail;
+        private readonly IDataProvider<OrderDetail> _orderDetailProvider;
         private readonly IOrderDetailRepository _orderDetailRepository;
 
-        private readonly IDataProvider<ProgressCheck> _progressCheck;
+        private readonly IDataProvider<ProgressCheck> _progressCheckProvider;
         private readonly IProgressCheckRepository _progressCheckRepository;
 
 
-        public DisplayAndFilterPOService(IUnitOfWork unitOfWork, IMapper mapper, ApplicationContext appContext, IOrderRepository orderRepository, IOrderDetailRepository orderDetailRepository, IProgressCheckRepository progressCheckRepository, IDataProvider<Order> order, IDataProvider<OrderDetail> orderDetail, IDataProvider<ProgressCheck> progressCheck) : base(unitOfWork, mapper, appContext)
+        public OrderService(IUnitOfWork unitOfWork, IMapper mapper, ApplicationContext appContext, IOrderRepository orderRepository, IOrderDetailRepository orderDetailRepository, IProgressCheckRepository progressCheckRepository, IDataProvider<Order> order, IDataProvider<OrderDetail> orderDetail, IDataProvider<ProgressCheck> progressCheck) : base(unitOfWork, mapper, appContext)
         {
-            this._order = order;
-            this._orderDetail = orderDetail;
-            this._progressCheck = progressCheck;
+            this._orderDataProvider = order;
+            this._orderDetailProvider = orderDetail;
+            this._progressCheckProvider = progressCheck;
 
             this._orderRepository = orderRepository;
             this._orderDetailRepository = orderDetailRepository;
@@ -38,18 +38,15 @@ namespace ADJ.BusinessService.Implementations
         }
 
         //Get POs
-        public async Task<List<PODisplayDto>> GetPOsAsync()
+        public async Task<List<OrderDisplayDto>> GetPOsAsync()
         {
-            List<PODisplayDto> lstPO = new List<PODisplayDto>();
-            var lstOrder = await _order.ListAsync();
-            var lstOrderDetail = await _orderDetail.ListAsync();
-            var lstProgressCheck = await _progressCheck.ListAsync();
-            
-            
+            List<OrderDisplayDto> lstPO = new List<OrderDisplayDto>();
+            var lstOrder = await _orderDataProvider.ListAsync();
+            var lstOrderDetail = await _orderDetailProvider.ListAsync();                                 
             
             foreach(var i in lstOrder.Items)
             {
-                PODisplayDto PO = new PODisplayDto();
+								OrderDisplayDto PO = new OrderDisplayDto();
                 PO.PONumber = i.PONumber;
                 PO.PODate = i.OrderDate;
                 PO.Supplier = i.Supplier;
@@ -58,21 +55,12 @@ namespace ADJ.BusinessService.Implementations
                 PO.POShipDate = i.ShipDate;
                 PO.PODeliveryDate = i.DeliveryDate;
                 PO.PortOfDelivery = i.PortOfDelivery;
+								PO.Status = i.Status;
                 foreach(var j in lstOrderDetail.Items)
                 {
                     if (j.OrderId == i.Id)
                     {
                         PO.POQuantity = j.Quantity;
-                    }
-                }
-                foreach(var x in lstProgressCheck.Items)
-                {
-                    if (x.OrderId == i.Id)
-                    {
-                        if (x.Complete == true)
-                        {
-                            PO.Status = "Booked";
-                        }
                     }
                 }
                 lstPO.Add(PO);
@@ -81,12 +69,12 @@ namespace ADJ.BusinessService.Implementations
         }
 
         //Filter POs
-        public async Task<List<PODisplayDto>> FilterPO(string key)
+        public async Task<List<OrderDisplayDto>> FilterPO(string key)
         {
            
-            List<PODisplayDto> lstPO = await GetPOsAsync();
+            List<OrderDisplayDto> lstPO = await GetPOsAsync();
 
-            List<PODisplayDto> result = new List<PODisplayDto>();
+            List<OrderDisplayDto> result = new List<OrderDisplayDto>();
             foreach (var i in lstPO)
             {
                 if (i.PONumber == key)

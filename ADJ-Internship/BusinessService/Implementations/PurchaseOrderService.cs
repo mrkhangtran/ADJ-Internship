@@ -15,63 +15,65 @@ using FluentValidation;
 
 namespace ADJ.BusinessService.Implementations
 {
-    public class PurchaseOrderService : ServiceBase, IPurchaseOrderService
-    {
-        private readonly IDataProvider<PurchaseOrder> _poDataProvider;
-        private readonly IPurchaseOrderRepository _poRepository;
+	public class PurchaseOrderService : ServiceBase, IPurchaseOrderService
+	{
+		private readonly IDataProvider<PurchaseOrder> _poDataProvider;
+		private readonly IPurchaseOrderRepository _poRepository;
 
-        public PurchaseOrderService(IUnitOfWork unitOfWork, IMapper mapper, ApplicationContext appContext, IDataProvider<PurchaseOrder> poDataProvider, IPurchaseOrderRepository poRepository) : base(unitOfWork, mapper, appContext)
-        {
-            _poDataProvider = poDataProvider;
-            _poRepository = poRepository;
-        }
+		public PurchaseOrderService(IUnitOfWork unitOfWork, IMapper mapper, ApplicationContext appContext, IDataProvider<PurchaseOrder> poDataProvider, IPurchaseOrderRepository poRepository) : base(unitOfWork, mapper, appContext)
+		{
+			_poDataProvider = poDataProvider;
+			_poRepository = poRepository;
+		}
 
-        public async Task<PagedListResult<PurchaseOrderDto>> ListPurchaseOrdersAsync(string searchTerm)
-        {
-            var poResult = await _poDataProvider.ListAsync();
-            var result = new PagedListResult<PurchaseOrderDto>
-            {
-                TotalCount = poResult.TotalCount,
-                PageCount = poResult.PageCount,
-                Items = Mapper.Map<List<PurchaseOrderDto>>(poResult.Items)
-            };
+		public async Task<PagedListResult<PurchaseOrderDto>> ListPurchaseOrdersAsync(string searchTerm)
+		{
+			var poResult = await _poDataProvider.ListAsync();
+			var result = new PagedListResult<PurchaseOrderDto>
+			{
+				TotalCount = poResult.TotalCount,
+				PageCount = poResult.PageCount,
+				Items = Mapper.Map<List<PurchaseOrderDto>>(poResult.Items)
+			};
 
-            return result;
-        }
+			return result;
+		}
 
-        public async Task<PurchaseOrderDto> CreateOrUpdatePurchaseOrderAsync(CreateOrUpdatePurchaseOrderRq rq)
-        {
-            var validator = new CreateOrUpdatePurchaseOrderRqValidator();
-            await validator.ValidateAndThrowAsync(rq);
+		public async Task<PurchaseOrderDto> CreateOrUpdatePurchaseOrderAsync(CreateOrUpdatePurchaseOrderRq rq)
+		{
+			var validator = new CreateOrUpdatePurchaseOrderRqValidator();
+			await validator.ValidateAndThrowAsync(rq);
 
-            PurchaseOrder entity;
-            if (rq.Id > 0)
-            {
-                entity = await _poRepository.GetByIdAsync(rq.Id, true);
-                if (entity == null)
-                {
-                    throw new AppException("Purchase Order Not Found");
-                }
+			PurchaseOrder entity;
+			if (rq.Id > 0)
+			{
+				entity = await _poRepository.GetByIdAsync(rq.Id, true);
+				if (entity == null)
+				{
+					throw new AppException("Purchase Order Not Found");
+				}
 
-                entity = Mapper.Map(rq, entity);
-                _poRepository.Update(entity);
-            }
-            else
-            {
-                entity = Mapper.Map<PurchaseOrder>(rq);
-                _poRepository.Insert(entity);
-            }
+				entity = Mapper.Map(rq, entity);
+				_poRepository.Update(entity);
+			}
 
-            await UnitOfWork.SaveChangesAsync();
 
-            var rs = Mapper.Map<PurchaseOrderDto>(entity);
-            return rs;
-        }
+			else
+			{
+				entity = Mapper.Map<PurchaseOrder>(rq);
+				_poRepository.Insert(entity);
+			}
 
-        public async Task DeletePurchaseOrderAsync(int id)
-        {
-            _poRepository.Delete(id);
-            await UnitOfWork.SaveChangesAsync();
-        }
-    }
+			await UnitOfWork.SaveChangesAsync();
+
+			var rs = Mapper.Map<PurchaseOrderDto>(entity);
+			return rs;
+		}
+
+		public async Task DeletePurchaseOrderAsync(int id)
+		{
+			_poRepository.Delete(id);
+			await UnitOfWork.SaveChangesAsync();
+		}
+	}
 }

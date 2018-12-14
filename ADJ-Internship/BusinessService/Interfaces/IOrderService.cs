@@ -7,10 +7,10 @@ using System.Threading.Tasks;
 
 namespace ADJ.BusinessService.Interfaces
 {
-    public interface IDisplayAndFilterService
+    public interface IOrderService
     {
-        Task<List<PODisplayDto>> GetPOsAsync();
-        Task<List<PODisplayDto>> FilterPO(string key);
+        Task<List<OrderDisplayDto>> GetPOsAsync();
+        Task<List<OrderDisplayDto>> FilterPO(string key);
 
         
     }

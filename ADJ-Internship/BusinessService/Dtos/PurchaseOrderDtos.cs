@@ -68,7 +68,7 @@ namespace ADJ.BusinessService.Dtos
             profile.CreateMap<OrderDetail, OrderDetailDto>().IncludeBase<EntityBase, EntityDtoBase>();
             profile.CreateMap<OrderDetailDto, OrderDetail>().IncludeBase<EntityDtoBase, EntityBase>();
         }
-        public float Quantaity { get; set; }
+        public decimal Quantity { get; set; }
 
     }
     //get data from ProgressCheck

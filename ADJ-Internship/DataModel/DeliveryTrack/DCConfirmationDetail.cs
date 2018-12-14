@@ -16,7 +16,7 @@ namespace ADJ.DataModel.DeliveryTrack
         [StringLength(30)]
         public string Line { get; set; }
 
-        public int Quantity { get; set; }
+        public decimal Quantity { get; set; }
 
         public int Cartons { get; set; }
 

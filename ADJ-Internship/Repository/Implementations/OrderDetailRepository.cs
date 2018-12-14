@@ -18,6 +18,6 @@ namespace ADJ.Repository.Implementations
         }
 
         protected override Func<IQueryable<OrderDetail>, IQueryable<OrderDetail>> IncludeDependents =>
-            po => po.Include(x => x.OrderId);
+            po => po.Include(x => x.Order);
     }
 }

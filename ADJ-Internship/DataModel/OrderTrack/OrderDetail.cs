@@ -27,7 +27,7 @@ namespace ADJ.DataModel.OrderTrack
         public string Item { get; set; }
 
         [Required]
-        public float Quantity { get; set; }
+        public decimal Quantity { get; set; }
 
         public float ReviseQuantity { get; set; }
 
@@ -47,7 +47,7 @@ namespace ADJ.DataModel.OrderTrack
         {
             get
             {
-                return Quantity * UnitPrice;
+                return (float)Quantity * UnitPrice;
             }
         }
 
@@ -58,7 +58,7 @@ namespace ADJ.DataModel.OrderTrack
         {
             get
             {
-                return Quantity * RetailPrice;
+                return (float)Quantity * RetailPrice;
             }
         }
 

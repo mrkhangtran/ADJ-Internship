@@ -11,11 +11,11 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace WebApp.Controllers
 {
-    public class DisplayAndFilterController : Controller
+    public class OrderController : Controller
     {
-        private readonly IDisplayAndFilterService _displayAndFilterService;
+        private readonly IOrderService _displayAndFilterService;
 
-        public DisplayAndFilterController(IDisplayAndFilterService displayAndFilterService)
+        public OrderController(IOrderService displayAndFilterService)
         {
             _displayAndFilterService = displayAndFilterService;
         }
@@ -23,18 +23,8 @@ namespace WebApp.Controllers
         //Display
         public async Task<IActionResult> Display( )
         {
-            List<PODisplayDto> lstPO = await _displayAndFilterService.GetPOsAsync();
+            List<OrderDisplayDto> lstPO = await _displayAndFilterService.GetPOsAsync();
 
-            //List<PODisplayDto> lstResult = new List<PODisplayDto>;
-
-            //int pageNumber = (lstPO.Count / 20) + 1;
-            //for(int i = 1; i <= 20; i++)
-            //{
-            //    foreach(var item in lstPO)
-            //    {
-            //        lstResult.Add(item);
-            //    }
-            //}
             if (lstPO.Count == 0)
             {
                 ViewBag.Massage = "There is no available PO";
@@ -49,8 +39,8 @@ namespace WebApp.Controllers
         {
 
             string sKey = HttpContext.Request.Form["filter"];
-            List<PODisplayDto> lstPO = await _displayAndFilterService.GetPOsAsync();
-            List<PODisplayDto> lstFilterResult = await _displayAndFilterService.FilterPO(sKey);
+            List<OrderDisplayDto> lstPO = await _displayAndFilterService.GetPOsAsync();
+            List<OrderDisplayDto> lstFilterResult = await _displayAndFilterService.FilterPO(sKey);
             if (lstFilterResult.Count == 0)
             {
                 ViewBag.Message = "No match result, please try again";

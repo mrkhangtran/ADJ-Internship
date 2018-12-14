@@ -1,4 +1,5 @@
 ﻿using ADJ.BusinessService.Core;
+using ADJ.Common;
 using ADJ.DataModel.Core;
 using ADJ.DataModel.OrderTrack;
 using AutoMapper;
@@ -10,7 +11,7 @@ using System.Text;
 
 namespace ADJ.BusinessService.Dtos
 {
-    public class PODisplayDto : EntityDtoBase
+    public class OrderDisplayDto : EntityDtoBase
     {
         [DisplayName("PO Number")]
         public string PONumber { get; set; }
@@ -38,10 +39,9 @@ namespace ADJ.BusinessService.Dtos
         public string PortOfDelivery { get; set; }
 
         [DisplayName("PO Quantity")]
-        public float POQuantity { get; set; }
+        public decimal POQuantity { get; set; }
 
-        [DefaultValue("Null")]
-        public string Status { get; set; }
+        public OrderStatus Status { get; set; }
 
         
 
