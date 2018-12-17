@@ -107,7 +107,7 @@ namespace ADJ.WebApp.Controllers
           break;
         case "AddItem":
           ViewBag.ItemId = -1;
-          break;
+          return PartialView("_OrderDetail",addModel);
         default:
           int itemId = int.Parse(new string(method.Where(char.IsDigit).ToArray()));
           ModelState.Clear();
