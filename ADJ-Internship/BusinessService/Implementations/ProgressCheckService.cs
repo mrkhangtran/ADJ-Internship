@@ -42,23 +42,25 @@ namespace ADJ.BusinessService.Implementations
         public async Task<PagedListResult<ProgressCheckDto>> ListProgressCheckDtoAsync()
         {
             List<ProgressCheckDto> progressCheckDTOs = new List<ProgressCheckDto>();
-            var lst = await _orderDataProvider.ListAsync();
-            List<Order> orders = lst.Items;
+            //var lst = await _orderDataProvider.ListAsync();
+            //List<Order> orders = lst.Items;
+            List<Order> orders = await _orderRepository.Query(x => x.Id > 0, true).SelectAsync();
             foreach (var order in orders)
             {
                 decimal POQuantity = 0;
-                List<OrderDetail> orderDetails = await _orderdetailRepository.Query(x => x.OrderId == order.Id, false).SelectAsync();
-                foreach (var orderDetail in orderDetails)
-                {
-                    if (orderDetail.OrderId == order.Id)
-                    {
-                        POQuantity += orderDetail.Quantity;
-                    }
+                //fix
+                //List<OrderDetail> orderDetails = await _orderdetailRepository.Query(x => x.OrderId == order.Id, false).SelectAsync();
+                //Order i = await _orderRepository.GetByIdAsync(order.Id, true);
+                foreach (var orderDetail in order.orderDetails)
+                {                   
+                        POQuantity += orderDetail.Quantity;                  
                 }
-                List<ProgressCheck> lstProgress = new List<ProgressCheck>();
-                lstProgress = await _progresscheckRepository.Query(x => x.OrderId == order.Id, false).SelectAsync();
+                //List<ProgressCheck> lstProgress = new List<ProgressCheck>();
+                // fix
+                //lstProgress = await _progresscheckRepository.Query(x => x.OrderId == order.Id, false).SelectAsync();
                 ProgressCheck progressCheck = new ProgressCheck();
-                if (lstProgress.Count == 0)
+                ProgressCheck check =  _progresscheckRepository.GetProgressCheckByOrderId(order.Id);
+                if (check==null)
                 {
                     progressCheck.Id = 0;
                     progressCheck.InspectionDate = DateTime.Now.Date;
@@ -68,7 +70,7 @@ namespace ADJ.BusinessService.Implementations
                 }
                 else
                 {
-                    progressCheck = lstProgress[0];
+                    progressCheck = check;
                     if (progressCheck.EstQtyToShip != POQuantity)
                     {
                         progressCheck.Complete = false;
@@ -85,9 +87,8 @@ namespace ADJ.BusinessService.Implementations
                     Complete = progressCheck.Complete,
                     POQuantity = POQuantity,
                     EstQtyToShip = progressCheck.EstQtyToShip,
-                    Supplier = order.Supplier,
-                    ListOrderDetail = orderDetails,
-                    ListOrderDetailDto = Mapper.Map<List<OrderDetailDto>>(orderDetails),
+                    Supplier = order.Supplier,                  
+                    ListOrderDetailDto = Mapper.Map<List<OrderDetailDto>>(order.orderDetails),
                     OrderId = order.Id,
                     Origin = order.Origin,
                     OriginPort = order.PortOfDelivery,

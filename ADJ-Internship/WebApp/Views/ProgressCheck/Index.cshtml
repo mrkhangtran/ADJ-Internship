@@ -88,12 +88,12 @@
                     <tbody>
                         <tr>
                             <td>
-                                <input id="Search" style="height:50px;width:150px" class="uk-button uk-button-primary" type="button" data-uk-button value="Search">
+                                <input id="Search"  class="uk-button uk-button-primary" type="button" data-uk-button value="Search">
                             </td>
                         </tr>
                         <tr>
                             <td>
-                                <input id="Achieve" style="height:50px;width:150px" class="uk-button uk-button-danger" type="submit" data-uk-button value="Achieve">
+                                <input id="Achieve"  class="uk-button uk-button-danger" type="submit" data-uk-button value="Achieve">
 
                             </td>
                         </tr>
@@ -108,10 +108,10 @@
     <div id="renderSearching">
         @for (int i = 0; i < Model.Count(); i++)
         {
-            <div class="uk-container" style="margin-top:50px">
+            <div class="uk-margin-small uk-container">
                 @Html.HiddenFor(model => model[i].OrderId, new { Value = Model[i].OrderId })
                 @Html.HiddenFor(model => model[i].Id, new { Value = Model[i].Id })
-                <table border="1">
+                <table class="uk-margin-small" border="1">
                     <thead style="color:white">
                         <tr style="background-color:#333">
                             <td>
@@ -133,7 +133,7 @@
 
                     </tbody>
                 </table>
-                <table border="1">
+                <table class="uk-margin-small" border="1">
                     <thead style="color:white">
                         <tr style="background-color:#333">
                             <td></td>
@@ -188,7 +188,7 @@
 
                     </tbody>
                 </table>
-                <table border="1">
+                <table class="uk-margin-small" border="1">
                     <thead style="color:white">
                         <tr style="background-color:#333">
                             <td></td>
@@ -233,7 +233,7 @@
         $.ajax({
             type: "GET",
             dataType:"html",
-            url: "@Url.Action("Searching", "ProgressCheck")",
+            url: "@Url.Action("Index", "ProgressCheck")",
             data: {
                 Suppliers: $('#Suppliers').val(),
                 Factories: $('#Factories').val(),
@@ -250,11 +250,11 @@
             }
         });
     });
-    $("#Achieve").click(function (event) {
-        if (!confirm('Are you sure that you want to submit the form')) {
-            event.preventDefault();
-        }
-        @*var data = @Html.Raw(Json.Serialize(Model));
+    $("#Achieve").click(function (event) {     
+        //if (!confirm('Are you sure that you want to submit the form')) {
+        //    event.preventDefault();
+        //}
+        var data = @Html.Raw(Json.Serialize(Model));
         var POList = [];
         var ItemList = [];
         $.each($("input[name='PONumber']:checked"), function () {
@@ -271,11 +271,11 @@
                 ItemList: ItemList,
                 progressCheckDTOs: data
             },
-            url: "@Url.Action("Update", "ProgressCheck")",
+            url: "@Url.Action("CreateOrUpdate", "ProgressCheck")",
             success: function () {
                 alert("Success");
             }
-        });*@
+        });
     });
 </script>
 
