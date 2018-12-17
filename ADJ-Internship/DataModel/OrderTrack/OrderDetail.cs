@@ -29,7 +29,7 @@ namespace ADJ.DataModel.OrderTrack
         [Required]
         public decimal Quantity { get; set; }
 
-        public float ReviseQuantity { get; set; }
+        public decimal ReviseQuantity { get; set; }
 
         [Required]
         public float Cartons { get; set; }

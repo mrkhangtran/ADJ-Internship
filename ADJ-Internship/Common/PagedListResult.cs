@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace ADJ.Common
 {
@@ -9,5 +10,7 @@ namespace ADJ.Common
         public int TotalCount { get; set; }
 
         public int PageCount { get; set; }
+
+        
     }
 }

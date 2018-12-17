@@ -114,7 +114,7 @@ namespace ADJ.WebApp
             {
                 routes.MapRoute(
                     name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
+                    template: "{controller=ProgressCheck}/{action=Index}/{id?}");
             });
         }
     }
