@@ -1,5 +1,5 @@
 ﻿@model List<ADJ.BusinessService.Dtos.ProgressCheckDto>
-@using (Html.BeginForm())
+@using (Html.BeginForm("CreateOrUpdate","ProgressCheck",FormMethod.Post))
 {
     <div class="uk-container">
         <div class="uk-grid">
@@ -233,7 +233,7 @@
         $.ajax({
             type: "GET",
             dataType:"html",
-            url: "@Url.Action("Index", "ProgressCheck")",
+            url: "@Url.Action("Searching", "ProgressCheck")",
             data: {
                 Suppliers: $('#Suppliers').val(),
                 Factories: $('#Factories').val(),
@@ -250,32 +250,34 @@
             }
         });
     });
-    $("#Achieve").click(function (event) {     
-        //if (!confirm('Are you sure that you want to submit the form')) {
-        //    event.preventDefault();
-        //}
-        var data = @Html.Raw(Json.Serialize(Model));
-        var POList = [];
-        var ItemList = [];
-        $.each($("input[name='PONumber']:checked"), function () {
-            POList.push($(this).val());
-        });
-        $.each($("input[name='ItemNumber']:checked"), function () {
-            ItemList.push($(this).val());
-        });
+    $("#Achieve").click(function () {  
+        if (!confirm('Are you sure that you want to submit the form')) {
+            event.preventDefault();
+        }
+        else {
+            var data = @Html.Raw(Json.Serialize(Model));
+            var POList = [];
+            var ItemList = [];
+            $.each($("input[name='PONumber']:checked"), function () {
+                POList.push($(this).val());
+            });
+            $.each($("input[name='ItemNumber']:checked"), function () {
+                ItemList.push($(this).val());
+            });
 
-        $.ajax({
-            type: "POST",
-            data: {
-                POList: POList,
-                ItemList: ItemList,
-                progressCheckDTOs: data
-            },
-            url: "@Url.Action("CreateOrUpdate", "ProgressCheck")",
-            success: function () {
-                alert("Success");
-            }
-        });
+            $.ajax({
+                type: "POST",
+                data: {
+                    POList: POList,
+                    ItemList: ItemList,
+                    progressCheckDTOs: data
+                },
+                url: "@Url.Action("CreateOrUpdate", "ProgressCheck")",
+                success: function () {
+                    alert("Success");
+                }
+            });
+        }
     });
 </script>
 
