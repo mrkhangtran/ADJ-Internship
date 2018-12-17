@@ -84,10 +84,10 @@ namespace ADJ.WebApp.Controllers
 
           if (ModelState.IsValid)
           {
-            await _poService.CreateOrUpdateOrderAsync(addModel);
+            OrderDTO temp = await _poService.CreateOrUpdateOrderAsync(addModel);
             foreach (var i in addModel.PODetails.Items)
             {
-              i.OrderId = await _poService.GetLastOrderId();
+              i.OrderId = temp.Id;
               await _poService.CreateOrUpdateOrderDetailAsync(i);
             }
 
@@ -309,10 +309,10 @@ namespace ADJ.WebApp.Controllers
 
           if (ModelState.IsValid)
           {
-            await _poService.CreateOrUpdateOrderAsync(addModel);
+            OrderDTO temp = await _poService.CreateOrUpdateOrderAsync(addModel);
             foreach (var i in addModel.PODetails.Items)
             {
-              i.OrderId = await _poService.GetLastOrderId();
+              i.OrderId = temp.Id;
               await _poService.CreateOrUpdateOrderDetailAsync(i);
             }
 

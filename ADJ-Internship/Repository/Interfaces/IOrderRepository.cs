@@ -9,6 +9,5 @@ namespace ADJ.Repository.Interfaces
 {
   public interface IOrderRepository : IRepository<Order>
   {
-    Task<int> GetLastOrderId();
   }
 }

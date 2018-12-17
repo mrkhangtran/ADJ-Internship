@@ -77,16 +77,6 @@ namespace ADJ.BusinessService.Implementations
       return rs;
     }
 
-    public async Task<int> GetLastOrderId()
-    {
-      //var orderResult = await _orderDataProvider.ListAsync();
-      //List<Order> orders = orderResult.Items;
-      //List<Order> temp = await _orderRepository.Query(x => x.Id > 0, false).SelectAsync();
-
-      //return orders[orders.Count - 1].Id;
-      return await _orderRepository.GetLastOrderId();
-    }
-
     public async Task<OrderDetailDTO> CreateOrUpdateOrderDetailAsync(OrderDetailDTO orderDetail)
     {
       OrderDetail entity;
