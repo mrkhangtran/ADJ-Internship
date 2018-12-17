@@ -1,4 +1,5 @@
-﻿@model IEnumerable<ADJ.BusinessService.Dtos.OrderDisplayDto>
+﻿
+@model IEnumerable<ADJ.BusinessService.Dtos.OrderDto>
 
 @{
 	ViewData["Title"] = "Display";
@@ -6,8 +7,8 @@
 }
 
 <!-- start table -->
-<table class="uk-table uk-table-striped content-table" style="border:1px solid #333">
-	<thead style="background:#333">
+<table class="uk-table uk-table-striped content-table">
+	<thead>
 		<tr>
 			<th>PO Number</th>
 			<th>PO Date</th>
@@ -16,7 +17,7 @@
 			<th>Part Of Delivery</th>
 			<th>Suppier</th>
 			<th>PO Ship Date</th>
-			<th>PO Qty</th>
+			<th>PO City</th>
 			<th>Status</th>
 			<th>PO Delivery Date</th>
 			<th></th>
@@ -27,16 +28,16 @@
 		{
 			<tr>
 				<td>@i.PONumber</td>
-				<td>@i.PODate.ToString("dd MMM yyyy")</td>
+				<td>@i.OrderDate.ToString("dd MM yyyy")</td>
+				<td>@i.Supplier</td>
 				<td>@i.Origin</td>
 				<td>@i.PortOfLoading</td>
+				<td>@i.ShipDate.ToString("dd MM yyyy")</td>
+				<td>@i.DeliveryDate.ToString("dd MM yyyy")</td>
 				<td>@i.PortOfDelivery</td>
-				<td>@i.Supplier</td>
-				<td>@i.POShipDate.ToString("dd MMM yyyy")</td>
-				<td>@i.POQuantity</td>
+				<td>@i.Quantity</td>
 				<td>@i.Status</td>
-				<td>@i.PODeliveryDate.ToString("dd MMM yyyy")</td>
-				<td><a href="#">Edit</a><a href="#"> Detail</a></td>
+				<td><a href="#"><span class="fa-fa-pencil-square-o"></span></a><a href="#"><span class="fa-fa-file-o"></span></a></td>
 			</tr>
 		}
 
@@ -44,18 +45,3 @@
 </table> <!-- end content-table -->
 <div class="massage-null"><p>@ViewBag.Massage</p></div>
 <div style="clear:both"></div>
-<ul class="uk-pagination pageList" uk-margin>
-	<li><a href="#"><span uk-pagination-previous></span></a></li>
-	<li><a href="#">1</a></li>
-	<li class="uk-disabled"><span>...</span></li>
-	<li><a href="#">4</a></li>
-	<li><a href="#">5</a></li>
-	<li><a href="#">6</a></li>
-	<li class="uk-active"><span>7</span></li>
-	<li><a href="#">8</a></li>
-	<li><a href="#">9</a></li>
-	<li><a href="#">10</a></li>
-	<li class="uk-disabled"><span>...</span></li>
-	<li><a href="#">20</a></li>
-	<li><a href="#"><span uk-pagination-next></span></a></li>
-</ul>

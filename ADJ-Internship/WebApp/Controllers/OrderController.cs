@@ -5,51 +5,36 @@ using System.Threading.Tasks;
 using ADJ.BusinessService.Dtos;
 using ADJ.BusinessService.Implementations;
 using ADJ.BusinessService.Interfaces;
+using ADJ.Common;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace WebApp.Controllers
 {
-    public class OrderController : Controller
-    {
-        private readonly IOrderService _displayAndFilterService;
+	public class OrderController : Controller
+	{
+		private readonly IOrderDisplayService _orderService;
 
-        public OrderController(IOrderService displayAndFilterService)
-        {
-            _displayAndFilterService = displayAndFilterService;
-        }
+		public OrderController(IOrderDisplayService orderService)
+		{
+			_orderService = orderService;
+		}
 
-        //Display
-        public async Task<IActionResult> Display( )
-        {
-            List<OrderDisplayDto> lstPO = await _displayAndFilterService.GetPOsAsync();
 
-            if (lstPO.Count == 0)
-            {
-                ViewBag.Massage = "There is no available PO";
-                return View(lstPO.OrderByDescending(n => n.PODate));
-            }
+		public async Task<PartialViewResult> Display( string poNumber)
+		{
+			List<OrderDto> listPO = await _orderService.DisplaysAsync(poNumber);
 
-            return View(lstPO);
-        }
+			if (listPO.Count == 0)
+			{
+				ViewBag.Massage = "There is no available PO";
+				return PartialView(listPO);
+			}
 
-        //Filter
-        public async Task<IActionResult> FilterPO()
-        {
+			return PartialView(listPO);
+		}
 
-            string sKey = HttpContext.Request.Form["filter"];
-            List<OrderDisplayDto> lstPO = await _displayAndFilterService.GetPOsAsync();
-            List<OrderDisplayDto> lstFilterResult = await _displayAndFilterService.FilterPO(sKey);
-            if (lstFilterResult.Count == 0)
-            {
-                ViewBag.Message = "No match result, please try again";
-                return View(lstPO.OrderByDescending(n => n.PODate));
-            }
 
-            return View(lstFilterResult);
-        }
-       
-
-    }
+	}
 }
