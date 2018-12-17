@@ -30,7 +30,6 @@
   <ItemGroup>
     <ProjectReference Include="..\BusinessService\BusinessService.csproj" />
     <ProjectReference Include="..\Common\Common.csproj" />
-    <ProjectReference Include="..\DataModel\DataModel.csproj" />
     <ProjectReference Include="..\Infrastructure\Infrastructure.csproj" />
   </ItemGroup>
 

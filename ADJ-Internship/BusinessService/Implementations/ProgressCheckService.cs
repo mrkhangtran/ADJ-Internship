@@ -26,9 +26,9 @@ namespace ADJ.BusinessService.Implementations
         private readonly IProgressCheckRepository _progresscheckRepository;
 
         public ProgressCheckService(IUnitOfWork unitOfWork, IMapper mapper, ApplicationContext appContext,
-            IDataProvider<ProgressCheck> progresscheckDataProvider,IDataProvider<Order> orderDataProvider,
+            IDataProvider<ProgressCheck> progresscheckDataProvider, IDataProvider<Order> orderDataProvider,
             IDataProvider<OrderDetail> orderdetailDataProvider, IProgressCheckRepository progresscheckRepository,
-            IOrderRepository orderRepository,IOrderDetailRepository orderdetailRepository) : base(unitOfWork, mapper, appContext)
+            IOrderRepository orderRepository, IOrderDetailRepository orderdetailRepository) : base(unitOfWork, mapper, appContext)
         {
             _orderDataProvider = orderDataProvider;
             _orderRepository = orderRepository;
@@ -47,7 +47,7 @@ namespace ADJ.BusinessService.Implementations
             foreach (var order in orders)
             {
                 decimal POQuantity = 0;
-                List<OrderDetail> orderDetails = await _orderdetailRepository.Query(x => x.OrderId == order.Id,false).SelectAsync();
+                List<OrderDetail> orderDetails = await _orderdetailRepository.Query(x => x.OrderId == order.Id, false).SelectAsync();
                 foreach (var orderDetail in orderDetails)
                 {
                     if (orderDetail.OrderId == order.Id)
@@ -58,13 +58,13 @@ namespace ADJ.BusinessService.Implementations
                 List<ProgressCheck> lstProgress = new List<ProgressCheck>();
                 lstProgress = await _progresscheckRepository.Query(x => x.OrderId == order.Id, false).SelectAsync();
                 ProgressCheck progressCheck = new ProgressCheck();
-                if (lstProgress==null)
+                if (lstProgress.Count == 0)
                 {
                     progressCheck.Id = 0;
                     progressCheck.InspectionDate = DateTime.Now.Date;
                     progressCheck.IntendedShipDate = DateTime.Now.Date;
                     progressCheck.Complete = false;
-                    progressCheck.OrderId = order.Id;   
+                    progressCheck.OrderId = order.Id;
                 }
                 else
                 {
@@ -87,7 +87,7 @@ namespace ADJ.BusinessService.Implementations
                     EstQtyToShip = progressCheck.EstQtyToShip,
                     Supplier = order.Supplier,
                     ListOrderDetail = orderDetails,
-                    ListOrderDetailDto=Mapper.Map<List<OrderDetailDto>>(orderDetails),
+                    ListOrderDetailDto = Mapper.Map<List<OrderDetailDto>>(orderDetails),
                     OrderId = order.Id,
                     Origin = order.Origin,
                     OriginPort = order.PortOfDelivery,
@@ -107,6 +107,7 @@ namespace ADJ.BusinessService.Implementations
         public async Task<ProgressCheckDto> CreateOrUpdatePurchaseOrderAsync(ProgressCheckDto rq)
         {
             ProgressCheck entity = new ProgressCheck();
+            rq.ListOrderDetail = Mapper.Map<List<OrderDetail>>(rq.ListOrderDetailDto);
             if (rq.Id > 0)
             {
                 entity = await _progresscheckRepository.GetByIdAsync(rq.Id, false);
@@ -119,7 +120,7 @@ namespace ADJ.BusinessService.Implementations
                 entity.InspectionDate = rq.InspectionDate;
                 entity.IntendedShipDate = rq.IntendedShipDate;
                 decimal temp = 0;
-                rq.ListOrderDetail = Mapper.Map<List<OrderDetail>>(rq.ListOrderDetailDto);
+
                 foreach (var item in rq.ListOrderDetail)
                 {
                     temp += item.ReviseQuantity;
@@ -141,7 +142,8 @@ namespace ADJ.BusinessService.Implementations
             else
             {
                 entity.InspectionDate = rq.InspectionDate;
-
+                entity.IntendedShipDate = rq.IntendedShipDate;
+                entity.OrderId = rq.OrderId;
                 decimal temp = 0;
                 foreach (var item in rq.ListOrderDetail)
                 {
@@ -167,9 +169,10 @@ namespace ADJ.BusinessService.Implementations
             var rs = Mapper.Map<ProgressCheckDto>(entity);
             return rs;
         }
+
         public async Task<GetItemSearchDto> SearchItem()
         {
-            var lst= await _orderDataProvider.ListAsync();
+            var lst = await _orderDataProvider.ListAsync();
             List<Order> orderModels = lst.Items;
             var suppliers = orderModels.Select(x => x.Supplier).Distinct();
             var origins = orderModels.Select(x => x.Origin).Distinct();
