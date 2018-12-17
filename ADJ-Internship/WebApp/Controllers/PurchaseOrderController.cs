@@ -84,12 +84,8 @@ namespace ADJ.WebApp.Controllers
 
           if (ModelState.IsValid)
           {
-            OrderDTO temp = await _poService.CreateOrUpdateOrderAsync(addModel);
-            foreach (var i in addModel.PODetails.Items)
-            {
-              i.OrderId = temp.Id;
-              await _poService.CreateOrUpdateOrderDetailAsync(i);
-            }
+            addModel.orderDetails = addModel.PODetails.Items;
+            await _poService.CreateOrUpdateOrderAsync(addModel);
 
             return RedirectToAction("Index", new { id = addModel.PONumber, method = 1 });
           }
@@ -309,12 +305,8 @@ namespace ADJ.WebApp.Controllers
 
           if (ModelState.IsValid)
           {
-            OrderDTO temp = await _poService.CreateOrUpdateOrderAsync(addModel);
-            foreach (var i in addModel.PODetails.Items)
-            {
-              i.OrderId = temp.Id;
-              await _poService.CreateOrUpdateOrderDetailAsync(i);
-            }
+            addModel.orderDetails = addModel.PODetails.Items;
+            await _poService.CreateOrUpdateOrderAsync(addModel);
 
             return RedirectToAction("Index", new { id = addModel.PONumber, method = 3 });
           }
