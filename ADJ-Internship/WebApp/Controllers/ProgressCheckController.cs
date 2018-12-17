@@ -57,7 +57,7 @@ namespace WebApp.Controllers
             List<ProgressCheckDto> progressCheckDtos = lstPrc.Items;
             return View("Index", progressCheckDTOs);
         }
-        public async Task<ActionResult> Searching(string PONumberSearch = null, string ItemSearch = null, string Suppliers = null, string Factories = null, string Origins = null, string OriginPorts = null, string Depts = null)
+        public async Task<ActionResult> SearchItem(string PONumberSearch = null, string ItemSearch = null, string Suppliers = null, string Factories = null, string Origins = null, string OriginPorts = null, string Depts = null)
         {
             PagedListResult<ProgressCheckDto> lstPrc = await _prcService.ListProgressCheckDtoAsync();
             List<ProgressCheckDto> progressCheckDtos = lstPrc.Items;
