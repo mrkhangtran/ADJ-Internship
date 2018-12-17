@@ -1,0 +1,517 @@
+﻿@model ADJ.BusinessService.Dtos.OrderDTO;
+
+<h3>PO Manager</h3>
+
+@using (Html.BeginForm())
+{
+  <input asp-for="Id" value=@Model.Id type="hidden" />
+  <input asp-for="RowVersion" value=@Model.RowVersion type="hidden" />
+  <input asp-for="orderDetailDTO.Id" value=@Model.orderDetailDTO.Id type="hidden" />
+
+  <h4>@ViewBag.Method</h4>
+  <hr />
+  @ViewBag.OrderDetailError
+  <div>
+    <table class="uk-table">
+      <tr>
+        <td>
+          <label asp-for="PONumber"></label>
+        </td>
+        <td>
+          <input asp-for="PONumber" class="uk-input" id="from" onkeyup="copy()" />
+          <span asp-validation-for="PONumber" class="uk-alert-danger"></span>
+          @ViewBag.PONumberError
+        </td>
+        <td colspan="3"></td>
+        <td>
+          <input type="submit" value="Apply" class="uk-button uk-button-default" name="method" />
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <label asp-for="PONumber"></label>
+        </td>
+        <td>
+          <div class="col-md-10">
+            <input asp-for="PONumber" class="uk-input" id="to" onkeyup="copy2()" />
+            <span asp-validation-for="PONumber" class="uk-alert-danger"></span>
+            @ViewBag.ErrorMessage
+          </div>
+        </td>
+        <td>
+          <label asp-for="Vendor"></label>
+        </td>
+        <td>
+          <div>
+            <input asp-for="Vendor" class="uk-input" />
+            <span asp-validation-for="Vendor" class="uk-alert-danger"></span>
+          </div>
+        </td>
+        <td>
+          <label asp-for="Mode"></label>
+        </td>
+        <td>
+          <div class="col-md-10">
+            <select asp-for="Mode" asp-items="new SelectList(ViewBag.Modes)" class="uk-input"></select>
+            <span asp-validation-for="Mode" class="uk-alert-danger"></span>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <label asp-for="OrderDate"></label>
+        </td>
+        <td>
+          <div class="col-md-10">
+            <input asp-for="OrderDate" class="uk-input" type="date" value=@DateTime.Now.ToString("yyyy-MM-dd") />
+            <span asp-validation-for="OrderDate" class="uk-alert-danger"></span>
+          </div>
+        </td>
+        <td>
+          <label asp-for="Company"></label>
+        </td>
+        <td>
+          <div class="col-md-10">
+            <input asp-for="Company" class="uk-input" />
+            <span asp-validation-for="Company" class="uk-alert-danger"></span>
+          </div>
+        </td>
+        <td>
+          <label asp-for="ShipDate"></label>
+        </td>
+        <td>
+          <div class="col-md-10">
+            <input asp-for="ShipDate" class="uk-input" type="date" value=@DateTime.Now.ToString("yyyy-MM-dd") />
+            <span asp-validation-for="ShipDate" class="uk-alert-danger"></span>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <label asp-for="Buyer"></label>
+        </td>
+        <td>
+          <div class="col-md-10">
+            <input asp-for="Buyer" class="uk-input" />
+            <span asp-validation-for="Buyer" class="uk-alert-danger"></span>
+          </div>
+        </td>
+        <td>
+          <label asp-for="Origin"></label>
+        </td>
+        <td>
+          <div class="col-md-10">
+            <select asp-for="Origin" asp-items="new SelectList(ViewBag.Origins)" class="uk-input"></select>
+            <span asp-validation-for="Origin" class="uk-alert-danger"></span>
+          </div>
+        </td>
+        <td>
+          <label asp-for="LatestShipDate"></label>
+        </td>
+        <td>
+          <div class="col-md-10">
+            <input asp-for="LatestShipDate" class="uk-input" type="date" value=@DateTime.Now.ToString("yyyy-MM-dd") />
+            <span asp-validation-for="LatestShipDate" class="uk-alert-danger"></span>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <label asp-for="Currency"></label>
+        </td>
+        <td>
+          <div class="col-md-10">
+            <select asp-for="Currency" asp-items="new SelectList(ViewBag.Currencies)" class="uk-input"></select>
+            <span asp-validation-for="Currency" class="uk-alert-danger"></span>
+          </div>
+        </td>
+        <td>
+          <label asp-for="PortOfLoading"></label>
+        </td>
+        <td>
+          <div class="col-md-10">
+            <select asp-for="PortOfLoading" asp-items="new SelectList(ViewBag.Ports)" class="uk-input"></select>
+            <span asp-validation-for="PortOfLoading" class="uk-alert-danger"></span>
+          </div>
+        </td>
+        <td>
+          <label asp-for="DeliveryDate"></label>
+        </td>
+        <td>
+          <div class="col-md-10">
+            <input asp-for="DeliveryDate" class="uk-input" type="date" value=@DateTime.Now.ToString("yyyy-MM-dd") />
+            <span asp-validation-for="DeliveryDate" class="uk-alert-danger"></span>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <label asp-for="Season"></label>
+        </td>
+        <td>
+          <div class="col-md-10">
+            <select asp-for="Season" asp-items="new SelectList(ViewBag.Seasons)" class="uk-input"></select>
+            <span asp-validation-for="Season" class="uk-alert-danger"></span>
+          </div>
+        </td>
+        <td>
+          <label asp-for="PortOfDelivery"></label>
+        </td>
+        <td>
+          <div class="col-md-10">
+            <select asp-for="PortOfDelivery" asp-items="new SelectList(ViewBag.Ports)" class="uk-input"></select>
+            <span asp-validation-for="PortOfDelivery" class="uk-alert-danger"></span>
+          </div>
+        </td>
+        <td>
+          <label asp-for="OrderType"></label>
+        </td>
+        <td>
+          <div class="col-md-10">
+            <input asp-for="OrderType" class="uk-input" />
+            <span asp-validation-for="OrderType" class="uk-alert-danger"></span>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <label asp-for="Department"></label>
+        </td>
+        <td>
+          <div class="col-md-10">
+            <input asp-for="Department" class="uk-input" />
+            <span asp-validation-for="Department" class="uk-alert-danger"></span>
+          </div>
+        </td>
+        <td>
+          <label asp-for="Factory"></label>
+        </td>
+        <td>
+          <div class="col-md-10">
+            <input asp-for="Factory" class="uk-input" />
+            <span asp-validation-for="Factory" class="uk-alert-danger"></span>
+          </div>
+        </td>
+        <td>
+          <label asp-for="Status"></label>
+        </td>
+        <td>
+          <div class="col-md-10">
+            <select asp-for="Status" asp-items="new SelectList(ViewBag.Statuses)" class="uk-input"></select>
+            <span asp-validation-for="Status" class="uk-alert-danger"></span>
+          </div>
+        </td>
+      </tr>
+    </table>
+
+    <button type="submit" value="AddItem" name="method" class="uk-button uk-button-default">Add Item</button>
+    @if (Model.PODetails != null)
+    {
+      <input asp-for="PODetails.TotalCount" value=@Model.PODetails.TotalCount type="hidden" />
+      <input asp-for="PODetails.PageCount" value=@Model.PODetails.PageCount type="hidden" />
+      if (Model.PODetails.Items != null)
+      {
+        if (Model.PODetails.PageCount > 1)
+        {<button type="submit" value="Previous" name="method" class="uk-button uk-button-default">Previous</button>}
+        int maxPage = Model.PODetails.Items.Count / Model.PODetails.TotalCount;
+        if (Model.PODetails.Items.Count % Model.PODetails.TotalCount > 0) { maxPage++; }
+        if (Model.PODetails.PageCount < maxPage)
+        {<button type="submit" value="Next" name="method" class="uk-button uk-button-default">Next</button>}
+      }
+    }
+
+    <table class="uk-table" id="ItemDetail">
+      <tr>
+        <th>
+          <label asp-for="orderDetailDTO.ItemNumber"></label>
+        </th>
+        <th>
+          <label asp-for="orderDetailDTO.Description"></label>
+        </th>
+        <th>
+          <label asp-for="orderDetailDTO.Tariff"></label>
+        </th>
+        <th>
+          <label asp-for="orderDetailDTO.Quantity"></label>
+        </th>
+        <th>
+          <label asp-for="orderDetailDTO.Cartons"></label>
+        </th>
+        <th>
+          <label asp-for="orderDetailDTO.Cube"></label>
+        </th>
+        <th>
+          <label asp-for="orderDetailDTO.KGS"></label>
+        </th>
+        <th>
+          <label asp-for="orderDetailDTO.UnitPrice"></label>
+        </th>
+        <th>
+          <label asp-for="orderDetailDTO.TotalPrice"></label>
+        </th>
+        <th>
+          <label asp-for="orderDetailDTO.RetailPrice"></label>
+        </th>
+        <th>
+          <label asp-for="orderDetailDTO.TotalRetailPrice"></label>
+        </th>
+        <th>
+          <label asp-for="orderDetailDTO.Warehouse"></label>
+        </th>
+        <th>
+          <label asp-for="orderDetailDTO.Size"></label>
+        </th>
+        <th>
+          <label asp-for="orderDetailDTO.Colour"></label>
+        </th>
+        <th></th>
+      </tr>
+      @if (ViewBag.ItemId == -1)
+      {
+        <tr>
+          <td>
+            <input asp-for="orderDetailDTO.ItemNumber" class="uk-input" />
+            <span asp-validation-for="orderDetailDTO.ItemNumber" class="uk-alert-danger"></span>
+            @ViewBag.ItemNumberError
+          </td>
+          <td>
+            <input asp-for="orderDetailDTO.Description" class="uk-input" />
+            <span asp-validation-for="orderDetailDTO.Description" class="uk-alert-danger"></span>
+          </td>
+          <td>
+            <input asp-for="orderDetailDTO.Tariff" class="uk-input" />
+            <span asp-validation-for="orderDetailDTO.Tariff" class="uk-alert-danger"></span>
+          </td>
+          <td>
+            <input asp-for="orderDetailDTO.Quantity" class="uk-input" id="Quantity" onkeyup="getTotalUnit(); getTotalRetail()" />
+            <span asp-validation-for="orderDetailDTO.Quantity" class="uk-alert-danger"></span>
+          </td>
+          <td>
+            <input asp-for="orderDetailDTO.Cartons" class="uk-input" />
+            <span asp-validation-for="orderDetailDTO.Cartons" class="uk-alert-danger"></span>
+          </td>
+          <td>
+            <input asp-for="orderDetailDTO.Cube" class="uk-input" />
+            <span asp-validation-for="orderDetailDTO.Cube" class="uk-alert-danger"></span>
+          </td>
+          <td>
+            <input asp-for="orderDetailDTO.KGS" class="uk-input" />
+            <span asp-validation-for="orderDetailDTO.KGS" class="uk-alert-danger"></span>
+          </td>
+          <td>
+            <input asp-for="orderDetailDTO.UnitPrice" class="uk-input" id="UnitPrice" onkeyup="getTotalUnit()" />
+            <span asp-validation-for="orderDetailDTO.UnitPrice" class="uk-alert-danger"></span>
+          </td>
+          <td>
+            <div id="TotalUnit">0</div>
+          </td>
+          <td>
+            <input asp-for="orderDetailDTO.RetailPrice" class="uk-input" id="RetailPrice" onkeyup="getTotalRetail()" />
+            <span asp-validation-for="orderDetailDTO.RetailPrice" class="uk-alert-danger"></span>
+          </td>
+          <td>
+            <div id="TotalRetail">0</div>
+          </td>
+          <td>
+            <input asp-for="orderDetailDTO.Warehouse" class="uk-input" />
+            <span asp-validation-for="orderDetailDTO.Warehouse" class="uk-alert-danger"></span>
+          </td>
+          <td>
+            <input asp-for="orderDetailDTO.Size" class="uk-input" />
+            <span asp-validation-for="orderDetailDTO.Size" class="uk-alert-danger"></span>
+          </td>
+          <td>
+            <input asp-for="orderDetailDTO.Colour" class="uk-input" />
+            <span asp-validation-for="orderDetailDTO.Colour" class="uk-alert-danger"></span>
+          </td>
+          <td>
+            <button type="submit" value="Save" name="method" class="uk-button uk-button-default">Save Item</button>
+          </td>
+        </tr>
+      }
+      @if (Model.PODetails.Items != null)
+      {
+        @if (Model.PODetails.Items.Count > 0)
+        {
+          if ((ViewBag.ItemId < 0) || (ViewBag.ItemId == null))
+          {
+            <input asp-for="orderDetailDTO.ItemNumber" value=@Model.PODetails.Items[0].ItemNumber type="hidden" />
+          }
+
+          for (int i = 0; i < Model.PODetails.Items.Count(); i++)
+          //for (int i = ((Model.PODetails.PageCount - 1) * Model.PODetails.TotalCount); i < ((Model.PODetails.PageCount) * Model.PODetails.TotalCount); i++)
+          {
+            <input asp-for="PODetails.Items[i].Id" value=@Model.PODetails.Items[i].Id type="hidden" />
+            <input asp-for="PODetails.Items[i].ItemNumber" value=@Model.PODetails.Items[i].ItemNumber type="hidden" />
+            <input asp-for="PODetails.Items[i].Description" value=@Model.PODetails.Items[i].Description type="hidden" />
+            <input asp-for="PODetails.Items[i].Warehouse" value=@Model.PODetails.Items[i].Warehouse type="hidden" />
+            <input asp-for="PODetails.Items[i].Colour" value=@Model.PODetails.Items[i].Colour type="hidden" />
+            <input asp-for="PODetails.Items[i].Size" value=@Model.PODetails.Items[i].Size type="hidden" />
+            <input asp-for="PODetails.Items[i].Quantity" value=@Model.PODetails.Items[i].Quantity type="hidden" />
+            <input asp-for="PODetails.Items[i].Cartons" value=@Model.PODetails.Items[i].Cartons type="hidden" />
+            <input asp-for="PODetails.Items[i].Cube" value=@Model.PODetails.Items[i].Cube type="hidden" />
+            <input asp-for="PODetails.Items[i].KGS" value=@Model.PODetails.Items[i].KGS type="hidden" />
+            <input asp-for="PODetails.Items[i].UnitPrice" value=@Model.PODetails.Items[i].UnitPrice type="hidden" />
+            <input asp-for="PODetails.Items[i].RetailPrice" value=@Model.PODetails.Items[i].RetailPrice type="hidden" />
+            <input asp-for="PODetails.Items[i].Tariff" value=@Model.PODetails.Items[i].Tariff type="hidden" />
+            <input asp-for="PODetails.Items[i].OrderId" value=@Model.PODetails.Items[i].OrderId type="hidden" />
+            <input asp-for="PODetails.Items[i].RowVersion" value=@Model.PODetails.Items[i].RowVersion type="hidden" />
+
+            if (i != ViewBag.ItemId)
+            {
+              <tr>
+                <td>
+                  @Model.PODetails.Items[i].ItemNumber
+                </td>
+                <td>
+                  @Model.PODetails.Items[i].Description
+                </td>
+                <td>
+                  @Model.PODetails.Items[i].Tariff
+                </td>
+                <td>
+                  @Model.PODetails.Items[i].Quantity
+                </td>
+                <td>
+                  @Model.PODetails.Items[i].Cartons
+                </td>
+                <td>
+                  @Model.PODetails.Items[i].Cube
+                </td>
+                <td>
+                  @Model.PODetails.Items[i].KGS
+                </td>
+                <td>
+                  @Model.PODetails.Items[i].UnitPrice
+                </td>
+                <td>
+                  @Model.PODetails.Items[i].TotalPrice
+                </td>
+                <td>
+                  @Model.PODetails.Items[i].RetailPrice
+                </td>
+                <td>
+                  @Model.PODetails.Items[i].TotalRetailPrice
+                </td>
+                <td>
+                  @Model.PODetails.Items[i].Warehouse
+                </td>
+                <td>
+                  @Model.PODetails.Items[i].Size
+                </td>
+                <td>
+                  @Model.PODetails.Items[i].Colour
+                </td>
+                <td>
+                  <button type="submit" value="@i" name="method" class="uk-button uk-button-default">Edit Item</button>
+                  <button type="submit" value="Delete @i" name="method" class="uk-button uk-button-default">Delete Item</button>
+                </td>
+              </tr>
+            }
+            else
+            {
+              <tr>
+                <td>
+                  <input asp-for="orderDetailDTO.ItemNumber" class="uk-input" />
+                  <span asp-validation-for="orderDetailDTO.ItemNumber" class="uk-alert-danger"></span>
+                  @ViewBag.ItemNumberError
+                </td>
+                <td>
+                  <input asp-for="orderDetailDTO.Description" class="uk-input" />
+                  <span asp-validation-for="orderDetailDTO.Description" class="uk-alert-danger"></span>
+                </td>
+                <td>
+                  <input asp-for="orderDetailDTO.Tariff" class="uk-input" />
+                  <span asp-validation-for="orderDetailDTO.Tariff" class="uk-alert-danger"></span>
+                </td>
+                <td>
+                  <input asp-for="orderDetailDTO.Quantity" class="uk-input" id="Quantity" onkeyup="getTotalUnit(); getTotalRetail()" />
+                  <span asp-validation-for="orderDetailDTO.Quantity" class="uk-alert-danger"></span>
+                </td>
+                <td>
+                  <input asp-for="orderDetailDTO.Cartons" class="uk-input" />
+                  <span asp-validation-for="orderDetailDTO.Cartons" class="uk-alert-danger"></span>
+                </td>
+                <td>
+                  <input asp-for="orderDetailDTO.Cube" class="uk-input" />
+                  <span asp-validation-for="orderDetailDTO.Cube" class="uk-alert-danger"></span>
+                </td>
+                <td>
+                  <input asp-for="orderDetailDTO.KGS" class="uk-input" />
+                  <span asp-validation-for="orderDetailDTO.KGS" class="uk-alert-danger"></span>
+                </td>
+                <td>
+                  <input asp-for="orderDetailDTO.UnitPrice" class="uk-input" id="UnitPrice" onkeyup="getTotalUnit()" />
+                  <span asp-validation-for="orderDetailDTO.UnitPrice" class="uk-alert-danger"></span>
+                </td>
+                <td>
+                  <div id="TotalUnit">0</div>
+                </td>
+                <td>
+                  <input asp-for="orderDetailDTO.RetailPrice" class="uk-input" id="RetailPrice" onkeyup="getTotalRetail()" />
+                  <span asp-validation-for="orderDetailDTO.RetailPrice" class="uk-alert-danger"></span>
+                </td>
+                <td>
+                  <div id="TotalRetail">0</div>
+                </td>
+                <td>
+                  <input asp-for="orderDetailDTO.Warehouse" class="uk-input" />
+                  <span asp-validation-for="orderDetailDTO.Warehouse" class="uk-alert-danger"></span>
+                </td>
+                <td>
+                  <input asp-for="orderDetailDTO.Size" class="uk-input" />
+                  <span asp-validation-for="orderDetailDTO.Size" class="uk-alert-danger"></span>
+                </td>
+                <td>
+                  <input asp-for="orderDetailDTO.Colour" class="uk-input" />
+                  <span asp-validation-for="orderDetailDTO.Colour" class="uk-alert-danger"></span>
+                </td>
+                <td>
+                  <button type="submit" value="Update @i" name="method" class="uk-button uk-button-default">Update Item</button>
+                </td>
+              </tr>
+            }
+          }
+        }
+      }
+
+      @*
+        <a asp-action="Copy"
+           asp-route-page="@(Model.PODetails.PageCount - 1)"
+           class="btn btn-default">
+          Previous
+        </a>
+        <a asp-action="Copy"
+           asp-route-page="@(Model.PODetails.PageCount + 1)"
+           class="btn btn-default">
+          Next
+        </a>*@
+    </table>
+  </div>
+}
+
+<div>
+  <a asp-controller="PurchaseOrder" asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts
+  {
+  <script src="@Url.Content(" ~/Scripts/jquery.validate.min.js")"></script>
+  <script src="@Url.Content(" ~/Scripts/jquery.validate.unobtrusive.min.js")"></script>
+  <script type="text/javascript">
+
+    function copy() {
+      document.getElementById("to").value = document.getElementById("from").value;
+    };
+    function copy2() {
+      document.getElementById("from").value = document.getElementById("to").value;
+    };
+    function getTotalUnit() {
+      document.getElementById("TotalUnit").innerHTML = document.getElementById("Quantity").value * document.getElementById("UnitPrice").value;
+    };
+    function getTotalRetail() {
+      document.getElementById("TotalRetail").innerHTML = document.getElementById("Quantity").value * document.getElementById("RetailPrice").value;
+    };
+
+  </script>
+}

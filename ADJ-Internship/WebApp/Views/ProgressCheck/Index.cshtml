@@ -1,5 +1,5 @@
 ﻿@model List<ADJ.BusinessService.Dtos.ProgressCheckDto>
-@using (Html.BeginForm("CreateOrUpdate","ProgressCheck",FormMethod.Post))
+@using (Html.BeginForm())
 {
     <div class="uk-container">
         <div class="uk-grid">
@@ -250,11 +250,7 @@
             }
         });
     });
-    $("#Achieve").click(function () {  
-        if (!confirm('Are you sure that you want to submit the form')) {
-            event.preventDefault();
-        }
-        else {
+    $("#Achieve").click(function () {        
             var data = @Html.Raw(Json.Serialize(Model));
             var POList = [];
             var ItemList = [];
@@ -264,7 +260,6 @@
             $.each($("input[name='ItemNumber']:checked"), function () {
                 ItemList.push($(this).val());
             });
-
             $.ajax({
                 type: "POST",
                 data: {
@@ -276,8 +271,7 @@
                 success: function () {
                     alert("Success");
                 }
-            });
-        }
+            });    
     });
 </script>
 

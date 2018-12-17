@@ -18,7 +18,7 @@ namespace WebApp.Controllers
             _prcService = prcService;
         }
         // GET: ProgressCheckDto
-        public async Task<ActionResult> Index(string PONumberSearch = null, string ItemSearch = null, string Suppliers = null, string Factories = null, string Origins = null, string OriginPorts = null, string Depts = null)
+        public async Task<ActionResult> Index()
         {
             GetItemSearchDto getSearchItem = await _prcService.SearchItem();
             ViewBag.Suppliers = getSearchItem.Suppliers;
@@ -38,13 +38,13 @@ namespace WebApp.Controllers
 
                 for (int i = 0; i < progressCheckDTOs.Count(); i++)
                 {
-                    for (int j = 0; j < POList.Count; j++)
-                    {
-                        if (progressCheckDTOs[i].PONumber == POList[j])
-                        {
+                    //for (int j = 0; j < POList.Count; j++)
+                    //{
+                    //    if (progressCheckDTOs[i].PONumber == POList[j])
+                    //    {
                             await _prcService.CreateOrUpdatePurchaseOrderAsync(progressCheckDTOs[i]);
-                        }
-                    }
+                    //    }
+                    //}
                 }               
             }
             GetItemSearchDto getSearchItem = await _prcService.SearchItem();
@@ -55,7 +55,7 @@ namespace WebApp.Controllers
             ViewBag.Depts = getSearchItem.Depts;
             PagedListResult<ProgressCheckDto> lstPrc = await _prcService.ListProgressCheckDtoAsync();
             List<ProgressCheckDto> progressCheckDtos = lstPrc.Items;
-            return RedirectToAction("Index", progressCheckDTOs);
+            return View("Index", progressCheckDTOs);
         }
         public async Task<ActionResult> Searching(string PONumberSearch = null, string ItemSearch = null, string Suppliers = null, string Factories = null, string Origins = null, string OriginPorts = null, string Depts = null)
         {

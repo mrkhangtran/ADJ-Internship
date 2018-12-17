@@ -59,6 +59,7 @@ namespace ADJ.DataModel.OrderTrack
 
         public float POQuantity { get; set; }
 
+        //Default value = "New"
         public OrderStatus Status { get; set; }
 
         public ICollection<OrderDetail> orderDetails { get; set; } 
