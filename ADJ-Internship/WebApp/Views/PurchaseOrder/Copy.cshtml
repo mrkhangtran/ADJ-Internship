@@ -4,22 +4,22 @@
 
 @using (Html.BeginForm())
 {
-  @Html.HiddenFor(model => model.Id, new { Value = Model.Id })
-  @Html.HiddenFor(model => model.orderDetailDTO.Id, new { Value = Model.orderDetailDTO.Id })
+  <input asp-for="Id" value=@Model.Id type="hidden" />
+  <input asp-for="RowVersion" value=@Model.RowVersion type="hidden" />
+  <input asp-for="orderDetailDTO.Id" value=@Model.orderDetailDTO.Id type="hidden" />
 
   <h4>@ViewBag.Method</h4>
   <hr />
-  @Html.ValidationSummary(true, "", new { @class = "text-danger" })
   @ViewBag.OrderDetailError
   <div>
-    <table class="uk-table PO">
+    <table class="uk-table">
       <tr>
         <td>
           <label asp-for="PONumber"></label>
         </td>
         <td>
-          @Html.EditorFor(model => model.PONumber, new { htmlAttributes = new { @class = "uk-input", @id = "from", @onkeyup = "copy()" } })
-          @Html.ValidationMessageFor(model => model.PONumber, "", new { @class = "text-danger" })
+          <input asp-for="PONumber" class="uk-input" id="from" onkeyup="copy()" />
+          <span asp-validation-for="PONumber" class="uk-alert-danger"></span>
           @ViewBag.PONumberError
         </td>
         <td colspan="3"></td>
@@ -33,8 +33,8 @@
         </td>
         <td>
           <div class="col-md-10">
-            @Html.EditorFor(model => model.PONumber, new { htmlAttributes = new { @class = "uk-input", @id = "to", @onkeyup = "copy2()" } })
-            @Html.ValidationMessageFor(model => model.PONumber, "", new { @class = "text-danger" })
+            <input asp-for="PONumber" class="uk-input" id="to" onkeyup="copy2()" />
+            <span asp-validation-for="PONumber" class="uk-alert-danger"></span>
             @ViewBag.ErrorMessage
           </div>
         </td>
@@ -43,8 +43,8 @@
         </td>
         <td>
           <div>
-            @Html.EditorFor(model => model.Vendor, new { htmlAttributes = new { @class = "uk-input" } })
-            @Html.ValidationMessageFor(model => model.Vendor, "", new { @class = "text-danger" })
+            <input asp-for="Vendor" class="uk-input" />
+            <span asp-validation-for="Vendor" class="uk-alert-danger"></span>
           </div>
         </td>
         <td>
@@ -53,7 +53,7 @@
         <td>
           <div class="col-md-10">
             <select asp-for="Mode" asp-items="new SelectList(ViewBag.Modes)" class="uk-input"></select>
-            @Html.ValidationMessageFor(model => model.Mode, "", new { @class = "text-danger" })
+            <span asp-validation-for="Mode" class="uk-alert-danger"></span>
           </div>
         </td>
       </tr>
@@ -63,8 +63,8 @@
         </td>
         <td>
           <div class="col-md-10">
-            @Html.TextBoxFor(model => model.OrderDate, DateTime.Now.ToString("yyyy-MM-dd"), new { type = "date", @class = "uk-input" })
-            @Html.ValidationMessageFor(model => model.OrderDate, "", new { @class = "text-danger" })
+            <input asp-for="OrderDate" class="uk-input" type="date" value=@DateTime.Now.ToString("yyyy-MM-dd") />
+            <span asp-validation-for="OrderDate" class="uk-alert-danger"></span>
           </div>
         </td>
         <td>
@@ -72,8 +72,8 @@
         </td>
         <td>
           <div class="col-md-10">
-            @Html.EditorFor(model => model.Company, new { htmlAttributes = new { @class = "uk-input" } })
-            @Html.ValidationMessageFor(model => model.Company, "", new { @class = "text-danger" })
+            <input asp-for="Company" class="uk-input" />
+            <span asp-validation-for="Company" class="uk-alert-danger"></span>
           </div>
         </td>
         <td>
@@ -81,9 +81,8 @@
         </td>
         <td>
           <div class="col-md-10">
-            @Html.TextBoxFor(model => model.ShipDate, DateTime.Now.ToString("yyyy-MM-dd"), new { type = "date", @class = "uk-input" })
-
-            @Html.ValidationMessageFor(model => model.ShipDate, "", new { @class = "text-danger" })
+            <input asp-for="ShipDate" class="uk-input" type="date" value=@DateTime.Now.ToString("yyyy-MM-dd") />
+            <span asp-validation-for="ShipDate" class="uk-alert-danger"></span>
           </div>
         </td>
       </tr>
@@ -93,8 +92,8 @@
         </td>
         <td>
           <div class="col-md-10">
-            @Html.EditorFor(model => model.Buyer, new { htmlAttributes = new { @class = "uk-input" } })
-            @Html.ValidationMessageFor(model => model.Buyer, "", new { @class = "text-danger" })
+            <input asp-for="Buyer" class="uk-input" />
+            <span asp-validation-for="Buyer" class="uk-alert-danger"></span>
           </div>
         </td>
         <td>
@@ -103,7 +102,7 @@
         <td>
           <div class="col-md-10">
             <select asp-for="Origin" asp-items="new SelectList(ViewBag.Origins)" class="uk-input"></select>
-            @Html.ValidationMessageFor(model => model.Origin, "", new { @class = "text-danger" })
+            <span asp-validation-for="Origin" class="uk-alert-danger"></span>
           </div>
         </td>
         <td>
@@ -111,9 +110,8 @@
         </td>
         <td>
           <div class="col-md-10">
-            @Html.TextBoxFor(model => model.LatestShipDate, DateTime.Now.ToString("yyyy-MM-dd"), new { type = "date", @class = "uk-input" })
-
-            @Html.ValidationMessageFor(model => model.LatestShipDate, "", new { @class = "text-danger" })
+            <input asp-for="LatestShipDate" class="uk-input" type="date" value=@DateTime.Now.ToString("yyyy-MM-dd") />
+            <span asp-validation-for="LatestShipDate" class="uk-alert-danger"></span>
           </div>
         </td>
       </tr>
@@ -124,7 +122,7 @@
         <td>
           <div class="col-md-10">
             <select asp-for="Currency" asp-items="new SelectList(ViewBag.Currencies)" class="uk-input"></select>
-            @Html.ValidationMessageFor(model => model.Currency, "", new { @class = "text-danger" })
+            <span asp-validation-for="Currency" class="uk-alert-danger"></span>
           </div>
         </td>
         <td>
@@ -133,7 +131,7 @@
         <td>
           <div class="col-md-10">
             <select asp-for="PortOfLoading" asp-items="new SelectList(ViewBag.Ports)" class="uk-input"></select>
-            @Html.ValidationMessageFor(model => model.PortOfLoading, "", new { @class = "text-danger" })
+            <span asp-validation-for="PortOfLoading" class="uk-alert-danger"></span>
           </div>
         </td>
         <td>
@@ -141,9 +139,8 @@
         </td>
         <td>
           <div class="col-md-10">
-            @Html.TextBoxFor(model => model.DeliveryDate, DateTime.Now.ToString("yyyy-MM-dd"), new { type = "date", @class = "uk-input" })
-
-            @Html.ValidationMessageFor(model => model.DeliveryDate, "", new { @class = "text-danger" })
+            <input asp-for="DeliveryDate" class="uk-input" type="date" value=@DateTime.Now.ToString("yyyy-MM-dd") />
+            <span asp-validation-for="DeliveryDate" class="uk-alert-danger"></span>
           </div>
         </td>
       </tr>
@@ -154,7 +151,7 @@
         <td>
           <div class="col-md-10">
             <select asp-for="Season" asp-items="new SelectList(ViewBag.Seasons)" class="uk-input"></select>
-            @Html.ValidationMessageFor(model => model.Season, "", new { @class = "text-danger" })
+            <span asp-validation-for="Season" class="uk-alert-danger"></span>
           </div>
         </td>
         <td>
@@ -163,7 +160,7 @@
         <td>
           <div class="col-md-10">
             <select asp-for="PortOfDelivery" asp-items="new SelectList(ViewBag.Ports)" class="uk-input"></select>
-            @Html.ValidationMessageFor(model => model.PortOfDelivery, "", new { @class = "text-danger" })
+            <span asp-validation-for="PortOfDelivery" class="uk-alert-danger"></span>
           </div>
         </td>
         <td>
@@ -171,8 +168,8 @@
         </td>
         <td>
           <div class="col-md-10">
-            @Html.EditorFor(model => model.OrderType, new { htmlAttributes = new { @class = "uk-input" } })
-            @Html.ValidationMessageFor(model => model.OrderType, "", new { @class = "text-danger" })
+            <input asp-for="OrderType" class="uk-input" />
+            <span asp-validation-for="OrderType" class="uk-alert-danger"></span>
           </div>
         </td>
       </tr>
@@ -182,8 +179,8 @@
         </td>
         <td>
           <div class="col-md-10">
-            @Html.EditorFor(model => model.Department, new { htmlAttributes = new { @class = "uk-input" } })
-            @Html.ValidationMessageFor(model => model.Department, "", new { @class = "text-danger" })
+            <input asp-for="Department" class="uk-input" />
+            <span asp-validation-for="Department" class="uk-alert-danger"></span>
           </div>
         </td>
         <td>
@@ -191,8 +188,8 @@
         </td>
         <td>
           <div class="col-md-10">
-            @Html.EditorFor(model => model.Factory, new { htmlAttributes = new { @class = "uk-input" } })
-            @Html.ValidationMessageFor(model => model.Factory, "", new { @class = "text-danger" })
+            <input asp-for="Factory" class="uk-input" />
+            <span asp-validation-for="Factory" class="uk-alert-danger"></span>
           </div>
         </td>
         <td>
@@ -201,7 +198,7 @@
         <td>
           <div class="col-md-10">
             <select asp-for="Status" asp-items="new SelectList(ViewBag.Statuses)" class="uk-input"></select>
-            @Html.ValidationMessageFor(model => model.Status, "", new { @class = "text-danger" })
+            <span asp-validation-for="Status" class="uk-alert-danger"></span>
           </div>
         </td>
       </tr>
@@ -210,8 +207,8 @@
     <button type="submit" value="AddItem" name="method" class="uk-button uk-button-default">Add Item</button>
     @if (Model.PODetails != null)
     {
-      @Html.HiddenFor(model => model.PODetails.TotalCount, new { Value = Model.PODetails.TotalCount })
-      @Html.HiddenFor(model => model.PODetails.PageCount, new { Value = Model.PODetails.PageCount })
+      <input asp-for="PODetails.TotalCount" value=@Model.PODetails.TotalCount type="hidden" />
+      <input asp-for="PODetails.PageCount" value=@Model.PODetails.PageCount type="hidden" />
       if (Model.PODetails.Items != null)
       {
         if (Model.PODetails.PageCount > 1)
@@ -223,7 +220,7 @@
       }
     }
 
-    <table class="uk-table PODetail" id="ItemDetail">
+    <table class="uk-table" id="ItemDetail">
       <tr>
         <th>
           <label asp-for="orderDetailDTO.ItemNumber"></label>
@@ -273,62 +270,59 @@
       {
         <tr>
           <td>
-            @Html.EditorFor(model => model.orderDetailDTO.ItemNumber, new { htmlAttributes = new { @class = "uk-input" } })
-            @Html.ValidationMessageFor(model => model.orderDetailDTO.ItemNumber, "", new { @class = "text-danger" })
+            <input asp-for="orderDetailDTO.ItemNumber" class="uk-input" />
+            <span asp-validation-for="orderDetailDTO.ItemNumber" class="uk-alert-danger"></span>
             @ViewBag.ItemNumberError
           </td>
           <td>
-            @Html.EditorFor(model => model.orderDetailDTO.Description, new { htmlAttributes = new { @class = "uk-input" } })
-            @Html.ValidationMessageFor(model => model.orderDetailDTO.Description, "", new { @class = "text-danger" })
+            <input asp-for="orderDetailDTO.Description" class="uk-input" />
+            <span asp-validation-for="orderDetailDTO.Description" class="uk-alert-danger"></span>
           </td>
           <td>
-            @Html.EditorFor(model => model.orderDetailDTO.Tariff, new { htmlAttributes = new { @class = "uk-input" } })
-            @Html.ValidationMessageFor(model => model.orderDetailDTO.Tariff, "", new { @class = "text-danger" })
-          </td>
-
-          <td>
-            @Html.EditorFor(model => model.orderDetailDTO.Quantity, new { htmlAttributes = new { @class = "uk-input", @id = "Quantity", @onkeyup = "getTotalUnit(); getTotalRetail()" } })
-            @Html.ValidationMessageFor(model => model.orderDetailDTO.Quantity, "", new { @class = "text-danger" })
+            <input asp-for="orderDetailDTO.Tariff" class="uk-input" />
+            <span asp-validation-for="orderDetailDTO.Tariff" class="uk-alert-danger"></span>
           </td>
           <td>
-            @Html.EditorFor(model => model.orderDetailDTO.Cartons, new { htmlAttributes = new { @class = "uk-input" } })
-            @Html.ValidationMessageFor(model => model.orderDetailDTO.Cartons, "", new { @class = "text-danger" })
+            <input asp-for="orderDetailDTO.Quantity" class="uk-input" id="Quantity" onkeyup="getTotalUnit(); getTotalRetail()" />
+            <span asp-validation-for="orderDetailDTO.Quantity" class="uk-alert-danger"></span>
           </td>
           <td>
-            @Html.EditorFor(model => model.orderDetailDTO.Cube, new { htmlAttributes = new { @class = "uk-input" } })
-            @Html.ValidationMessageFor(model => model.orderDetailDTO.Cube, "", new { @class = "text-danger" })
-          </td>
-
-          <td>
-            @Html.EditorFor(model => model.orderDetailDTO.KGS, new { htmlAttributes = new { @class = "uk-input" } })
-            @Html.ValidationMessageFor(model => model.orderDetailDTO.KGS, "", new { @class = "text-danger" })
+            <input asp-for="orderDetailDTO.Cartons" class="uk-input" />
+            <span asp-validation-for="orderDetailDTO.Cartons" class="uk-alert-danger"></span>
           </td>
           <td>
-            @Html.EditorFor(model => model.orderDetailDTO.UnitPrice, new { htmlAttributes = new { @class = "uk-input", @id = "UnitPrice", @onkeyup = "getTotalUnit()" } })
-            @Html.ValidationMessageFor(model => model.orderDetailDTO.UnitPrice, "", new { @class = "text-danger" })
+            <input asp-for="orderDetailDTO.Cube" class="uk-input" />
+            <span asp-validation-for="orderDetailDTO.Cube" class="uk-alert-danger"></span>
+          </td>
+          <td>
+            <input asp-for="orderDetailDTO.KGS" class="uk-input" />
+            <span asp-validation-for="orderDetailDTO.KGS" class="uk-alert-danger"></span>
+          </td>
+          <td>
+            <input asp-for="orderDetailDTO.UnitPrice" class="uk-input" id="UnitPrice" onkeyup="getTotalUnit()" />
+            <span asp-validation-for="orderDetailDTO.UnitPrice" class="uk-alert-danger"></span>
           </td>
           <td>
             <div id="TotalUnit">0</div>
           </td>
           <td>
-            @Html.EditorFor(model => model.orderDetailDTO.RetailPrice, new { htmlAttributes = new { @class = "uk-input", @id = "RetailPrice", @onkeyup = "getTotalRetail()" } })
-            @Html.ValidationMessageFor(model => model.orderDetailDTO.RetailPrice, "", new { @class = "text-danger" })
+            <input asp-for="orderDetailDTO.RetailPrice" class="uk-input" id="RetailPrice" onkeyup="getTotalRetail()" />
+            <span asp-validation-for="orderDetailDTO.RetailPrice" class="uk-alert-danger"></span>
           </td>
           <td>
             <div id="TotalRetail">0</div>
           </td>
-
           <td>
-            @Html.EditorFor(model => model.orderDetailDTO.Warehouse, new { htmlAttributes = new { @class = "uk-input" } })
-            @Html.ValidationMessageFor(model => model.orderDetailDTO.Warehouse, "", new { @class = "text-danger" })
+            <input asp-for="orderDetailDTO.Warehouse" class="uk-input" />
+            <span asp-validation-for="orderDetailDTO.Warehouse" class="uk-alert-danger"></span>
           </td>
           <td>
-            @Html.EditorFor(model => model.orderDetailDTO.Size, new { htmlAttributes = new { @class = "uk-input" } })
-            @Html.ValidationMessageFor(model => model.orderDetailDTO.Size, "", new { @class = "text-danger" })
+            <input asp-for="orderDetailDTO.Size" class="uk-input" />
+            <span asp-validation-for="orderDetailDTO.Size" class="uk-alert-danger"></span>
           </td>
           <td>
-            @Html.EditorFor(model => model.orderDetailDTO.Colour, new { htmlAttributes = new { @class = "uk-input" } })
-            @Html.ValidationMessageFor(model => model.orderDetailDTO.Colour, "", new { @class = "text-danger" })
+            <input asp-for="orderDetailDTO.Colour" class="uk-input" />
+            <span asp-validation-for="orderDetailDTO.Colour" class="uk-alert-danger"></span>
           </td>
           <td>
             <button type="submit" value="Save" name="method" class="uk-button uk-button-default">Save Item</button>
@@ -341,71 +335,72 @@
         {
           if ((ViewBag.ItemId < 0) || (ViewBag.ItemId == null))
           {
-            @Html.HiddenFor(model => model.orderDetailDTO.ItemNumber, new { Value = Model.PODetails.Items[0].ItemNumber })
+            <input asp-for="orderDetailDTO.ItemNumber" value=@Model.PODetails.Items[0].ItemNumber type="hidden" />
           }
 
           for (int i = 0; i < Model.PODetails.Items.Count(); i++)
           //for (int i = ((Model.PODetails.PageCount - 1) * Model.PODetails.TotalCount); i < ((Model.PODetails.PageCount) * Model.PODetails.TotalCount); i++)
           {
-            @Html.HiddenFor(model => model.PODetails.Items[i].Id, Model.PODetails.Items[i].Id)
-            @Html.HiddenFor(model => model.PODetails.Items[i].ItemNumber, Model.PODetails.Items[i].ItemNumber)
-            @Html.HiddenFor(model => model.PODetails.Items[i].Description, Model.PODetails.Items[i].Description)
-            @Html.HiddenFor(model => model.PODetails.Items[i].Warehouse, Model.PODetails.Items[i].Warehouse)
-            @Html.HiddenFor(model => model.PODetails.Items[i].Colour, Model.PODetails.Items[i].Colour)
-            @Html.HiddenFor(model => model.PODetails.Items[i].Size, Model.PODetails.Items[i].Size)
-            @Html.HiddenFor(model => model.PODetails.Items[i].Quantity, Model.PODetails.Items[i].Quantity)
-            @Html.HiddenFor(model => model.PODetails.Items[i].Cartons, Model.PODetails.Items[i].Cartons)
-            @Html.HiddenFor(model => model.PODetails.Items[i].Cube, Model.PODetails.Items[i].Cube)
-            @Html.HiddenFor(model => model.PODetails.Items[i].KGS, Model.PODetails.Items[i].KGS)
-            @Html.HiddenFor(model => model.PODetails.Items[i].UnitPrice, Model.PODetails.Items[i].UnitPrice)
-            @Html.HiddenFor(model => model.PODetails.Items[i].RetailPrice, Model.PODetails.Items[i].RetailPrice)
-            @Html.HiddenFor(model => model.PODetails.Items[i].Tariff, Model.PODetails.Items[i].Tariff)
-            @Html.HiddenFor(model => model.PODetails.Items[i].OrderId, Model.PODetails.Items[i].OrderId)
+            <input asp-for="PODetails.Items[i].Id" value=@Model.PODetails.Items[i].Id type="hidden" />
+            <input asp-for="PODetails.Items[i].ItemNumber" value=@Model.PODetails.Items[i].ItemNumber type="hidden" />
+            <input asp-for="PODetails.Items[i].Description" value=@Model.PODetails.Items[i].Description type="hidden" />
+            <input asp-for="PODetails.Items[i].Warehouse" value=@Model.PODetails.Items[i].Warehouse type="hidden" />
+            <input asp-for="PODetails.Items[i].Colour" value=@Model.PODetails.Items[i].Colour type="hidden" />
+            <input asp-for="PODetails.Items[i].Size" value=@Model.PODetails.Items[i].Size type="hidden" />
+            <input asp-for="PODetails.Items[i].Quantity" value=@Model.PODetails.Items[i].Quantity type="hidden" />
+            <input asp-for="PODetails.Items[i].Cartons" value=@Model.PODetails.Items[i].Cartons type="hidden" />
+            <input asp-for="PODetails.Items[i].Cube" value=@Model.PODetails.Items[i].Cube type="hidden" />
+            <input asp-for="PODetails.Items[i].KGS" value=@Model.PODetails.Items[i].KGS type="hidden" />
+            <input asp-for="PODetails.Items[i].UnitPrice" value=@Model.PODetails.Items[i].UnitPrice type="hidden" />
+            <input asp-for="PODetails.Items[i].RetailPrice" value=@Model.PODetails.Items[i].RetailPrice type="hidden" />
+            <input asp-for="PODetails.Items[i].Tariff" value=@Model.PODetails.Items[i].Tariff type="hidden" />
+            <input asp-for="PODetails.Items[i].OrderId" value=@Model.PODetails.Items[i].OrderId type="hidden" />
+            <input asp-for="PODetails.Items[i].RowVersion" value=@Model.PODetails.Items[i].RowVersion type="hidden" />
 
             if (i != ViewBag.ItemId)
             {
               <tr>
                 <td>
-                  @Html.DisplayFor(modelItem => Model.PODetails.Items[i].ItemNumber)
+                  @Model.PODetails.Items[i].ItemNumber
                 </td>
                 <td>
-                  @Html.DisplayFor(modelItem => Model.PODetails.Items[i].Description)
+                  @Model.PODetails.Items[i].Description
                 </td>
                 <td>
-                  @Html.DisplayFor(modelItem => Model.PODetails.Items[i].Tariff)
+                  @Model.PODetails.Items[i].Tariff
                 </td>
                 <td>
-                  @Html.DisplayFor(modelItem => Model.PODetails.Items[i].Quantity)
+                  @Model.PODetails.Items[i].Quantity
                 </td>
                 <td>
-                  @Html.DisplayFor(modelItem => Model.PODetails.Items[i].Cartons)
+                  @Model.PODetails.Items[i].Cartons
                 </td>
                 <td>
-                  @Html.DisplayFor(modelItem => Model.PODetails.Items[i].Cube)
+                  @Model.PODetails.Items[i].Cube
                 </td>
                 <td>
-                  @Html.DisplayFor(modelItem => Model.PODetails.Items[i].KGS)
+                  @Model.PODetails.Items[i].KGS
                 </td>
                 <td>
-                  @Html.DisplayFor(modelItem => Model.PODetails.Items[i].UnitPrice)
+                  @Model.PODetails.Items[i].UnitPrice
                 </td>
                 <td>
-                  @Html.DisplayFor(modelItem => Model.PODetails.Items[i].TotalPrice)
+                  @Model.PODetails.Items[i].TotalPrice
                 </td>
                 <td>
-                  @Html.DisplayFor(modelItem => Model.PODetails.Items[i].RetailPrice)
+                  @Model.PODetails.Items[i].RetailPrice
                 </td>
                 <td>
-                  @Html.DisplayFor(modelItem => Model.PODetails.Items[i].TotalRetailPrice)
+                  @Model.PODetails.Items[i].TotalRetailPrice
                 </td>
                 <td>
-                  @Html.DisplayFor(modelItem => Model.PODetails.Items[i].Warehouse)
+                  @Model.PODetails.Items[i].Warehouse
                 </td>
                 <td>
-                  @Html.DisplayFor(modelItem => Model.PODetails.Items[i].Size)
+                  @Model.PODetails.Items[i].Size
                 </td>
                 <td>
-                  @Html.DisplayFor(modelItem => Model.PODetails.Items[i].Colour)
+                  @Model.PODetails.Items[i].Colour
                 </td>
                 <td>
                   <button type="submit" value="@i" name="method" class="uk-button uk-button-default">Edit Item</button>
@@ -417,61 +412,59 @@
             {
               <tr>
                 <td>
-                  @Html.EditorFor(model => model.orderDetailDTO.ItemNumber, new { htmlAttributes = new { @class = "uk-input" } })
-                  @Html.ValidationMessageFor(model => model.orderDetailDTO.ItemNumber, "", new { @class = "text-danger" })
+                  <input asp-for="orderDetailDTO.ItemNumber" class="uk-input" />
+                  <span asp-validation-for="orderDetailDTO.ItemNumber" class="uk-alert-danger"></span>
                   @ViewBag.ItemNumberError
                 </td>
                 <td>
-                  @Html.EditorFor(model => model.orderDetailDTO.Description, new { htmlAttributes = new { @class = "uk-input" } })
-                  @Html.ValidationMessageFor(model => model.orderDetailDTO.Description, "", new { @class = "text-danger" })
+                  <input asp-for="orderDetailDTO.Description" class="uk-input" />
+                  <span asp-validation-for="orderDetailDTO.Description" class="uk-alert-danger"></span>
                 </td>
                 <td>
-                  @Html.EditorFor(model => model.orderDetailDTO.Tariff, new { htmlAttributes = new { @class = "uk-input" } })
-                  @Html.ValidationMessageFor(model => model.orderDetailDTO.Tariff, "", new { @class = "text-danger" })
-                </td>
-
-                <td>
-                  @Html.EditorFor(model => model.orderDetailDTO.Quantity, new { htmlAttributes = new { @class = "uk-input", @id = "Quantity", @onkeyup = "getTotalUnit(); getTotalRetail()" } })
-                  @Html.ValidationMessageFor(model => model.orderDetailDTO.Quantity, "", new { @class = "text-danger" })
+                  <input asp-for="orderDetailDTO.Tariff" class="uk-input" />
+                  <span asp-validation-for="orderDetailDTO.Tariff" class="uk-alert-danger"></span>
                 </td>
                 <td>
-                  @Html.EditorFor(model => model.orderDetailDTO.Cartons, new { htmlAttributes = new { @class = "uk-input" } })
-                  @Html.ValidationMessageFor(model => model.orderDetailDTO.Cartons, "", new { @class = "text-danger" })
+                  <input asp-for="orderDetailDTO.Quantity" class="uk-input" id="Quantity" onkeyup="getTotalUnit(); getTotalRetail()" />
+                  <span asp-validation-for="orderDetailDTO.Quantity" class="uk-alert-danger"></span>
                 </td>
                 <td>
-                  @Html.EditorFor(model => model.orderDetailDTO.Cube, new { htmlAttributes = new { @class = "uk-input" } })
-                  @Html.ValidationMessageFor(model => model.orderDetailDTO.Cube, "", new { @class = "text-danger" })
-                </td>
-
-                <td>
-                  @Html.EditorFor(model => model.orderDetailDTO.KGS, new { htmlAttributes = new { @class = "uk-input" } })
-                  @Html.ValidationMessageFor(model => model.orderDetailDTO.KGS, "", new { @class = "text-danger" })
+                  <input asp-for="orderDetailDTO.Cartons" class="uk-input" />
+                  <span asp-validation-for="orderDetailDTO.Cartons" class="uk-alert-danger"></span>
                 </td>
                 <td>
-                  @Html.EditorFor(model => model.orderDetailDTO.UnitPrice, new { htmlAttributes = new { @class = "uk-input", @id = "UnitPrice", @onkeyup = "getTotalUnit()" } })
-                  @Html.ValidationMessageFor(model => model.orderDetailDTO.UnitPrice, "", new { @class = "text-danger" })
+                  <input asp-for="orderDetailDTO.Cube" class="uk-input" />
+                  <span asp-validation-for="orderDetailDTO.Cube" class="uk-alert-danger"></span>
+                </td>
+                <td>
+                  <input asp-for="orderDetailDTO.KGS" class="uk-input" />
+                  <span asp-validation-for="orderDetailDTO.KGS" class="uk-alert-danger"></span>
+                </td>
+                <td>
+                  <input asp-for="orderDetailDTO.UnitPrice" class="uk-input" id="UnitPrice" onkeyup="getTotalUnit()" />
+                  <span asp-validation-for="orderDetailDTO.UnitPrice" class="uk-alert-danger"></span>
                 </td>
                 <td>
                   <div id="TotalUnit">0</div>
                 </td>
                 <td>
-                  @Html.EditorFor(model => model.orderDetailDTO.RetailPrice, new { htmlAttributes = new { @class = "uk-input", @id = "RetailPrice", @onkeyup = "getTotalRetail()" } })
-                  @Html.ValidationMessageFor(model => model.orderDetailDTO.RetailPrice, "", new { @class = "text-danger" })
+                  <input asp-for="orderDetailDTO.RetailPrice" class="uk-input" id="RetailPrice" onkeyup="getTotalRetail()" />
+                  <span asp-validation-for="orderDetailDTO.RetailPrice" class="uk-alert-danger"></span>
                 </td>
                 <td>
                   <div id="TotalRetail">0</div>
                 </td>
                 <td>
-                  @Html.EditorFor(model => model.orderDetailDTO.Warehouse, new { htmlAttributes = new { @class = "uk-input" } })
-                  @Html.ValidationMessageFor(model => model.orderDetailDTO.Warehouse, "", new { @class = "text-danger" })
+                  <input asp-for="orderDetailDTO.Warehouse" class="uk-input" />
+                  <span asp-validation-for="orderDetailDTO.Warehouse" class="uk-alert-danger"></span>
                 </td>
                 <td>
-                  @Html.EditorFor(model => model.orderDetailDTO.Size, new { htmlAttributes = new { @class = "uk-input" } })
-                  @Html.ValidationMessageFor(model => model.orderDetailDTO.Size, "", new { @class = "text-danger" })
+                  <input asp-for="orderDetailDTO.Size" class="uk-input" />
+                  <span asp-validation-for="orderDetailDTO.Size" class="uk-alert-danger"></span>
                 </td>
                 <td>
-                  @Html.EditorFor(model => model.orderDetailDTO.Colour, new { htmlAttributes = new { @class = "uk-input" } })
-                  @Html.ValidationMessageFor(model => model.orderDetailDTO.Colour, "", new { @class = "text-danger" })
+                  <input asp-for="orderDetailDTO.Colour" class="uk-input" />
+                  <span asp-validation-for="orderDetailDTO.Colour" class="uk-alert-danger"></span>
                 </td>
                 <td>
                   <button type="submit" value="Update @i" name="method" class="uk-button uk-button-default">Update Item</button>
@@ -482,28 +475,29 @@
         }
       }
 
-      @*<a asp-action="Copy"
+      @*
+        <a asp-action="Copy"
            asp-route-page="@(Model.PODetails.PageCount - 1)"
            class="btn btn-default">
-            Previous
+          Previous
         </a>
         <a asp-action="Copy"
            asp-route-page="@(Model.PODetails.PageCount + 1)"
            class="btn btn-default">
-            Next
+          Next
         </a>*@
     </table>
   </div>
 }
 
 <div>
-  @Html.ActionLink("Back to List", "Index")
+  <a asp-controller="PurchaseOrder" asp-action="Index">Back to List</a>
 </div>
 
 @section Scripts
   {
-  <script src="@Url.Content("~/Scripts/jquery.validate.min.js")"></script>
-  <script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")"></script>
+  <script src="@Url.Content(" ~/Scripts/jquery.validate.min.js")"></script>
+  <script src="@Url.Content(" ~/Scripts/jquery.validate.unobtrusive.min.js")"></script>
   <script type="text/javascript">
 
     function copy() {

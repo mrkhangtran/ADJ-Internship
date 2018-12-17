@@ -53,20 +53,13 @@ namespace ADJ.BusinessService.Implementations
       Order entity;
       if (order.Id > 0)
       {
-        entity = await _orderRepository.GetByIdAsync(order.Id, true);
+        entity = await _orderRepository.GetByIdAsync(order.Id, false);
         if (entity == null)
         {
           throw new AppException("Purchase Order Not Found");
         }
 
-        var temp = entity.RowVersion;
         entity = Mapper.Map(order, entity);
-        entity.RowVersion = temp;
-
-        //foreach (var item in entity.orderDetails)
-        //{
-        //    _orderDetailRepository.Delete(item);
-        //}
 
         //entity = Mapper.Map<Order>(order);
         _orderRepository.Update(entity);
@@ -86,11 +79,12 @@ namespace ADJ.BusinessService.Implementations
 
     public async Task<int> GetLastOrderId()
     {
-      var orderResult = await _orderDataProvider.ListAsync();
-      List<Order> orders = orderResult.Items;
+      //var orderResult = await _orderDataProvider.ListAsync();
+      //List<Order> orders = orderResult.Items;
       //List<Order> temp = await _orderRepository.Query(x => x.Id > 0, false).SelectAsync();
 
-      return orders[orders.Count - 1].Id;
+      //return orders[orders.Count - 1].Id;
+      return await _orderRepository.GetLastOrderId();
     }
 
     public async Task<OrderDetailDTO> CreateOrUpdateOrderDetailAsync(OrderDetailDTO orderDetail)
@@ -104,11 +98,9 @@ namespace ADJ.BusinessService.Implementations
           throw new AppException("Purchase Order Detail Not Found");
         }
 
-        //var temp = entity.RowVersion;
-        //entity = Mapper.Map(orderDetail, entity);
-        //entity.RowVersion = temp;
+        entity = Mapper.Map(orderDetail, entity);
 
-        entity = Mapper.Map<OrderDetail>(orderDetail);
+        //entity = Mapper.Map<OrderDetail>(orderDetail);
 
         _orderDetailRepository.Update(entity);
       }
@@ -157,7 +149,7 @@ namespace ADJ.BusinessService.Implementations
       if ((id == null) || (id == 0)) { orders = await _orderRepository.Query(x => x.PONumber == PONumber, false).SelectAsync(); }
       else { orders = await _orderRepository.Query(x => x.PONumber == PONumber && x.Id != id, false).SelectAsync(); }
 
-      if (orders != null)
+      if (orders.Count > 0)
       {
         return false;
       }
@@ -173,7 +165,7 @@ namespace ADJ.BusinessService.Implementations
       if ((id == null) || (id == 0)) { orderDetails = await _orderDetailRepository.Query(x => x.ItemNumber == itemNum, false).SelectAsync(); }
       else { orderDetails = await _orderDetailRepository.Query(x => x.ItemNumber == itemNum && x.Id != id, false).SelectAsync(); }
 
-      if (orderDetails != null)
+      if (orderDetails.Count > 0)
       {
         return false;
       }

@@ -52,6 +52,9 @@ namespace ADJ.WebApp.Controllers
       OrderDTO defaultModel = new OrderDTO();
       defaultModel.orderDetailDTO = new OrderDetailDTO();
       defaultModel.orderDetailDTO.ItemNumber = "";
+      defaultModel.PODetails = new PagedListResult<OrderDetailDTO>();
+      defaultModel.PODetails.PageCount = 1;
+      defaultModel.PODetails.TotalCount = 2;
       SetDropDownList();
       ViewBag.ItemId = -2;
 
@@ -66,7 +69,7 @@ namespace ADJ.WebApp.Controllers
       switch (method)
       {
         case "Apply":
-          if (addModel.PODetails == null)
+          if (addModel.PODetails.Items == null)
           {
             ViewBag.OrderDetailError = "Please add at least 1 item detail.";
             ViewBag.ItemId = -1;
@@ -92,11 +95,8 @@ namespace ADJ.WebApp.Controllers
           }
           break;
         case "Save":
-          if (addModel.PODetails == null)
-          {
-            addModel.PODetails = new PagedListResult<OrderDetailDTO>();
-            addModel.PODetails.Items = new List<OrderDetailDTO>();
-          }
+          if (addModel.PODetails == null) { addModel.PODetails = new PagedListResult<OrderDetailDTO>(); }
+          if (addModel.PODetails.Items == null) { addModel.PODetails.Items = new List<OrderDetailDTO>(); }
 
           if ((!UniqueItemNumber(-1, addModel.orderDetailDTO.ItemNumber, addModel.PODetails.Items)) || (!(await _poService.UniqueItemNumAsync(addModel.orderDetailDTO.ItemNumber, addModel.orderDetailDTO.Id))))
           {
@@ -106,6 +106,7 @@ namespace ADJ.WebApp.Controllers
           }
 
           addModel.PODetails.Items.Add(addModel.orderDetailDTO);
+          addModel.PODetails.PageCount = 1;
           ViewBag.ItemId = -2;
           break;
         case "AddItem":
@@ -129,6 +130,7 @@ namespace ADJ.WebApp.Controllers
           else if (method.Contains("Delete"))
           {
             addModel.PODetails.Items.Remove(addModel.PODetails.Items[itemId]);
+            addModel.PODetails.PageCount = 1;
           }
           else
           {
@@ -154,6 +156,8 @@ namespace ADJ.WebApp.Controllers
       editModel.orderDetailDTO = new OrderDetailDTO();
       editModel.orderDetailDTO.OrderId = editModel.Id;
       editModel.orderDetailDTO.ItemNumber = editModel.PODetails.Items[0].ItemNumber;
+      editModel.PODetails.TotalCount = 2;
+
       ViewBag.Method = "Edit Order Number: " + editModel.PONumber;
       SetDropDownList();
       ViewBag.ItemId = -2;
@@ -170,7 +174,7 @@ namespace ADJ.WebApp.Controllers
       switch (method)
       {
         case "Apply":
-          if (addModel.PODetails == null)
+          if (addModel.PODetails.Items == null)
           {
             ViewBag.OrderDetailError = "Please add at least 1 item detail.";
             ViewBag.ItemId = -1;
@@ -197,11 +201,8 @@ namespace ADJ.WebApp.Controllers
           }
           break;
         case "Save":
-          if (addModel.PODetails == null)
-          {
-            addModel.PODetails = new PagedListResult<OrderDetailDTO>();
-            addModel.PODetails.Items = new List<OrderDetailDTO>();
-          }
+          if (addModel.PODetails == null) { addModel.PODetails = new PagedListResult<OrderDetailDTO>(); }
+          if (addModel.PODetails.Items == null) { addModel.PODetails.Items = new List<OrderDetailDTO>(); }
 
           if ((!UniqueItemNumber(-1, addModel.orderDetailDTO.ItemNumber, addModel.PODetails.Items)) || (!(await _poService.UniqueItemNumAsync(addModel.orderDetailDTO.ItemNumber, addModel.orderDetailDTO.Id))))
           {
@@ -211,6 +212,7 @@ namespace ADJ.WebApp.Controllers
           }
 
           addModel.PODetails.Items.Add(addModel.orderDetailDTO);
+          addModel.PODetails.PageCount = 1;
           ViewBag.ItemId = -2;
           break;
         case "AddItem":
@@ -234,6 +236,7 @@ namespace ADJ.WebApp.Controllers
           else if (method.Contains("Delete"))
           {
             addModel.PODetails.Items.Remove(addModel.PODetails.Items[itemId]);
+            addModel.PODetails.PageCount = 1;
           }
           else
           {
@@ -248,8 +251,6 @@ namespace ADJ.WebApp.Controllers
 
     public async Task<ActionResult> Copy(string PONumber)
     {
-      //_poService.GetLastOrderId();
-
       ModelState.Clear();
       OrderDTO copyModel = new OrderDTO();
       copyModel = await _poService.GetOrderByPONumber(PONumber);
@@ -293,7 +294,7 @@ namespace ADJ.WebApp.Controllers
           addModel.PODetails.PageCount--;
           break;
         case "Apply":
-          if (addModel.PODetails == null)
+          if (addModel.PODetails.Items == null)
           {
             ViewBag.OrderDetailError = "Please add at least 1 item detail.";
             ViewBag.ItemId = -1;
@@ -391,7 +392,7 @@ namespace ADJ.WebApp.Controllers
     private void SetDropDownList()
     {
       ViewBag.Seasons = SeasonList();
-      ViewBag.Ports = new List<string> { "Cẩm Phả", "Hòn Gai", "Hải Phòng", "Nghi Sơn", "Cửa Lò," };
+      ViewBag.Ports = new List<string> { "Cẩm Phả", "Hòn Gai", "Hải Phòng", "Nghi Sơn", "Cửa Lò" };
       ViewBag.Modes = new List<string> { "Road", "Sea", "Air" };
       ViewBag.Origins = new List<string> { "HongKong", "Vietnam" };
 
