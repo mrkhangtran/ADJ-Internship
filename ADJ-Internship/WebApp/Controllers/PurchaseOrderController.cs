@@ -53,6 +53,7 @@ namespace ADJ.WebApp.Controllers
       defaultModel.orderDetailDTO = new OrderDetailDTO();
       defaultModel.orderDetailDTO.ItemNumber = "";
       defaultModel.PODetails = new PagedListResult<OrderDetailDTO>();
+      //defaultModel.PODetails.Items = new List<OrderDetailDTO>();
       defaultModel.PODetails.PageCount = 1;
       defaultModel.PODetails.TotalCount = 2;
       SetDropDownList();
@@ -62,34 +63,40 @@ namespace ADJ.WebApp.Controllers
     }
 
     [HttpPost]
-    public async Task<ActionResult> Create(OrderDTO addModel, string method)
+    public async Task<ActionResult> Create(OrderDTO addModel, List<string> orderDetails)
+    {
+      SetDropDownList();
+
+      if (addModel.PODetails.Items == null)
+      {
+        ViewBag.OrderDetailError = "Please add at least 1 item.";
+        ViewBag.ItemId = -1;
+        return View(addModel);
+      }
+
+      if (!(await _poService.UniquePONumAsync(addModel.PONumber, addModel.Id)))
+      {
+        ViewBag.PONumberError = "PO Number must be unique.";
+        return View(addModel);
+      }
+
+      if (ModelState.IsValid)
+      {
+        addModel.orderDetails = addModel.PODetails.Items;
+        await _poService.CreateOrUpdateOrderAsync(addModel);
+
+        return RedirectToAction("Index", new { id = addModel.PONumber, method = 1 });
+      }
+      return View(addModel);
+    }
+
+    [HttpPost]
+    public async Task<ActionResult> AddItem(OrderDTO addModel, string method)
     {
       SetDropDownList();
 
       switch (method)
       {
-        case "Apply":
-          if (addModel.PODetails.Items == null)
-          {
-            ViewBag.OrderDetailError = "Please add at least 1 item detail.";
-            ViewBag.ItemId = -1;
-            return View(addModel);
-          }
-
-          if (!(await _poService.UniquePONumAsync(addModel.PONumber, addModel.Id)))
-          {
-            ViewBag.PONumberError = "PO Number must be unique.";
-            return View(addModel);
-          }
-
-          if (ModelState.IsValid)
-          {
-            addModel.orderDetails = addModel.PODetails.Items;
-            await _poService.CreateOrUpdateOrderAsync(addModel);
-
-            return RedirectToAction("Index", new { id = addModel.PONumber, method = 1 });
-          }
-          break;
         case "Save":
           if (addModel.PODetails == null) { addModel.PODetails = new PagedListResult<OrderDetailDTO>(); }
           if (addModel.PODetails.Items == null) { addModel.PODetails.Items = new List<OrderDetailDTO>(); }
@@ -98,7 +105,7 @@ namespace ADJ.WebApp.Controllers
           {
             ViewBag.ItemNumberError = "Item Number must be unique.";
             ViewBag.ItemId = -1;
-            return View(addModel);
+            return PartialView("_OrderDetail", addModel);
           }
 
           addModel.PODetails.Items.Add(addModel.orderDetailDTO);
@@ -107,7 +114,7 @@ namespace ADJ.WebApp.Controllers
           break;
         case "AddItem":
           ViewBag.ItemId = -1;
-          return PartialView("_OrderDetail",addModel);
+          break;
         default:
           int itemId = int.Parse(new string(method.Where(char.IsDigit).ToArray()));
           ModelState.Clear();
@@ -117,7 +124,7 @@ namespace ADJ.WebApp.Controllers
             {
               ViewBag.ItemNumberError = "Item Number must be unique.";
               ViewBag.ItemId = itemId;
-              return View(addModel);
+              return PartialView("_OrderDetail", addModel);
             }
 
             addModel.PODetails.Items[itemId] = addModel.orderDetailDTO;
@@ -136,8 +143,9 @@ namespace ADJ.WebApp.Controllers
           break;
       }
 
-      return View(addModel);
+      return PartialView("_OrderDetail", addModel);
     }
+
 
     public async Task<ActionResult> Edit(string PONumber)
     {
