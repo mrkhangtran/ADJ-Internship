@@ -18,7 +18,7 @@ namespace WebApp.Controllers
             _prcService = prcService;
         }
         // GET: ProgressCheckDto
-        public async Task<ActionResult> Index()
+        public async Task<ActionResult> Index(int? pageIndex)
         {
             GetItemSearchDto getSearchItem = await _prcService.SearchItem();
             ViewBag.Suppliers = getSearchItem.Suppliers;
@@ -26,26 +26,20 @@ namespace WebApp.Controllers
             ViewBag.OriginPorts = getSearchItem.OriginPorts;
             ViewBag.Factories = getSearchItem.Factories;
             ViewBag.Depts = getSearchItem.Depts;
-            PagedListResult<ProgressCheckDto> lstPrc = await _prcService.ListProgressCheckDtoAsync();
-            List<ProgressCheckDto> progressCheckDtos = lstPrc.Items;        
-            return View("Index",progressCheckDtos);
+            int current = pageIndex ?? 1;
+            PagedListResult<ProgressCheckDto> lstPrc = await _prcService.ListProgressCheckDtoAsync(current);
+            return View("Index", lstPrc);
         }
         [HttpPost]
-        public async Task<ActionResult> CreateOrUpdate(List<ProgressCheckDto> progressCheckDTOs,List<string> POList,List<string> ItemList)
+        public async Task<ActionResult> CreateOrUpdate(List<ProgressCheckDto> progressCheckDTOs, List<string> POList, List<string> ItemList)
         {
             if (ModelState.IsValid)
             {
 
                 for (int i = 0; i < progressCheckDTOs.Count(); i++)
                 {
-                    //for (int j = 0; j < POList.Count; j++)
-                    //{
-                    //    if (progressCheckDTOs[i].PONumber == POList[j])
-                    //    {
-                            await _prcService.CreateOrUpdatePurchaseOrderAsync(progressCheckDTOs[i]);
-                    //    }
-                    //}
-                }               
+                    await _prcService.CreateOrUpdatePurchaseOrderAsync(progressCheckDTOs[i]);
+                }
             }
             GetItemSearchDto getSearchItem = await _prcService.SearchItem();
             ViewBag.Suppliers = getSearchItem.Suppliers;

@@ -39,25 +39,18 @@ namespace ADJ.BusinessService.Implementations
             _progresscheckRepository = progresscheckRepository;
             _progresscheckDataProvider = progresscheckDataProvider;
         }
-        public async Task<PagedListResult<ProgressCheckDto>> ListProgressCheckDtoAsync()
+        public async Task<PagedListResult<ProgressCheckDto>> ListProgressCheckDtoAsync(int pageIndex=1, int pageSize=2)
         {
             List<ProgressCheckDto> progressCheckDTOs = new List<ProgressCheckDto>();
-            //var lst = await _orderDataProvider.ListAsync();
-            //List<Order> orders = lst.Items;
-            List<Order> orders = await _orderRepository.Query(x => x.Id > 0, true).SelectAsync();
+            var GetPageResult = await _orderDataProvider.ListAsync(null,null,true,pageIndex,pageSize);
+            List<Order> orders = GetPageResult.Items;
             foreach (var order in orders)
             {
                 decimal POQuantity = 0;
-                //fix
-                //List<OrderDetail> orderDetails = await _orderdetailRepository.Query(x => x.OrderId == order.Id, false).SelectAsync();
-                //Order i = await _orderRepository.GetByIdAsync(order.Id, true);
                 foreach (var orderDetail in order.orderDetails)
                 {                   
                         POQuantity += orderDetail.Quantity;                  
                 }
-                //List<ProgressCheck> lstProgress = new List<ProgressCheck>();
-                // fix
-                //lstProgress = await _progresscheckRepository.Query(x => x.OrderId == order.Id, false).SelectAsync();
                 ProgressCheck progressCheck = new ProgressCheck();
                 ProgressCheck check =  _progresscheckRepository.GetProgressCheckByOrderId(order.Id);
                 if (check==null)
@@ -96,11 +89,10 @@ namespace ADJ.BusinessService.Implementations
                 };
                 progressCheckDTOs.Add(temp);
             }
-
             PagedListResult<ProgressCheckDto> lstProChDto = new PagedListResult<ProgressCheckDto>
             {
-                TotalCount = progressCheckDTOs.Count,
-                PageCount = 2,
+                TotalCount = GetPageResult.TotalCount,
+                PageCount = GetPageResult.PageCount,
                 Items = progressCheckDTOs
             };
             return lstProChDto;
@@ -116,8 +108,6 @@ namespace ADJ.BusinessService.Implementations
                 {
                     throw new AppException("Progress Check Not Found");
                 }
-
-                //entity = Mapper.Map(rq, entity);
                 entity.InspectionDate = rq.InspectionDate;
                 entity.IntendedShipDate = rq.IntendedShipDate;
                 decimal temp = 0;
@@ -170,7 +160,6 @@ namespace ADJ.BusinessService.Implementations
             var rs = Mapper.Map<ProgressCheckDto>(entity);
             return rs;
         }
-
         public async Task<GetItemSearchDto> SearchItem()
         {
             var lst = await _orderDataProvider.ListAsync();
