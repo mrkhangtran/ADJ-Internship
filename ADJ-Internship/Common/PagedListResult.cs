@@ -11,6 +11,7 @@ namespace ADJ.Common
 
         public int PageCount { get; set; }
 
+				public int? PageIndex { get; set; }
         
     }
 }

@@ -8,11 +8,11 @@ using System.Threading.Tasks;
 
 namespace ADJ.BusinessService.Interfaces
 {
-    public interface IProgressCheckService
-    {
-        Task<PagedListResult<ProgressCheckDto>> ListProgressCheckDtoAsync();
-        Task<GetItemSearchDto> SearchItem();
-        Task<ProgressCheckDto> CreateOrUpdatePurchaseOrderAsync(ProgressCheckDto rq);
+	public interface IProgressCheckService
+	{
+		Task<PagedListResult<ProgressCheckDto>> ListProgressCheckDtoAsync();
+		Task<GetItemSearchDto> SearchItem();
+		Task<ProgressCheckDto> CreateOrUpdatePurchaseOrderAsync(ProgressCheckDto rq);
 
-    }
+	}
 }

@@ -7,7 +7,8 @@ using ADJ.Repository.Core;
 
 namespace ADJ.Repository.Interfaces
 {
-    public interface IProgressCheckRepository : IRepository<ProgressCheck>
-    {
-    }
+	public interface IProgressCheckRepository : IRepository<ProgressCheck>
+	{
+		ProgressCheck GetProgressCheckByOrderId(int orderId);
+	}
 }

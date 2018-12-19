@@ -7,7 +7,7 @@ using ADJ.Repository.Core;
 
 namespace ADJ.Repository.Interfaces
 {
-    public interface IOrderDetailRepository : IRepository<OrderDetail>
-    {
-    }
+	public interface IOrderDetailRepository : IRepository<OrderDetail>
+	{
+	}
 }

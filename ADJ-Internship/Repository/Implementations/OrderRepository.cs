@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using ADJ.DataAccess;
-using ADJ.DataModel;
 using ADJ.DataModel.OrderTrack;
 using ADJ.Repository.Core;
 using ADJ.Repository.Interfaces;
@@ -15,9 +11,8 @@ namespace ADJ.Repository.Implementations
 	{
 		public OrderRepository(ApplicationDbContext dbContext) : base(dbContext)
 		{
-		}
 
-		protected override Func<IQueryable<Order>, IQueryable<Order>> IncludeDependents =>
-						po => po.Include(x => x.OrderDetails);
+		}
+		protected override Func<System.Linq.IQueryable<Order>, System.Linq.IQueryable<Order>> IncludeDependents => po => po.Include(x => x.OrderDetails);
 	}
 }

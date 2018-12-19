@@ -22,17 +22,18 @@ namespace WebApp.Controllers
 		}
 
 
-		public async Task<PartialViewResult> Display( string poNumber)
+		public async Task<IActionResult> Display(string poNumber, int? pageIndex)
 		{
-			List<OrderDto> listPO = await _orderService.DisplaysAsync(poNumber);
+			int current = pageIndex ?? 1;
+			PagedListResult<OrderDto> pagedlistResult = await _orderService.DisplaysAsync(poNumber, current, 10);
 
-			if (listPO.Count == 0)
+			if (pagedlistResult.Items.Count == 0)
 			{
 				ViewBag.Massage = "There is no available PO";
-				return PartialView(listPO);
+				return View(pagedlistResult);
 			}
 
-			return PartialView(listPO);
+			return View(pagedlistResult);
 		}
 
 
