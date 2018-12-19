@@ -231,10 +231,46 @@ namespace ADJ.BusinessService.Implementations
         return rs;
     }
 
-    public async Task DeletePurchaseOrderAsync(int id)
-    {
-        _poRepository.Delete(id);
-        await UnitOfWork.SaveChangesAsync();
-    }*/
+		public async Task DeletePurchaseOrderAsync(int id)
+		{
+			_poRepository.Delete(id);
+			await UnitOfWork.SaveChangesAsync();
+		}
+
+		public Task<PagedListResult<OrderDTO>> ListOrderAsync(string searchTerm)
+		{
+			throw new NotImplementedException();
+		}
+
+		public Task<OrderDTO> CreateOrUpdateOrderAsync(OrderDTO orderDTO)
+		{
+			throw new NotImplementedException();
+		}
+
+		public Task<OrderDetailDTO> CreateOrUpdateOrderDetailAsync(OrderDetailDTO orderDetailDTO)
+		{
+			throw new NotImplementedException();
+		}
+
+		public Task<List<OrderDetailDTO>> DeleteOrderDetailAsync(List<OrderDetailDTO> orderDetailsView, int orderId)
+		{
+			throw new NotImplementedException();
+		}
+
+		public Task<bool> UniquePONumAsync(string PONumber, int? id)
+		{
+			throw new NotImplementedException();
+		}
+
+		public Task<bool> UniqueItemNumAsync(string itemNum, int? id)
+		{
+			throw new NotImplementedException();
+		}
+
+		public Task<OrderDTO> GetOrderByPONumber(string poNumber)
+		{
+			throw new NotImplementedException();
+		}
+	}*/
 	}
 }
