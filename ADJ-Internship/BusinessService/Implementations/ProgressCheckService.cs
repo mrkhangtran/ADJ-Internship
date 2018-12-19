@@ -25,76 +25,76 @@ namespace ADJ.BusinessService.Implementations
         private readonly IDataProvider<ProgressCheck> _progresscheckDataProvider;
         private readonly IProgressCheckRepository _progresscheckRepository;
 
-        public ProgressCheckService(IUnitOfWork unitOfWork, IMapper mapper, ApplicationContext appContext,
-            IDataProvider<ProgressCheck> progresscheckDataProvider,IDataProvider<Order> orderDataProvider,
-            IDataProvider<OrderDetail> orderdetailDataProvider, IProgressCheckRepository progresscheckRepository,
-            IOrderRepository orderRepository,IOrderDetailRepository orderdetailRepository) : base(unitOfWork, mapper, appContext)
-        {
-            _orderDataProvider = orderDataProvider;
-            _orderRepository = orderRepository;
+		public ProgressCheckService(IUnitOfWork unitOfWork, IMapper mapper, ApplicationContext appContext,
+				IDataProvider<ProgressCheck> progresscheckDataProvider, IDataProvider<Order> orderDataProvider,
+				IDataProvider<OrderDetail> orderdetailDataProvider, IProgressCheckRepository progresscheckRepository,
+				IOrderRepository orderRepository, IOrderDetailRepository orderdetailRepository) : base(unitOfWork, mapper, appContext)
+		{
+			_orderDataProvider = orderDataProvider;
+			_orderRepository = orderRepository;
 
             _orderdetailRepository = orderdetailRepository;
             _orderdetailDataProvider = orderdetailDataProvider;
 
-            _progresscheckRepository = progresscheckRepository;
-            _progresscheckDataProvider = progresscheckDataProvider;
-        }
-        public async Task<PagedListResult<ProgressCheckDto>> ListProgressCheckDtoAsync()
-        {
-            List<ProgressCheckDto> progressCheckDTOs = new List<ProgressCheckDto>();
-            var lst = await _orderDataProvider.ListAsync();
-            List<Order> orders = lst.Items;
-            foreach (var order in orders)
-            {
-                decimal POQuantity = 0;
-                List<OrderDetail> orderDetails = await _orderdetailRepository.Query(x => x.OrderId == order.Id,false).SelectAsync();
-                foreach (var orderDetail in orderDetails)
-                {
-                    if (orderDetail.OrderId == order.Id)
-                    {
-                        POQuantity += orderDetail.Quantity;
-                    }
-                }
-                List<ProgressCheck> lstProgress = new List<ProgressCheck>();
-                lstProgress = await _progresscheckRepository.Query(x => x.OrderId == order.Id, false).SelectAsync();
-                ProgressCheck progressCheck = new ProgressCheck();
-                if (lstProgress==null)
-                {
-                    progressCheck.Id = 0;
-                    progressCheck.InspectionDate = DateTime.Now.Date;
-                    progressCheck.IntendedShipDate = DateTime.Now.Date;
-                    progressCheck.Complete = false;
-                    progressCheck.OrderId = order.Id;   
-                }
-                else
-                {
-                    progressCheck = lstProgress[0];
-                    if (progressCheck.EstQtyToShip != POQuantity)
-                    {
-                        progressCheck.Complete = false;
-                    }
-                }
-                ProgressCheckDto temp = new ProgressCheckDto()
-                {
-                    Id = progressCheck.Id,
-                    Factory = order.Factory,
-                    PONumber = order.PONumber,
-                    ShipDate = order.ShipDate,
-                    InspectionDate = progressCheck.InspectionDate,
-                    IntendedShipDate = progressCheck.IntendedShipDate,
-                    Complete = progressCheck.Complete,
-                    POQuantity = POQuantity,
-                    EstQtyToShip = progressCheck.EstQtyToShip,
-                    Supplier = order.Supplier,
-                    ListOrderDetail = orderDetails,
-                    ListOrderDetailDto=Mapper.Map<List<OrderDetailDto>>(orderDetails),
-                    OrderId = order.Id,
-                    Origin = order.Origin,
-                    OriginPort = order.PortOfDelivery,
-                    Department = order.Department
-                };
-                progressCheckDTOs.Add(temp);
-            }
+			_progresscheckRepository = progresscheckRepository;
+			_progresscheckDataProvider = progresscheckDataProvider;
+		}
+		public async Task<PagedListResult<ProgressCheckDto>> ListProgressCheckDtoAsync()
+		{
+			List<ProgressCheckDto> progressCheckDTOs = new List<ProgressCheckDto>();
+			var lst = await _orderDataProvider.ListAsync();
+			List<Order> orders = lst.Items;
+			foreach (var order in orders)
+			{
+				decimal POQuantity = 0;
+				List<OrderDetail> orderDetails = await _orderdetailRepository.Query(x => x.OrderId == order.Id, false).SelectAsync();
+				foreach (var orderDetail in orderDetails)
+				{
+					if (orderDetail.OrderId == order.Id)
+					{
+						POQuantity += orderDetail.Quantity;
+					}
+				}
+				List<ProgressCheck> lstProgress = new List<ProgressCheck>();
+				lstProgress = await _progresscheckRepository.Query(x => x.OrderId == order.Id, false).SelectAsync();
+				ProgressCheck progressCheck = new ProgressCheck();
+				if (lstProgress == null)
+				{
+					progressCheck.Id = 0;
+					progressCheck.InspectionDate = DateTime.Now.Date;
+					progressCheck.IntendedShipDate = DateTime.Now.Date;
+					progressCheck.Complete = false;
+					progressCheck.OrderId = order.Id;
+				}
+				else
+				{
+					progressCheck = lstProgress[0];
+					if (progressCheck.EstQtyToShip != POQuantity)
+					{
+						progressCheck.Complete = false;
+					}
+				}
+				ProgressCheckDto temp = new ProgressCheckDto()
+				{
+					Id = progressCheck.Id,
+					Factory = order.Factory,
+					PONumber = order.PONumber,
+					ShipDate = order.ShipDate,
+					InspectionDate = progressCheck.InspectionDate,
+					IntendedShipDate = progressCheck.IntendedShipDate,
+					Complete = progressCheck.Complete,
+					POQuantity = POQuantity,
+					EstQtyToShip = progressCheck.EstQtyToShip,
+					Supplier = order.Supplier,
+					ListOrderDetail = orderDetails,
+					ListOrderDetailDto = Mapper.Map<List<OrderDetailDto>>(orderDetails),
+					OrderId = order.Id,
+					Origin = order.Origin,
+					OriginPort = order.PortOfDelivery,
+					Department = order.Department
+				};
+				progressCheckDTOs.Add(temp);
+			}
 
             PagedListResult<ProgressCheckDto> lstProChDto = new PagedListResult<ProgressCheckDto>
             {
@@ -142,49 +142,49 @@ namespace ADJ.BusinessService.Implementations
             {
                 entity.InspectionDate = rq.InspectionDate;
 
-                decimal temp = 0;
-                foreach (var item in rq.ListOrderDetail)
-                {
-                    temp += item.ReviseQuantity;
-                    OrderDetail orderDetail = await _orderdetailRepository.GetByIdAsync(item.Id, false);
-                    orderDetail.ReviseQuantity = item.ReviseQuantity;
-                    _orderdetailRepository.Update(orderDetail);
-                }
-                entity.EstQtyToShip = temp;
-                if (entity.EstQtyToShip == rq.POQuantity)
-                {
-                    entity.Complete = true;
-                }
-                else
-                {
-                    entity.Complete = false;
-                }
-                _progresscheckRepository.Insert(entity);
-            }
+				decimal temp = 0;
+				foreach (var item in rq.ListOrderDetail)
+				{
+					temp += item.ReviseQuantity;
+					OrderDetail orderDetail = await _orderdetailRepository.GetByIdAsync(item.Id, false);
+					orderDetail.ReviseQuantity = item.ReviseQuantity;
+					_orderdetailRepository.Update(orderDetail);
+				}
+				entity.EstQtyToShip = temp;
+				if (entity.EstQtyToShip == rq.POQuantity)
+				{
+					entity.Complete = true;
+				}
+				else
+				{
+					entity.Complete = false;
+				}
+				_progresscheckRepository.Insert(entity);
+			}
 
             await UnitOfWork.SaveChangesAsync();
 
-            var rs = Mapper.Map<ProgressCheckDto>(entity);
-            return rs;
-        }
-        public async Task<GetItemSearchDto> SearchItem()
-        {
-            var lst= await _orderDataProvider.ListAsync();
-            List<Order> orderModels = lst.Items;
-            var suppliers = orderModels.Select(x => x.Supplier).Distinct();
-            var origins = orderModels.Select(x => x.Origin).Distinct();
-            var originports = orderModels.Select(x => x.PortOfLoading).Distinct();
-            var factories = orderModels.Select(x => x.Factory).Distinct();
-            var depts = orderModels.Select(x => x.Department).Distinct();
-            GetItemSearchDto getSearchItemDTO = new GetItemSearchDto()
-            {
-                Suppliers = suppliers,
-                Origins = origins,
-                OriginPorts = originports,
-                Factories = factories,
-                Depts = depts
-            };
-            return getSearchItemDTO;
-        }
-    }
+			var rs = Mapper.Map<ProgressCheckDto>(entity);
+			return rs;
+		}
+		public async Task<GetItemSearchDto> SearchItem()
+		{
+			var lst = await _orderDataProvider.ListAsync();
+			List<Order> orderModels = lst.Items;
+			var suppliers = orderModels.Select(x => x.Supplier).Distinct();
+			var origins = orderModels.Select(x => x.Origin).Distinct();
+			var originports = orderModels.Select(x => x.PortOfLoading).Distinct();
+			var factories = orderModels.Select(x => x.Factory).Distinct();
+			var depts = orderModels.Select(x => x.Department).Distinct();
+			GetItemSearchDto getSearchItemDTO = new GetItemSearchDto()
+			{
+				Suppliers = suppliers,
+				Origins = origins,
+				OriginPorts = originports,
+				Factories = factories,
+				Depts = depts
+			};
+			return getSearchItemDTO;
+		}
+	}
 }
