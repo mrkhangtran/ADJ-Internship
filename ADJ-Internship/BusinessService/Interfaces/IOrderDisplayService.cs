@@ -7,11 +7,8 @@ using System.Threading.Tasks;
 
 namespace ADJ.BusinessService.Interfaces
 {
-    public interface IOrderService
-    {
-        Task<List<OrderDisplayDto>> GetPOsAsync();
-        Task<List<OrderDisplayDto>> FilterPO(string key);
-
-        
-    }
+	public interface IOrderDisplayService
+	{
+		Task<PagedListResult<OrderDto>> DisplaysAsync(string poNumber,int? pageIndex, int? pageSize);
+	}
 }

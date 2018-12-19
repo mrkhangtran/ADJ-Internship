@@ -6,21 +6,23 @@ using System.Text;
 
 namespace ADJ.DataModel.OrderTrack
 {
-    public class ProgressCheck : EntityBase
-    {
-        public bool Complete { get; set; }
+	public class ProgressCheck : EntityBase
+	{
+		public bool Complete { get; set; }
 
-        public bool OnSchedule { get; set; }
+		public bool OnSchedule { get; set; }
 
-        public DateTime IntendedShipDate { get; set; }
+		public DateTime IntendedShipDate { get; set; }
 
-        public decimal EstQtyToShip { get; set; }
+		public decimal EstQtyToShip { get; set; }
 
-        public DateTime InspectionDate { get; set; }
+		public DateTime InspectionDate { get; set; }
 
-        public string Comments { get; set; }
+		public string Comments { get; set; }
 
-        [Required]
-        public int OrderId { get; set; }
-    }
+		[Required]
+		public int OrderId { get; set; }
+
+		public virtual Order Order { get; set; }
+	}
 }

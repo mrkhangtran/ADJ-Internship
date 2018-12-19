@@ -10,51 +10,51 @@ using ADJ.WebApp.Models;
 
 namespace ADJ.WebApp.Controllers
 {
-    public class HomeController : Controller
-    {
-        private readonly IPurchaseOrderService _poService;
-        private readonly IProgressCheckService _prcService;
-        public HomeController(IPurchaseOrderService poService, IProgressCheckService prcService)
-        {
-            _poService = poService;
-            _prcService = prcService;
-         
-        }
+	public class HomeController : Controller
+	{
+		private readonly IPurchaseOrderService _poService;
+		private readonly IProgressCheckService _prcService;
+		public HomeController(IPurchaseOrderService poService, IProgressCheckService prcService)
+		{
+			_poService = poService;
+			_prcService = prcService;
 
-        public async Task<IActionResult> Index()
-        {
-            var createPurchaseOrderRq = new CreateOrUpdatePurchaseOrderRq {Test = "111"};
-        
-            await _poService.CreateOrUpdatePurchaseOrderAsync(createPurchaseOrderRq);
+		}
 
-            var test = await _poService.ListPurchaseOrdersAsync(null);
+		public async Task<IActionResult> Index()
+		{
+			var createPurchaseOrderRq = new CreateOrUpdatePurchaseOrderRq { Test = "111" };
 
-            return View();
-        }
+			await _poService.CreateOrUpdatePurchaseOrderAsync(createPurchaseOrderRq);
 
-        public IActionResult About()
-        {
-            ViewData["Message"] = "Your application description page.";
+			var test = await _poService.ListPurchaseOrdersAsync(null);
 
-            return View();
-        }
+			return View();
+		}
 
-        public IActionResult Contact()
-        {
-            ViewData["Message"] = "Your contact page.";
+		public IActionResult About()
+		{
+			ViewData["Message"] = "Your application description page.";
 
-            return View();
-        }
+			return View();
+		}
 
-        public IActionResult Privacy()
-        {
-            return View();
-        }
+		public IActionResult Contact()
+		{
+			ViewData["Message"] = "Your contact page.";
 
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-        }
-    }
+			return View();
+		}
+
+		public IActionResult Privacy()
+		{
+			return View();
+		}
+
+		[ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+		public IActionResult Error()
+		{
+			return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+		}
+	}
 }

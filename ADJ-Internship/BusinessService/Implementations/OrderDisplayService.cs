@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using ADJ.BusinessService.Core;
 using ADJ.BusinessService.Dtos;
@@ -28,45 +30,106 @@ namespace ADJ.BusinessService.Implementations
 
 		}
 
-		public async Task<List<OrderDto>> DisplaysAsync(string searchTerm)
+		public async Task<PagedListResult<OrderDto>> DisplaysAsync(string poNumber, int? pageIndex, int? pageSize)
 		{
-			var poResult = await _orderDataProvider.ListAsync();
-			List<OrderDto> lstResult = new List<OrderDto>();
-			List<OrderDto> lstFilterResult = new List<OrderDto>();
-
-			foreach (var i in poResult.Items)
+			Expression<Func<Order, bool>> query;
+			if (poNumber == null)
 			{
-				OrderDto orderDto = new OrderDto();
-				orderDto.PONumber = i.PONumber;
-				orderDto.OrderDate = i.OrderDate;
-				orderDto.Supplier = i.Supplier;
-				orderDto.Origin = i.Origin;
-				orderDto.PortOfLoading = i.PortOfLoading;
-				orderDto.ShipDate = i.ShipDate;
-				orderDto.DeliveryDate = i.DeliveryDate;
-				orderDto.PortOfDelivery = i.PortOfDelivery;
-				orderDto.Status = i.Status;
-				orderDto.Quantity = i.POQuantity;
-				lstResult.Add(orderDto);
-			}
-			
-			foreach (var j in lstResult)
-			{
-				if (j.PONumber == searchTerm)
-				{
-					lstFilterResult.Add(j);
-				}
-			}
-			if (lstFilterResult.Count != 0)
-			{
-				return lstFilterResult;
+				query = null;
 			}
 			else
 			{
-				return lstResult;
+				query = (p => p.PONumber == poNumber);
 			}
+
+			var poResult = await _orderDataProvider.ListAsync(query, null, true, pageIndex, pageSize);
+
+			var pagedResult = new PagedListResult<OrderDto>
+			{
+				TotalCount = poResult.TotalCount,
+				PageCount = poResult.PageCount,
+				Items = Mapper.Map<List<OrderDto>>(poResult.Items)
+			};
+
 			
+			return pagedResult;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+			//var poResult = await _orderDataProvider.ListAsync();
+			//PagedListResult<OrderDto> result = new PagedListResult<OrderDto>();
+			//result.TotalCount = poResult.TotalCount;
+			//result.PageCount = poResult.PageCount;
+
+			//List<OrderDto> lstResult = new List<OrderDto>();
+			//List<OrderDto> lstFilterResult = new List<OrderDto>();
+
+			//foreach (var i in poResult.Items)
+			//{
+			//	OrderDto orderDto = new OrderDto();
+			//	orderDto.PONumber = i.PONumber;
+			//	orderDto.OrderDate = i.OrderDate;
+			//	orderDto.Supplier = i.Supplier;
+			//	orderDto.Origin = i.Origin;
+			//	orderDto.PortOfLoading = i.PortOfLoading;
+			//	orderDto.ShipDate = i.ShipDate;
+			//	orderDto.DeliveryDate = i.DeliveryDate;
+			//	orderDto.PortOfDelivery = i.PortOfDelivery;
+			//	orderDto.Status = i.Status;
+			//	orderDto.Quantity = i.POQuantity;
+			//	lstResult.Add(orderDto);
+			//}
+
+			//foreach (var j in lstResult)
+			//{
+			//	if (j.PONumber == poNumber)
+			//	{
+			//		lstFilterResult.Add(j);
+			//	}
+			//}
+			//if (lstFilterResult.Count != 0)
+			//{
+			//	result.Items= lstFilterResult;
+			//}
+			//else
+			//{
+			//	result.Items =lstResult;
+			//}
+			//return result;
 
 		}
+
+
 	}
 }

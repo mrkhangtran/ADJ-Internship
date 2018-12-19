@@ -1,5 +1,5 @@
-﻿
-@model IEnumerable<ADJ.BusinessService.Dtos.OrderDto>
+﻿@using ADJ.Common;
+@model PagedListResult<ADJ.BusinessService.Dtos.OrderDto>
 
 @{
 	ViewData["Title"] = "Display";
@@ -7,41 +7,52 @@
 }
 
 <!-- start table -->
-<table class="uk-table uk-table-striped content-table">
-	<thead>
-		<tr>
-			<th>PO Number</th>
-			<th>PO Date</th>
-			<th>Origin</th>
-			<th>Part Of Loading</th>
-			<th>Part Of Delivery</th>
-			<th>Suppier</th>
-			<th>PO Ship Date</th>
-			<th>PO City</th>
-			<th>Status</th>
-			<th>PO Delivery Date</th>
-			<th></th>
-		</tr>
-	</thead>
-	<tbody>
-		@foreach (var i in Model)
-		{
+	<table class="uk-table uk-table-striped content-table">
+		<thead>
 			<tr>
-				<td>@i.PONumber</td>
-				<td>@i.OrderDate.ToString("dd MM yyyy")</td>
-				<td>@i.Supplier</td>
-				<td>@i.Origin</td>
-				<td>@i.PortOfLoading</td>
-				<td>@i.ShipDate.ToString("dd MM yyyy")</td>
-				<td>@i.DeliveryDate.ToString("dd MM yyyy")</td>
-				<td>@i.PortOfDelivery</td>
-				<td>@i.Quantity</td>
-				<td>@i.Status</td>
-				<td><a href="#"><span class="fa-fa-pencil-square-o"></span></a><a href="#"><span class="fa-fa-file-o"></span></a></td>
+				<th>PO Number</th>
+				<th>PO Date</th>
+				<th>Origin</th>
+				<th>Port Of Loading</th>
+				<th>Port Of Delivery</th>
+				<th>Suppier</th>
+				<th>PO Ship Date</th>
+				<th>PO Qty</th>
+				<th>Status</th>
+				<th>PO Delivery Date</th>
+				<th></th>
 			</tr>
-		}
+		</thead>
+		<tbody>
+			@foreach (var i in Model.Items)
+			{
+				<tr>
+					<td>@i.PONumber</td>
+					<td>@i.OrderDate.ToString("dd MMM yyyy")</td>
+					<td>@i.Origin</td>
+					<td>@i.PortOfLoading</td>
+					<td>@i.PortOfDelivery</td>
+					<td>@i.Supplier</td>
+					<td>@i.ShipDate.ToString("dd MMM yyyy")</td>
+					<td>@i.Quantity</td>
+					<td>@i.Status</td>
+					<td>@i.DeliveryDate.ToString("dd MMM yyyy")</td>
+					<td><a href="#">Edit</a><a href="#"> Detail</a></td>
+				</tr>
+			}
 
-	</tbody>
-</table> <!-- end content-table -->
-<div class="massage-null"><p>@ViewBag.Massage</p></div>
-<div style="clear:both"></div>
+		</tbody>
+	</table> <!-- end content-table -->
+	<div class="massage-null"><p>@ViewBag.Massage</p></div>
+	<div style="clear:both"></div>
+
+	<div>
+		<ul class="pagination" style="list-style:none">
+			@for (var i = 1; i <= Model.PageCount; i++)
+			{
+				<li class="page-item @(i==Model.PageIndex?" active":"")" style="display:inline;float:left;padding:0 15px">
+					<a asp-page="/Display" asp-route-pageIndex="@i" class="page-link">@i</a>
+				</li>
+			}
+		</ul>
+	</div>

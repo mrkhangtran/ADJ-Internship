@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ADJ.DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20181214085923_updatedatabase")]
-    partial class updatedatabase
+    [Migration("20181217014825_test1")]
+    partial class test1
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -233,7 +233,7 @@ namespace ADJ.DataAccess.Migrations
 
                     b.Property<string>("PONumber");
 
-                    b.Property<float>("POQuantity");
+                    b.Property<decimal>("POQuantity");
 
                     b.Property<string>("PortOfDelivery")
                         .IsRequired();
@@ -359,8 +359,7 @@ namespace ADJ.DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("OrderId")
-                        .IsUnique();
+                    b.HasIndex("OrderId");
 
                     b.ToTable("ProgressChecks");
                 });
@@ -645,16 +644,16 @@ namespace ADJ.DataAccess.Migrations
             modelBuilder.Entity("ADJ.DataModel.OrderTrack.OrderDetail", b =>
                 {
                     b.HasOne("ADJ.DataModel.OrderTrack.Order", "Order")
-                        .WithMany("orderDetails")
+                        .WithMany("OrderDetails")
                         .HasForeignKey("OrderId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("ADJ.DataModel.OrderTrack.ProgressCheck", b =>
                 {
-                    b.HasOne("ADJ.DataModel.OrderTrack.Order")
-                        .WithOne("ProgressCheck")
-                        .HasForeignKey("ADJ.DataModel.OrderTrack.ProgressCheck", "OrderId")
+                    b.HasOne("ADJ.DataModel.OrderTrack.Order", "Order")
+                        .WithMany("ProgressChecks")
+                        .HasForeignKey("OrderId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
