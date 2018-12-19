@@ -4,14 +4,16 @@ using ADJ.DataAccess;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace ADJ.DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20181212070913_update")]
+    partial class update
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -96,7 +98,7 @@ namespace ADJ.DataAccess.Migrations
 
                     b.Property<int>("OrderId");
 
-                    b.Property<decimal>("Quantity");
+                    b.Property<int>("Quantity");
 
                     b.Property<byte[]>("RowVersion")
                         .IsConcurrencyToken()
@@ -173,7 +175,7 @@ namespace ADJ.DataAccess.Migrations
                     b.Property<string>("Order")
                         .HasMaxLength(30);
 
-                    b.Property<decimal>("Quantity");
+                    b.Property<int>("Quantity");
 
                     b.Property<byte[]>("RowVersion")
                         .IsConcurrencyToken()
@@ -231,7 +233,7 @@ namespace ADJ.DataAccess.Migrations
 
                     b.Property<string>("PONumber");
 
-                    b.Property<decimal>("POQuantity");
+                    b.Property<float>("POQuantity");
 
                     b.Property<string>("PortOfDelivery")
                         .IsRequired();
@@ -295,11 +297,11 @@ namespace ADJ.DataAccess.Migrations
 
                     b.Property<int>("OrderId");
 
-                    b.Property<decimal>("Quantity");
+                    b.Property<float>("Quantity");
 
                     b.Property<float>("RetailPrice");
 
-                    b.Property<decimal>("ReviseQuantity");
+                    b.Property<float>("ReviseQuantity");
 
                     b.Property<byte[]>("RowVersion")
                         .IsConcurrencyToken()
@@ -337,7 +339,7 @@ namespace ADJ.DataAccess.Migrations
 
                     b.Property<DateTime>("CreatedDateUtc");
 
-                    b.Property<decimal>("EstQtyToShip");
+                    b.Property<float>("EstQtyToShip");
 
                     b.Property<DateTime>("InspectionDate");
 
@@ -514,7 +516,7 @@ namespace ADJ.DataAccess.Migrations
 
                     b.Property<string>("PackType");
 
-                    b.Property<decimal>("Quantity");
+                    b.Property<int>("Quantity");
 
                     b.Property<byte[]>("RowVersion")
                         .IsConcurrencyToken()
@@ -600,7 +602,7 @@ namespace ADJ.DataAccess.Migrations
 
                     b.Property<string>("PackType");
 
-                    b.Property<decimal>("Quantity");
+                    b.Property<int>("Quantity");
 
                     b.Property<byte[]>("RowVersion")
                         .IsConcurrencyToken()
@@ -650,7 +652,7 @@ namespace ADJ.DataAccess.Migrations
 
             modelBuilder.Entity("ADJ.DataModel.OrderTrack.ProgressCheck", b =>
                 {
-                    b.HasOne("ADJ.DataModel.OrderTrack.Order")
+                    b.HasOne("ADJ.DataModel.OrderTrack.Order", "Order")
                         .WithOne("ProgressCheck")
                         .HasForeignKey("ADJ.DataModel.OrderTrack.ProgressCheck", "OrderId")
                         .OnDelete(DeleteBehavior.Cascade);

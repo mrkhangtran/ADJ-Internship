@@ -17,6 +17,7 @@ namespace ADJ.Repository.Implementations
         {
         }
 
-		protected override Func<IQueryable<ProgressCheck>, IQueryable<ProgressCheck>> IncludeDependents => throw new NotImplementedException();
-	}
+        protected override Func<IQueryable<ProgressCheck>, IQueryable<ProgressCheck>> IncludeDependents =>
+            po => po.Include(x => x.Order);
+    }
 }

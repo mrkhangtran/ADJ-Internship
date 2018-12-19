@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace ADJ.DataAccess.Migrations
 {
-    public partial class test1 : Migration
+    public partial class Update_1 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -28,7 +28,7 @@ namespace ADJ.DataAccess.Migrations
                     ETD = table.Column<DateTime>(nullable: false),
                     ETA = table.Column<DateTime>(nullable: false),
                     Voyage = table.Column<string>(nullable: true),
-                    Quantity = table.Column<decimal>(nullable: false),
+                    Quantity = table.Column<int>(nullable: false),
                     Cartoons = table.Column<int>(nullable: false),
                     Cube = table.Column<decimal>(nullable: false),
                     PackType = table.Column<string>(nullable: true),
@@ -111,36 +111,18 @@ namespace ADJ.DataAccess.Migrations
                     OrderType = table.Column<string>(maxLength: 30, nullable: true),
                     Season = table.Column<string>(nullable: true),
                     Factory = table.Column<string>(maxLength: 30, nullable: true),
-                    Currency = table.Column<int>(nullable: false),
+                    Currency = table.Column<string>(nullable: true),
                     ShipDate = table.Column<DateTime>(nullable: false),
                     LatestShipDate = table.Column<DateTime>(nullable: false),
                     DeliveryDate = table.Column<DateTime>(nullable: false),
                     Mode = table.Column<string>(nullable: true),
                     Vendor = table.Column<string>(maxLength: 30, nullable: true),
-                    POQuantity = table.Column<decimal>(nullable: false),
-                    Status = table.Column<int>(nullable: false)
+                    POQuantity = table.Column<float>(nullable: false),
+                    Status = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Orders", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "PurchaseOrders",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    RowVersion = table.Column<byte[]>(rowVersion: true, nullable: true),
-                    CreatedBy = table.Column<string>(nullable: false),
-                    CreatedDateUtc = table.Column<DateTime>(nullable: false),
-                    ModifiedBy = table.Column<string>(nullable: true),
-                    ModifiedDateUtc = table.Column<DateTime>(nullable: true),
-                    Test = table.Column<string>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_PurchaseOrders", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -188,7 +170,8 @@ namespace ADJ.DataAccess.Migrations
                     ModifiedBy = table.Column<string>(nullable: true),
                     ModifiedDateUtc = table.Column<DateTime>(nullable: true),
                     BookingId = table.Column<int>(nullable: false),
-                    ArrivalDate = table.Column<DateTime>(nullable: false)
+                    ArrivalDate = table.Column<DateTime>(nullable: false),
+                    UpdatedBy = table.Column<string>(maxLength: 20, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -218,7 +201,7 @@ namespace ADJ.DataAccess.Migrations
                     Loading = table.Column<string>(nullable: true),
                     Bars = table.Column<int>(nullable: false),
                     Equipment = table.Column<string>(nullable: true),
-                    Quantity = table.Column<decimal>(nullable: false),
+                    Quantity = table.Column<int>(nullable: false),
                     Cartoons = table.Column<int>(nullable: false),
                     Cartons = table.Column<string>(nullable: true),
                     Cube = table.Column<decimal>(nullable: false),
@@ -253,7 +236,7 @@ namespace ADJ.DataAccess.Migrations
                     DCConfirmationId = table.Column<int>(nullable: false),
                     Order = table.Column<string>(maxLength: 30, nullable: true),
                     Line = table.Column<string>(maxLength: 30, nullable: true),
-                    Quantity = table.Column<decimal>(nullable: false),
+                    Quantity = table.Column<int>(nullable: false),
                     Cartons = table.Column<int>(nullable: false),
                     Item = table.Column<string>(maxLength: 50, nullable: true),
                     Container = table.Column<string>(maxLength: 20, nullable: true)
@@ -287,8 +270,7 @@ namespace ADJ.DataAccess.Migrations
                     Colour = table.Column<string>(maxLength: 30, nullable: true),
                     Size = table.Column<string>(maxLength: 30, nullable: true),
                     Item = table.Column<string>(nullable: true),
-                    Quantity = table.Column<decimal>(nullable: false),
-                    ReviseQuantity = table.Column<decimal>(nullable: false),
+                    Quantity = table.Column<float>(nullable: false),
                     Cartons = table.Column<float>(nullable: false),
                     Cube = table.Column<float>(nullable: false),
                     KGS = table.Column<float>(nullable: false),
@@ -322,7 +304,7 @@ namespace ADJ.DataAccess.Migrations
                     Complete = table.Column<bool>(nullable: false),
                     OnSchedule = table.Column<bool>(nullable: false),
                     IntendedShipDate = table.Column<DateTime>(nullable: false),
-                    EstQtyToShip = table.Column<decimal>(nullable: false),
+                    EstQtyToShip = table.Column<int>(nullable: false),
                     InspectionDate = table.Column<DateTime>(nullable: false),
                     Comments = table.Column<string>(nullable: true),
                     OrderId = table.Column<int>(nullable: false)
@@ -339,31 +321,6 @@ namespace ADJ.DataAccess.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "PurchaseOrderItems",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    RowVersion = table.Column<byte[]>(rowVersion: true, nullable: true),
-                    CreatedBy = table.Column<string>(nullable: false),
-                    CreatedDateUtc = table.Column<DateTime>(nullable: false),
-                    ModifiedBy = table.Column<string>(nullable: true),
-                    ModifiedDateUtc = table.Column<DateTime>(nullable: true),
-                    Test = table.Column<string>(nullable: true),
-                    PurchaseOrderId = table.Column<int>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_PurchaseOrderItems", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_PurchaseOrderItems_PurchaseOrders_PurchaseOrderId",
-                        column: x => x.PurchaseOrderId,
-                        principalTable: "PurchaseOrders",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "DCBookingDetails",
                 columns: table => new
                 {
@@ -375,7 +332,7 @@ namespace ADJ.DataAccess.Migrations
                     ModifiedBy = table.Column<string>(nullable: true),
                     ModifiedDateUtc = table.Column<DateTime>(nullable: true),
                     Line = table.Column<string>(maxLength: 30, nullable: true),
-                    Quantity = table.Column<decimal>(nullable: false),
+                    Quantity = table.Column<int>(nullable: false),
                     Cartons = table.Column<int>(nullable: false),
                     Cube = table.Column<decimal>(nullable: false),
                     Item = table.Column<string>(maxLength: 50, nullable: true),
@@ -451,11 +408,6 @@ namespace ADJ.DataAccess.Migrations
                 name: "IX_ProgressChecks_OrderId",
                 table: "ProgressChecks",
                 column: "OrderId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_PurchaseOrderItems_PurchaseOrderId",
-                table: "PurchaseOrderItems",
-                column: "PurchaseOrderId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -479,9 +431,6 @@ namespace ADJ.DataAccess.Migrations
                 name: "ProgressChecks");
 
             migrationBuilder.DropTable(
-                name: "PurchaseOrderItems");
-
-            migrationBuilder.DropTable(
                 name: "DCBookings");
 
             migrationBuilder.DropTable(
@@ -492,9 +441,6 @@ namespace ADJ.DataAccess.Migrations
 
             migrationBuilder.DropTable(
                 name: "Orders");
-
-            migrationBuilder.DropTable(
-                name: "PurchaseOrders");
 
             migrationBuilder.DropTable(
                 name: "DCConfirmations");

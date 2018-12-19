@@ -17,6 +17,7 @@ namespace ADJ.Repository.Implementations
         {
         }
 
-		protected override Func<IQueryable<OrderDetail>, IQueryable<OrderDetail>> IncludeDependents => throw new NotImplementedException();
-	}
+        protected override Func<IQueryable<OrderDetail>, IQueryable<OrderDetail>> IncludeDependents =>
+            po => po.Include(x => x.Order);
+    }
 }
