@@ -67,7 +67,7 @@ namespace ADJ.WebApp.Controllers
     {
       SetDropDownList();
 
-      if (addModel.PODetails.Items == null)
+      if (orderDetails.Count == 0)
       {
         ViewBag.OrderDetailError = "Please add at least 1 item.";
         ViewBag.ItemId = -1;
@@ -82,11 +82,13 @@ namespace ADJ.WebApp.Controllers
 
       if (ModelState.IsValid)
       {
-        addModel.orderDetails = addModel.PODetails.Items;
+        addModel.orderDetails = ConvertToDto(orderDetails);
         await _poService.CreateOrUpdateOrderAsync(addModel);
 
         return RedirectToAction("Index", new { id = addModel.PONumber, method = 1 });
       }
+
+      ModelState.Clear();
       return View(addModel);
     }
 
@@ -117,7 +119,7 @@ namespace ADJ.WebApp.Controllers
           break;
         default:
           int itemId = int.Parse(new string(method.Where(char.IsDigit).ToArray()));
-          ModelState.Clear();
+          //ModelState.Clear();
           if (method.Contains("Update"))
           {
             if ((!UniqueItemNumber(itemId, addModel.orderDetailDTO.ItemNumber, addModel.PODetails.Items)) || (!(await _poService.UniqueItemNumAsync(addModel.orderDetailDTO.ItemNumber, addModel.orderDetailDTO.Id))))
@@ -143,6 +145,7 @@ namespace ADJ.WebApp.Controllers
           break;
       }
 
+      ModelState.Clear();
       return PartialView("_OrderDetail", addModel);
     }
 
@@ -366,6 +369,36 @@ namespace ADJ.WebApp.Controllers
       }
 
       return View(addModel);
+    }
+
+    private List<OrderDetailDTO> ConvertToDto(List<string> orderDetailStrings)
+    {
+      List<OrderDetailDTO> orderDetailDTOs = new List<OrderDetailDTO>();
+
+      for (int i=0; i < (orderDetailStrings.Count / 15); i++)
+      {
+        OrderDetailDTO orderDetail = new OrderDetailDTO();
+
+        orderDetail.Id = int.Parse(orderDetailStrings[0*(i+1)]);
+        orderDetail.ItemNumber = orderDetailStrings[1 * (i + 1)];
+        orderDetail.Description = orderDetailStrings[2 * (i + 1)];
+        orderDetail.Warehouse = orderDetailStrings[3 * (i + 1)];
+        orderDetail.Colour = orderDetailStrings[4 * (i + 1)];
+        orderDetail.Size = orderDetailStrings[5 * (i + 1)];
+        orderDetail.Quantity = float.Parse(orderDetailStrings[6 * (i + 1)]);
+        orderDetail.Cartons = float.Parse(orderDetailStrings[7 * (i + 1)]);
+        orderDetail.Cube = float.Parse(orderDetailStrings[8 * (i + 1)]);
+        orderDetail.KGS = float.Parse(orderDetailStrings[9 * (i + 1)]);
+        orderDetail.UnitPrice = float.Parse(orderDetailStrings[10 * (i + 1)]);
+        orderDetail.RetailPrice = float.Parse(orderDetailStrings[11 * (i + 1)]);
+        orderDetail.Tariff = orderDetailStrings[12 * (i + 1)];
+        orderDetail.OrderId = int.Parse(orderDetailStrings[13 * (i + 1)]);
+        orderDetail.RowVersion = orderDetailStrings[14 * (i + 1)];
+
+        orderDetailDTOs.Add(orderDetail);
+      }
+
+      return orderDetailDTOs;
     }
 
     private bool UniqueItemNumber(int id, string itemNum, List<OrderDetailDTO> orderDetails)

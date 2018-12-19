@@ -1,6 +1,5 @@
 ﻿@model ADJ.BusinessService.Dtos.OrderDTO;
 
-@ViewBag.OrderDetailError
 <table class="uk-table" id="ItemDetail">
   <tr>
     <th>
@@ -121,7 +120,6 @@
       }
 
       for (int i = 0; i < Model.PODetails.Items.Count(); i++)
-      //for (int i = ((Model.PODetails.PageCount - 1) * Model.PODetails.TotalCount); i < ((Model.PODetails.PageCount) * Model.PODetails.TotalCount); i++)
       {
         <input asp-for="PODetails.Items[i].Id" value=@Model.PODetails.Items[i].Id type="hidden" id="itemProperty"/>
         <input asp-for="PODetails.Items[i].ItemNumber" value=@Model.PODetails.Items[i].ItemNumber type="hidden" id="itemProperty"/>
