@@ -1856,6 +1856,8 @@ select.uk-form-width-xsmall {
   text-align: center;
   /* 9 */
   text-decoration: none;
+  height: 50px;
+  width: 150px;
   text-transform: uppercase;
   transition: 0.1s ease-in-out;
   transition-property: color, background-color, border-color;

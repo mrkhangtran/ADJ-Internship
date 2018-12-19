@@ -9,5 +9,6 @@ namespace ADJ.Repository.Interfaces
 {
     public interface IProgressCheckRepository : IRepository<ProgressCheck>
     {
+       ProgressCheck GetProgressCheckByOrderId(int orderId);
     }
 }

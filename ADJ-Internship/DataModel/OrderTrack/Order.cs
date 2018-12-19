@@ -59,6 +59,7 @@ namespace ADJ.DataModel.OrderTrack
 
         public decimal POQuantity { get; set; }
 
+        //Default value = "New"
         public OrderStatus Status { get; set; }
 
 				public virtual ICollection<OrderDetail> OrderDetails { get; set; }
