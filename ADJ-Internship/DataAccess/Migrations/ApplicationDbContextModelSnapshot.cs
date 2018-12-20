@@ -357,7 +357,8 @@ namespace ADJ.DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("OrderId");
+                    b.HasIndex("OrderId")
+                        .IsUnique();
 
                     b.ToTable("ProgressChecks");
                 });
@@ -649,9 +650,9 @@ namespace ADJ.DataAccess.Migrations
 
             modelBuilder.Entity("ADJ.DataModel.OrderTrack.ProgressCheck", b =>
                 {
-                    b.HasOne("ADJ.DataModel.OrderTrack.Order", "Order")
-                        .WithMany("ProgressChecks")
-                        .HasForeignKey("OrderId")
+                    b.HasOne("ADJ.DataModel.OrderTrack.Order")
+                        .WithOne("ProgressCheck")
+                        .HasForeignKey("ADJ.DataModel.OrderTrack.ProgressCheck", "OrderId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

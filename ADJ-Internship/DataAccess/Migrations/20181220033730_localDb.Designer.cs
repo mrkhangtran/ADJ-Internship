@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ADJ.DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20181214085923_updatedatabase")]
-    partial class updatedatabase
+    [Migration("20181220033730_localDb")]
+    partial class localDb
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -233,7 +233,7 @@ namespace ADJ.DataAccess.Migrations
 
                     b.Property<string>("PONumber");
 
-                    b.Property<float>("POQuantity");
+                    b.Property<decimal>("POQuantity");
 
                     b.Property<string>("PortOfDelivery")
                         .IsRequired();
@@ -645,7 +645,7 @@ namespace ADJ.DataAccess.Migrations
             modelBuilder.Entity("ADJ.DataModel.OrderTrack.OrderDetail", b =>
                 {
                     b.HasOne("ADJ.DataModel.OrderTrack.Order", "Order")
-                        .WithMany("orderDetails")
+                        .WithMany("OrderDetails")
                         .HasForeignKey("OrderId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
