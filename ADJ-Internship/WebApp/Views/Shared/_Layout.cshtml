@@ -84,46 +84,24 @@
 			<!-- star header -->
 			<div class="content-header">
 				<span class="fa fa-bars"></span>
-				<div class="uk-inline dropdown-username">
-					<button class="uk-button uk-button-default" type="button">User Name</button>
-					<div uk-dropdown="pos: bottom-right">
-						<ul class="uk-nav uk-dropdown-nav">
-							<li><a href="#">Active</a></li>
-							<li><a href="#">Item</a></li>
-							<li>Header</li>
-							<li><a href="#">Item</a></li>
-							<li><a href="#">Item</a></li>
-							<li></li>
-							<li><a href="#">Item</a></li>
-						</ul>
-					</div>
-				</div><!-- end dropdown username -->
+                <div class="uk-inline dropdown-username">               
+                  <div uk-dropdown="pos: bottom-right">
+                    <ul class="uk-nav uk-dropdown-nav">
+                      <li><a href="#">Active</a></li>
+                      <li><a href="#">Item</a></li>
+                      <li>Header</li>
+                      <li><a href="#">Item</a></li>
+                      <li><a href="#">Item</a></li>
+                      <li></li>
+                      <li><a href="#">Item</a></li>
+                    </ul>
+                  </div>
+                </div><!-- end dropdown username -->
 
 			</div>	<!-- end content-header -->
 			<!-- start content -->
 			<div class="content">
-				<div class="filter-createnew">
-					@*Text box filter*@
-					<div id="txtFilter">
-						@*@using (Html.BeginForm("FilterPO", "DisplayAndFilter", FormMethod.Post))
-							{
-									@Html.TextBox("txtFilter", "", htmlAttributes: new { @class = "txtFilter", @placeholder = "Enter PO number" })
-									<button type="submit" class="uk-button uk-button-danger btnSearch" style="display:inline;text-align:center"><p>Filter</p></button>
-							}*@
-						<form asp-action="Display"
-									asp-controller="Order" method="post">
-							<input type="text" name="poNumber" placeholder="Enter PO Number" />
-							<input type="submit" value="Serach" />
-						</form>
-						<h4>@ViewBag.Message</h4>
-
-						
-
-
-
-						<button class="uk-button uk-button-primary btnNew" style="float:right;"><p>New order <span class="fa fa-plus"></span></p></button>
-					</div>
-				</div>
+				
 				<!-- start table -->
 				@RenderBody()
 				<!-- end content-table -->

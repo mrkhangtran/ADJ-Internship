@@ -1,7 +1,9 @@
 ﻿@model ADJ.Common.PagedListResult<ADJ.BusinessService.Dtos.ProgressCheckDto>
-<form asp-action="SearchItem" asp-controller="ProgressCheck" data-ajax="true" id="searchForm"
-      data-ajax-method="GET" data-ajax-mode="replace"
-      data-ajax-update="#renderSearching">
+@*<form asp-action="SearchItem" asp-controller="ProgressCheck" data-ajax="true" id="searchForm"
+  data-ajax-method="GET" data-ajax-mode="replace"
+  data-ajax-update="#renderSearching">*@
+@using (Html.BeginForm())
+{
   <div class="uk-container">
     <div class="uk-grid">
       <div class="uk-width-1-3">
@@ -11,7 +13,7 @@
               <td><label>Origin</label></td>
               <td>
                 <div class="uk-form-select" data-uk-form-select>
-                  @Html.DropDownList("Origins", new SelectList(ViewBag.Origins), "Any", new { @id = "Origins" })
+                  @Html.DropDownList("Origins", new SelectList(ViewBag.Origins), "Any", new { @id = "Origins", @class = "uk-select" })
                 </div>
               </td>
             </tr>
@@ -19,7 +21,7 @@
               <td><label>Origin Port</label></td>
               <td>
                 <div class="uk-form-select" data-uk-form-select>
-                  @Html.DropDownList("OriginPorts", new SelectList(ViewBag.OriginPorts), "Any", new { @id = "OriginPorts" })
+                  @Html.DropDownList("OriginPorts", new SelectList(ViewBag.OriginPorts), "Any", new { @id = "OriginPorts",@class="uk-select" })
                 </div>
               </td>
             </tr>
@@ -28,7 +30,7 @@
               <td>
                 <div class="uk-form-select" data-uk-form-select>
                   <span></span>
-                  @Html.DropDownList("Factories", new SelectList(ViewBag.Factories), "Any", new { @id = "Factories" })
+                  @Html.DropDownList("Factories", new SelectList(ViewBag.Factories), "Any", new { @id = "Factories", @class = "uk-select" })
                 </div>
               </td>
             </tr>
@@ -36,7 +38,7 @@
               <td><label>Supplier</label></td>
               <td>
                 <div class="uk-form-select" data-uk-form-select>
-                  @Html.DropDownList("Suppliers", new SelectList(ViewBag.Suppliers), "Any", new { @id = "Suppliers" })
+                  @Html.DropDownList("Suppliers", new SelectList(ViewBag.Suppliers), "Any", new { @id = "Suppliers", @class = "uk-select" })
                 </div>
               </td>
             </tr>
@@ -44,11 +46,7 @@
               <td><label>Status</label></td>
               <td>
                 <div class="uk-form-select" data-uk-form-select>
-                  <span></span>
-                  <select>
-                    <option value="">...</option>
-                    <option value="">...</option>
-                  </select>
+                  @Html.DropDownList("Status", new SelectList(ViewBag.Suppliers), "Any", new { @id = "Status", @class = "uk-select" })                
                 </div>
               </td>
             </tr>
@@ -62,7 +60,7 @@
               <td><label>Dept</label></td>
               <td>
                 <div class="uk-form-select" data-uk-form-select>
-                  @Html.DropDownList("Depts", new SelectList(ViewBag.Depts), "Any", new { @id = "Depts" })
+                  @Html.DropDownList("Depts", new SelectList(ViewBag.Depts), "Any", new { @id = "Depts", @class = "uk-select" })
 
                 </div>
               </td>
@@ -70,13 +68,14 @@
             <tr>
               <td><label>PO Number</label></td>
               <td>
-                @Html.TextBox("PONumberSearch")
+                <input id="PONumberSearch" class="uk-input" />
+
               </td>
             </tr>
             <tr>
               <td><label>Item</label></td>
               <td>
-                @Html.TextBox("ItemSearch")
+                <input id="ItemSearch" class="uk-input" />
               </td>
             </tr>
           </tbody>
@@ -89,12 +88,12 @@
           <tbody>
             <tr>
               <td>
-                <input id="Search" class="uk-button uk-button-primary" type="submit" data-uk-button value="Search">
+                <input id="Search" class="uk-button uk-button-primary" type="button" data-uk-button value="Search">
               </td>
             </tr>
             <tr>
               <td>
-                <input id="Achieve" class="uk-button uk-button-danger" type="submit" data-uk-button value="Achieve">
+                <input id="Achieve" asp-action="CreateOrUpdate" asp-controller="ProgressCheck" class="uk-button uk-button-danger" type="submit" data-uk-button value="Achieve">
               </td>
             </tr>
 
@@ -105,8 +104,8 @@
 
     </div>
   </div>
-</form>
-<form asp-action="CreateOrUpdate" asp-controller="ProgressCheck" data-ajax="true" id="updateForm">
+  @*</form>*@
+  @*<form asp-action="CreateOrUpdate" asp-controller="ProgressCheck" data-ajax="true" id="updateForm">*@
   <div id="renderSearching">
     @for (int i = 0; i < Model.Items.Count(); i++)
     {
@@ -166,7 +165,7 @@
                 @Html.CheckBoxFor(model => model.Items[i].selected)
               </td>
               <td>@Model.Items[i].PONumber</td>
-              @Html.HiddenFor(model => model.Items[i].POQuantity)
+              @Html.HiddenFor(model => model.Items[i].PONumber)
               <td>@Model.Items[i].POQuantity</td>
               @Html.HiddenFor(model => model.Items[i].POQuantity)
               <td>@Model.Items[i].EstQtyToShip</td>
@@ -209,7 +208,7 @@
               <tr>
                 <td>
                   @Html.CheckBoxFor(model => model.Items[i].ListOrderDetailDto[i].selected)
-                  
+
                 </td>
                 @Html.HiddenFor(model => model.Items[i].ListOrderDetailDto[j].Id)
                 <td>@Model.Items[i].ListOrderDetailDto[j].ItemNumber</td>
@@ -238,10 +237,11 @@
       </ul>
     </div>
   </div>
-</form>
+  @*</form>*@
+}
 <div id="modalPOUpdate" uk-modal>
   <div class="uk-modal-dialog uk-modal-body">
-    @foreach(var item in ViewBag.POUpdate)
+    @foreach (var item in ViewBag.POUpdate)
     {
       <p>Your PO Numbew : @item is updated</p>
       <br>
@@ -253,16 +253,29 @@
 </div>
 <script src="~/js/jquery-3.3.1.min.js"></script>
 <script type="text/javascript">
-  $(document).ready(function () {
-    @if (Enumerable.Count(ViewBag.POUpdate) > 0)
-    {
-
-
-    }
-  });
-  $("#Achieve").click(function () {
-    $("#updateForm").submit();        
+    $('#Search').click(function () {
+        $.ajax({
+            type: "GET",
+            dataType:"html",
+            url: "@Url.Action("SearchItem", "ProgressCheck")",
+            data: {
+                Suppliers: $('#Suppliers').val(),
+                Factories: $('#Factories').val(),
+                Origins: $('#Origins').val(),
+                OriginPorts: $('#OriginPorts').val(),
+                Depts: $('#Depts').val(),
+                PONumberSearch: $('#PONumberSearch').val(),
+                ItemSearch: $('#ItemSearch').val()
+            },
+            success: function (data) {
+                $('#renderSearching').html(data);
+            }
+        });
     });
+    $("#Achieve").click(function (event) {
+      if (!confirm('Are you sure that you want to submit the form'))
+        event.preventDefault();
+  });
 </script>
 
 
