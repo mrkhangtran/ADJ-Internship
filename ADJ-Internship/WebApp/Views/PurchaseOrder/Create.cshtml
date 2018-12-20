@@ -5,9 +5,9 @@
 @if (1 == 1) { }
 <span class="uk-alert-danger">@ViewBag.OrderDetailError</span>
 
-
 <form asp-action="Create" asp-controller="PurchaseOrder"
       id="orderForm"
+data-ajax-complete="parseValidation"
       data-ajax="true"
       data-ajax-method="POST"
       data-ajax-mode="replace"
@@ -23,29 +23,26 @@
 
 </form>
 
+<form asp-action="AddItem" asp-controller="PurchaseOrder"
+      id="detailForm"
+      data-ajax="true"
+      data-ajax-method="POST"
+      data-ajax-mode="replace"
+      data-ajax-update="#orderDetailPartial">
+  <button type="submit" value="AddItem" name="method" class="uk-button uk-button-default">Add Item</button>
+
+  @if (Model.PODetails != null)
+  {
+    <input asp-for="PODetails.TotalCount" value=@Model.PODetails.TotalCount type="hidden" />
+    <input asp-for="PODetails.PageCount" value=@Model.PODetails.PageCount type="hidden" />
+  }
+  <div id="orderDetailPartial">
+    <partial name="_OrderDetail" model="Model" />
+  </div>
+
+</form>
 
 
-<div id="form-container">
-  <form asp-action="AddItem" asp-controller="PurchaseOrder"
-        id="detailForm"
-        data-ajax="true"
-        data-ajax-method="POST"
-        data-ajax-mode="replace"
-        data-ajax-update="#orderDetailPartial">
-    <button type="submit" value="AddItem" name="method" class="uk-button uk-button-default">Add Item</button>
-
-    @if (Model.PODetails != null)
-    {
-      <input asp-for="PODetails.TotalCount" value=@Model.PODetails.TotalCount type="hidden" />
-      <input asp-for="PODetails.PageCount" value=@Model.PODetails.PageCount type="hidden" />
-    }
-    <div id="orderDetailPartial">
-      @*@await Html.PartialAsync("_OrderDetail", Model)*@
-      <partial name="_OrderDetail" />
-    </div>
-
-  </form>
-</div>
 
 @*
   <a asp-action="Copy"
@@ -107,28 +104,32 @@
       //document.getElementById("detailForm").submit().val("test");
     });
 
-    //parseValidation = function (newFormHTML) {
-    //  var container = document.getElementById("form-container");
-    //  container.insertAdjacentHTML("beforeend", newFormHTML);
-    //  var forms = container.getElementsByTagName("form");
-    //  var newForm = forms[forms.length - 1];
-    //  $.validator.unobtrusive.parse(newForm);
-    //};
+    parseValidation = function (newInputHTML) {
+      //var container = document.getElementById("form-container");
+      //container.insertAdjacentHTML("beforeend", newFormHTML);
+      //var forms = container.getElementsByTagName("form");
+      //var newForm = forms[forms.length - 1];
+      var form = document.getElementById("detailForm");
+      form.insertAdjacentHTML("beforeend", newInputHTML);
+      $(form).removeData("validator")    // Added by jQuery Validate
+        .removeData("unobtrusiveValidation");   // Added by jQuery Unobtrusive Validation
+      $.validator.unobtrusive.parse(newForm);
+    };
 
-    $.get({
-      url: "",
-      dataType: "html",
-      error: function (jqXHR, textStatus, errorThrown) {
-        alert(textStatus + ": Couldn't add form. " + errorThrown);
-      },
-      success: function (newFormHTML) {
-        var container = document.getElementById("form-container");
-        container.insertAdjacentHTML("beforeend", newFormHTML);
-        var forms = container.getElementsByTagName("form");
-        var newForm = forms[forms.length - 1];
-        $.validator.unobtrusive.parse(newForm);
-      }
-    });
+    //$.get({
+    //  url: "",
+    //  dataType: "html",
+    //  error: function (jqXHR, textStatus, errorThrown) {
+    //    alert(textStatus + ": Couldn't add form. " + errorThrown);
+    //  },
+    //  success: function (newFormHTML) {
+    //    var container = document.getElementById("form-container");
+    //    container.insertAdjacentHTML("beforeend", newFormHTML);
+    //    var forms = container.getElementsByTagName("form");
+    //    var newForm = forms[forms.length - 1];
+    //    $.validator.unobtrusive.parse(newForm);
+    //  }
+    //});
 
     //$.get({
     //  url: "",
@@ -137,10 +138,10 @@
     //    alert(textStatus + ": Couldn't add control. " + errorThrown);
     //  },
     //  success: function (newInputHTML) {
-    //    var form = document.getElementById("detailForm");
-    //    form.insertAdjacentHTML("beforeend", newInputHTML);
-    //    $(form).removeData("validator")    // Added by jQuery Validate
-    //      .removeData("unobtrusiveValidation");   // Added by jQuery Unobtrusive Validation
+        //var form = document.getElementById("detailForm");
+        //form.insertAdjacentHTML("beforeend", newInputHTML);
+        //$(form).removeData("validator")    // Added by jQuery Validate
+        //  .removeData("unobtrusiveValidation");   // Added by jQuery Unobtrusive Validation
     //    $.validator.unobtrusive.parse(form);
     //  }
     //})
