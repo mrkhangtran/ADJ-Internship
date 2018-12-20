@@ -42,7 +42,7 @@
 							<span class="fa fa-phone">Orde</span>
 						</div>	<!-- end welcome -->
 						<div class="uk-accordion-content">
-							<p>@Html.ActionLink("PO Manager", "Display", "Order")</p>
+							@*<p>@Html.ActionLink("PO Manager", "Display", "Order")</p>*@
 							<p><a href="#">PO Progress</a></p>
 						</div>
 					</li>
@@ -111,7 +111,7 @@
 							}*@
 						<form asp-action="Display"
 									asp-controller="Order" method="get">
-							<input type="text" name="poNumberFilter" value="@Model.CurrentFilter" placeholder="Enter PO Number" />
+							<input type="text" name="poNumberFilter" @*value="@Model.CurrentFilter"*@ placeholder="Enter PO Number" />
 							<input type="submit" value="Serach" />
 						</form>
 						<h4>@ViewBag.Message</h4>
