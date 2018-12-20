@@ -99,31 +99,6 @@
                 </div><!-- end dropdown username -->
 
 			</div>	<!-- end content-header -->
-			<!-- start content -->
-			<div>
-				<div>
-					@*Text box filter*@
-					<div id="txtFilter">
-						@*@using (Html.BeginForm("FilterPO", "DisplayAndFilter", FormMethod.Post))
-							{
-									@Html.TextBox("txtFilter", "", htmlAttributes: new { @class = "txtFilter", @placeholder = "Enter PO number" })
-									<button type="submit" class="uk-button uk-button-danger btnSearch" style="display:inline;text-align:center"><p>Filter</p></button>
-							}*@
-						<form asp-action="Display"
-									asp-controller="Order" method="get">
-							<input type="text" name="poNumberFilter" @*value="@Model.CurrentFilter"*@ placeholder="Enter PO Number" />
-							<input type="submit" value="Serach" />
-						</form>
-						<h4>@ViewBag.Message</h4>
-
-						
-
-
-
-						<button class="uk-button uk-button-primary " style="float:right;"><p>New order <span class="fa fa-plus"></span></p></button>
-					</div>
-				</div>
-				<!-- start table -->
 				@RenderBody()
 				<!-- end content-table -->
 
