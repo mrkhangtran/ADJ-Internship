@@ -10,9 +10,9 @@ namespace ADJ.BusinessService.Interfaces
 {
     public interface IProgressCheckService
     {
-        Task<PagedListResult<ProgressCheckDto>> ListProgressCheckDtoAsync();
+        Task<PagedListResult<ProgressCheckDto>> ListProgressCheckDtoAsync(int pageIndex = 1, int pageSize = 2);
         Task<GetItemSearchDto> SearchItem();
         Task<ProgressCheckDto> CreateOrUpdatePurchaseOrderAsync(ProgressCheckDto rq);
 
-    }
+	}
 }

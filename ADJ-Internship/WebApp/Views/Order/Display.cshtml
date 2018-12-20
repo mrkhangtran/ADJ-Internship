@@ -1,0 +1,76 @@
+﻿@using ADJ.Common;
+@model PagedListResult<ADJ.BusinessService.Dtos.OrderDto>
+
+@{
+	ViewData["Title"] = "Display";
+	Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!-- start table -->
+<table class="uk-table uk-table-striped content-table">
+	<thead>
+		<tr>
+			<th>PO Number</th>
+			<th>PO Date</th>
+			<th>Origin</th>
+			<th>Port Of Loading</th>
+			<th>Port Of Delivery</th>
+			<th>Suppier</th>
+			<th>PO Ship Date</th>
+			<th>PO Qty</th>
+			<th>Status</th>
+			<th>PO Delivery Date</th>
+			<th></th>
+		</tr>
+	</thead>
+	<tbody>
+		@foreach (var i in Model.Items)
+		{
+			<tr>
+				<td>@i.PONumber</td>
+				<td>@i.OrderDate.ToString("dd MMM yyyy")</td>
+				<td>@i.Origin</td>
+				<td>@i.PortOfLoading</td>
+				<td>@i.PortOfDelivery</td>
+				<td>@i.Supplier</td>
+				<td>@i.ShipDate.ToString("dd MMM yyyy")</td>
+				<td>@i.Quantity</td>
+				<td>@i.Status</td>
+				<td>@i.DeliveryDate.ToString("dd MMM yyyy")</td>
+				<td><a href="#">Edit</a><a href="#"> Detail</a></td>
+			</tr>
+		}
+
+	</tbody>
+</table> <!-- end content-table -->
+<div class="massage-null"><p>@ViewBag.Massage</p></div>
+<div style="clear:both"></div>
+
+<div>
+	<ul class="pagination" style="list-style:none">
+		@for (var i = 1; i <= Model.PageCount; i++)
+		{
+			<li class="page-item @(i == Model.PageIndex ? " active":"")" style="display:inline;float:left;padding:0 15px">
+				<a asp-page="/Display" asp-route-pageIndex="@i" class="page-link">@i</a>
+			</li>
+		}
+
+		@*@for (var i = 1; i < Model.PageCount; i++)
+		{
+			<a asp-page="./Display"
+				 asp-route-pageIndex="@(Model.PageIndex? - 1)"
+				 asp-route-currentFilter="@Model.CurrentFilter"
+				 class="btn btn-default @prevDisabled">
+				@i
+			</a>
+			<a asp-page="./Index"
+				 asp-route-sortOrder="@Model.CurrentSort"
+				 asp-route-pageIndex="@(Model.pagedlistResult.PageIndex + 1)"
+				 asp-route-currentFilter="@Model.CurrentFilter"
+				 class="btn btn-default @nextDisabled">
+				@i+1
+			</a>
+		}*@
+
+	</ul>
+</div>

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ADJ.Repository.Interfaces
 {
-  public interface IOrderRepository : IRepository<Order>
-  {
-  }
+	public interface IOrderRepository : IRepository<Order>
+	{
+	}
 }

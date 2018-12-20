@@ -1,5 +1,5 @@
-﻿@model List<ADJ.BusinessService.Dtos.ProgressCheckDto>
-@using (Html.BeginForm())
+﻿@model ADJ.Common.PagedListResult<ADJ.BusinessService.Dtos.ProgressCheckDto>
+@using (Html.BeginForm("CreateOrUpdate", "ProgressCheck", FormMethod.Post))
 {
     <div class="uk-container">
         <div class="uk-grid">
@@ -88,12 +88,12 @@
                     <tbody>
                         <tr>
                             <td>
-                                <input id="Search" style="height:50px;width:150px" class="uk-button uk-button-primary" type="submit" data-uk-button value="Search">
+                                <input id="Search" class="uk-button uk-button-primary" type="button" data-uk-button value="Search">
                             </td>
                         </tr>
                         <tr>
                             <td>
-                                <input id="Achieve" style="height:50px;width:150px" class="uk-button uk-button-danger" type="submit" data-uk-button value="Achieve">
+                                <input id="Achieve" class="uk-button uk-button-danger" type="submit" data-uk-button value="Achieve">
 
                             </td>
                         </tr>
@@ -105,128 +105,140 @@
 
         </div>
     </div>
-    if (Model.Count() == 0)
-    {
-        <h1>@ViewBag.ErrorList</h1>
-    }
-    for (int i = 0; i < Model.Count(); i++)
-    {
-        <div class="uk-container" style="margin-top:50px">
-            @Html.HiddenFor(model => model[i].OrderId, new { Value = Model[i].OrderId })
-            @Html.HiddenFor(model => model[i].Id, new { Value = Model[i].Id })
-            <table border="1">
-                <thead style="color:white">
-                    <tr style="background-color:#333">
-                        <td>
-                            Supplier
-                        </td>
-                        <td>
-                            Factory
-                        </td>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>@Model[i].Supplier</td>
-                        @Html.HiddenFor(model => model[i].Supplier)
-                        <td>@Model[i].Factory</td>
-                        @Html.HiddenFor(model => model[i].Factory)
-
-                    </tr>
-
-                </tbody>
-            </table>
-            <table border="1">
-                <thead style="color:white">
-                    <tr style="background-color:#333">
-                        <td>
-                            PO Number
-                        </td>
-                        <td>
-                            PO Quantity
-                        </td>
-                        <td>
-                            PO Check Quantity
-                        </td>
-                        <td>
-                            PO Ship Date
-                        </td>
-                        <td>
-                            Inspection Date
-                        </td>
-                        <td>
-                            Int Ship Date
-                        </td>
-                        <td>
-                            PO Quantity Complete
-                        </td>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>@Model[i].PONumber</td>
-                        @Html.HiddenFor(model => model[i].POQuantity)
-                        <td>@Model[i].POQuantity</td>
-                        @Html.HiddenFor(model => model[i].POQuantity)
-                        <td>@Model[i].EstQtyToShip</td>
-                        @Html.HiddenFor(model => model[i].EstQtyToShip)
-                        <td>@Model[i].ShipDate</td>
-                        <td>
-                            @Html.TextBoxFor(model => model[i].InspectionDate, Model[i].InspectionDate.ToString("yyyy-MM-dd"), new { type = "date", @class = "uk-input" })
-                            @Html.ValidationMessageFor(model => model[i].InspectionDate, "", new { @class = "text-danger" })
-
-                        </td>
-                        <td>
-
-                            @Html.TextBoxFor(model => model[i].IntendedShipDate, Model[i].IntendedShipDate.ToString("yyyy-MM-dd"), new { type = "date", @class = "uk-input" })
-                            @Html.ValidationMessageFor(model => model[i].IntendedShipDate, "", new { @class = "text-danger" })
-                        </td>
-                        <td>
-                            @Model[i].Complete
-                            @Html.HiddenFor(model => model[i].Complete)
-                        </td>
-                    </tr>
-
-                </tbody>
-            </table>
-            <table border="1">
-                <thead style="color:white">
-                    <tr style="background-color:#333">
-                        <td></td>
-                        <td>
-                            Item Number
-                        </td>
-                        <td>
-                            Item Quantity
-                        </td>
-                        <td>
-                            Revise Quantity
-                        </td>
-                    </tr>
-                </thead>
-                <tbody>
-                    @for (int j = 0; j < Model[i].ListOrderDetailDto.Count(); j++)
-                    {
-                        <tr>
-                            <td><input class="uk-checkbox" type="checkbox" value="@Model[i].ListOrderDetailDto[j].Id"></td>
-                            @Html.HiddenFor(model => model[i].ListOrderDetailDto[j].Id)
-                            <td>@Model[i].ListOrderDetailDto[j].ItemNumber</td>
-                            <td>@Model[i].ListOrderDetailDto[j].Quantity</td>
-                            @Html.HiddenFor(model => model[i].ListOrderDetailDto[j].Quantity)
-
+    <div id="renderSearching">
+        @for (int i = 0; i < Model.Items.Count(); i++)
+        {
+            <div class="uk-margin-small uk-container">
+                @Html.HiddenFor(model => model.Items[i].OrderId, new { Value = Model.Items[i].OrderId })
+                @Html.HiddenFor(model => model.Items[i].Id, new { Value = Model.Items[i].Id })
+                <table class="uk-margin-small" border="1">
+                    <thead style="color:white">
+                        <tr style="background-color:#333">
                             <td>
-                                @Html.TextBoxFor(model => model[i].ListOrderDetailDto[j].ReviseQuantity, new { @class = "uk-input", Type = "Number" })
-                                @Html.ValidationMessageFor(model => model[i].ListOrderDetailDto[j].ReviseQuantity, "", new { @class = "text-danger" })
-
+                                Supplier
+                            </td>
+                            <td>
+                                Factory
                             </td>
                         </tr>
-                    }
-                </tbody>
-            </table>
-        </div>
-    }
-    <br />
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>@Model.Items[i].Supplier</td>
+                            @Html.HiddenFor(model => model.Items[i].Supplier)
+                            <td>@Model.Items[i].Factory</td>
+                            @Html.HiddenFor(model => model.Items[i].Factory)
+
+                    </tr>
+
+                    </tbody>
+                </table>
+                <table class="uk-margin-small" border="1">
+                    <thead style="color:white">
+                        <tr style="background-color:#333">
+                            <td></td>
+                            <td>
+                                PO Number
+                            </td>
+                            <td>
+                                PO Quantity
+                            </td>
+                            <td>
+                                PO Check Quantity
+                            </td>
+                            <td>
+                                PO Ship Date
+                            </td>
+                            <td>
+                                Inspection Date
+                            </td>
+                            <td>
+                                Int Ship Date
+                            </td>
+                            <td>
+                                PO Quantity Complete
+                            </td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><input class="uk-checkbox" type="checkbox" value="@Model.Items[i].PONumber" name="PONumber"></td>
+                            <td>@Model.Items[i].PONumber</td>
+                            @Html.HiddenFor(model => model.Items[i].POQuantity)
+                            <td>@Model.Items[i].POQuantity</td>
+                            @Html.HiddenFor(model => model.Items[i].POQuantity)
+                            <td>@Model.Items[i].EstQtyToShip</td>
+                            @Html.HiddenFor(model => model.Items[i].EstQtyToShip)
+                            <td>@Model.Items[i].ShipDate</td>
+                            <td>
+                                @Html.TextBoxFor(model => model.Items[i].InspectionDate, Model.Items[i].InspectionDate.ToString("yyyy-MM-dd"), new { type = "date", @class = "uk-input" })
+                                @Html.ValidationMessageFor(model => model.Items[i].InspectionDate, "", new { @class = "text-danger" })
+
+                        </td>
+                        <td>
+
+                                @Html.TextBoxFor(model => model.Items[i].IntendedShipDate, Model.Items[i].IntendedShipDate.ToString("yyyy-MM-dd"), new { type = "date", @class = "uk-input" })
+                                @Html.ValidationMessageFor(model => model.Items[i].IntendedShipDate, "", new { @class = "text-danger" })
+                            </td>
+                            <td>
+                                @Model.Items[i].Complete
+                                @Html.HiddenFor(model => model.Items[i].Complete)
+                            </td>
+                        </tr>
+
+                    </tbody>
+                </table>
+                <table class="uk-margin-small" border="1">
+                    <thead style="color:white">
+                        <tr style="background-color:#333">
+                            <td></td>
+                            <td>
+                                Item Number
+                            </td>
+                            <td>
+                                Item Quantity
+                            </td>
+                            <td>
+                                Revise Quantity
+                            </td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @for (int j = 0; j < Model.Items[i].ListOrderDetailDto.Count(); j++)
+                        {
+                            <tr>
+                                <td><input class="uk-checkbox" type="checkbox" value="@Model.Items[i].ListOrderDetailDto[j].ItemNumber" name="ItemNumber"></td>
+                                @Html.HiddenFor(model => model.Items[i].ListOrderDetailDto[j].Id)
+                                <td>@Model.Items[i].ListOrderDetailDto[j].ItemNumber</td>
+                                <td>@Model.Items[i].ListOrderDetailDto[j].Quantity</td>
+                                @Html.HiddenFor(model => model.Items[i].ListOrderDetailDto[j].Quantity)
+
+                                <td>
+                                    @Html.TextBoxFor(model => model.Items[i].ListOrderDetailDto[j].ReviseQuantity, new { @class = "uk-input", Type = "Number" })
+                                    @Html.ValidationMessageFor(model => model.Items[i].ListOrderDetailDto[j].ReviseQuantity, "", new { @class = "text-danger" })
+
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <br />
+        }
+    </div>
 }
+<div>
+    <ul class="uk-pagination">
+        @for (var i = 1; i < Model.TotalCount; i++)
+        {
+            <li class="page-item @(i == Model.PageCount ? "active" : "")">
+                <a asp-page="/Index"
+                   asp-route-pageIndex="@i" class="page-link">@i</a>
+            </li>
+        }
+    </ul>
+</div>
+<script src="~/js/jquery-3.3.1.min.js"></script>
 <script type="text/javascript">
     $('#Search').click(function () {
         $.ajax({
@@ -240,10 +252,15 @@
                 PONumberSearch: $('#PONumberSearch').val(),
                 ItemSearch: $('#ItemSearch').val()
             },
+            success: function (data) {
+                alert("Success");
+                $('#renderSearching').html(data);
+
+            }
         });
     });
-    $("#Achieve").click(function (event) {
-        if (!confirm('Are you sure that you want to submit the form')) {
+    $("#Achieve").click(function () {
+           if (!confirm('Are you sure that you want to submit the form')) {
             event.preventDefault();
         }
     });

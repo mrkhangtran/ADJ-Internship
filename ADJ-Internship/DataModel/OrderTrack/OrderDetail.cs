@@ -47,7 +47,7 @@ namespace ADJ.DataModel.OrderTrack
         {
             get
             {
-                return (float) Quantity * UnitPrice;
+                return (float)Quantity * UnitPrice;
             }
         }
 
@@ -58,7 +58,7 @@ namespace ADJ.DataModel.OrderTrack
         {
             get
             {
-                return (float) Quantity * RetailPrice;
+                return (float)Quantity * RetailPrice;
             }
         }
 
@@ -67,6 +67,6 @@ namespace ADJ.DataModel.OrderTrack
         [Required]
         public int OrderId { get; set; }
 
-        //public virtual Order Order { get; set; }
+        public virtual Order Order { get; set; }
     }
 }
