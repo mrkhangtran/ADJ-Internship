@@ -34,6 +34,7 @@ namespace WebApp.Controllers
     [HttpPost]
     public async Task<ActionResult> CreateOrUpdate(PagedListResult<ProgressCheckDto> progressCheckDTOs)
     {
+      ViewBag.Check = 0;
       List<string> POUpdate = new List<string>();
       if (ModelState.IsValid)
       {
@@ -45,6 +46,7 @@ namespace WebApp.Controllers
             POUpdate.Add(progressCheckDTOs.Items[i].PONumber);
           }
         }
+        ViewBag.Check = 1;
       }
       GetItemSearchDto getSearchItem = await _prcService.SearchItem();
       ViewBag.Suppliers = getSearchItem.Suppliers;
@@ -53,8 +55,8 @@ namespace WebApp.Controllers
       ViewBag.Factories = getSearchItem.Factories;
       ViewBag.Depts = getSearchItem.Depts;
       ViewBag.POUpdate = POUpdate;
-      PagedListResult<ProgressCheckDto> lstPrc = await _prcService.ListProgressCheckDtoAsync();
-      return View("Index");
+      PagedListResult<ProgressCheckDto> lstPrc = await _prcService.ListProgressCheckDtoAsync(1,2);
+      return View("Index",lstPrc);
     }
     public async Task<ActionResult> SearchItem(int? pageIndex, string PONumberSearch = null, string ItemSearch = null, string Suppliers = null, string Factories = null, string Origins = null, string OriginPorts = null, string Depts = null)
     {
