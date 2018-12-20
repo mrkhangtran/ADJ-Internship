@@ -47,7 +47,7 @@ namespace ADJ.BusinessService.Implementations
             foreach (var order in orders)
             {
                 decimal POQuantity = 0;
-                foreach (var orderDetail in order.orderDetails)
+                foreach (var orderDetail in order.OrderDetails)
                 {                   
                         POQuantity += orderDetail.Quantity;                  
                 }
@@ -81,7 +81,7 @@ namespace ADJ.BusinessService.Implementations
                     POQuantity = POQuantity,
                     EstQtyToShip = progressCheck.EstQtyToShip,
                     Supplier = order.Supplier,                  
-                    ListOrderDetailDto = Mapper.Map<List<OrderDetailDto>>(order.orderDetails),
+                    ListOrderDetailDto = Mapper.Map<List<OrderDetailDto>>(order.OrderDetails),
                     OrderId = order.Id,
                     Origin = order.Origin,
                     OriginPort = order.PortOfDelivery,
