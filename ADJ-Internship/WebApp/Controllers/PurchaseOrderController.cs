@@ -385,20 +385,21 @@ namespace ADJ.WebApp.Controllers
         OrderDetailDTO orderDetail = new OrderDetailDTO();
 
         orderDetail.Id = int.Parse(orderDetailStrings[0*(i+1)]);
-        orderDetail.ItemNumber = orderDetailStrings[1 * (i + 1)];
-        orderDetail.Description = orderDetailStrings[2 * (i + 1)];
-        orderDetail.Warehouse = orderDetailStrings[3 * (i + 1)];
-        orderDetail.Colour = orderDetailStrings[4 * (i + 1)];
-        orderDetail.Size = orderDetailStrings[5 * (i + 1)];
+        orderDetail.OrderId = int.Parse(orderDetailStrings[1 * (i + 1)]);
+        orderDetail.RowVersion = orderDetailStrings[2 * (i + 1)];
+
+        orderDetail.ItemNumber = orderDetailStrings[3 * (i + 1)];
+        orderDetail.Description = orderDetailStrings[4 * (i + 1)];
+        orderDetail.Tariff = orderDetailStrings[5 * (i + 1)];
         orderDetail.Quantity = float.Parse(orderDetailStrings[6 * (i + 1)]);
         orderDetail.Cartons = float.Parse(orderDetailStrings[7 * (i + 1)]);
         orderDetail.Cube = float.Parse(orderDetailStrings[8 * (i + 1)]);
         orderDetail.KGS = float.Parse(orderDetailStrings[9 * (i + 1)]);
         orderDetail.UnitPrice = float.Parse(orderDetailStrings[10 * (i + 1)]);
         orderDetail.RetailPrice = float.Parse(orderDetailStrings[11 * (i + 1)]);
-        orderDetail.Tariff = orderDetailStrings[12 * (i + 1)];
-        orderDetail.OrderId = int.Parse(orderDetailStrings[13 * (i + 1)]);
-        orderDetail.RowVersion = orderDetailStrings[14 * (i + 1)];
+        orderDetail.Warehouse = orderDetailStrings[12 * (i + 1)];
+        orderDetail.Size = orderDetailStrings[13 * (i + 1)];
+        orderDetail.Colour = orderDetailStrings[14 * (i + 1)];
 
         orderDetailDTOs.Add(orderDetail);
       }

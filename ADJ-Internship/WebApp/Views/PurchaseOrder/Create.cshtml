@@ -253,7 +253,30 @@
       document.getElementById("TotalRetail").innerHTML = document.getElementById("Quantity").value * document.getElementById("RetailPrice").value;
     };
 
-    $("#addItemButton").click(function () {
+    $("#addItemButton").click(function (event) {
+      event.preventDefault();
+      var addModel = @Html.Raw(Json.Serialize(Model));
+      var orderDetails = [];
+      var items = document.getElementsByClassName("newItem");
+      $.each(items, function () {
+        orderDetails.push($(this).val());
+      });
+
+      $.ajax({
+        type: "POST",
+        data: {
+          addModel: addModel,
+          method: $(this).val(),
+          orderDetails: orderDetails
+        },
+        url: "@Url.Action("AddItem", "PurchaseOrder")",
+        success: function (objOperations) {
+          $("#orderDetailPartial").html(objOperations);
+        }
+      });
+    });
+
+    $("#saveButton").click(function () {
       var addModel = @Html.Raw(Json.Serialize(Model));
       var orderDetails = [];
       var items = document.getElementsByClassName("newItem");
