@@ -22,10 +22,10 @@ namespace WebApp.Controllers
 		}
 
 
-		public async Task<IActionResult> Display(string poNumber, int? pageIndex)
+		public async Task<IActionResult> Display(string poNumberFilter, int? pageIndex)
 		{
 			int current = pageIndex ?? 1;
-			PagedListResult<OrderDto> pagedlistResult = await _orderService.DisplaysAsync(poNumber, current, 10);
+			PagedListResult<OrderDto> pagedlistResult = await _orderService.DisplaysAsync(poNumberFilter, current, 10);
 
 			if (pagedlistResult.Items.Count == 0)
 			{
