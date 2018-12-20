@@ -15,19 +15,19 @@
   </environment>
 </head>
 <body>
-	<div uk-grid class="divtong">
+	<div uk-grid>
 		<!-- start menu-left -->
-		<div class="uk-width-1-4@m uk-width-1-4@s uk-width-1-4@l uk-width-1-4@x left">
+		<div class="uk-width-1-4@m uk-width-1-4@s uk-width-1-4@l uk-width-1-4@x ">
 			<!-- start menu-left -->
-			<div class="menu-left">
+			<div>
 				<div uk-grid>
-					<div class="uk-width-4-4@m uk-width-4-4@s uk-width-4-4@l uk-width-4-4@x  left">
-						<div class="menu-left-header">
+					<div class="uk-width-4-4@m uk-width-4-4@s uk-width-4-4@l uk-width-4-4@x">
+						<div>
 							<span class="fa fa-home">Adjuno Internship</span>
 						</div> <!-- end menu-left-header -->
 					</div>
 				</div>
-				<div uk-grid class="welcome">
+				<div uk-grid>
 					<div class="uk-width-1-4@m uk-width-1-4@s uk-width-1-4@l uk-width-1-4@x  ">
 						<span class="fa fa-bus"></span>
 					</div>
@@ -36,9 +36,9 @@
 					</div>
 				</div>	<!-- end welcome -->
 				<ul uk-accordion class="list-left">
-					<li class="orders-item">
+					<li>
 						<!-- start orders -->
-						<div uk-grid class="welcome uk-accordion-title">
+						<div uk-grid class="uk-accordion-title">
 							<span class="fa fa-phone">Orde</span>
 						</div>	<!-- end welcome -->
 						<div class="uk-accordion-content">
@@ -46,9 +46,9 @@
 							<p><a href="#">PO Progress</a></p>
 						</div>
 					</li>
-					<li class="shipment-item">
+					<li>
 						<!-- start orders -->
-						<div uk-grid class="welcome uk-accordion-title">
+						<div uk-grid class="uk-accordion-title">
 							<span class="fa fa-bus">Shipmen</span>
 						</div>	<!-- end welcome -->
 						<div class="uk-accordion-content">
@@ -58,7 +58,7 @@
 					</li>
 					<li class="delivery-item">
 						<!-- start orders -->
-						<div uk-grid class="welcome uk-accordion-title">
+						<div uk-grid class=" uk-accordion-title">
 
 							<span class="fa fa-plane">Delivery</span>
 						</div>	<!-- end welcome -->
@@ -69,7 +69,7 @@
 					</li>
 					<li class="report-item">
 						<!-- start orders -->
-						<div uk-grid class="welcome uk-accordion-title">
+						<div uk-grid class="uk-accordion-title">
 							<span class="fa fa-bus">Report</span>
 						</div>	<!-- end welcome -->
 						<div class="uk-accordion-content">
@@ -80,9 +80,9 @@
 				</ul>
 			</div>	<!-- end menu-left -->
 		</div>
-		<div class="uk-width-3-4@m uk-width-3-4@s uk-width-3-4@l uk-width-3-4@x  content-right">
+		<div class="uk-width-3-4@m uk-width-3-4@s uk-width-3-4@l uk-width-3-4@x">
 			<!-- star header -->
-			<div class="content-header">
+			<div>
 				<span class="fa fa-bars"></span>
 				<div class="uk-inline dropdown-username">
 					<button class="uk-button uk-button-default" type="button">User Name</button>
@@ -101,8 +101,8 @@
 
 			</div>	<!-- end content-header -->
 			<!-- start content -->
-			<div class="content">
-				<div class="filter-createnew">
+			<div>
+				<div>
 					@*Text box filter*@
 					<div id="txtFilter">
 						@*@using (Html.BeginForm("FilterPO", "DisplayAndFilter", FormMethod.Post))
@@ -112,7 +112,7 @@
 							}*@
 						<form asp-action="Display"
 									asp-controller="Order" method="get">
-							<input type="text" name="poNumberFilter" placeholder="Enter PO Number" />
+							<input type="text" name="poNumberFilter" value="@Model.CurrentFilter" placeholder="Enter PO Number" />
 							<input type="submit" value="Serach" />
 						</form>
 						<h4>@ViewBag.Message</h4>
@@ -121,7 +121,7 @@
 
 
 
-						<button class="uk-button uk-button-primary btnNew" style="float:right;"><p>New order <span class="fa fa-plus"></span></p></button>
+						<button class="uk-button uk-button-primary " style="float:right;"><p>New order <span class="fa fa-plus"></span></p></button>
 					</div>
 				</div>
 				<!-- start table -->

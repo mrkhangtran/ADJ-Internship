@@ -49,6 +49,7 @@ namespace ADJ.BusinessService.Implementations
 			{
 				TotalCount = poResult.TotalCount,
 				PageCount = poResult.PageCount,
+				CurrentFilter = poNumber,
 				Items = Mapper.Map<List<OrderDto>>(poResult.Items)
 			};
 

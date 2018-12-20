@@ -50,9 +50,9 @@
 	<ul class="pagination" style="list-style:none">
 		@for (var i = 1; i <= Model.PageCount; i++)
 		{
-			<li class="page-item @(i == 1? " active":"")" style="display:inline;float:left;padding:0 15px">
-				<a asp-page="/Display" asp-route-pageIndex="@i" class="page-link">@i</a>
-			</li>
+		<li class="page-item @(i == 1? " active":"")" style="display:inline;float:left;padding:0 15px">
+			<a asp-page="/Display" asp-route-pageIndex="@i" asp-route-poNumberFilter="@Model.CurrentFilter" class="page-link">@i</a>
+		</li>
 		}
 
 		@*@for (var i = 1; i < Model.PageCount; i++)
