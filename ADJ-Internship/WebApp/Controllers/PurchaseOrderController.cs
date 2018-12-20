@@ -93,9 +93,14 @@ namespace ADJ.WebApp.Controllers
     }
 
     [HttpPost]
-    public async Task<ActionResult> AddItem(OrderDTO addModel, string method)
+    public async Task<ActionResult> AddItem(OrderDTO addModel, string method, List<string> orderDetails)
     {
       SetDropDownList();
+      if (orderDetails.Count > 0) {
+        List<OrderDetailDTO> temp = ConvertToDto(orderDetails);
+        addModel.orderDetailDTO = temp[0];
+      }
+      
 
       switch (method)
       {

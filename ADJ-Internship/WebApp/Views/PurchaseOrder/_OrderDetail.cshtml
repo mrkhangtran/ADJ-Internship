@@ -51,58 +51,58 @@
   {
     <tr>
       <td>
-        <input asp-for="orderDetailDTO.ItemNumber" class="uk-input" />
+        <input asp-for="orderDetailDTO.ItemNumber" class="uk-input newItem" id="newItem"/>
         <span asp-validation-for="orderDetailDTO.ItemNumber" class="uk-alert-danger"></span>
         @ViewBag.ItemNumberError
       </td>
       <td>
-        <input asp-for="orderDetailDTO.Description" class="uk-input" />
+        <input asp-for="orderDetailDTO.Description" class="uk-input newItem" />
         <span asp-validation-for="orderDetailDTO.Description" class="uk-alert-danger"></span>
       </td>
       <td>
-        <input asp-for="orderDetailDTO.Tariff" class="uk-input" />
+        <input asp-for="orderDetailDTO.Tariff" class="uk-input newItem" />
         <span asp-validation-for="orderDetailDTO.Tariff" class="uk-alert-danger"></span>
       </td>
       <td>
-        <input asp-for="orderDetailDTO.Quantity" class="uk-input" id="Quantity" onkeyup="getTotalUnit(); getTotalRetail()" />
+        <input asp-for="orderDetailDTO.Quantity" class="uk-input newItem" id="Quantity" onkeyup="getTotalUnit(); getTotalRetail()" />
         <span asp-validation-for="orderDetailDTO.Quantity" class="uk-alert-danger"></span>
       </td>
       <td>
-        <input asp-for="orderDetailDTO.Cartons" class="uk-input" />
+        <input asp-for="orderDetailDTO.Cartons" class="uk-input newItem" />
         <span asp-validation-for="orderDetailDTO.Cartons" class="uk-alert-danger"></span>
       </td>
       <td>
-        <input asp-for="orderDetailDTO.Cube" class="uk-input" />
+        <input asp-for="orderDetailDTO.Cube" class="uk-input newItem" />
         <span asp-validation-for="orderDetailDTO.Cube" class="uk-alert-danger"></span>
       </td>
       <td>
-        <input asp-for="orderDetailDTO.KGS" class="uk-input" />
+        <input asp-for="orderDetailDTO.KGS" class="uk-input newItem" />
         <span asp-validation-for="orderDetailDTO.KGS" class="uk-alert-danger"></span>
       </td>
       <td>
-        <input asp-for="orderDetailDTO.UnitPrice" class="uk-input" id="UnitPrice" onkeyup="getTotalUnit()" />
+        <input asp-for="orderDetailDTO.UnitPrice" class="uk-input newItem" id="UnitPrice" onkeyup="getTotalUnit()" />
         <span asp-validation-for="orderDetailDTO.UnitPrice" class="uk-alert-danger"></span>
       </td>
       <td>
         <div id="TotalUnit">0</div>
       </td>
       <td>
-        <input asp-for="orderDetailDTO.RetailPrice" class="uk-input" id="RetailPrice" onkeyup="getTotalRetail()" />
+        <input asp-for="orderDetailDTO.RetailPrice" class="uk-input newItem" id="RetailPrice" onkeyup="getTotalRetail()" />
         <span asp-validation-for="orderDetailDTO.RetailPrice" class="uk-alert-danger"></span>
       </td>
       <td>
         <div id="TotalRetail">0</div>
       </td>
       <td>
-        <input asp-for="orderDetailDTO.Warehouse" class="uk-input" />
+        <input asp-for="orderDetailDTO.Warehouse" class="uk-input newItem" />
         <span asp-validation-for="orderDetailDTO.Warehouse" class="uk-alert-danger"></span>
       </td>
       <td>
-        <input asp-for="orderDetailDTO.Size" class="uk-input" />
+        <input asp-for="orderDetailDTO.Size" class="uk-input newItem" />
         <span asp-validation-for="orderDetailDTO.Size" class="uk-alert-danger"></span>
       </td>
       <td>
-        <input asp-for="orderDetailDTO.Colour" class="uk-input" />
+        <input asp-for="orderDetailDTO.Colour" class="uk-input newItem" />
         <span asp-validation-for="orderDetailDTO.Colour" class="uk-alert-danger"></span>
       </td>
       <td>
@@ -200,58 +200,58 @@
         {
           <tr>
             <td>
-              <input asp-for="orderDetailDTO.ItemNumber" class="uk-input" />
+              <input asp-for="orderDetailDTO.ItemNumber" class="uk-input newItem" />
               <span asp-validation-for="orderDetailDTO.ItemNumber" class="uk-alert-danger"></span>
               @ViewBag.ItemNumberError
             </td>
             <td>
-              <input asp-for="orderDetailDTO.Description" class="uk-input" />
+              <input asp-for="orderDetailDTO.Description" class="uk-input newItem" />
               <span asp-validation-for="orderDetailDTO.Description" class="uk-alert-danger"></span>
             </td>
             <td>
-              <input asp-for="orderDetailDTO.Tariff" class="uk-input" />
+              <input asp-for="orderDetailDTO.Tariff" class="uk-input newItem" />
               <span asp-validation-for="orderDetailDTO.Tariff" class="uk-alert-danger"></span>
             </td>
             <td>
-              <input asp-for="orderDetailDTO.Quantity" class="uk-input" id="Quantity" onkeyup="getTotalUnit(); getTotalRetail()" />
+              <input asp-for="orderDetailDTO.Quantity" class="uk-input newItem" id="Quantity" onkeyup="getTotalUnit(); getTotalRetail()" />
               <span asp-validation-for="orderDetailDTO.Quantity" class="uk-alert-danger"></span>
             </td>
             <td>
-              <input asp-for="orderDetailDTO.Cartons" class="uk-input" />
+              <input asp-for="orderDetailDTO.Cartons" class="uk-input newItem" />
               <span asp-validation-for="orderDetailDTO.Cartons" class="uk-alert-danger"></span>
             </td>
             <td>
-              <input asp-for="orderDetailDTO.Cube" class="uk-input" />
+              <input asp-for="orderDetailDTO.Cube" class="uk-input newItem" />
               <span asp-validation-for="orderDetailDTO.Cube" class="uk-alert-danger"></span>
             </td>
             <td>
-              <input asp-for="orderDetailDTO.KGS" class="uk-input" />
+              <input asp-for="orderDetailDTO.KGS" class="uk-input newItem" />
               <span asp-validation-for="orderDetailDTO.KGS" class="uk-alert-danger"></span>
             </td>
             <td>
-              <input asp-for="orderDetailDTO.UnitPrice" class="uk-input" id="UnitPrice" onkeyup="getTotalUnit()" />
+              <input asp-for="orderDetailDTO.UnitPrice" class="uk-input newItem" id="UnitPrice" onkeyup="getTotalUnit()" />
               <span asp-validation-for="orderDetailDTO.UnitPrice" class="uk-alert-danger"></span>
             </td>
             <td>
               <div id="TotalUnit">0</div>
             </td>
             <td>
-              <input asp-for="orderDetailDTO.RetailPrice" class="uk-input" id="RetailPrice" onkeyup="getTotalRetail()" />
+              <input asp-for="orderDetailDTO.RetailPrice" class="uk-input newItem" id="RetailPrice" onkeyup="getTotalRetail()" />
               <span asp-validation-for="orderDetailDTO.RetailPrice" class="uk-alert-danger"></span>
             </td>
             <td>
               <div id="TotalRetail">0</div>
             </td>
             <td>
-              <input asp-for="orderDetailDTO.Warehouse" class="uk-input" />
+              <input asp-for="orderDetailDTO.Warehouse" class="uk-input newItem" />
               <span asp-validation-for="orderDetailDTO.Warehouse" class="uk-alert-danger"></span>
             </td>
             <td>
-              <input asp-for="orderDetailDTO.Size" class="uk-input" />
+              <input asp-for="orderDetailDTO.Size" class="uk-input newItem" />
               <span asp-validation-for="orderDetailDTO.Size" class="uk-alert-danger"></span>
             </td>
             <td>
-              <input asp-for="orderDetailDTO.Colour" class="uk-input" />
+              <input asp-for="orderDetailDTO.Colour" class="uk-input newItem" />
               <span asp-validation-for="orderDetailDTO.Colour" class="uk-alert-danger"></span>
             </td>
             <td>
