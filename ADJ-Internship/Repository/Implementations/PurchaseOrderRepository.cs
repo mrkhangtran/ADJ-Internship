@@ -12,13 +12,13 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ADJ.Repository.Implementations
 {
-    public class PurchaseOrderRepository : RepositoryBase<PurchaseOrder>, IPurchaseOrderRepository
-    {
-        public PurchaseOrderRepository(ApplicationDbContext dbContext) : base(dbContext)
-        {
-        }
+	public class PurchaseOrderRepository : RepositoryBase<PurchaseOrder>, IPurchaseOrderRepository
+	{
+		public PurchaseOrderRepository(ApplicationDbContext dbContext) : base(dbContext)
+		{
+		}
 
-        protected override Func<IQueryable<PurchaseOrder>, IQueryable<PurchaseOrder>> IncludeDependents =>
-            po => po.Include(x => x.Items);  
-    }
+		protected override Func<IQueryable<PurchaseOrder>, IQueryable<PurchaseOrder>> IncludeDependents =>
+				po => po.Include(x => x.Items);
+	}
 }

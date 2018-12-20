@@ -57,12 +57,12 @@ namespace ADJ.DataModel.OrderTrack
         [StringLength(30)]
         public string Vendor { get; set; }
 
-        public float POQuantity { get; set; }
+        public decimal POQuantity { get; set; }
 
-        //Default value = "New"
         public OrderStatus Status { get; set; }
 
-        public ICollection<OrderDetail> orderDetails { get; set; } 
-        public virtual ProgressCheck ProgressCheck { get; set; }
+				public virtual ICollection<OrderDetail> OrderDetails { get; set; }
+
+				public virtual ProgressCheck ProgressCheck { get; set; }
     }
 }

@@ -27,10 +27,9 @@ namespace ADJ.BusinessService.Validators
                 {
                     return new ValidationResult(ErrorMessage = " Inspection Date Date must be equal or less than Int Ship Date");
                 }
-                if ((IntDate.Date - InspecDate.Date).TotalDays > 30)
+                if (InspecDate.CompareTo(today) < 0)
                 {
-                    return new ValidationResult(ErrorMessage = " Inspection Date Date must be equal or less than Int Ship Date 30 days");
-
+                    return new ValidationResult(ErrorMessage = " Inspection Date must be equal or  greater than Today ");
                 }
             }
             return ValidationResult.Success;
