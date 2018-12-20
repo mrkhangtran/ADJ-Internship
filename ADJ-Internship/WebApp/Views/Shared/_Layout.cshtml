@@ -111,8 +111,8 @@
 									<button type="submit" class="uk-button uk-button-danger btnSearch" style="display:inline;text-align:center"><p>Filter</p></button>
 							}*@
 						<form asp-action="Display"
-									asp-controller="Order" method="post">
-							<input type="text" name="poNumber" placeholder="Enter PO Number" />
+									asp-controller="Order" method="get">
+							<input type="text" name="poNumberFilter" placeholder="Enter PO Number" />
 							<input type="submit" value="Serach" />
 						</form>
 						<h4>@ViewBag.Message</h4>
