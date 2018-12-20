@@ -271,9 +271,18 @@
         url: "@Url.Action("AddItem", "PurchaseOrder")",
         success: function (objOperations) {
           $("#orderDetailPartial").html(objOperations);
+          rebindValidators();
         }
       });
     });
+
+    function rebindValidators() {
+      var $form = $("#orderForm");
+      $form.unbind();
+      $form.data("validator", null);
+      $.validator.unobtrusive.parse($form);
+      $form.validate($form.data("unobtrusiveValidation").options);
+    }
 
     @*$("#applyButton").click(function () {
       var addModel = @Html.Raw(Json.Serialize(Model));
