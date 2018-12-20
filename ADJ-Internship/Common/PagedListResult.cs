@@ -10,10 +10,5 @@ namespace ADJ.Common
 		public int TotalCount { get; set; }
 
 		public int PageCount { get; set; }
-
-		public int? PageIndex { get; set; }
-
-		public string CurrentFilter { get; set; }
-
 	}
 }

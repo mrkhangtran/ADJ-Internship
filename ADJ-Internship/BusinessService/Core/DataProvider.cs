@@ -21,8 +21,6 @@ namespace ADJ.BusinessService.Core
 			_repo = repo;
 		}
 
-
-
 		public async Task<T> GetByIdAsync(int id)
 		{
 			var entity = await _repo.GetByIdAsync(id, true);
