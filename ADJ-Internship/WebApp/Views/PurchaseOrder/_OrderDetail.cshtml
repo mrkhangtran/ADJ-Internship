@@ -55,7 +55,7 @@
         <input asp-for="orderDetailDTO.OrderId" type="hidden" class="newItem" />
         <input asp-for="orderDetailDTO.RowVersion" type="hidden" class="newItem" />
 
-        <input asp-for="orderDetailDTO.ItemNumber" class="uk-input newItem" id="newItem" />
+        <input asp-for="orderDetailDTO.ItemNumber" class="uk-input newItem" />
         <span asp-validation-for="orderDetailDTO.ItemNumber" class="uk-alert-danger"></span>
         @ViewBag.ItemNumberError
       </td>
@@ -110,7 +110,7 @@
         <span asp-validation-for="orderDetailDTO.Colour" class="uk-alert-danger"></span>
       </td>
       <td>
-        <button type="button" value="Save" name="method" class="uk-button uk-button-default" id="saveButton">Save</button>
+        <button type="button" value="Save" name="method" class="uk-button uk-button-default itemButton">Save</button>
       </td>
     </tr>
   }
@@ -119,37 +119,24 @@
   {
     @if (Model.PODetails.Items.Count > 0)
     {
-      @if ((ViewBag.ItemId < 0) || (ViewBag.ItemId == null))
-      {
-        <tr>
-          <td>
-            <input asp-for="orderDetailDTO.ItemNumber" value=@Model.PODetails.Items[0].ItemNumber type="hidden" />
-          </td>
-        </tr>
-      }
-
       @for (int i = 0; i < Model.PODetails.Items.Count(); i++)
       {
-        <tr>
-          <td>
-            <input asp-for="PODetails.Items[i].Id" value=@Model.PODetails.Items[i].Id type="hidden" id="itemProperty" />
-            <input asp-for="PODetails.Items[i].OrderId" value=@Model.PODetails.Items[i].OrderId type="hidden" id="itemProperty" />
-            <input asp-for="PODetails.Items[i].RowVersion" value=@Model.PODetails.Items[i].RowVersion type="hidden" id="itemProperty" />
+        <input asp-for="PODetails.Items[i].Id" value=@Model.PODetails.Items[i].Id type="hidden" class="itemProperty" />
+        <input asp-for="PODetails.Items[i].OrderId" value=@Model.PODetails.Items[i].OrderId type="hidden" class="itemProperty" />
+        <input asp-for="PODetails.Items[i].RowVersion" value=@Model.PODetails.Items[i].RowVersion type="hidden" class="itemProperty" />
 
-            <input asp-for="PODetails.Items[i].ItemNumber" value=@Model.PODetails.Items[i].ItemNumber type="hidden" id="itemProperty" />
-            <input asp-for="PODetails.Items[i].Description" value=@Model.PODetails.Items[i].Description type="hidden" id="itemProperty" />
-            <input asp-for="PODetails.Items[i].Tariff" value=@Model.PODetails.Items[i].Tariff type="hidden" id="itemProperty" />
-            <input asp-for="PODetails.Items[i].Quantity" value=@Model.PODetails.Items[i].Quantity type="hidden" id="itemProperty" />
-            <input asp-for="PODetails.Items[i].Cartons" value=@Model.PODetails.Items[i].Cartons type="hidden" id="itemProperty" />
-            <input asp-for="PODetails.Items[i].Cube" value=@Model.PODetails.Items[i].Cube type="hidden" id="itemProperty" />
-            <input asp-for="PODetails.Items[i].KGS" value=@Model.PODetails.Items[i].KGS type="hidden" id="itemProperty" />
-            <input asp-for="PODetails.Items[i].UnitPrice" value=@Model.PODetails.Items[i].UnitPrice type="hidden" id="itemProperty" />
-            <input asp-for="PODetails.Items[i].RetailPrice" value=@Model.PODetails.Items[i].RetailPrice type="hidden" id="itemProperty" />
-            <input asp-for="PODetails.Items[i].Warehouse" value=@Model.PODetails.Items[i].Warehouse type="hidden" id="itemProperty" />
-            <input asp-for="PODetails.Items[i].Size" value=@Model.PODetails.Items[i].Size type="hidden" id="itemProperty" />
-            <input asp-for="PODetails.Items[i].Colour" value=@Model.PODetails.Items[i].Colour type="hidden" id="itemProperty" />
-          </td>
-        </tr>
+        <input asp-for="PODetails.Items[i].ItemNumber" value=@Model.PODetails.Items[i].ItemNumber type="hidden" class="itemProperty" />
+        <input asp-for="PODetails.Items[i].Description" value=@Model.PODetails.Items[i].Description type="hidden" class="itemProperty" />
+        <input asp-for="PODetails.Items[i].Tariff" value=@Model.PODetails.Items[i].Tariff type="hidden" class="itemProperty" />
+        <input asp-for="PODetails.Items[i].Quantity" value=@Model.PODetails.Items[i].Quantity type="hidden" class="itemProperty" />
+        <input asp-for="PODetails.Items[i].Cartons" value=@Model.PODetails.Items[i].Cartons type="hidden" class="itemProperty" />
+        <input asp-for="PODetails.Items[i].Cube" value=@Model.PODetails.Items[i].Cube type="hidden" class="itemProperty" />
+        <input asp-for="PODetails.Items[i].KGS" value=@Model.PODetails.Items[i].KGS type="hidden" class="itemProperty" />
+        <input asp-for="PODetails.Items[i].UnitPrice" value=@Model.PODetails.Items[i].UnitPrice type="hidden" class="itemProperty" />
+        <input asp-for="PODetails.Items[i].RetailPrice" value=@Model.PODetails.Items[i].RetailPrice type="hidden" class="itemProperty" />
+        <input asp-for="PODetails.Items[i].Warehouse" value=@Model.PODetails.Items[i].Warehouse type="hidden" class="itemProperty" />
+        <input asp-for="PODetails.Items[i].Size" value=@Model.PODetails.Items[i].Size type="hidden" class="itemProperty" />
+        <input asp-for="PODetails.Items[i].Colour" value=@Model.PODetails.Items[i].Colour type="hidden" class="itemProperty" />
         @if (i != ViewBag.ItemId)
         {
           <tr>
@@ -196,8 +183,8 @@
               @Model.PODetails.Items[i].Colour
             </td>
             <td>
-              <button type="submit" value="@i" name="method" class="uk-button uk-button-default">Edit Item</button>
-              <button type="submit" value="Delete @i" name="method" class="uk-button uk-button-default">Delete Item</button>
+              <button type="button" value="@i" name="method" class="uk-button uk-button-default itemButton">Edit Item</button>
+              <button type="button" value="Delete @i" name="method" class="uk-button uk-button-default itemButton">Delete Item</button>
             </td>
           </tr>
         }
@@ -264,7 +251,7 @@
               <span asp-validation-for="orderDetailDTO.Colour" class="uk-alert-danger"></span>
             </td>
             <td>
-              <button type="submit" value="Update @i" name="method" class="uk-button uk-button-default">Update Item</button>
+              <button type="button" value="Update @i" name="method" class="uk-button uk-button-default itemButton">Update Item</button>
             </td>
           </tr>
         }

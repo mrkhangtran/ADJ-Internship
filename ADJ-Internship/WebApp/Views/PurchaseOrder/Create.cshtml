@@ -24,7 +24,7 @@
       </td>
       <td colspan="3"></td>
       <td>
-        <button type="button" value="Apply" class="uk-button uk-button-default" name="method" id="applyButton">Apply</button>
+        <button type="submit" value="Apply" class="uk-button uk-button-default" name="method" id="applyButton">Apply</button>
       </td>
     </tr>
     <tr>
@@ -204,7 +204,7 @@
     </tr>
   </table>
 
-  <button type="button" value="AddItem" name="method" class="uk-button uk-button-default" id="addItemButton">Add Item</button>
+  <button type="button" value="AddItem" name="method" class="uk-button uk-button-default itemButton">Add Item</button>
 
   @if (Model.PODetails != null)
   {
@@ -234,148 +234,6 @@
 </div>
 
 @section Scripts
-  {
-  @*@{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }*@
-  <script type="text/javascript">
-    $("#to").keyup(function () { $("#from").val($("#to").val()); });
-    $("#from").keyup(function () { $("#to").val($("#from").val()); });
-
-    //$("#Quantity").keyup(function () {
-    //  $("#TotalUnit").html($("#Quantity").val() * $("#UnitPrice").val());
-    //  $("#TotalRetail").html($("#Quantity").val() * $("#RetailPrice").val());
-    //});
-    //$("#UnitPrice").keyup(function (event) { $("#TotalUnit").html($("#Quantity").val()); });
-    //$("#RetailPrice").keyup(function () { $("#TotalRetail").html($("#Quantity").val() * $("#RetailPrice").val()); });
-    function getTotalUnit() {
-      document.getElementById("TotalUnit").innerHTML = document.getElementById("Quantity").value * document.getElementById("UnitPrice").value;
-    };
-    function getTotalRetail() {
-      document.getElementById("TotalRetail").innerHTML = document.getElementById("Quantity").value * document.getElementById("RetailPrice").value;
-    };
-
-    $("#addItemButton").click(function (event) {
-      event.preventDefault();
-      var addModel = @Html.Raw(Json.Serialize(Model));
-      var orderDetails = [];
-      var items = document.getElementsByClassName("newItem");
-      $.each(items, function () {
-        orderDetails.push($(this).val());
-      });
-
-      $.ajax({
-        type: "POST",
-        data: {
-          addModel: addModel,
-          method: $(this).val(),
-          orderDetails: orderDetails
-        },
-        url: "@Url.Action("AddItem", "PurchaseOrder")",
-        success: function (objOperations) {
-          $("#orderDetailPartial").html(objOperations);
-        }
-      });
-    });
-
-    $("#saveButton").click(function () {
-      var addModel = @Html.Raw(Json.Serialize(Model));
-      var orderDetails = [];
-      var items = document.getElementsByClassName("newItem");
-      $.each(items, function () {
-        orderDetails.push($(this).val());
-      });
-
-      $.ajax({
-        type: "POST",
-        data: {
-          addModel: addModel,
-          method: "AddItem",
-          orderDetails: orderDetails
-        },
-        url: "@Url.Action("AddItem", "PurchaseOrder")",
-        success: function (objOperations) {
-          $("#orderDetailPartial").html(objOperations);
-        }
-      });
-    });
-
-    @*$("#applyButton").click(function () {
-      var addModel = @Html.Raw(Json.Serialize(Model));
-      var orderDetails = [];
-      $.each($("input[id='itemProperty']"), function () {
-        orderDetails.push($(this).val());
-      });
-
-      $.ajax({
-        type: "POST",
-        data: {
-          orderDetails: orderDetails,
-          progressCheckDTOs: addModel
-        },
-        url: "@Url.Action("Create", "PurchaseOrder")",
-        success: function () {
-          alert("Success");
-        }
-      });
-
-      //$("#orderForm").append('<input>');
-      //$("#orderForm").submit();
-      //document.getElementById("detailForm").submit().val("test");
-    });*@
-
-    //parseValidation = function (newInputHTML) {
-    //  //var container = document.getElementById("form-container");
-    //  //container.insertAdjacentHTML("beforeend", newFormHTML);
-    //  //var forms = container.getElementsByTagName("form");
-    //  //var newForm = forms[forms.length - 1];
-    //  var form = document.getElementById("detailForm");
-    //  form.insertAdjacentHTML("beforeend", newInputHTML);
-    //  $(form).removeData("validator")    // Added by jQuery Validate
-    //    .removeData("unobtrusiveValidation");   // Added by jQuery Unobtrusive Validation
-    //  $.validator.unobtrusive.parse(newForm);
-    //};
-
-    //$.get({
-    //  url: "",
-    //  dataType: "html",
-    //  error: function (jqXHR, textStatus, errorThrown) {
-    //    alert(textStatus + ": Couldn't add form. " + errorThrown);
-    //  },
-    //  success: function (newFormHTML) {
-    //    var container = document.getElementById("form-container");
-    //    container.insertAdjacentHTML("beforeend", newFormHTML);
-    //    var forms = container.getElementsByTagName("form");
-    //    var newForm = forms[forms.length - 1];
-    //    $.validator.unobtrusive.parse(newForm);
-    //  }
-    //});
-
-    //$.get({
-    //  url: "",
-    //  dataType: "html",
-    //  error: function (jqXHR, textStatus, errorThrown) {
-    //    alert(textStatus + ": Couldn't add control. " + errorThrown);
-    //  },
-    //  success: function (newInputHTML) {
-        //var form = document.getElementById("detailForm");
-        //form.insertAdjacentHTML("beforeend", newInputHTML);
-        //$(form).removeData("validator")    // Added by jQuery Validate
-        //  .removeData("unobtrusiveValidation");   // Added by jQuery Unobtrusive Validation
-    //    $.validator.unobtrusive.parse(form);
-    //  }
-    //})
-
-    function bothFormSubmit() {
-      document.getElementById("detailForm").submit();
-      document.getElementById("orderForm").submit();
-    };
-
-    function detailFormSubmit() {
-      document.getElementById("detailForm").submit();
-    };
-
-    function orderFormSubmit() {
-      document.getElementById("orderForm").submit();
-    };
-
-  </script>
+{
+  <script type="text/javascript" src="@Url.Content("~/js/PurchaseOrder.js")"></script>
 }

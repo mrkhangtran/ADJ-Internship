@@ -63,15 +63,19 @@ namespace ADJ.WebApp.Controllers
     }
 
     [HttpPost]
-    public async Task<ActionResult> Create(OrderDTO addModel, List<string> orderDetails)
+    public async Task<ActionResult> Create(OrderDTO addModel)
     {
       SetDropDownList();
 
-      if (orderDetails.Count == 0)
+      if (addModel.PODetails != null)
       {
-        ViewBag.OrderDetailError = "Please add at least 1 item.";
-        ViewBag.ItemId = -1;
-        return View(addModel);
+        if (addModel.PODetails.Items == null)
+        {
+          ViewBag.OrderDetailError = "Please add at least 1 item.";
+          ViewBag.ItemId = -1;
+          return View(addModel);
+        }
+        else { ModelState["orderDetailDTO.ItemNumber"].ValidationState = ModelState["Id"].ValidationState; }
       }
 
       if (!(await _poService.UniquePONumAsync(addModel.PONumber, addModel.Id)))
@@ -82,7 +86,7 @@ namespace ADJ.WebApp.Controllers
 
       if (ModelState.IsValid)
       {
-        addModel.orderDetails = ConvertToDto(orderDetails);
+        addModel.orderDetails = addModel.PODetails.Items;
         await _poService.CreateOrUpdateOrderAsync(addModel);
 
         return RedirectToAction("Index", new { id = addModel.PONumber, method = 1 });
@@ -93,15 +97,24 @@ namespace ADJ.WebApp.Controllers
     }
 
     [HttpPost]
-    public async Task<ActionResult> AddItem(OrderDTO addModel, string method, List<string> orderDetails)
+    public async Task<ActionResult> AddItem(string method, List<string> orderDetails, List<string> newItem)
     {
+      OrderDTO addModel = new OrderDTO();
+      addModel.orderDetailDTO = new OrderDetailDTO();
+      addModel.PODetails = new PagedListResult<OrderDetailDTO>();
+      addModel.PODetails.Items = new List<OrderDetailDTO>();
+      addModel.PODetails.PageCount = 1;
+      addModel.PODetails.TotalCount = 2;
+
       SetDropDownList();
-      if (orderDetails.Count > 0) {
-        List<OrderDetailDTO> temp = ConvertToDto(orderDetails);
-        addModel.orderDetailDTO = temp[0];
+      if (newItem.Count > 0) {
+        addModel.orderDetailDTO = ConvertToDto(newItem)[0];
+      }
+      if (orderDetails.Count > 0)
+      {
+        addModel.PODetails.Items = ConvertToDto(orderDetails);
       }
       
-
       switch (method)
       {
         case "Save":
@@ -380,26 +393,27 @@ namespace ADJ.WebApp.Controllers
     {
       List<OrderDetailDTO> orderDetailDTOs = new List<OrderDetailDTO>();
 
-      for (int i=0; i < (orderDetailStrings.Count / 15); i++)
+      int totalProperty = 15;
+      for (int i=0; i < (orderDetailStrings.Count / totalProperty); i++)
       {
         OrderDetailDTO orderDetail = new OrderDetailDTO();
 
-        orderDetail.Id = int.Parse(orderDetailStrings[0*(i+1)]);
-        orderDetail.OrderId = int.Parse(orderDetailStrings[1 * (i + 1)]);
-        orderDetail.RowVersion = orderDetailStrings[2 * (i + 1)];
+        orderDetail.Id = int.Parse(orderDetailStrings[0 + (i * totalProperty)]);
+        orderDetail.OrderId = int.Parse(orderDetailStrings[1 + (i * totalProperty)]);
+        orderDetail.RowVersion = orderDetailStrings[2 + (i * totalProperty)];
 
-        orderDetail.ItemNumber = orderDetailStrings[3 * (i + 1)];
-        orderDetail.Description = orderDetailStrings[4 * (i + 1)];
-        orderDetail.Tariff = orderDetailStrings[5 * (i + 1)];
-        orderDetail.Quantity = float.Parse(orderDetailStrings[6 * (i + 1)]);
-        orderDetail.Cartons = float.Parse(orderDetailStrings[7 * (i + 1)]);
-        orderDetail.Cube = float.Parse(orderDetailStrings[8 * (i + 1)]);
-        orderDetail.KGS = float.Parse(orderDetailStrings[9 * (i + 1)]);
-        orderDetail.UnitPrice = float.Parse(orderDetailStrings[10 * (i + 1)]);
-        orderDetail.RetailPrice = float.Parse(orderDetailStrings[11 * (i + 1)]);
-        orderDetail.Warehouse = orderDetailStrings[12 * (i + 1)];
-        orderDetail.Size = orderDetailStrings[13 * (i + 1)];
-        orderDetail.Colour = orderDetailStrings[14 * (i + 1)];
+        orderDetail.ItemNumber = orderDetailStrings[3 + (i * totalProperty)];
+        orderDetail.Description = orderDetailStrings[4 + (i * totalProperty)];
+        orderDetail.Tariff = orderDetailStrings[5 + (i * totalProperty)];
+        orderDetail.Quantity = float.Parse(orderDetailStrings[6 + (i * totalProperty)]);
+        orderDetail.Cartons = float.Parse(orderDetailStrings[7 + (i * totalProperty)]);
+        orderDetail.Cube = float.Parse(orderDetailStrings[8 + (i * totalProperty)]);
+        orderDetail.KGS = float.Parse(orderDetailStrings[9 + (i * totalProperty)]);
+        orderDetail.UnitPrice = float.Parse(orderDetailStrings[10 + (i * totalProperty)]);
+        orderDetail.RetailPrice = float.Parse(orderDetailStrings[11 + (i * totalProperty)]);
+        orderDetail.Warehouse = orderDetailStrings[12 + (i * totalProperty)];
+        orderDetail.Size = orderDetailStrings[13 + (i * totalProperty)];
+        orderDetail.Colour = orderDetailStrings[14 + (i * totalProperty)];
 
         orderDetailDTOs.Add(orderDetail);
       }

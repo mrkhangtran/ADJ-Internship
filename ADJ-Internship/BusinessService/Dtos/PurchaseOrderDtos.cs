@@ -83,12 +83,12 @@ namespace ADJ.BusinessService.Dtos
 		//Droplist of Ports
 		[Required]
 		[Display(Name = "Port of Loading")]
-		//[PortIsDifferent("PortOfDelivery")]
+		[PortIsDifferent("PortOfDelivery")]
 		public string PortOfLoading { get; set; }
 
 		[Required]
 		[Display(Name = "Port of Delivery")]
-		//[PortIsDifferent("PortOfLoading")]
+		[PortIsDifferent("PortOfLoading")]
 		public string PortOfDelivery { get; set; }
 
 		[Display(Name = "Order Type")]
@@ -126,7 +126,7 @@ namespace ADJ.BusinessService.Dtos
 
 		public virtual List<OrderDetailDTO> orderDetails { get; set; }
 
-		public OrderDetailDTO orderDetailDTO { get; set; }
+        public OrderDetailDTO orderDetailDTO { get; set; }
 
 		public virtual PagedListResult<OrderDetailDTO> PODetails { get; set; }
 	}
