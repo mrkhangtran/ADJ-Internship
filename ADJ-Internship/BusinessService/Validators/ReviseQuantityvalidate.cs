@@ -23,11 +23,11 @@ namespace ADJ.BusinessService.Validators
                 decimal Revise = decimal.Parse(value.ToString());             
                 if (Revise < 0)
                 {
-                    return new ValidationResult(ErrorMessage = " Revise must be greater or equal zero ");
+                    return new ValidationResult(ErrorMessage = " Invalid value.Please try again ");
                 }
                 if (Revise > Quantity)
                 {
-                    return new ValidationResult(ErrorMessage = " Revise must be less or equal Quantity ");
+                    return new ValidationResult(ErrorMessage = " Invalid value.Please try again");
                 }
             }
             return ValidationResult.Success;

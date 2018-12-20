@@ -21,7 +21,7 @@
               <td><label>Origin Port</label></td>
               <td>
                 <div class="uk-form-select" data-uk-form-select>
-                  @Html.DropDownList("OriginPorts", new SelectList(ViewBag.OriginPorts), "Any", new { @id = "OriginPorts",@class="uk-select" })
+                  @Html.DropDownList("OriginPorts", new SelectList(ViewBag.OriginPorts), "Any", new { @id = "OriginPorts", @class = "uk-select" })
                 </div>
               </td>
             </tr>
@@ -46,7 +46,7 @@
               <td><label>Status</label></td>
               <td>
                 <div class="uk-form-select" data-uk-form-select>
-                  @Html.DropDownList("Status", new SelectList(ViewBag.Suppliers), "Any", new { @id = "Status", @class = "uk-select" })                
+                  @Html.DropDownList("Status", new SelectList(ViewBag.Suppliers), "Any", new { @id = "Status", @class = "uk-select" })
                 </div>
               </td>
             </tr>
@@ -181,7 +181,15 @@
 
               </td>
               <td>
-                @Model.Items[i].Complete
+                @if (@Model.Items[i].Complete == true)
+                {
+                  <p>YES</p>
+                }
+                else
+                {
+                  <p>NO</p>
+                }
+
                 @Html.HiddenFor(model => model.Items[i].Complete)
               </td>
             </tr>
@@ -239,18 +247,14 @@
   </div>
   @*</form>*@
 }
-<div id="modalPOUpdate" uk-modal>
-  <div class="uk-modal-dialog uk-modal-body">
-    @foreach (var item in ViewBag.POUpdate)
-    {
-      <p>Your PO Numbew : @item is updated</p>
-      <br>
-    }
-    <p class="uk-text-right">
-      <button class="uk-button uk-button-default uk-modal-close" type="button">Cancel</button>
-    </p>
-  </div>
-</div>
+@if (ViewBag.Check == 1)
+{
+  @foreach (var item in ViewBag.POUpdate)
+  {
+    <p class="uk-text-success uk-text-bold">Your PO  @item  has been successfully updated</p>
+    <br>
+  }
+}
 <script src="~/js/jquery-3.3.1.min.js"></script>
 <script type="text/javascript">
     $('#Search').click(function () {
