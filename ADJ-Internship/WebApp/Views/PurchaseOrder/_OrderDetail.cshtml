@@ -1,44 +1,58 @@
 ﻿@model ADJ.BusinessService.Dtos.OrderDTO;
 
-<button type="button" value="AddItem" name="method" class="uk-button uk-button-primary itemButton">Add Item</button>
+<div uk-grid>
+  <div uk-card>
+    <button type="button" value="AddItem" name="method" class="uk-button uk-button-primary itemButton">Add Item</button>
+  </div>
 
-@if (Model.PODetails != null)
-{
-  @if (Model.PODetails.Items != null)
-  {
-    //List could be not null but does not have any item
-    @if (Model.PODetails.Items.Count > 0)
+  <!--paging-->
+  <div uk-card>
+
+    @if (Model.PODetails != null)
     {
-      <span>Page:</span>
-      int totalPage = Model.PODetails.Items.Count / ViewBag.PageSize;
-      @if (Model.PODetails.Items.Count % ViewBag.PageSize > 0) { totalPage++; }
-
-      @if (ViewBag.CurrentPage > 1)
+      @if (Model.PODetails.Items != null)
       {
-        <button type="button" value="Previous" class="uk-button uk-button-secondary itemButton">Previous</button>
-      }
-
-      @for (int i = 1; i <= totalPage; i++)
-      {
-        if (i == ViewBag.CurrentPage)
+        //List could be not null but does not have any item
+        @if (Model.PODetails.Items.Count > 0)
         {
-          <button type="button" value="Page @i" class="uk-button uk-button-secondary itemButton" disabled><span id="currentPage">@i</span></button>
-        }
-        else
-        {
-          <button type="button" value="Page @i" class="uk-button uk-button-secondary itemButton">@i</button>
-        }
-      }
+          int pageSize = ViewBag.PageSize;
+          int currentPage = ViewBag.CurrentPage ?? 1;
+          int totalPage = Model.PODetails.Items.Count / pageSize;
+          @if (Model.PODetails.Items.Count % pageSize > 0) { totalPage++; }
 
-      @if (ViewBag.CurrentPage < totalPage)
-      {
-        <button type="button" value="Next" class="uk-button uk-button-secondary itemButton">Next</button>
+          <ul class="uk-pagination uk-flex-center">
+            @if (currentPage > 1)
+            {
+              <li><a value="Previous" class="itemButton"><span uk-pagination-previous></span></a></li>
+            }
+
+            @for (int i = 1; i <= totalPage; i++)
+            {
+              if (i == currentPage)
+              {
+                <li class="uk-active"><a value="Page @i" class="itemButton"><span id="currentPage">@i</span></a></li>
+              }
+              else
+              {
+                @*<button type="button" value="Page @i" class="uk-button uk-button-secondary itemButton">@i</button>*@
+                <li><a value="Page @i" class="itemButton">@i</a></li>
+              }
+            }
+
+            @if (currentPage < totalPage)
+            {
+              <li><a value="Next" class="itemButton"><span uk-pagination-next></span></a></li>
+            }
+          </ul>
+        }
       }
     }
-  }
-}
+  </div>
+</div>
 
 <table class="uk-table uk-table-striped uk-table-hover uk-table-small uk-table-middle">
+
+  <!--table header-->
   <tr>
     <th>
       <label asp-for="SingleOrderDetail.ItemNumber"></label>
@@ -85,6 +99,7 @@
     <th></th>
   </tr>
 
+  <!--only show if user want to add new item-->
   @if (ViewBag.ItemId == -1)
   {
     <tr>
@@ -153,6 +168,7 @@
     </tr>
   }
 
+  <!--show list of item-->
   @if (Model.PODetails != null)
   {
     @if (Model.PODetails.Items != null)
@@ -190,6 +206,7 @@
           {
             @if (i != ViewBag.ItemId)
             {
+              <!--show each item attribute-->
               <tr>
                 <td>
                   @Model.PODetails.Items[i].ItemNumber

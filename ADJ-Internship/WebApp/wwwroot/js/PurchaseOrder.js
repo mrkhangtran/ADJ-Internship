@@ -22,7 +22,7 @@ $(document.body).on('click', '.itemButton', function () {
       orderDetails.push($(this).val());
     });
 
-    var method = $(this).val();
+    var method = $(this).attr("value");
     var currentPage = parseInt($("#currentPage").text());
 
     $.ajax({

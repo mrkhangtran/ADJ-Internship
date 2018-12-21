@@ -17,9 +17,13 @@
   <h4>@ViewBag.Method</h4>
   <hr />
 
-  <partial name="_Order" model="Model" />
+  <div class="uk-card uk-card-default uk-card-body">
+    <partial name="_Order" model="Model" />
+  </div>
 
-  <div id="orderDetailPartial">
+  <div class="uk-grid-divider" uk-grid>...</div>
+
+  <div class="uk-card uk-card-default uk-card-body" id="orderDetailPartial">
     <partial name="_OrderDetail" model="Model" />
   </div>
 
