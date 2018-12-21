@@ -14,7 +14,7 @@ namespace ADJ.WebApp.Controllers
   {
 
     private readonly IPurchaseOrderService _poService;
-    private int pageSize = 3;
+    private int pageSize = 5;
 
     public PurchaseOrderController(IPurchaseOrderService poService)
     {
