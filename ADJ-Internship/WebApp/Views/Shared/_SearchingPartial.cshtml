@@ -63,7 +63,7 @@ else
               @Html.CheckBoxFor(model => model.Items[i].selected)
             </td>
             <td>@Model.Items[i].PONumber</td>
-            @Html.HiddenFor(model => model.Items[i].POQuantity)
+            @Html.HiddenFor(model => model.Items[i].PONumber)
             <td>@Model.Items[i].POQuantity</td>
             @Html.HiddenFor(model => model.Items[i].POQuantity)
             <td>@Model.Items[i].EstQtyToShip</td>
@@ -79,7 +79,15 @@ else
 
             </td>
             <td>
-              @Model.Items[i].Complete
+              @if (@Model.Items[i].Complete == true)
+              {
+                <p>YES</p>
+              }
+              else
+              {
+                <p>NO</p>
+              }
+
               @Html.HiddenFor(model => model.Items[i].Complete)
             </td>
           </tr>
@@ -105,8 +113,7 @@ else
           {
             <tr>
               <td>
-                @Html.CheckBoxFor(model => model.Items[i].ListOrderDetailDto[i].selected)
-
+                @Html.CheckBoxFor(model => model.Items[i].ListOrderDetailDto[j].selected)
               </td>
               @Html.HiddenFor(model => model.Items[i].ListOrderDetailDto[j].Id)
               <td>@Model.Items[i].ListOrderDetailDto[j].ItemNumber</td>
@@ -127,11 +134,19 @@ else
     <ul class="uk-pagination">
       @for (var i = 1; i <= Model.PageCount; i++)
       {
-        <li class="page-item @(i == Model.PageCount ? "active" : "")">
-          <a asp-page="/Index"
-             asp-route-pageIndex="@i" class="page-link">@i</a>
+        if (i == ViewBag.pageIndex)
+        {
+          <li class="uk-disabled">
+            <a class="page-link ">@i</a>
           </li>
         }
+        else
+        {
+          <li class="uk-active">
+            <a class="filterItem page-link" value=@i>@i</a>
+          </li>
+        }
+      }
     </ul>
   </div>
 }
