@@ -43,7 +43,7 @@
               <td><label>Status</label></td>
               <td>
                 <div class="uk-form-select" data-uk-form-select>
-                  @Html.DropDownList("Status", new SelectList(ViewBag.Suppliers), "Any", new { @id = "Status", @class = "uk-select" })
+                  @Html.DropDownList("Status", new SelectList(ViewBag.Status), "Any", new { @id = "Status", @class = "uk-select" })
                 </div>
               </td>
             </tr>
@@ -85,7 +85,7 @@
           <tbody>
             <tr>
               <td>
-               <button type="button" class="filterItem uk-button uk-button-primary" value=1>Search</button>
+                <button type="button" class="filterItem uk-button uk-button-primary" value=1>Search</button>
               </td>
             </tr>
             <tr>
@@ -106,8 +106,12 @@
     @foreach (var item in ViewBag.POUpdate)
     {
       <p class="uk-text-success uk-text-bold">Your PO @item has been successfully updated</p>
-      <br>
     }
+  }
+  @if (ViewBag.Check == 2)
+  {
+    <p class="uk-text-danger uk-text-bold">Please check PO you want to update or your value is invalid. </p>
+
   }
   <div id="renderSearching">
     @for (int i = 0; i < Model.Items.Count(); i++)
@@ -273,7 +277,9 @@
                 OriginPorts: $('#OriginPorts').val(),
                 Depts: $('#Depts').val(),
                 PONumberSearch: $('#PONumberSearch').val(),
-                ItemSearch: $('#ItemSearch').val()
+                ItemSearch: $('#ItemSearch').val(),
+                Status: $('#Status').val()
+
             },
             success: function (data) {
                 $('#renderSearching').html(data);

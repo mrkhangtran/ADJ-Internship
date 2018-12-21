@@ -42,7 +42,7 @@ namespace ADJ.BusinessService.Implementations
       _progresscheckDataProvider = progresscheckDataProvider;
     }
     public async Task<PagedListResult<ProgressCheckDto>> ListProgressCheckDtoAsync(int pageIndex = 1, int pageSize = 2, string PONumberSearch = null, string ItemSearch = null,
-      string Suppliers = null, string Factories = null, string Origins = null, string OriginPorts = null, string Depts = null)
+      string Suppliers = null, string Factories = null, string Origins = null, string OriginPorts = null, string Depts = null,string Status=null)
     {
       List<ProgressCheckDto> progressCheckDTOs = new List<ProgressCheckDto>();
       Expression<Func<Order, bool>> All = x => x.Id > 0;
@@ -81,6 +81,12 @@ namespace ADJ.BusinessService.Implementations
       {
         Expression<Func<Order, bool>> filterDepts = x => x.Department == Depts;
         All = All.And(filterDepts);
+        //add condition x.depts==depts
+      }
+      if (Status != null)
+      {
+        Expression<Func<Order, bool>> filterStatus = x => x.Status.ToString() == Status;
+        All = All.And(filterStatus);
         //add condition x.depts==depts
       }
       if (ItemSearch != null)
@@ -232,13 +238,16 @@ namespace ADJ.BusinessService.Implementations
       var originports = orderModels.Select(x => x.PortOfLoading).Distinct();
       var factories = orderModels.Select(x => x.Factory).Distinct();
       var depts = orderModels.Select(x => x.Department).Distinct();
+      List<string> status=Enum.GetNames(typeof(OrderStatus)).ToList();     
       GetItemSearchDto getSearchItemDTO = new GetItemSearchDto()
       {
         Suppliers = suppliers,
         Origins = origins,
         OriginPorts = originports,
         Factories = factories,
-        Depts = depts
+        Depts = depts,
+        Status=status,
+       
       };
       return getSearchItemDTO;
     }
