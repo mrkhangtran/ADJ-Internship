@@ -9,7 +9,6 @@ using ADJ.DataModel;
 using ADJ.DataModel.Core;
 using ADJ.DataModel.OrderTrack;
 using AutoMapper;
-using DTOs;
 
 namespace ADJ.BusinessService.Dtos
 {
@@ -42,7 +41,6 @@ namespace ADJ.BusinessService.Dtos
     public string Origin { get; set; }
     public string OriginPort { get; set; }
     public bool selected { get; set; }
-
     public void CreateMapping(Profile profile)
     {
       profile.CreateMap<ProgressCheck, ProgressCheckDto>().IncludeBase<EntityBase, EntityDtoBase>();
@@ -123,45 +121,45 @@ namespace ADJ.BusinessService.Dtos
     [Required]
     public int OrderId { get; set; }
 
-		public virtual Order Order { get; set; }
-		public void CreateMapping(Profile profile)
-		{
-			profile.CreateMap<OrderDetailDto, OrderDetail>().IncludeBase<EntityDtoBase, EntityBase>();
-			profile.CreateMap<OrderDetail, OrderDetailDto>().IncludeBase<EntityBase, EntityDtoBase>();
-		}
-	}
+    public virtual Order Order { get; set; }
+
+    public void CreateMapping(Profile profile)
+    {
+      profile.CreateMap<OrderDetailDto, OrderDetail>().IncludeBase<EntityDtoBase, EntityBase>();
+      profile.CreateMap<OrderDetail, OrderDetailDto>().IncludeBase<EntityBase, EntityDtoBase>();
+    }
+  }
 
 
-	public class OrderDto : EntityDtoBase, ICreateMapping
-	{
+  public class OrderDto : EntityDtoBase, ICreateMapping
+  {
 
-		public string PONumber { get; set; }
+    public string PONumber { get; set; }
 
-		public DateTime OrderDate { get; set; }
+    public DateTime OrderDate { get; set; }
 
-		public string Supplier { get; set; }
+    public string Supplier { get; set; }
 
-		public string Origin { get; set; }
+    public string Origin { get; set; }
 
-		public string PortOfLoading { get; set; }
+    public string PortOfLoading { get; set; }
 
-		public DateTime ShipDate { get; set; }
+    public DateTime ShipDate { get; set; }
 
-		public DateTime DeliveryDate { get; set; }
+    public DateTime DeliveryDate { get; set; }
 
-		public string PortOfDelivery { get; set; }
+    public string PortOfDelivery { get; set; }
 
-		public decimal Quantity { get; set; }
+    public decimal Quantity { get; set; }
 
-		public OrderStatus Status { get; set; }
+    public OrderStatus Status { get; set; }
 
-		public void CreateMapping(Profile profile)
-		{
-			profile.CreateMap<Order, OrderDto>().IncludeBase<EntityBase, EntityDtoBase>();
-			profile.CreateMap<OrderDto, Order>().IncludeBase<EntityDtoBase, EntityBase>();
-		}
+    public void CreateMapping(Profile profile)
+    {
+      profile.CreateMap<Order, OrderDto>().IncludeBase<EntityBase, EntityDtoBase>();
+      profile.CreateMap<OrderDto, Order>().IncludeBase<EntityDtoBase, EntityBase>();
+    }
 
-	}
-
+  }
 
 }
