@@ -22,12 +22,16 @@ $(document.body).on('click', '.itemButton', function () {
       orderDetails.push($(this).val());
     });
 
+    var method = $(this).val();
+    var currentPage = parseInt($("#currentPage").text());
+
     $.ajax({
       type: "POST",
       data: {
-        method: $(this).val(),
+        method: method,
         newItem: newItem,
-        orderDetails: orderDetails
+        orderDetails: orderDetails,
+        currentPage: currentPage
       },
       url: "/PurchaseOrder/AddItem",
       success: function (objOperations) {
@@ -44,38 +48,4 @@ function rebindValidators() {
   $form.data("validator", null);
   $.validator.unobtrusive.parse($form);
   $form.validate($form.data("unobtrusiveValidation").options);
-}
-
-// $("#applyButton").click(function () {
-//  var addModel = @Html.Raw(Json.Serialize(Model));
-//  var orderDetails = [];
-//  $.each($("input[id='itemProperty']"), function () {
-//    orderDetails.push($(this).val());
-//  });
-
-//  $.ajax({
-//    type: "POST",
-//    data: {
-//      orderDetails: orderDetails,
-//      progressCheckDTOs: addModel
-//    },
-//    url: "@Url.Action("Create", "PurchaseOrder")",
-//    success: function () {
-//      alert("Success");
-//    }
-//  });
-
-//});
-
-function bothFormSubmit() {
-  document.getElementById("detailForm").submit();
-  document.getElementById("orderForm").submit();
-};
-
-function detailFormSubmit() {
-  document.getElementById("detailForm").submit();
-};
-
-function orderFormSubmit() {
-  document.getElementById("orderForm").submit();
 };

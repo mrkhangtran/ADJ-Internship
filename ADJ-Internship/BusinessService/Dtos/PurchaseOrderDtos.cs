@@ -51,7 +51,7 @@ namespace ADJ.BusinessService.Dtos
     //Default value is Current Date
     [Display(Name = "Order Date")]
     [DisplayFormat(DataFormatString = "{0:mm/dd/yyyy}", ApplyFormatInEditMode = true)]
-    //[NotInThePast(ErrorMessage = "Cannot be set in the past")]
+    [NotInThePast(ErrorMessage = "Cannot be set in the past")]
     public DateTime OrderDate { get; set; } = DateTime.Now;
 
     [StringLength(30, ErrorMessage = "Cannot be longer than 30 character")]
@@ -105,17 +105,17 @@ namespace ADJ.BusinessService.Dtos
     public string Mode { get; set; }
 
     [Display(Name = "Ship Date")]
-    //[NotInThePast(ErrorMessage = "Cannot be set in the past")]
+    [NotInThePast(ErrorMessage = "Cannot be set in the past")]
     public DateTime ShipDate { get; set; }
 
     [Display(Name = "Latest Ship Date")]
-    //[SimilarOrLaterThanOtherDate("ShipDate")]
-    //[NotInThePast(ErrorMessage = "Cannot be set in the past")]
+    [SimilarOrLaterThanOtherDate("ShipDate")]
+    [NotInThePast(ErrorMessage = "Cannot be set in the past")]
     public DateTime LatestShipDate { get; set; }
 
     [Display(Name = "Delivery Date")]
-    //[SimilarOrLaterThanOtherDate("ShipDate")]
-    //[NotInThePast(ErrorMessage = "Cannot be set in the past")]
+    [SimilarOrLaterThanOtherDate("ShipDate")]
+    [NotInThePast(ErrorMessage = "Cannot be set in the past")]
     public DateTime DeliveryDate { get; set; }
 
     //sum of all PODetails Quantity 
