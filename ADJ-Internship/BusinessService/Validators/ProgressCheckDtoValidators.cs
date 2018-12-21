@@ -23,7 +23,7 @@ namespace ADJ.BusinessService.Validators
           DateTime InspecDate = Convert.ToDateTime(value);
           DateTime IntDate = Convert.ToDateTime(otherValue);
           DateTime today = Convert.ToDateTime(DateTime.Now.Date);
-          if (InspecDate.CompareTo(IntDate) > 2)
+          if ((InspecDate.Date-IntDate.Date).TotalDays > 0)
           {
             return new ValidationResult(ErrorMessage = " Inspection Date Date must be equal or less than Int Ship Date");
           }
