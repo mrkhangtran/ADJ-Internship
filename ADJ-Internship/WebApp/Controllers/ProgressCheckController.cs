@@ -44,23 +44,27 @@ namespace WebApp.Controllers
       ViewBag.Check = 0;
       bool checkedItem = false;
       List<string> POUpdate = new List<string>();
-      if (ModelState.IsValid)
+      if (progressCheckDTOs.Items != null)
       {
-        foreach (var item in progressCheckDTOs.Items)
+        if (ModelState.IsValid)
         {
-          if (item.selected == true || item.ListOrderDetailDto.Where(x => x.selected == true).ToList().Count > 0)
+          foreach (var item in progressCheckDTOs.Items)
           {
-            await _prcService.CreateOrUpdateProgressCheckAsync(item);
-            POUpdate.Add(item.PONumber);
-            ViewBag.Check = 1;
-            checkedItem = true;
-          }        
+            if (item.selected == true || item.ListOrderDetailDto.Where(x => x.selected == true).ToList().Count > 0)
+            {
+              await _prcService.CreateOrUpdateProgressCheckAsync(item);
+              POUpdate.Add(item.PONumber);
+              ViewBag.Check = 1;
+              checkedItem = true;
+            }
+          }
+        }
+        if (checkedItem == false || !ModelState.IsValid)
+        {
+          ViewBag.Check = 2;
         }
       }
-      if(checkedItem==false||!ModelState.IsValid)
-      {
-        ViewBag.Check = 2;
-      }
+      ViewBag.Check = 3;
       
       GetItemSearchDto getSearchItem = await _prcService.SearchItem();
       ViewBag.Suppliers = getSearchItem.Suppliers;
