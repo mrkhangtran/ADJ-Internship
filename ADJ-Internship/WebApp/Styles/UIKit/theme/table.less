@@ -59,8 +59,19 @@
 
 .hook-table-misc() {
 
-    .uk-table tbody tr { transition: background-color 0.1s linear; }
+	.uk-table tbody tr {
+		transition: background-color 0.1s linear;
+	}
 
+	.uk-table th {
+		background: #333;
+		text-align: center;
+		border-right: 0.5px solid gainsboro;
+	}
+
+	.uk-table td {
+		border-right: 0.5px solid gainsboro;
+	}
 }
 
 
@@ -77,16 +88,3 @@
 }
 .hook-inverse-table-hover() {}
 
-.hook-table th {
-	background: #333;
-	text-align: center;
-	border-right: 0.5px solid gainsboro;
-}
-
-.hook-table {
-	border: 1px solid #333;
-}
-
-.hook-table td {
-	border-right: 0.5px solid gainsboro;
-}

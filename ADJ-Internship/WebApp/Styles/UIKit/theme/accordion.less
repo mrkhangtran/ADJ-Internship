@@ -59,18 +59,6 @@
 	font-size: @accordion-title-font-size;
 	line-height: @accordion-title-line-height;
 	color: white;
-	.hook-accordion-title;
-
-	&::before {
-		content: "";
-		width: (@accordion-title-line-height * 1em);
-		height:0;
-		margin-left: @accordion-icon-margin-left;
-		float: right;
-		.svg-fill(@internal-accordion-close-image, "#000", @accordion-icon-color);
-		background-repeat: no-repeat;
-		background-position: 50% 50%;
-	}
 
 	.uk-open > &::before {
 		.svg-fill(@internal-accordion-open-image, "#000", @accordion-icon-color);
@@ -133,7 +121,14 @@
 .hook-inverse() {
 
 	.uk-accordion-title::before {
-
+		content: "";
+		width: (@accordion-title-line-height * 1em);
+		height: 0;
+		margin-left: @accordion-icon-margin-left;
+		float: right;
+		.svg-fill(@internal-accordion-close-image, "#000", @accordion-icon-color);
+		background-repeat: no-repeat;
+		background-position: 50% 50%;
 		.svg-fill(@internal-accordion-close-image, "#000", @inverse-global-color);
 	}
 

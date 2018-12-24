@@ -12,11 +12,7 @@
 // ========================================================================
 
 .hook-grid-misc() {
-}
-
-.hook-grid {
-
-	.welcomeToGroove {
+	.uk-grid .welcomeToGroove {
 		border-bottom: 1.2px solid #808080;
 		padding-top: 20px;
 		padding-bottom: 20px;
@@ -27,7 +23,7 @@
 		}
 	}
 
-	.menu-left-header {
+	.uk-grid.menu-left-header {
 		border-bottom: 1.2px solid #808080;
 		text-align: center;
 
@@ -42,7 +38,7 @@
 		font-size: 30px;
 	}
 
-	.welcome {
+	.uk-grid.welcome {
 		border-bottom: 1.2px solid #808080;
 
 		p {
@@ -63,115 +59,5 @@
 }
 
 
-* + .hook-grid-margin {
-	margin-top: 0;
-}
-
-
-.hook-grid > * {
-	padding-left: 0;
-}
-
-.hook-grid + .hook-grid,
-.hook-grid > .hook-grid-margin,
-* + .hook-grid-margin {
-	margin-top: 0;
-}
-
-.hook-grid-small {
-	margin-left: 0;
-}
-
-.hook-grid-small > * {
-	padding-left: @grid-small-gutter-horizontal;
-}
-
-* + .hook-grid-margin-small {
-	margin-top: 0;
-}
-
-.hook-grid-medium {
-	margin-left: 0;
-}
-
-.hook-grid-medium > * {
-	padding-left: @grid-medium-gutter-horizontal;
-}
-
-.hook-grid-large {
-	margin-left: 0;
-}
-
-.hook-grid-large > * {
-	padding-left: @grid-large-gutter-horizontal;
-}
-
-* + .hook-grid-margin-large {
-	margin-top: 0;
-}
-
-.hook-grid-large {
-	margin-left: 0;
-}
-
-.hook-grid-large > * {
-	padding-left: @grid-large-gutter-horizontal-l;
-}
-
-* + .hook-grid-margin-large {
-	margin-top: 0;
-}
-
-.hook-grid-divider {
-	margin-left: 0;
-}
-
-.hook-grid-divider > * {
-	padding-left: (@grid-gutter-horizontal * 2);
-}
-
-.hook-grid-divider.hook-grid-stack > .hook-grid-margin {
-	margin-top: 0;
-}
-
-.hook-grid-divider {
-	margin-left: 0;
-}
-
-.hook-grid-divider.hook-grid-stack > .hook-grid-margin {
-	margin-top: 0;
-}
-
-.hook-grid-divider.hook-grid-small {
-	margin-left: 0;
-}
-
-.hook-grid-divider.hook-grid-small.hook-grid-stack > .hook-grid-margin {
-	margin-top: 0;
-}
-
-.hook-grid-divider.hook-grid-medium {
-	margin-left: 0;
-}
-
-.hook-grid-divider.hook-grid-medium.hook-grid-stack > .hook-grid-margin {
-	margin-top: 0;
-}
-
-.hook-grid-divider.hook-grid-large {
-	margin-left: 0;
-}
-
-.hook-grid-divider.hook-grid-large.hook-grid-stack > .hook-grid-margin {
-	margin-top: 0;
-}
-
-.hook-grid-divider.hook-grid-large {
-	margin-left: 0;
-}
-
-.hook-grid-divider.hook-grid-large.hook-grid-stack > .hook-grid-margin {
-	margin-top: 0;
-}
 
 

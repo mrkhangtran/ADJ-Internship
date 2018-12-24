@@ -32,7 +32,7 @@
 		<div id="filter-createnew">
 			<form asp-action="Display"
 						asp-controller="Order" method="get">
-				<input type="text" name="poNumberFilter" value="@Model.CurrentFilter" placeholder="Enter PO Number" />
+				<input type="text" name="poNumberFilter" value="@Model.CurrentFilter" placeholder="Enter PO Number" class="enterFilter"/>
 				<input type="submit" value="Search" class="btnFilter" />
 				<button class="uk-button uk-button-primary btnNew"><p>New order <span class="fa fa-plus"></span></p></button>
 			</form>
