@@ -1,7 +1,4 @@
 ﻿@model ADJ.Common.PagedListResult<ADJ.BusinessService.Dtos.ProgressCheckDto>
-@*<form asp-action="SearchItem" asp-controller="ProgressCheck" data-ajax="true" id="searchForm"
-  data-ajax-method="GET" data-ajax-mode="replace"
-  data-ajax-update="#renderSearching">*@
 @using (Html.BeginForm())
 {
   <div class="uk-container">
@@ -21,7 +18,7 @@
               <td><label>Origin Port</label></td>
               <td>
                 <div class="uk-form-select" data-uk-form-select>
-                  @Html.DropDownList("OriginPorts", new SelectList(ViewBag.OriginPorts), "Any", new { @id = "OriginPorts",@class="uk-select" })
+                  @Html.DropDownList("OriginPorts", new SelectList(ViewBag.OriginPorts), "Any", new { @id = "OriginPorts", @class = "uk-select" })
                 </div>
               </td>
             </tr>
@@ -46,7 +43,7 @@
               <td><label>Status</label></td>
               <td>
                 <div class="uk-form-select" data-uk-form-select>
-                  @Html.DropDownList("Status", new SelectList(ViewBag.Suppliers), "Any", new { @id = "Status", @class = "uk-select" })                
+                  @Html.DropDownList("Status", new SelectList(ViewBag.Status), "Any", new { @id = "Status", @class = "uk-select" })
                 </div>
               </td>
             </tr>
@@ -88,7 +85,7 @@
           <tbody>
             <tr>
               <td>
-                <input id="Search" class="uk-button uk-button-primary" type="button" data-uk-button value="Search">
+                <button type="button" class="filterItem uk-button uk-button-primary" value=1>Search</button>
               </td>
             </tr>
             <tr>
@@ -104,8 +101,23 @@
 
     </div>
   </div>
-  @*</form>*@
-  @*<form asp-action="CreateOrUpdate" asp-controller="ProgressCheck" data-ajax="true" id="updateForm">*@
+  @if (ViewBag.Check == 1)
+  {
+    @foreach (var item in ViewBag.POUpdate)
+    {
+      <p class="uk-text-success uk-text-bold">Your PO @item has been successfully updated</p>
+    }
+  }
+  @if (ViewBag.Check == 2)
+  {
+    <p class="uk-text-danger uk-text-bold">Please check PO you want to update or your value is invalid. </p>
+
+  }
+  @if (ViewBag.Check == 3)
+  {
+    <p class="uk-text-danger uk-text-bold">Your PO list id empty. </p>
+
+  }
   <div id="renderSearching">
     @for (int i = 0; i < Model.Items.Count(); i++)
     {
@@ -181,7 +193,15 @@
 
               </td>
               <td>
-                @Model.Items[i].Complete
+                @if (@Model.Items[i].Complete == true)
+                {
+                  <p>YES</p>
+                }
+                else
+                {
+                  <p>NO</p>
+                }
+
                 @Html.HiddenFor(model => model.Items[i].Complete)
               </td>
             </tr>
@@ -207,8 +227,7 @@
             {
               <tr>
                 <td>
-                  @Html.CheckBoxFor(model => model.Items[i].ListOrderDetailDto[i].selected)
-
+                  @Html.CheckBoxFor(model => model.Items[i].ListOrderDetailDto[j].selected)
                 </td>
                 @Html.HiddenFor(model => model.Items[i].ListOrderDetailDto[j].Id)
                 <td>@Model.Items[i].ListOrderDetailDto[j].ItemNumber</td>
@@ -225,47 +244,47 @@
       </div>
       <br />
     }
+
     <div>
       <ul class="uk-pagination">
         @for (var i = 1; i <= Model.PageCount; i++)
         {
-          <li class="page-item @(i == Model.PageCount ? "active" : "")">
-            <a asp-page="/Index"
-               asp-route-pageIndex="@i" class="page-link">@i</a>
+          if (i == ViewBag.pageIndex)
+          {
+            <li class="uk-disabled">
+              <a asp-action="Index" asp-controller="ProgressCheck" asp-route-pageIndex="@i" class="page-link">@i</a>
             </li>
           }
+          else
+          {
+            <li class="uk-active">
+              <a asp-action="Index" asp-controller="ProgressCheck" asp-route-pageIndex="@i" class="page-link">@i</a>
+            </li>
+          }
+        }
       </ul>
     </div>
   </div>
-  @*</form>*@
 }
-<div id="modalPOUpdate" uk-modal>
-  <div class="uk-modal-dialog uk-modal-body">
-    @foreach (var item in ViewBag.POUpdate)
-    {
-      <p>Your PO Numbew : @item is updated</p>
-      <br>
-    }
-    <p class="uk-text-right">
-      <button class="uk-button uk-button-default uk-modal-close" type="button">Cancel</button>
-    </p>
-  </div>
-</div>
 <script src="~/js/jquery-3.3.1.min.js"></script>
 <script type="text/javascript">
-    $('#Search').click(function () {
+  $(document.body).on('click', '.filterItem', function () {
+    var pageIndex = $(this).attr("value");
         $.ajax({
             type: "GET",
             dataType:"html",
-            url: "@Url.Action("SearchItem", "ProgressCheck")",
+            url: "@Url.Action("Index", "ProgressCheck")",
             data: {
+                pageIndex:pageIndex,
                 Suppliers: $('#Suppliers').val(),
                 Factories: $('#Factories').val(),
                 Origins: $('#Origins').val(),
                 OriginPorts: $('#OriginPorts').val(),
                 Depts: $('#Depts').val(),
                 PONumberSearch: $('#PONumberSearch').val(),
-                ItemSearch: $('#ItemSearch').val()
+                ItemSearch: $('#ItemSearch').val(),
+                Status: $('#Status').val()
+
             },
             success: function (data) {
                 $('#renderSearching').html(data);
