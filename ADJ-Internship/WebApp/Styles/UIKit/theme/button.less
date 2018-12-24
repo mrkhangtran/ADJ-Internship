@@ -60,7 +60,10 @@
 // Style modifiers
 // ========================================================================
 
-.hook-button-default() { border: @button-border-width solid @button-default-border; }
+.hook-button-default() {
+	border: @button-border-width solid @button-default-border;
+	color:white;
+}
 
 .hook-button-default-hover() { border-color: @button-default-hover-border; }
 
@@ -215,8 +218,3 @@
 
 .hook-inverse-button-link() {}
 
-.uk-button uk-button-default {
-	.btnUserName {
-		color: white;
-	}
-}
