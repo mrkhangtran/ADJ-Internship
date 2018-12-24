@@ -7,9 +7,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 namespace ADJ.DataAccess.EntityConfigurations.ShipmentTrack
 {
-    public class ArriveOfDespacthConfiguration: IEntityTypeConfiguration<ArriveOfDespacth>
+    public class ArriveOfDespacthConfiguration: IEntityTypeConfiguration<ArriveOfDespatch>
     {
-        public void Configure(EntityTypeBuilder<ArriveOfDespacth> builder)
+        public void Configure(EntityTypeBuilder<ArriveOfDespatch> builder)
         {
             builder.ToTable("ArriveOfDepacths");
         }

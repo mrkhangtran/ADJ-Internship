@@ -1,0 +1,59 @@
+﻿@model ADJ.BusinessService.Dtos.ShipmentBookingDtos;
+
+<div class="uk-grid">
+  <div class="uk-width-auto">
+    <table class="uk-table uk-table-small uk-table-middle">
+      <tr>
+        <td>
+          <label asp-for="OriginPort"></label>
+        </td>
+        <td>
+          <input asp-for="OriginPort" class="uk-input" id="from" onkeyup="copy()" />
+          <span asp-validation-for="OriginPort" class="uk-alert-danger"></span>
+        </td>
+        <td>
+          <label asp-for="DestinationPort"></label>
+        </td>
+        <td>
+          <input asp-for="DestinationPort" class="uk-input" id="from" onkeyup="copy()" />
+          <span asp-validation-for="DestinationPort" class="uk-alert-danger"></span>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <label asp-for="Carrier"></label>
+        </td>
+        <td>
+          <input asp-for="Carrier" class="uk-input" id="from" onkeyup="copy()" />
+          <span asp-validation-for="Carrier" class="uk-alert-danger"></span>
+        </td>
+        <td>
+          <label asp-for="Mode"></label>
+        </td>
+        <td>
+          <input asp-for="Mode" class="uk-input" id="from" onkeyup="copy()" />
+          <span asp-validation-for="Mode" class="uk-alert-danger"></span>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <label asp-for="ETD"></label>
+        </td>
+        <td>
+          <input asp-for="ETD" class="uk-input" id="from" onkeyup="copy()" />
+          <span asp-validation-for="ETD" class="uk-alert-danger"></span>
+        </td>
+        <td>
+          <label asp-for="ETA"></label>
+        </td>
+        <td>
+          <input asp-for="ETA" class="uk-input" id="from" onkeyup="copy()" />
+          <span asp-validation-for="ETA" class="uk-alert-danger"></span>
+        </td>
+      </tr>
+    </table>
+  </div>
+  <div class="uk-width-1-5">
+    <button type="button" value="Book">Make Booking</button>
+  </div>
+</div>
