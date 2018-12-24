@@ -6,12 +6,12 @@
 	Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="uk-width-3-4@m uk-width-3-4@s uk-width-3-4@l uk-width-3-4@x">
+<div class="uk-width-3-4@m uk-width-3-4@s uk-width-3-4@l uk-width-3-4@x content-right">
 	<!-- star header -->
-	<div>
+	<div class="content-header">
 		<span class="fa fa-bars"></span>
-		<div class="uk-inline dropdown-username">
-			<button class="uk-button uk-button-default" type="button">User Name</button>
+		<div class="dropdown-username">
+			<button class="uk-button uk-button-default btnUserName" type="button">User Name</button>
 			<div uk-dropdown="pos: bottom-right">
 				<ul class="uk-nav uk-dropdown-nav">
 					<li><a href="#">Active</a></li>
@@ -27,71 +27,64 @@
 
 	</div>	<!-- end content-header -->
 	<!-- start content -->
-	<div>
-		<div>
-			@*Text box filter*@
-			<div id="txtFilter">
-				<form asp-action="Display"
-							asp-controller="Order" method="get">
-					<input type="text" name="poNumberFilter" value="@Model.CurrentFilter" placeholder="Enter PO Number" />
-					<input type="submit" value="Serach" />
-				</form>
-				<h4>@ViewBag.Message</h4>
-
-				<button class="uk-button uk-button-primary " style="float:right;"><p>New order <span class="fa fa-plus"></span></p></button>
-			</div>
+	<div class="content">
+		@*Text box filter*@
+		<div id="filter-createnew">
+			<form asp-action="Display"
+						asp-controller="Order" method="get">
+				<input type="text" name="poNumberFilter" value="@Model.CurrentFilter" placeholder="Enter PO Number" />
+				<input type="submit" value="Search" class="btnFilter" />
+				<button class="uk-button uk-button-primary btnNew"><p>New order <span class="fa fa-plus"></span></p></button>
+			</form>
+			<h4>@ViewBag.Message</h4>
 		</div>
-		<!-- start table -->
-		<table class="uk-table uk-table-striped content-table" style="border:1px solid #333;">
-			<thead style="background:#333;">
-				<tr class="uk-text-center">
-					<th>PO Number</th>
-					<th>PO Date</th>
-					<th>Origin</th>
-					<th>Port Of Loading</th>
-					<th>Port Of Delivery</th>
-					<th>Suppier</th>
-					<th>PO Ship Date</th>
-					<th>PO Qty</th>
-					<th>Status</th>
-					<th>PO Delivery Date</th>
-					<th></th>
+	</div>
+	<!-- start table -->
+	<table class="uk-table uk-table-striped content-table">
+		<thead>
+			<tr class="uk-text-center">
+				<th>PO Number</th>
+				<th>PO Date</th>
+				<th>Origin</th>
+				<th>Port Of Loading</th>
+				<th>Port Of Delivery</th>
+				<th>Suppier</th>
+				<th>PO Ship Date</th>
+				<th>PO Qty</th>
+				<th>Status</th>
+				<th>PO Delivery Date</th>
+				<th></th>
+			</tr>
+		</thead>
+		<tbody style="text-align:center">
+			@foreach (var i in Model.Items)
+			{
+				<tr>
+					<td>@i.PONumber</td>
+					<td>@i.OrderDate.ToString("dd MMM yyyy")</td>
+					<td>@i.Origin</td>
+					<td>@i.PortOfLoading</td>
+					<td>@i.PortOfDelivery</td>
+					<td>@i.Supplier</td>
+					<td>@i.ShipDate.ToString("dd MMM yyyy")</td>
+					<td>@i.Quantity</td>
+					<td>@i.Status</td>
+					<td>@i.DeliveryDate.ToString("dd MMM yyyy")</td>
+					<td><a href="#">Edit</a><a href="#"> Detail</a></td>
 				</tr>
-			</thead>
-			<tbody style="text-align:center">
-				@foreach (var i in Model.Items)
-				{
-					<tr>
-						<td>@i.PONumber</td>
-						<td>@i.OrderDate.ToString("dd MMM yyyy")</td>
-						<td>@i.Origin</td>
-						<td>@i.PortOfLoading</td>
-						<td>@i.PortOfDelivery</td>
-						<td>@i.Supplier</td>
-						<td>@i.ShipDate.ToString("dd MMM yyyy")</td>
-						<td>@i.Quantity</td>
-						<td>@i.Status</td>
-						<td>@i.DeliveryDate.ToString("dd MMM yyyy")</td>
-						<td><a href="#">Edit</a><a href="#"> Detail</a></td>
-					</tr>
-				}
-			</tbody>
-		</table> <!-- end content-table -->
+			}
+		</tbody>
+	</table> <!-- end content-table -->
+	<div class="pageNumber">
+		<ul class="pagination" style="list-style:none;float:right;">
+			@for (var i = 1; i <= Model.PageCount; i++)
+			{
+				<li class="page-item @(i == 1? " active":"")" style="display :inline;padding:0 15px">
+					<a asp-page="/Display" asp-route-pageIndex="@i" asp-route-poNumberFilter="@Model.CurrentFilter" class="page-link">@i</a>
+				</li>
+			}
 
+		</ul>
 	</div>
 </div>
 
-<div class="massage-null"><p>@ViewBag.Massage</p></div>
-<div style="clear:both"></div>
-
-<div>
-	<ul class="pagination" style="list-style:none">
-		@for (var i = 1; i <= Model.PageCount; i++)
-		{
-		<li class="page-item @(i == 1? " active":"")" style="float:left; display :inline;padding:0 15px">
-			<a asp-page="/Display" asp-route-pageIndex="@i" asp-route-poNumberFilter="@Model.CurrentFilter" class="page-link">@i</a>
-		</li>
-		}
-
-	</ul>
-</div>
