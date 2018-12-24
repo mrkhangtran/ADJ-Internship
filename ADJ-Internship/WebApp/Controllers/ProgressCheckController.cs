@@ -61,6 +61,10 @@ namespace WebApp.Controllers
       {
         ViewBag.Check = 2;
       }
+      if (progressCheckDTOs.Items == null)
+      {
+        ViewBag.Check = 3;
+      }
       
       GetItemSearchDto getSearchItem = await _prcService.SearchItem();
       ViewBag.Suppliers = getSearchItem.Suppliers;
