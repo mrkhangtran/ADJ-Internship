@@ -29,7 +29,7 @@ namespace WebApp.Controllers
 
 			if (pagedlistResult.Items.Count == 0)
 			{
-				ViewBag.Massage = "There is no available PO";
+				ViewBag.Message = "There is no available PO";
 				return View(pagedlistResult);
 			}
 
