@@ -18,51 +18,64 @@ namespace WebApp.Controllers
       _prcService = prcService;
     }
     // GET: ProgressCheckDto
-    public async Task<ActionResult> Index(int? pageIndex)
+    public async Task<ActionResult> Index(int? pageIndex, string PONumberSearch = null, string ItemSearch = null, string Suppliers = null, string Factories = null, string Origins = null, string OriginPorts = null, string Depts = null,string Status=null)
     {
+      string check = PONumberSearch + ItemSearch + Suppliers + Factories + Origins + OriginPorts + Depts+Status;
       GetItemSearchDto getSearchItem = await _prcService.SearchItem();
       ViewBag.Suppliers = getSearchItem.Suppliers;
       ViewBag.Origins = getSearchItem.Origins;
       ViewBag.OriginPorts = getSearchItem.OriginPorts;
       ViewBag.Factories = getSearchItem.Factories;
       ViewBag.Depts = getSearchItem.Depts;
-      ViewBag.POUpdate = "null";
+      ViewBag.Status = getSearchItem.Status;
       int current = pageIndex ?? 1;
-      PagedListResult<ProgressCheckDto> lstPrc = await _prcService.ListProgressCheckDtoAsync(current);
+      ViewBag.pageIndex = current;
+      PagedListResult<ProgressCheckDto> lstPrc = await _prcService.ListProgressCheckDtoAsync(current, 2, PONumberSearch, ItemSearch, Suppliers, Factories, Origins, OriginPorts, Depts,Status);
+      if (!String.IsNullOrEmpty(check))
+      {
+        return PartialView("_SearchingPartial", lstPrc);
+      }
       return View("Index", lstPrc);
     }
+    [Route("ProgressCheck/Index")]
     [HttpPost]
     public async Task<ActionResult> CreateOrUpdate(PagedListResult<ProgressCheckDto> progressCheckDTOs)
     {
       ViewBag.Check = 0;
+      bool checkedItem = false;
       List<string> POUpdate = new List<string>();
       if (ModelState.IsValid)
       {
-        for (int i = 0; i < progressCheckDTOs.Items.Count(); i++)
+        foreach (var item in progressCheckDTOs.Items)
         {
-          if (progressCheckDTOs.Items[i].selected == true)
+          if (item.selected == true || item.ListOrderDetailDto.Where(x => x.selected == true).ToList().Count > 0)
           {
-            await _prcService.CreateOrUpdatePurchaseOrderAsync(progressCheckDTOs.Items[i]);
-            POUpdate.Add(progressCheckDTOs.Items[i].PONumber);
-          }
+            await _prcService.CreateOrUpdateProgressCheckAsync(item);
+            POUpdate.Add(item.PONumber);
+            ViewBag.Check = 1;
+            checkedItem = true;
+          }        
         }
-        ViewBag.Check = 1;
       }
+      if(checkedItem==false||!ModelState.IsValid)
+      {
+        ViewBag.Check = 2;
+      }
+      if (progressCheckDTOs.Items == null)
+      {
+        ViewBag.Check = 3;
+      }
+      
       GetItemSearchDto getSearchItem = await _prcService.SearchItem();
       ViewBag.Suppliers = getSearchItem.Suppliers;
       ViewBag.Origins = getSearchItem.Origins;
       ViewBag.OriginPorts = getSearchItem.OriginPorts;
       ViewBag.Factories = getSearchItem.Factories;
       ViewBag.Depts = getSearchItem.Depts;
+      ViewBag.Status = getSearchItem.Status;
       ViewBag.POUpdate = POUpdate;
-      PagedListResult<ProgressCheckDto> lstPrc = await _prcService.ListProgressCheckDtoAsync(1,2);
+      PagedListResult<ProgressCheckDto> lstPrc = await _prcService.ListProgressCheckDtoAsync();
       return View("Index",lstPrc);
-    }
-    public async Task<ActionResult> SearchItem(int? pageIndex, string PONumberSearch = null, string ItemSearch = null, string Suppliers = null, string Factories = null, string Origins = null, string OriginPorts = null, string Depts = null)
-    {
-      int current = pageIndex ?? 1;
-      PagedListResult<ProgressCheckDto> lstPrc = await _prcService.ListProgressCheckDtoAsync(current, 2, PONumberSearch, ItemSearch, Suppliers, Factories, Origins, OriginPorts, Depts);
-      return PartialView("_SearchingPartial", lstPrc);
     }
   }
 }
