@@ -1,0 +1,192 @@
+﻿@model IEnumerable<ADJ.BusinessService.Dtos.ShipmentManifestsDtos>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Index</h2>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.BookingId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Seal)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Container)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Loading)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Bars)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Equipment)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Quantity)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Cartoons)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Cartons)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Cube)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.KGS)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FreightTerms)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ChargeableKGS)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PackType)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NetKGS)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.OpenQuantity)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ShipQuantity)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BookingCartons)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ShipCartons)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BookingCube)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ShipCube)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NetWeight)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ETDDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.GrossWeight)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Status)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.RowVersion)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.BookingId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Seal)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Container)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Loading)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Bars)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Equipment)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Quantity)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Cartoons)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Cartons)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Cube)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.KGS)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FreightTerms)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ChargeableKGS)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PackType)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NetKGS)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.OpenQuantity)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ShipQuantity)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.BookingCartons)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ShipCartons)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.BookingCube)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ShipCube)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NetWeight)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ETDDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.GrossWeight)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Status)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.RowVersion)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
