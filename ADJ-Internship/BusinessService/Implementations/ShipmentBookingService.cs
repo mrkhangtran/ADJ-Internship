@@ -22,6 +22,7 @@ namespace ADJ.BusinessService.Implementations
     private readonly IDataProvider<Order> _orderDataProvider;
 
     private readonly IDataProvider<OrderDetail> _orderDetailDataProvider;
+    private readonly IOrderDetailRepository _orderDetailRepository;
 
     private readonly IDataProvider<Booking> _bookingDataProvider;
     private readonly IShipmentBookingRepository _bookingRepository;
@@ -29,10 +30,11 @@ namespace ADJ.BusinessService.Implementations
     private readonly int pageSize;
 
     public ShipmentBookingService(IUnitOfWork unitOfWork, IMapper mapper, ApplicationContext appContext,
-      IDataProvider<OrderDetail> poDetailDataProvider, IDataProvider<Order> poDataProvider,
+      IDataProvider<OrderDetail> poDetailDataProvider, IOrderDetailRepository orderdetailRepository, IDataProvider<Order> poDataProvider,
       IDataProvider<Booking> bookingDataProvider, IShipmentBookingRepository bookingRepository) : base(unitOfWork, mapper, appContext)
     {
       _orderDetailDataProvider = poDetailDataProvider;
+      _orderDetailRepository = orderdetailRepository;
       _orderDataProvider = poDataProvider;
       _bookingDataProvider = bookingDataProvider;
       _bookingRepository = bookingRepository;
@@ -140,7 +142,7 @@ namespace ADJ.BusinessService.Implementations
         Booking entity;
         if (item.Status == OrderStatus.BookingMade)
         {
-          entity = await GetBookingByItemNumber(item.Item);
+          entity = await GetBookingByItemNumber(item.ItemNumber);
           if (entity == null)
           {
             throw new AppException("Booking Not Found");
@@ -172,13 +174,15 @@ namespace ADJ.BusinessService.Implementations
     {
       List<ShipmentBookingDtos> result = new List<ShipmentBookingDtos>();
 
+      Guid shipment = Guid.NewGuid();
+
       foreach (var item in input.OrderDetails)
         if (item.Selected)
         {
           {
             ShipmentBookingDtos output = new ShipmentBookingDtos();
             output.OrderId = item.OrderId;
-            output.Item = item.ItemNumber;
+            output.ItemNumber = item.ItemNumber;
             output.Quantity = item.Quantity;
             output.Cartons = item.Cartons;
             output.Cube = item.Cube;
@@ -192,11 +196,28 @@ namespace ADJ.BusinessService.Implementations
             output.ETD = input.ETD;
             output.ETA = input.ETA;
 
+            output.Shipment = shipment;
+
             result.Add(output);
           }
         }
 
       return result;
+    }
+
+    public async Task<ShipmentBookingDtos> ChangeItemStatus(ShipmentBookingDtos input)
+    {
+      //List<OrderDetailDTO> _orderDetailRepository.Query(x => x.ItemNumber == )
+
+      foreach (var item in input.OrderDetails)
+        if (item.Selected)
+        {
+          {
+            item.Status = OrderStatus.BookingMade;
+          }
+        }
+
+      return input;
     }
 
     public async Task<Booking> GetBookingByItemNumber(string itemNumber)

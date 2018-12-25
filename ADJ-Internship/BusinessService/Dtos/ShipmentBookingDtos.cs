@@ -52,7 +52,7 @@ namespace ADJ.BusinessService.Dtos
 
     public int OrderId { get; set; }
 
-    public string Item { get; set; }
+    public string ItemNumber { get; set; }
 
     //DropList of Boxed/Carton
     public string PackType { get; set; }
@@ -64,6 +64,8 @@ namespace ADJ.BusinessService.Dtos
     public float Cube { get; set; }
 
     public OrderStatus Status { get; set; }
+
+    public Guid Shipment { get; set; }
 
     public List<ShipmentResultDtos> OrderDetails { get; set; }
 

@@ -47,14 +47,9 @@ namespace WebApp.Controllers
 
       if (ModelState.IsValid)
       {
-        foreach (var item in model.OrderDetails)
-          if (item.Selected)
-          {
-            {
-              item.Status = OrderStatus.BookingMade;
-            }
-          }
         await _bookingService.CreateOrUpdateBookingAsync(model);
+        ModelState.Clear();
+        
       }
 
       return PartialView("_Result", model);
