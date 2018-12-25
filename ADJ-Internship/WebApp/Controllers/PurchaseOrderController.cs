@@ -104,7 +104,6 @@ namespace ADJ.WebApp.Controllers
         return RedirectToAction("Index", new { id = addModel.PONumber, method = viewName });
       }
 
-      ModelState.Clear();
       return View(viewName, addModel);
     }
 
@@ -269,7 +268,7 @@ namespace ADJ.WebApp.Controllers
         orderDetail.ItemNumber = orderDetailStrings[3 + (i * totalProperty)];
         orderDetail.Description = orderDetailStrings[4 + (i * totalProperty)];
         orderDetail.Tariff = orderDetailStrings[5 + (i * totalProperty)];
-        orderDetail.Quantity = float.Parse(orderDetailStrings[6 + (i * totalProperty)]);
+        orderDetail.Quantity = decimal.Parse(orderDetailStrings[6 + (i * totalProperty)]);
         orderDetail.Cartons = float.Parse(orderDetailStrings[7 + (i * totalProperty)]);
         orderDetail.Cube = float.Parse(orderDetailStrings[8 + (i * totalProperty)]);
         orderDetail.KGS = float.Parse(orderDetailStrings[9 + (i * totalProperty)]);
@@ -278,6 +277,7 @@ namespace ADJ.WebApp.Controllers
         orderDetail.Warehouse = orderDetailStrings[12 + (i * totalProperty)];
         orderDetail.Size = orderDetailStrings[13 + (i * totalProperty)];
         orderDetail.Colour = orderDetailStrings[14 + (i * totalProperty)];
+        orderDetail.Status = OrderStatus.AwaitingBooking;
 
         orderDetailDTOs.Add(orderDetail);
       }

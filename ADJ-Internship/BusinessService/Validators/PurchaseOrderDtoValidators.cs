@@ -59,7 +59,7 @@ namespace ADJ.BusinessService.Validators
 				DateTime date2 = Convert.ToDateTime(otherValue);
 				if (date1 < date2)
 				{
-					return new ValidationResult(ErrorMessage = "Cannot be before Ship Date");
+					return new ValidationResult(ErrorMessage = "Cannot be before " + _otherProperty.ToString());
 				}
 				if ((date1 - date2).Days > 30)
 				{

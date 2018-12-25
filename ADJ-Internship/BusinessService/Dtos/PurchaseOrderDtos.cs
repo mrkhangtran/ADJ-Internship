@@ -44,7 +44,7 @@ namespace ADJ.BusinessService.Dtos
     [Required]
     [Display(Name = "PO Number")]
     [StringLength(10, ErrorMessage = "Cannot be longer than 10 characters")]
-    [RegularExpression("^[a-zA-Z0-9]+$", ErrorMessage = "Letters and numbers only")]
+    [RegularExpression("^[0-9]+$", ErrorMessage = "Numbers only")]
     public string PONumber { get; set; }
 
     //DropList from 2010 to 2020
@@ -145,7 +145,7 @@ namespace ADJ.BusinessService.Dtos
     [Required]
     [Display(Name = "Item Number")]
     [StringLength(10, ErrorMessage = "Cannot be longer than 10 characters")]
-    [RegularExpression("^[a-zA-Z0-9]+$", ErrorMessage = "Letters and numbers only")]
+    [RegularExpression("^[0-9]+$", ErrorMessage = "Numbers only")]
     public string ItemNumber { get; set; }
 
     [StringLength(255)]
@@ -166,8 +166,10 @@ namespace ADJ.BusinessService.Dtos
 
     [Required]
     [Display(Name = "Item Quantity")]
-    [Range(0, float.MaxValue, ErrorMessage = "Value should not be negative")]
-    public float Quantity { get; set; }
+    [Range(0, double.MaxValue, ErrorMessage = "Value should not be negative")]
+    public decimal Quantity { get; set; }
+
+    public decimal ReviseQuantity { get; set; }
 
     [Required]
     [Range(0, float.MaxValue, ErrorMessage = "Value should not be negative")]
@@ -191,7 +193,7 @@ namespace ADJ.BusinessService.Dtos
     {
       get
       {
-        return Quantity * UnitPrice;
+        return (float)Quantity * UnitPrice;
       }
     }
 
@@ -205,13 +207,15 @@ namespace ADJ.BusinessService.Dtos
     {
       get
       {
-        return Quantity * RetailPrice;
+        return (float)Quantity * RetailPrice;
       }
     }
 
     [Display(Name = "Tariff Code")]
     [RegularExpression("^[0-9]*$", ErrorMessage = "Tariff must be numeric")]
     public string Tariff { get; set; } = "";
+
+    public OrderStatus Status { get; set; }
 
     [Required]
     //[ForeignKey("OrderModel")]

@@ -1,0 +1,29 @@
+﻿@model ADJ.BusinessService.Dtos.ShipmentBookingDtos;
+
+<h3>Shipment Booking</h3>
+
+<form asp-action="Index" asp-controller="ShipmentBooking" id="filterForm">
+
+  <div class="uk-card uk-card-default uk-card-body">
+    <partial name="_Filter" model="Model" />
+  </div>
+
+  <div class="uk-grid-divider" uk-grid></div>
+
+</form>
+
+<form asp-action="Booking" asp-controller="ShipmentBooking" id="bookingForm"
+      data-ajax="true"
+      data-ajax-method="POST"
+      data-ajax-mode="replace"
+      data-ajax-update="#resultPartial">
+
+  <div id="resultPartial" class="uk-grid">
+      <partial name="_Result" model="Model" />
+  </div>
+</form>
+
+@section Scripts
+  {
+  <script type="text/javascript" src="@Url.Content("~/js/ShipmentBooking.js")"></script>
+}

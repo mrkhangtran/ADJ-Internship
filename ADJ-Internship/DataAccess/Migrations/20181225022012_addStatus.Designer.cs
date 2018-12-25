@@ -4,14 +4,16 @@ using ADJ.DataAccess;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace ADJ.DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20181225022012_addStatus")]
+    partial class addStatus
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -569,40 +571,6 @@ namespace ADJ.DataAccess.Migrations
                     b.ToTable("CAs");
                 });
 
-            modelBuilder.Entity("ADJ.DataModel.ShipmentTrack.Container", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("CreatedBy")
-                        .IsRequired();
-
-                    b.Property<DateTime>("CreatedDateUtc");
-
-                    b.Property<string>("Loading");
-
-                    b.Property<string>("ModifiedBy");
-
-                    b.Property<DateTime?>("ModifiedDateUtc");
-
-                    b.Property<string>("Name");
-
-                    b.Property<string>("PackType");
-
-                    b.Property<byte[]>("RowVersion")
-                        .IsConcurrencyToken()
-                        .ValueGeneratedOnAddOrUpdate();
-
-                    b.Property<string>("Size");
-
-                    b.Property<int>("Status");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Container");
-                });
-
             modelBuilder.Entity("ADJ.DataModel.ShipmentTrack.Manifest", b =>
                 {
                     b.Property<int>("Id")
@@ -615,9 +583,11 @@ namespace ADJ.DataAccess.Migrations
 
                     b.Property<float>("Cartons");
 
+                    b.Property<int>("Cartoons");
+
                     b.Property<decimal>("ChargeableKGS");
 
-                    b.Property<int>("ContainerId");
+                    b.Property<string>("Container");
 
                     b.Property<string>("CreatedBy")
                         .IsRequired();
@@ -650,13 +620,9 @@ namespace ADJ.DataAccess.Migrations
 
                     b.Property<string>("Seal");
 
-                    b.Property<string>("Size");
-
                     b.HasKey("Id");
 
                     b.HasIndex("BookingId");
-
-                    b.HasIndex("ContainerId");
 
                     b.ToTable("Manifests");
                 });
@@ -731,11 +697,6 @@ namespace ADJ.DataAccess.Migrations
                     b.HasOne("ADJ.DataModel.ShipmentTrack.Booking", "Booking")
                         .WithMany("Manifests")
                         .HasForeignKey("BookingId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("ADJ.DataModel.ShipmentTrack.Container", "Container")
-                        .WithMany("Manifests")
-                        .HasForeignKey("ContainerId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618
