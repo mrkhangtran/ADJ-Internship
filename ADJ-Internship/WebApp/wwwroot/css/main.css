@@ -1002,6 +1002,20 @@ a.uk-link-reset:hover,
     padding-right: 0;
   }
 }
+.uk-table th {
+  color: white;
+  border-right: 0.2px  groove wheat;
+}
+.uk-table td {
+  border-right: 0.2px groove gray;
+}
+.uk-table {
+  border: 0.5px solid #333;
+}
+.uk-table thead tr {
+  background: #333;
+  color: white;
+}
 .uk-table tbody tr {
   transition: background-color 0.1s linear;
 }
@@ -2580,6 +2594,49 @@ select.uk-form-width-xsmall {
   width: 100%;
   /* 3 */
   flex: auto;
+}
+.uk-grid .menu-left-header {
+  color: white;
+  margin: 0;
+  font-size: 30px;
+  font-weight: 500;
+  text-align: center;
+  padding: 15px 5px;
+  border-bottom: 1.2px solid #333;
+}
+.uk-grid .menu-left-header span {
+  padding-left: 15px;
+  margin: 0;
+}
+.uk-grid .menu-left-header div {
+  padding-left: 0;
+}
+.uk-grid .welcomeToGroove {
+  margin: 0;
+  color: white;
+  border-bottom: 1.2px solid #333;
+  padding: 20px 0;
+  font-size: 20px;
+}
+.uk-grid .welcomeToGroove span {
+  padding-left: 5px;
+}
+.uk-grid .welcomeToGroove .uk-width-3-4 {
+  padding-left: 0;
+  text-align: center;
+}
+.uk-grid .welcome p {
+  color: white;
+  border-bottom: 1.2px solid #333;
+}
+.uk-grid .welcome p span {
+  padding-left: 10px;
+  padding-right: 25%;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+.uk-grid .content-right {
+  padding: 0;
 }
 /* ========================================================================
    Component: Tile
@@ -4684,6 +4741,7 @@ ul.uk-nav-sub {
 .uk-accordion {
   padding: 0;
   list-style: none;
+  margin: 0;
 }
 /* Item
  ========================================================================== */
@@ -4723,6 +4781,19 @@ ul.uk-nav-sub {
  ========================================================================== */
 .uk-accordion-content {
   margin-top: 20px;
+  margin: 0;
+}
+.uk-accordion-content p {
+  margin: 0;
+  padding: 10px 0 10px 25%;
+  border-bottom: 1.2px solid #333;
+}
+.uk-accordion-content p a {
+  color: white;
+}
+.uk-accordion-content p:hover a {
+  color: wheat;
+  text-decoration: none;
 }
 /*
  * Micro clearfix
@@ -4740,6 +4811,9 @@ ul.uk-nav-sub {
  */
 .uk-accordion-content > :last-child {
   margin-bottom: 0;
+}
+.uk-accordion .item {
+  margin: 0;
 }
 /* ========================================================================
    Component: Drop
@@ -11860,206 +11934,41 @@ iframe.uk-cover {
     page-break-after: avoid;
   }
 }
-.pageList {
-  position: fixed;
-  bottom: 10px;
-  right: 10px;
-}
-/** {
-    margin: 0;
-    padding: 0;
-}
-
-
-.uk-button-danger.btnSearch {
-    padding: 0 20px;
-    margin-left: 15px;
-    height: 40px;
-    border-radius: 4px;
-    background: red;
-}
-
-tr {
-    height: 30px
-}
-
-.uk-accordion-content p {
-    color: white;
-    padding-left: 15px;
-    border-bottom: 1px solid #ffffff29;
-    text-align: center;
-}
-
-.uk-accordion-content p:hover {
-    color: wheat;
-    border-bottom: 1px solid wheat;
-}
-
-.welcome span p {
-    float: right;
-    padding-left: 20px;
-    font-size: 18px;
-}
-
-* + .uk-table {
-    margin-top: 0;
-}
-
-
-
-.content-right {
-    padding: 0;
-}
-
-button.uk-button.uk-button-danger.btnsearch {
-    margin-left: 6px;
-    border-radius: 4px;
-    padding: 0 8px;
-}
-
-thead th {
-}
-
-button.uk-button.uk-button-primary {
-    float: right;
-    font-size: 11px;
-    padding: 0px 15px;
-}
-
-.uk-button-primary.btnNew {
-    height: 40px;
-    border-radius: 4px;
-}
-
-.content-table th, .content-table td {
-    text-align: center;
-    border-right: 2px solid #94888838;
-    font-size: 10px;
-    color: white;
-    margin: 0;
-    padding: 5px;
-}
-
-.content-table thead tr {
-    height: 30px;
-}
-
-table.content-table {
-    width: 100%;
-    border: 2px solid #9488888f;
-}
-
-.content-table thead {
-    background: #333;
-    color: white;
-    font-size: 10px;
-    width: 100%;
-}
-
-span.fa.fa-plus {
-    font-size: 11px;
-    padding-left: 10px;
-}
-
-.filter-createnew {
-    background: white;
-    height: 65px;
-    padding: 15px;
-}
-
-.content .uk-button .uk-buton-primary {
-    float: right;
-    border-radius: 0;
-    border: none;
-}
-
-input[type="text"] {
-    border-radius: 10px 10px;
-    border: 1px solid gray;
-    width: 40%;
-    height: 30px;
-    padding-left: 7px;
-}
-
-
-.content {
-    background: #8080801a;
-    height: 850px;
-    padding: 25px 20px;
-    margin: 15px 0;
-}
-
-
-.content-header a {
-    color: gray;
-    margin-right: 10px;
-}
-
-.content-header span.fa.fa-bars {
-    font-size: 23px;
-    border: 1px solid gray;
-    margin: 7px;
-    padding: 6px;
-    color: gray;
-}
-
-.content-header .dropdown-username {
-    float: right;
-    margin: 13px;
-}
-
-.content-header {
-    height: 50px;
-}
-
-.uk-width-1-4@m .uk-width-1-4@s .uk-width-1-4@l .uk-width-1-4@x .left {
-    margin: 0;
-    padding: 0;
-}
-
-.uk-width-3-4@m .uk-width-3-4@s .uk-width-3-4@l .uk-width-3-4@x .right {
-    margin: 0;
-    padding: 0;
-}
-
-.menu-left-header p {
-    float: right;
-    margin-left: 10px;
-}
-
-.menu-left .uk-width-4-4@m .uk-width-4-4@s .uk-width-4-4@l .uk-width-4-4@x {
-    padding: 0;
-}
-
-.menu-left span.fa {
-    font-size: 20px;
-    margin-left: 20px;
-}
-
-span.fa.fa-chevron-right {
-    font-size: 8px;
-}
-
-
-
-.welcome {
-    height: 70px;
-    color: white;
-    border-bottom: 1px solid white;
-}
-
 .menu-left {
-    background: #333;
-    height: 900px;
-    border-top: 1px solid white;
-    border-bottom: 1px solid white;
+  border: 1.2px solid #808080;
 }
-
-.menu-left-header {
-    height: 50px;
-    text-align: left;
-    padding: 10px 0;
-    font-size: 19px;
-    color: white;
-    border-bottom: 2px solid #79867da8;
-}*/
+.content-header {
+  background-color: gainsboro;
+  height: auto;
+}
+.content-header .fa.fa-bars {
+  border: 1px solid #333;
+  padding: 10px;
+}
+#filter-createnew input[type="text"] {
+  border-radius: 10px 10px;
+  border: 1px solid gray;
+  width: 40%;
+  height: 30px;
+  padding-left: 7px;
+}
+.btnFilter {
+  height: 35px;
+  width: 75px;
+}
+form {
+  padding: 25px 25px 0 25px;
+}
+.dropdown-username {
+  float: right;
+  background-color: red;
+  color: white;
+}
+.btnNew {
+  float: right;
+  border-radius: 4px;
+  height: 40px;
+}
+input[type="text"] .warehouse {
+  clear: both;
+}
