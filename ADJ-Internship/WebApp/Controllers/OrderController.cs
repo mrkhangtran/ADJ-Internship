@@ -25,11 +25,12 @@ namespace WebApp.Controllers
 		public async Task<IActionResult> Display(string poNumberFilter, int? pageIndex)
 		{
 			int current = pageIndex ?? 1;
-			PagedListResult<OrderDto> pagedlistResult = await _orderService.DisplaysAsync(poNumberFilter, current, 10);
+			int pageSize = 20;
+			PagedListResult<OrderDto> pagedlistResult = await _orderService.DisplaysAsync(poNumberFilter, current, pageSize);
 
 			if (pagedlistResult.Items.Count == 0)
 			{
-				ViewBag.Massage = "There is no available PO";
+				ViewBag.Message = "There is no available PO";
 				return View(pagedlistResult);
 			}
 
