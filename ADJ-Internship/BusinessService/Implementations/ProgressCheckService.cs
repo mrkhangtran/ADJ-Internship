@@ -42,7 +42,7 @@ namespace ADJ.BusinessService.Implementations
       _progresscheckDataProvider = progresscheckDataProvider;
     }
     public async Task<PagedListResult<ProgressCheckDto>> ListProgressCheckDtoAsync(int pageIndex = 1, int pageSize = 2, string PONumberSearch = null, string ItemSearch = null,
-      string Suppliers = null, string Factories = null, string Origins = null, string OriginPorts = null, string Depts = null)
+      string Suppliers = null, string Factories = null, string Origins = null, string OriginPorts = null, string Depts = null,string Status=null)
     {
       List<ProgressCheckDto> progressCheckDTOs = new List<ProgressCheckDto>();
       Expression<Func<Order, bool>> All = x => x.Id > 0;
@@ -81,6 +81,12 @@ namespace ADJ.BusinessService.Implementations
       {
         Expression<Func<Order, bool>> filterDepts = x => x.Department == Depts;
         All = All.And(filterDepts);
+        //add condition x.depts==depts
+      }
+      if (Status != null)
+      {
+        Expression<Func<Order, bool>> filterStatus = x => x.Status.ToString() == Status;
+        All = All.And(filterStatus);
         //add condition x.depts==depts
       }
       if (ItemSearch != null)
@@ -139,14 +145,14 @@ namespace ADJ.BusinessService.Implementations
       {
         TotalCount = GetPageResult.TotalCount,
         PageCount = GetPageResult.PageCount,
-        Items = progressCheckDTOs
+        Items = progressCheckDTOs,
       };
       return lstProChDto;
     }
-    public async Task<ProgressCheckDto> CreateOrUpdatePurchaseOrderAsync(ProgressCheckDto rq)
+    public async Task<ProgressCheckDto> CreateOrUpdateProgressCheckAsync(ProgressCheckDto rq)
     {
       ProgressCheck entity = new ProgressCheck();
-      rq.ListOrderDetail = Mapper.Map<List<OrderDetail>>(rq.ListOrderDetailDto);
+      //rq.ListOrderDetail = Mapper.Map<List<OrderDetail>>(rq.ListOrderDetailDto);
       if (rq.Id > 0)
       {
         entity = await _progresscheckRepository.GetByIdAsync(rq.Id, false);
@@ -154,16 +160,26 @@ namespace ADJ.BusinessService.Implementations
         {
           throw new AppException("Progress Check Not Found");
         }
-        entity.InspectionDate = rq.InspectionDate;
-        entity.IntendedShipDate = rq.IntendedShipDate;
+        if (rq.selected == true)
+        {
+          entity.InspectionDate = rq.InspectionDate;
+          entity.IntendedShipDate = rq.IntendedShipDate;
+        }
         decimal temp = 0;
 
-        foreach (var item in rq.ListOrderDetail)
+        foreach (var item in rq.ListOrderDetailDto)
         {
-          temp += item.ReviseQuantity;
           OrderDetail orderDetail = await _orderdetailRepository.GetByIdAsync(item.Id, false);
-          orderDetail.ReviseQuantity = item.ReviseQuantity;
-          _orderdetailRepository.Update(orderDetail);
+          if (item.selected == true)
+          {
+            temp += item.ReviseQuantity;
+            orderDetail.ReviseQuantity = item.ReviseQuantity;
+            _orderdetailRepository.Update(orderDetail);
+          }
+          else
+          {
+            temp += orderDetail.ReviseQuantity;
+          }
         }
         entity.EstQtyToShip = temp;
         if (entity.EstQtyToShip == rq.POQuantity)
@@ -182,12 +198,19 @@ namespace ADJ.BusinessService.Implementations
         entity.IntendedShipDate = rq.IntendedShipDate;
         entity.OrderId = rq.OrderId;
         decimal temp = 0;
-        foreach (var item in rq.ListOrderDetail)
+        foreach (var item in rq.ListOrderDetailDto)
         {
-          temp += item.ReviseQuantity;
           OrderDetail orderDetail = await _orderdetailRepository.GetByIdAsync(item.Id, false);
-          orderDetail.ReviseQuantity = item.ReviseQuantity;
-          _orderdetailRepository.Update(orderDetail);
+          if (item.selected == true)
+          {
+            temp += item.ReviseQuantity;
+            orderDetail.ReviseQuantity = item.ReviseQuantity;
+            _orderdetailRepository.Update(orderDetail);
+          }
+          else
+          {
+            temp += orderDetail.ReviseQuantity;
+          }
         }
         entity.EstQtyToShip = temp;
         if (entity.EstQtyToShip == rq.POQuantity)
@@ -215,13 +238,16 @@ namespace ADJ.BusinessService.Implementations
       var originports = orderModels.Select(x => x.PortOfLoading).Distinct();
       var factories = orderModels.Select(x => x.Factory).Distinct();
       var depts = orderModels.Select(x => x.Department).Distinct();
+      List<string> status=Enum.GetNames(typeof(OrderStatus)).ToList();     
       GetItemSearchDto getSearchItemDTO = new GetItemSearchDto()
       {
         Suppliers = suppliers,
         Origins = origins,
         OriginPorts = originports,
         Factories = factories,
-        Depts = depts
+        Depts = depts,
+        Status=status,
+       
       };
       return getSearchItemDTO;
     }
