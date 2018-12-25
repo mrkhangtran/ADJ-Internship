@@ -1,111 +1,259 @@
-﻿
-@{
-  ViewData["Title"] = "Index";
-  Layout = "~/Views/Shared/_Layout.cshtml";
-}
+﻿@model ADJ.Common.PagedListResult<ADJ.BusinessService.Dtos.ShipmentManifestsDtos>
+@using (Html.BeginForm())
+{
+  <div class="uk-container">
+    <div class="uk-grid">
+      <div class="uk-width-1-3">
+        <table class="uk-table">
+          <tbody>
+            <tr>
+              <td><label>Destination Port</label></td>
+              <td>
+                <div class="uk-form-select" data-uk-form-select>
+                  @Html.DropDownList("DestinationPort", new SelectList(""), "Any", new { @id = "DestinationPort", @class = "uk-select" })
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td><label>Origin Port</label></td>
+              <td>
+                <div class="uk-form-select" data-uk-form-select>
+                  @Html.DropDownList("OriginPorts", new SelectList(""), "Any", new { @id = "OriginPorts", @class = "uk-select" })
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td><label>Carrier</label></td>
+              <td>
+                <div class="uk-form-select" data-uk-form-select>
+                  <span></span>
+                  @Html.DropDownList("Carriers", new SelectList(""), "Any", new { @id = "Carriers", @class = "uk-select" })
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td><label>Status</label></td>
+              <td>
+                <div class="uk-form-select" data-uk-form-select>
+                  @Html.DropDownList("Status", new SelectList(""), "Any", new { @id = "Status", @class = "uk-select" })
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="uk-width-1-3">
+        <table class="uk-table">
+          <tbody>
+            <tr>
+              <td><label>Vendor</label></td>
+              <td>
+                <div class="uk-form-select" data-uk-form-select>
+                  <input id="Vendor" class="uk-input" />
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td><label>ETD From</label></td>
+              <td>
+                <input id="ETDFrom" type="date" class="uk-input">
+              </td>
+            </tr>
+            <tr>
+              <td><label>ETD To</label></td>
+              <td>
+                <input id="ETDTo" type="date" class="uk-input">
+              </td>
+            </tr>
+            <tr>
+              <td><label>PO Number</label></td>
+              <td>
+                <input id="PONumberSearch" class="uk-input" />
 
-<div class="uk-container">
-  <div class="uk-grid">
-    <div class="uk-width-1-3">
-      <table class="uk-table">
-        <tbody>
-          <tr>
-            <td><label>Destination Port</label></td>
-            <td>
-              <div class="uk-form-select" data-uk-form-select>
-                @Html.DropDownList("DestinationPort", new SelectList(""), "Any", new { @id = "DestinationPort", @class = "uk-select" })
-              </div>
-            </td>
-          </tr>
-          <tr>
-            <td><label>Origin Port</label></td>
-            <td>
-              <div class="uk-form-select" data-uk-form-select>
-                @Html.DropDownList("OriginPorts", new SelectList(""), "Any", new { @id = "OriginPorts", @class = "uk-select" })
-              </div>
-            </td>
-          </tr>
-          <tr>
-            <td><label>Carrier</label></td>
-            <td>
-              <div class="uk-form-select" data-uk-form-select>
-                <span></span>
-                @Html.DropDownList("Carriers", new SelectList(""), "Any", new { @id = "Carriers", @class = "uk-select" })
-              </div>
-            </td>
-          </tr>
-          <tr>
-            <td><label>Status</label></td>
-            <td>
-              <div class="uk-form-select" data-uk-form-select>
-                @Html.DropDownList("Status", new SelectList(""), "Any", new { @id = "Status", @class = "uk-select" })
-              </div>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-    <div class="uk-width-1-3">
-      <table class="uk-table">
-        <tbody>
-          <tr>
-            <td><label>Vendor</label></td>
-            <td>
-              <div class="uk-form-select" data-uk-form-select>
-                <input id="Vendor" class="uk-input" />
-              </div>
-            </td>
-          </tr>
-          <tr>
-            <td><label>ETD From</label></td>
-            <td>         
-                <input id="ETDFrom" type="date" class="uk-input">            
-            </td>
-          </tr>
-          <tr>
-            <td><label>ETD To</label></td>
-            <td>
-              <input id="ETDTo" type="date" class="uk-input">
-            </td>
-          </tr>
-          <tr>
-            <td><label>PO Number</label></td>
-            <td>
-              <input id="PONumberSearch" class="uk-input" />
+              </td>
+            </tr>
+            <tr>
+              <td><label>Item</label></td>
+              <td>
+                <input id="ItemSearch" class="uk-input" />
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="uk-width-1-3">
+        <table class="uk-table">
+          <tbody>
+            <tr>
+              <td>
+                <button type="button" class="filterItem uk-button uk-button-primary" value=1>Search</button>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <input id="Achieve" class="uk-button uk-button-danger" type="submit" data-uk-button value="Achieve">
+              </td>
+            </tr>
 
-            </td>
-          </tr>
-          <tr>
-            <td><label>Item</label></td>
-            <td>
-              <input id="ItemSearch" class="uk-input" />
-            </td>
-          </tr>
-        </tbody>
-      </table>
+          </tbody>
+        </table>
 
-    </div>
-
-    <div class="uk-width-1-3">
-      <table class="uk-table">
-        <tbody>
-          <tr>
-            <td>
-              <button type="button" class="filterItem uk-button uk-button-primary" value=1>Search</button>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <input id="Achieve" asp-action="CreateOrUpdate" asp-controller="ProgressCheck" class="uk-button uk-button-danger" type="submit" data-uk-button value="Achieve">
-            </td>
-          </tr>
-
-        </tbody>
-      </table>
+      </div>
 
     </div>
-
   </div>
-</div>
+
+  @for (var i=0;i<Model.Items.Count;i++)
+  {
+    <br />
+    <br />
+    <div class="uk-container">
+      <table class="uk-table uk-table-small">
+        <thead>
+          <tr>
+            <td></td>
+            <td>
+              Container
+            </td>
+            <td>
+              Size
+            </td>
+            <td>
+              Loading
+            </td>
+            <td>
+              Pack Type
+            </td>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td></td>
+            <td>
+              <input asp-for="Items[i].Container" class="uk-input" />
+            </td>
+            <td>
+              @Model.Items[i].Size
+            </td>
+            <td>
+              @Model.Items[i].Loading
+            </td>
+            <td>
+              @Model.Items[i].PackType
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <table class="uk-table uk-table-small">
+        <thead>
+          <tr>
+            <td></td>
+            <td>
+              Supplier
+            </td>
+            <td>
+              Carrier
+            </td>
+            <td>
+              PO Number
+            </td>
+            <td>
+              Item Number
+            </td>
+            <td>
+              ETD Date
+            </td>
+            <td>
+              Booking Quantity
+            </td>
+            <td>
+              Open Quantity
+            </td>
+            <td>
+              Ship Quantity
+            </td>
+            <td>
+              Booking Carton
+            </td>
+            <td>
+              Ship Carton
+            </td>
+            <td>
+              Booking Cube
+            </td>
+            <td>
+              Ship Cube
+            </td>
+            <td>
+              Net Weight
+            </td>
+            <td>
+              Gross Weight
+            </td>
+            <td>
+              Manifested
+            </td>
+          </tr>
+        </thead>
+        <tbody>
+          @for (var j=0;j<Model.Items[i].itemManifests.Count;j++)
+          {
+            <tr>
+              <td>
+              </td>
+              <td>
+                @Model.Items[i].itemManifests[j].Supplier
+              </td>
+              <td>
+                @Model.Items[i].itemManifests[j].Carrier
+              </td>
+              <td>
+                @Model.Items[i].itemManifests[j].PONumber
+              </td>
+              <td>
+                @Model.Items[i].itemManifests[j].ItemNumber
+              </td>
+              <td>
+                @Model.Items[i].itemManifests[j].ETDDate.ToString("dd/MM/yyyy")
+              </td>
+              <td>
+                @Model.Items[i].itemManifests[j].BookingQuantity
+              </td>
+              <td>
+                @Model.Items[i].itemManifests[j].OpenQuantity
+              </td>
+              <td>
+                <input asp-for="Items[i].itemManifests[j].ShipQuantity" class="uk-input" />
+              </td>
+              <td>
+                @Model.Items[i].itemManifests[j].BookingCartons
+              </td>
+              <td>
+                @Model.Items[i].itemManifests[j].ShipCartons
+              </td>
+              <td>
+                @Model.Items[i].itemManifests[j].BookingCube
+              </td>
+              <td>
+                @Model.Items[i].itemManifests[j].ShipCube
+              </td>
+              <td>
+                @Model.Items[i].itemManifests[j].NetWeight
+              </td>
+              <td>
+                <input asp-for="Items[i].itemManifests[j].GrossWeight" class="uk-input" />
+              </td>
+              <td>
+                @Model.Items[i].itemManifests[j].Manifested
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+  <br />
+  <br />
+}
 
 
