@@ -22,5 +22,12 @@ namespace WebApp.Controllers
 
       return View();
     }
+
+    public void SetDropDownList()
+    {
+      ViewBag.Modes = new List<string> { "Road", "Sea", "Air" };
+      ViewBag.PackType = new List<string> { "Boxed", "Carton" };
+      ViewBag.Origins = new List<string> { "HongKong", "Vietnam" };
+    }
   }
 }

@@ -120,6 +120,7 @@ namespace ADJ.BusinessService.Dtos
     public void CreateMapping(Profile profile)
     {
     }
+    public bool Selected { get; set; }
 
     [Display(Name = "PO Number")]
     public string PONumber { get; set; }

@@ -94,5 +94,15 @@ namespace ADJ.BusinessService.Implementations
 
       return Mapper.Map<List<OrderDetailDTO>>(result.Items);
     }
+
+    public async Task<List<string>> ListPortsAsync()
+    {
+      //var test = _orderDetailRepository.
+
+      //List<string> result;
+
+      //return result;
+      return null;
+    }
   }
 }
