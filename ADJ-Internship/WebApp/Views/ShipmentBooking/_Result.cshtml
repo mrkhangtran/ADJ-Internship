@@ -11,7 +11,7 @@
       <label asp-for="OrderDetails[0].ItemNumber"></label>
     </th>
     <th>
-      <label asp-for="OrderDetails[0].Factory"></label>
+      <label asp-for="OrderDetails[0].Vendor"></label>
     </th>
     <th>
       <label asp-for="OrderDetails[0].Quantity"></label>
@@ -48,7 +48,7 @@
         @Model.OrderDetails[i].ItemNumber
       </td>
       <td>
-        @Model.OrderDetails[i].Factory
+        @Model.OrderDetails[i].Vendor
       </td>
       <td>
         @Model.OrderDetails[i].Quantity

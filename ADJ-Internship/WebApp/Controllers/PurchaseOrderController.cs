@@ -257,7 +257,7 @@ namespace ADJ.WebApp.Controllers
     {
       List<OrderDetailDTO> orderDetailDTOs = new List<OrderDetailDTO>();
 
-      int totalProperty = 15;
+      int totalProperty = 16;
       for (int i = 0; i < (orderDetailStrings.Count / totalProperty); i++)
       {
         OrderDetailDTO orderDetail = new OrderDetailDTO();
@@ -278,6 +278,7 @@ namespace ADJ.WebApp.Controllers
         orderDetail.Warehouse = orderDetailStrings[12 + (i * totalProperty)];
         orderDetail.Size = orderDetailStrings[13 + (i * totalProperty)];
         orderDetail.Colour = orderDetailStrings[14 + (i * totalProperty)];
+        orderDetail.Status = OrderStatus.AwaitingBooking;
 
         orderDetailDTOs.Add(orderDetail);
       }

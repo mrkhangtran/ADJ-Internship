@@ -70,12 +70,8 @@ namespace ADJ.BusinessService.Dtos
     public ShipmentFilterDtos FilterDtos { get; set; }
   }
 
-  public class ShipmentFilterDtos : EntityDtoBase, ICreateMapping
+  public class ShipmentFilterDtos
   {
-    public void CreateMapping(Profile profile)
-    {
-    }
-
     //Droplist Vietnam-HongKong
     public string Origin { get; set; }
 
@@ -119,7 +115,10 @@ namespace ADJ.BusinessService.Dtos
   {
     public void CreateMapping(Profile profile)
     {
+      profile.CreateMap<Booking, ShipmentBookingDtos>().IncludeBase<EntityBase, EntityDtoBase>();
+      profile.CreateMap<ShipmentBookingDtos, Booking>().IncludeBase<EntityDtoBase, EntityBase>();
     }
+
     public bool Selected { get; set; }
 
     [Display(Name = "PO Number")]
@@ -127,11 +126,12 @@ namespace ADJ.BusinessService.Dtos
 
     public string ItemNumber { get; set; }
 
-    public string Factory { get; set; }
+    public string Vendor { get; set; }
 
     [Display(Name = "PO Quantity")]
     public decimal Quantity { get; set; }
 
+    //equal Revise Quantity
     [Display(Name = "Booking Quantity")]
     public decimal BookingQuantity { get; set; }
 
@@ -166,5 +166,10 @@ namespace ADJ.BusinessService.Dtos
     //Default as "Awaiting Booking"
     [Display(Name = "Booking Status")]
     public OrderStatus Status { get; set; }
+  }
+
+  public class DropDownList
+  {
+
   }
 }
