@@ -95,12 +95,12 @@ namespace ADJ.BusinessService.Dtos
 
     [Display(Name = "PO Number")]
     [StringLength(10, ErrorMessage = "Cannot be longer than 10 characters")]
-    [RegularExpression("^[a-zA-Z0-9]+$", ErrorMessage = "Letters and numbers only")]
+    [RegularExpression("^[0-9]+$", ErrorMessage = "Numbers only")]
     public string PONumber { get; set; }
 
     [Display(Name = "Item Number")]
     [StringLength(10, ErrorMessage = "Cannot be longer than 10 characters")]
-    [RegularExpression("^[a-zA-Z0-9]+$", ErrorMessage = "Letters and numbers only")]
+    [RegularExpression("^[0-9]+$", ErrorMessage = "Numbers only")]
     public string ItemNumber { get; set; }
 
     //[Required]
@@ -111,14 +111,8 @@ namespace ADJ.BusinessService.Dtos
     public List<OrderDetailDTO> OrderDetails { get; set; }
   }
 
-  public class ShipmentResult : EntityDtoBase, ICreateMapping
+  public class ShipmentResult : EntityDtoBase
   {
-    public void CreateMapping(Profile profile)
-    {
-      profile.CreateMap<Booking, ShipmentBookingDtos>().IncludeBase<EntityBase, EntityDtoBase>();
-      profile.CreateMap<ShipmentBookingDtos, Booking>().IncludeBase<EntityDtoBase, EntityBase>();
-    }
-
     public bool Selected { get; set; }
 
     [Display(Name = "PO Number")]
@@ -170,6 +164,6 @@ namespace ADJ.BusinessService.Dtos
 
   public class DropDownList
   {
-
+    List<string> Ports { get; set; }
   }
 }

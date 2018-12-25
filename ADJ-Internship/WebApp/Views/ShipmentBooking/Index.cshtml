@@ -2,22 +2,28 @@
 
 <h3>Shipment Booking</h3>
 
-<form asp-action="Index" asp-controller="ShipmentBooking">
+<form asp-action="Index" asp-controller="ShipmentBooking" id="filterForm">
 
   <div class="uk-card uk-card-default uk-card-body">
     <partial name="_Filter" model="Model" />
   </div>
 
-  <div class="uk-grid-divider" uk-grid>...</div>
+  <div class="uk-grid-divider" uk-grid></div>
+
+</form>
+
+<form asp-action="Index" asp-controller="ShipmentBooking" id="bookingForm">
 
   <div class="uk-card uk-card-default uk-card-body">
     <partial name="_Booking" model="Model" />
   </div>
 
-  <div class="uk-grid-divider" uk-grid>...</div>
+  <div class="uk-grid-divider" uk-grid></div>
 
-  <div class="uk-card uk-card-default uk-card-body" id="resultPartial">
-    <partial name="_Result" model="Model" />
+  <div id="resultPartial">
+    <div class="uk-card uk-card-default uk-card-body" id="resultPartial">
+      <partial name="_Result" model="Model" />
+    </div>
   </div>
 
 </form>

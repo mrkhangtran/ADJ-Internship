@@ -19,8 +19,9 @@ namespace ADJ.BusinessService.Implementations
 {
   public class ShipmentBookingService : ServiceBase, IShipmentBookingService
   {
+    private readonly IDataProvider<Order> _orderDataProvider;
+
     private readonly IDataProvider<OrderDetail> _orderDetailDataProvider;
-    private readonly IOrderDetailRepository _orderDetailRepository;
 
     private readonly IDataProvider<Booking> _bookingDataProvider;
     private readonly IShipmentBookingRepository _bookingRepository;
@@ -28,11 +29,11 @@ namespace ADJ.BusinessService.Implementations
     private readonly int pageSize;
 
     public ShipmentBookingService(IUnitOfWork unitOfWork, IMapper mapper, ApplicationContext appContext,
-      IDataProvider<OrderDetail> poDetailDataProvider, IOrderDetailRepository poDetailRepository, 
+      IDataProvider<OrderDetail> poDetailDataProvider, IDataProvider<Order> poDataProvider, 
       IDataProvider<Booking> bookingDataProvider, IShipmentBookingRepository bookingRepository) : base(unitOfWork, mapper, appContext)
     {
       _orderDetailDataProvider = poDetailDataProvider;
-      _orderDetailRepository = poDetailRepository;
+      _orderDataProvider = poDataProvider;
       _bookingDataProvider = bookingDataProvider;
       _bookingRepository = bookingRepository;
       pageSize = 6;
@@ -88,19 +89,38 @@ namespace ADJ.BusinessService.Implementations
         All = All.And(filter);
       }
 
-      PagedListResult<OrderDetail> result = await _orderDetailDataProvider.ListAsync(All, null, true);
+      if (status != null)
+      {
+        Expression<Func<OrderDetail, bool>> filter = x => x.Status.ToString() == status;
+        All = All.And(filter);
+      }
 
-      //status filter
+      PagedListResult<OrderDetail> result = await _orderDetailDataProvider.ListAsync(All, null, true);
 
       return Mapper.Map<List<OrderDetailDTO>>(result.Items);
     }
 
-    public async Task<List<string>> ListPortsAsync()
+    public async Task<List<ShipmentResult>> ConvertToResult(List<OrderDetailDTO> input)
     {
+      List<ShipmentResult> result = new List<ShipmentResult>();
 
-      List<string> result;
+      foreach (var item in input)
+      {
+        //map OrderDetailDTO to ShipmentResult
+        ShipmentResult output = new ShipmentResult();
+        int OrderId = item.OrderId;
+        PagedListResult<Order> order = await _orderDataProvider.ListAsync(x => x.Id == OrderId, null, false);
+        output.PONumber = order.Items[0].PONumber;
+        output.Vendor = order.Items[0].Vendor;
+        output.Quantity = item.Quantity;
+        output.BookingQuantity = item.ReviseQuantity;
+        output.Status = item.Status;
 
-      return null;
+        //add item to result
+        result.Add(output);
+      }
+
+      return result;
     }
   }
 }
