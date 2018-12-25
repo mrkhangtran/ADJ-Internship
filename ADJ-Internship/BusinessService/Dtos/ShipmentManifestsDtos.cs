@@ -39,6 +39,8 @@ namespace ADJ.BusinessService.Dtos
 
     public string PONumber { get; set; }
 
+    public string ItemNumber { get; set; }
+
     public decimal BookingQuantity { get; set; }
 
     public decimal OpenQuantity { get; set; }     //= Booking Quantity - Total Ship Quantity (recorded in database)

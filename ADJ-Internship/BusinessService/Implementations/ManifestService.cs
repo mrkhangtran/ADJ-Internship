@@ -39,40 +39,47 @@ namespace ADJ.BusinessService.Implementations
       List<ShipmentManifestsDtos> shipmentManifestsDtos = new List<ShipmentManifestsDtos>();
       //value return
       var bookings = await _shipmentBookingDataProvider.ListAsync();
+      var manifest = await _manifestDataProvider.ListAsync(null,null,true,null,null);
       List<Booking> listBooking = bookings.Items;
-      List<Booking> listBookingFilter = new List<Booking>();
-      List<string> originPorts = new List<string>()
-      {
-        "Hong Kong"
-      };
+      List<Manifest> listManifest = manifest.Items;
+      List<string> originPorts = listBooking.Select(p => p.PortOfLoading).ToList();
       List<DateTime> ETDs = listBooking.Select(p => p.ETD).ToList();
-      List<string> destinationPorts = new List<string>()
+      List<string> destinationPorts = listBooking.Select(p => p.PortOfDelivery).ToList();
+      List<string> containers = listManifest.Select(p => p.Container).ToList();
+      if (containers.Count > 0)
       {
-        "Hong Kong"
-      };
-      //foreach(var item in container){}
-      //if(List<Booking>.Where(manifest==null)){
-      foreach(var originPort in originPorts)
-      {
-        foreach(var ETD in ETDs)
+        foreach(var container in containers)
         {
-          foreach (var destinationPort in destinationPorts) 
+          List<Manifest> manifests = listManifest.Where(p => p.Container == container).ToList();
+          List<ItemManifest> itemManifests = new List<ItemManifest>();
+          ShipmentManifestsDtos shipmentManifestsDto = new ShipmentManifestsDtos();
+          foreach (var item in manifests)
           {
-            ShipmentManifestsDtos shipmentManifestDto = new ShipmentManifestsDtos();
-            ItemManifest itemManifest = new ItemManifest();
-            listBookingFilter = listBooking.Where(p => p.ETD == ETD).ToList();
-            if (listBookingFilter != null)
+            ItemManifest itemManifest = new ItemManifest()
             {
-              foreach(var booking in listBooking)
-              {
-
-              }
-            }
+              Supplier=item.Booking.Factory,
+              Carrier=item.Booking.Carrier,
+              PONumber=item.Booking.PONumber,
+              ItemNumber=item.Booking.ItemNumber,
+              ETDDate=item.Booking.ETD,
+              BookingQuantity=item.Booking.Quantity,
+              OpenQuantity=item.Booking.Quantity-item.Quantity,
+              ShipQuantity=item.Quantity,
+              BookingCartons=item.Booking.Quantity*(decimal)item.Booking.Cartons,
+              ShipCartons=item.Quantity*(decimal)item.Cartons,
+              BookingCube=item.Booking.Quantity*(decimal)item.Booking.Cube,
+              ShipCube=item.Quantity*(decimal)item.Cube,
+              NetWeight=item.Quantity*(decimal)item.KGS,
+              Manifested=item.Booking.Status.ToString()
+            };
+            itemManifests.Add(itemManifest);
           }
+          shipmentManifestsDto.itemManifests = itemManifests;
+          shipmentManifestsDto.Container = container;
+          
         }
-      }
-      //}
-      return null;
+      }     
+      return pageResult;
     }
   }
 }

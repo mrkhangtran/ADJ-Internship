@@ -23,11 +23,11 @@ namespace ADJ.DataModel.ShipmentTrack
 
         public int Cartoons { get; set; }
 
-        public string Cartons { get; set; }
+        public float Cartons { get; set; }
 
-        public decimal Cube { get; set; }
+        public float Cube { get; set; }
 
-        public decimal KGS { get; set; }
+        public float KGS { get; set; }
 
         public string FreightTerms { get; set; }
 

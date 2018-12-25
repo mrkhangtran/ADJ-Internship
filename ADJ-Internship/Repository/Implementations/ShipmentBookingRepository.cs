@@ -3,8 +3,8 @@ using ADJ.DataModel.ShipmentTrack;
 using ADJ.Repository.Core;
 using ADJ.Repository.Interfaces;
 using System;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 
 namespace ADJ.Repository.Implementations
@@ -15,7 +15,6 @@ namespace ADJ.Repository.Implementations
     {
 
     }
-
-    protected override Func<IQueryable<Booking>, IQueryable<Booking>> IncludeDependents => throw new NotImplementedException();
+    protected override Func<System.Linq.IQueryable<Booking>, System.Linq.IQueryable<Booking>> IncludeDependents => null;
   }
 }

@@ -4,14 +4,16 @@ using ADJ.DataAccess;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace ADJ.DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20181224063725_addStatus_updateShipmentTrack")]
+    partial class addStatus_updateShipmentTrack
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -308,8 +310,6 @@ namespace ADJ.DataAccess.Migrations
                     b.Property<string>("Size")
                         .HasMaxLength(30);
 
-                    b.Property<int>("Status");
-
                     b.Property<string>("Tariff");
 
                     b.Property<float>("UnitPrice");
@@ -477,7 +477,7 @@ namespace ADJ.DataAccess.Migrations
 
                     b.Property<string>("BookingType");
 
-                    b.Property<string>("Carrier");
+                    b.Property<string>("Carier");
 
                     b.Property<float>("Cartons");
 
@@ -494,13 +494,11 @@ namespace ADJ.DataAccess.Migrations
 
                     b.Property<DateTime>("ETD");
 
-                    b.Property<string>("Factory");
-
                     b.Property<string>("FreightTerms");
 
                     b.Property<decimal>("GrossWeight");
 
-                    b.Property<string>("ItemNumber");
+                    b.Property<string>("Item");
 
                     b.Property<string>("Line");
 
@@ -512,21 +510,17 @@ namespace ADJ.DataAccess.Migrations
 
                     b.Property<DateTime?>("ModifiedDateUtc");
 
-                    b.Property<string>("PONumber");
+                    b.Property<string>("Order");
+
+                    b.Property<int>("OrderId");
 
                     b.Property<string>("PackType");
-
-                    b.Property<string>("PortOfDelivery");
-
-                    b.Property<string>("PortOfLoading");
 
                     b.Property<decimal>("Quantity");
 
                     b.Property<byte[]>("RowVersion")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate();
-
-                    b.Property<Guid>("ShipmentID");
 
                     b.Property<int>("Status");
 

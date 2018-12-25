@@ -1,0 +1,78 @@
+﻿@model ADJ.BusinessService.Dtos.ShipmentBookingDtos;
+
+<table>
+  <!--header-->
+  <tr>
+    <th></th>
+    <th>
+      <label asp-for="OrderDetails[0].PONumber"></label>
+    </th>
+    <th>
+      <label asp-for="OrderDetails[0].ItemNumber"></label>
+    </th>
+    <th>
+      <label asp-for="OrderDetails[0].Factory"></label>
+    </th>
+    <th>
+      <label asp-for="OrderDetails[0].Quantity"></label>
+    </th>
+    <th>
+      <label asp-for="OrderDetails[0].BookingQuantity"></label>
+    </th>
+    <th>
+      <label asp-for="OrderDetails[0].BookingCartons"></label>
+    </th>
+    <th>
+      <label asp-for="OrderDetails[0].BookingCube"></label>
+    </th>
+    <th>
+      <label asp-for="OrderDetails[0].PackType"></label>
+    </th>
+    <th>
+      <label asp-for="OrderDetails[0].POShipDate"></label>
+    </th>
+    <th>
+      <label asp-for="OrderDetails[0].Status"></label>
+    </th>
+  </tr>
+  <tr>
+    @for (int i = 0; i < Model.OrderDetails.Count(); i++)
+    {
+      <td>
+        <input type="checkbox" asp-for="OrderDetails[i].Selected"/>
+      </td>
+      <td>
+        @Model.OrderDetails[i].PONumber
+      </td>
+      <td>
+        @Model.OrderDetails[i].ItemNumber
+      </td>
+      <td>
+        @Model.OrderDetails[i].Factory
+      </td>
+      <td>
+        @Model.OrderDetails[i].Quantity
+      </td>
+      <td>
+        @Model.OrderDetails[i].BookingQuantity
+      </td>
+      <td>
+        @Model.OrderDetails[i].BookingCartons
+      </td>
+      <td>
+        @Model.OrderDetails[i].BookingCube
+      </td>
+      <td>
+        <select asp-for="OrderDetails[i].PackType" asp-items="new SelectList(ViewBag.PackType)" class="uk-input"></select>
+        <span asp-validation-for="OrderDetails[i].PackType" class="uk-alert-danger"></span>
+      </td>
+      <td>
+        <input asp-for="OrderDetails[i].POShipDate" class="uk-input" />
+        <span asp-validation-for="OrderDetails[i].POShipDate" class="uk-alert-danger"></span>
+      </td>
+      <td>
+        @Model.OrderDetails[i].Status
+      </td>
+    }
+  </tr>
+</table>
