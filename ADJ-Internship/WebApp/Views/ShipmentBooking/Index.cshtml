@@ -12,20 +12,15 @@
 
 </form>
 
-<form asp-action="Index" asp-controller="ShipmentBooking" id="bookingForm">
+<form asp-action="Booking" asp-controller="ShipmentBooking" id="bookingForm"
+      data-ajax="true"
+      data-ajax-method="POST"
+      data-ajax-mode="replace"
+      data-ajax-update="#resultPartial">
 
-  <div class="uk-card uk-card-default uk-card-body">
-    <partial name="_Booking" model="Model" />
-  </div>
-
-  <div class="uk-grid-divider" uk-grid></div>
-
-  <div id="resultPartial">
-    <div class="uk-card uk-card-default uk-card-body" id="resultPartial">
+  <div id="resultPartial" class="uk-grid">
       <partial name="_Result" model="Model" />
-    </div>
   </div>
-
 </form>
 
 @section Scripts

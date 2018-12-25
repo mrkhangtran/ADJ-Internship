@@ -1,22 +1,22 @@
 ﻿@model ADJ.BusinessService.Dtos.ShipmentBookingDtos;
 
 <div class="uk-grid">
-  <div class="uk-width-auto">
+  <div>
     <table class="uk-table uk-table-small uk-table-middle">
       <tr>
         <td>
-          <label asp-for="OriginPort"></label>
+          <label asp-for="PortOfLoading"></label>
         </td>
         <td>
-          <input asp-for="OriginPort" class="uk-input" id="from" onkeyup="copy()" />
-          <span asp-validation-for="OriginPort" class="uk-alert-danger"></span>
+          <select asp-for="PortOfLoading" asp-items="new SelectList(ViewBag.Ports)" class="uk-input booking"></select>
+          <span asp-validation-for="PortOfLoading" class="uk-alert-danger"></span>
         </td>
         <td>
-          <label asp-for="DestinationPort"></label>
+          <label asp-for="PortOfDelivery"></label>
         </td>
         <td>
-          <input asp-for="DestinationPort" class="uk-input" id="from" onkeyup="copy()" />
-          <span asp-validation-for="DestinationPort" class="uk-alert-danger"></span>
+          <select asp-for="PortOfDelivery" asp-items="new SelectList(ViewBag.Ports)" class="uk-input booking"></select>
+          <span asp-validation-for="PortOfDelivery" class="uk-alert-danger"></span>
         </td>
       </tr>
       <tr>
@@ -24,14 +24,14 @@
           <label asp-for="Carrier"></label>
         </td>
         <td>
-          <input asp-for="Carrier" class="uk-input" id="from" onkeyup="copy()" />
+          <select asp-for="Carrier" asp-items="new SelectList(ViewBag.Carriers)" class="uk-input booking"></select>
           <span asp-validation-for="Carrier" class="uk-alert-danger"></span>
         </td>
         <td>
           <label asp-for="Mode"></label>
         </td>
         <td>
-          <input asp-for="Mode" class="uk-input" id="from" onkeyup="copy()" />
+          <select asp-for="Mode" asp-items="new SelectList(ViewBag.Modes)" class="uk-input booking"></select>
           <span asp-validation-for="Mode" class="uk-alert-danger"></span>
         </td>
       </tr>
@@ -40,20 +40,20 @@
           <label asp-for="ETD"></label>
         </td>
         <td>
-          <input asp-for="ETD" class="uk-input" id="from" onkeyup="copy()" />
+          <input asp-for="ETD" type="date" value=@DateTime.Now.ToString("yyyy-MM-dd") class="uk-input booking" />
           <span asp-validation-for="ETD" class="uk-alert-danger"></span>
         </td>
         <td>
           <label asp-for="ETA"></label>
         </td>
         <td>
-          <input asp-for="ETA" class="uk-input" id="from" onkeyup="copy()" />
+          <input asp-for="ETA" type="date" value=@DateTime.Now.ToString("yyyy-MM-dd") class="uk-input booking" />
           <span asp-validation-for="ETA" class="uk-alert-danger"></span>
         </td>
       </tr>
     </table>
   </div>
-  <div class="uk-width-1-5">
-    <button type="button" value="Book" class="uk-button uk-button-primary">Make Booking</button>
+  <div>
+    <button type="submit" value="Book" class="uk-button uk-button-primary bookButton">Make Booking</button>
   </div>
 </div>

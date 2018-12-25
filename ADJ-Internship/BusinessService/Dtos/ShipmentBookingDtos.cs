@@ -23,7 +23,8 @@ namespace ADJ.BusinessService.Dtos
     //Droplist of Ports, alphabetical ascending order
     [Required]
     [Display(Name = "Origin Port")]
-    public string OriginPort { get; set; }
+    [PortIsDifferent("PortOfDelivery")]
+    public string PortOfLoading { get; set; }
 
     //Droplist of Carriers, alphabetical ascending order
     [Required]
@@ -32,24 +33,21 @@ namespace ADJ.BusinessService.Dtos
     //Droplist of Ports, alphabetical ascending order
     [Required]
     [Display(Name = "Destination Port")]
-    [PortIsDifferent("OriginPort")]
-    public string DestinationPort { get; set; }
+    [PortIsDifferent("PortOfLoading")]
+    public string PortOfDelivery { get; set; }
 
     //DropList Road-Sea-Air
     [Required]
     public string Mode { get; set; }
 
-    [NotInThePast(ErrorMessage = "Cannot be set in the past")]
-    public DateTime POShipDate { get; set; }
-
     [Required]
     [NotInThePast(ErrorMessage = "Cannot be set in the past")]
-    [SimilarOrLaterThanOtherDate("POShipDate")]
+    //[LaterThanOtherDate("POShipDate")]
     public DateTime ETD { get; set; }
 
     [Required]
     [NotInThePast(ErrorMessage = "Cannot be set in the past")]
-    [SimilarOrLaterThanOtherDate("ETD")]
+    [LaterThanOtherDate("ETD")]
     public DateTime ETA { get; set; }
 
     public int OrderId { get; set; }
@@ -65,7 +63,9 @@ namespace ADJ.BusinessService.Dtos
 
     public float Cube { get; set; }
 
-    public List<ShipmentResult> OrderDetails { get; set; }
+    public OrderStatus Status { get; set; }
+
+    public List<ShipmentResultDtos> OrderDetails { get; set; }
 
     public ShipmentFilterDtos FilterDtos { get; set; }
   }
@@ -103,15 +103,10 @@ namespace ADJ.BusinessService.Dtos
     [RegularExpression("^[0-9]+$", ErrorMessage = "Numbers only")]
     public string ItemNumber { get; set; }
 
-    //[Required]
-    //[NotInThePast(ErrorMessage = "Cannot be set in the past")]
-    //[SimilarOrLaterThanOtherDate("POShipDate")]
-    //public DateTime ETD { get; set; }
-
     public List<OrderDetailDTO> OrderDetails { get; set; }
   }
 
-  public class ShipmentResult : EntityDtoBase
+  public class ShipmentResultDtos : EntityDtoBase
   {
     public bool Selected { get; set; }
 
@@ -160,6 +155,8 @@ namespace ADJ.BusinessService.Dtos
     //Default as "Awaiting Booking"
     [Display(Name = "Booking Status")]
     public OrderStatus Status { get; set; }
+
+    public int OrderId { get; set; }
   }
 
   public class DropDownList

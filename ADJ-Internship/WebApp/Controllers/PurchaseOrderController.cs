@@ -104,7 +104,6 @@ namespace ADJ.WebApp.Controllers
         return RedirectToAction("Index", new { id = addModel.PONumber, method = viewName });
       }
 
-      ModelState.Clear();
       return View(viewName, addModel);
     }
 
@@ -257,7 +256,7 @@ namespace ADJ.WebApp.Controllers
     {
       List<OrderDetailDTO> orderDetailDTOs = new List<OrderDetailDTO>();
 
-      int totalProperty = 16;
+      int totalProperty = 15;
       for (int i = 0; i < (orderDetailStrings.Count / totalProperty); i++)
       {
         OrderDetailDTO orderDetail = new OrderDetailDTO();
