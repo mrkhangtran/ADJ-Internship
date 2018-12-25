@@ -1,0 +1,111 @@
+﻿
+@{
+  ViewData["Title"] = "Index";
+  Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="uk-container">
+  <div class="uk-grid">
+    <div class="uk-width-1-3">
+      <table class="uk-table">
+        <tbody>
+          <tr>
+            <td><label>Destination Port</label></td>
+            <td>
+              <div class="uk-form-select" data-uk-form-select>
+                @Html.DropDownList("DestinationPort", new SelectList(""), "Any", new { @id = "DestinationPort", @class = "uk-select" })
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td><label>Origin Port</label></td>
+            <td>
+              <div class="uk-form-select" data-uk-form-select>
+                @Html.DropDownList("OriginPorts", new SelectList(""), "Any", new { @id = "OriginPorts", @class = "uk-select" })
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td><label>Carrier</label></td>
+            <td>
+              <div class="uk-form-select" data-uk-form-select>
+                <span></span>
+                @Html.DropDownList("Carriers", new SelectList(""), "Any", new { @id = "Carriers", @class = "uk-select" })
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td><label>Status</label></td>
+            <td>
+              <div class="uk-form-select" data-uk-form-select>
+                @Html.DropDownList("Status", new SelectList(""), "Any", new { @id = "Status", @class = "uk-select" })
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="uk-width-1-3">
+      <table class="uk-table">
+        <tbody>
+          <tr>
+            <td><label>Vendor</label></td>
+            <td>
+              <div class="uk-form-select" data-uk-form-select>
+                <input id="Vendor" class="uk-input" />
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td><label>ETD From</label></td>
+            <td>         
+                <input id="ETDFrom" type="date" class="uk-input">            
+            </td>
+          </tr>
+          <tr>
+            <td><label>ETD To</label></td>
+            <td>
+              <input id="ETDTo" type="date" class="uk-input">
+            </td>
+          </tr>
+          <tr>
+            <td><label>PO Number</label></td>
+            <td>
+              <input id="PONumberSearch" class="uk-input" />
+
+            </td>
+          </tr>
+          <tr>
+            <td><label>Item</label></td>
+            <td>
+              <input id="ItemSearch" class="uk-input" />
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+    </div>
+
+    <div class="uk-width-1-3">
+      <table class="uk-table">
+        <tbody>
+          <tr>
+            <td>
+              <button type="button" class="filterItem uk-button uk-button-primary" value=1>Search</button>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <input id="Achieve" asp-action="CreateOrUpdate" asp-controller="ProgressCheck" class="uk-button uk-button-danger" type="submit" data-uk-button value="Achieve">
+            </td>
+          </tr>
+
+        </tbody>
+      </table>
+
+    </div>
+
+  </div>
+</div>
+
+

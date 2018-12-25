@@ -31,6 +31,7 @@ namespace ADJ.BusinessService.Dtos
   }
   public class ItemManifest
   {
+    public int Id { get; set; }
     public bool selected { get; set; }
 
     public string Supplier { get; set; }
