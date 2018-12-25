@@ -213,6 +213,8 @@ namespace ADJ.BusinessService.Dtos
     [RegularExpression("^[0-9]*$", ErrorMessage = "Tariff must be numeric")]
     public string Tariff { get; set; } = "";
 
+    public OrderStatus Status { get; set; }
+
     [Required]
     //[ForeignKey("OrderModel")]
     public int OrderId { get; set; }

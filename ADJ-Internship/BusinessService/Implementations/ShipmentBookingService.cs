@@ -97,11 +97,9 @@ namespace ADJ.BusinessService.Implementations
 
     public async Task<List<string>> ListPortsAsync()
     {
-      //var test = _orderDetailRepository.
 
-      //List<string> result;
+      List<string> result;
 
-      //return result;
       return null;
     }
   }
