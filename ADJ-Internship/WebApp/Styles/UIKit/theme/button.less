@@ -70,7 +70,9 @@
 // Primary
 //
 
-.hook-button-primary() { border: @button-border-width solid transparent; }
+.hook-button-primary() { 
+	border: @button-border-width solid transparent; 
+}
 
 .hook-button-primary-hover() {}
 
@@ -154,31 +156,30 @@
 
 .hook-button-misc() {
 
-    /* Group
+	/* Group
      ========================================================================== */
-
-    /*
+	/*
      * Collapse border
      */
+	.uk-button-group > .uk-button
 
-    .uk-button-group > .uk-button:nth-child(n+2),
-    .uk-button-group > div:nth-child(n+2) .uk-button { margin-left: -@button-border-width; }
-
-    /*
+	:nth-child(n+2),
+	.uk-button-group > div:nth-child(n+2) .uk-button {
+		margin-left: -@button-border-width;
+	}
+	/*
      * Create position context to superimpose the successor elements border
      * Known issue: If you use an `a` element as button and an icon inside,
      * the active state will not work if you click the icon inside the button
      * Workaround: Just use a `button` or `input` element as button
      */
-
-    .uk-button-group .uk-button:hover,
-    .uk-button-group .uk-button:focus,
-    .uk-button-group .uk-button:active,
-    .uk-button-group .uk-button.uk-active {
-        position: relative;
-        z-index: 1;
-    }
-
+	.uk-button-group .uk-button:hover,
+	.uk-button-group .uk-button:focus,
+	.uk-button-group .uk-button:active,
+	.uk-button-group .uk-button.uk-active {
+		position: relative;
+		z-index: 1;
+	}
 }
 
 
