@@ -101,7 +101,8 @@ namespace ADJ.WebApp.Controllers
           }
         }
 
-        return RedirectToAction("Index", new { id = addModel.PONumber, method = viewName });
+        //return RedirectToAction("Index", new { id = addModel.PONumber, method = viewName });
+        return RedirectToAction("Display", "Order");
       }
 
       return View(viewName, addModel);
