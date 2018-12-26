@@ -12,10 +12,12 @@ namespace WebApp.Controllers
   public class ShipmentBookingController : Controller
   {
     private readonly IShipmentBookingService _bookingService;
+    private readonly int pageSize;
 
     public ShipmentBookingController(IShipmentBookingService bookingService)
     {
       _bookingService = bookingService;
+      pageSize = 6;
     }
 
     public ActionResult Index()
@@ -37,24 +39,42 @@ namespace WebApp.Controllers
 
       model.OrderDetails = await _bookingService.ConvertToResultAsync(await _bookingService.ListShipmentFilterAsync(page, origin, originPort, mode, warehouse, status, vendor, poNumber, itemNumber));
 
+      if (model.OrderDetails.Count > 0)
+      {
+        model.OrderDetails = await _bookingService.UpdatePackType(model.OrderDetails);
+      }
+      else
+      {
+        ViewBag.ShowModal = "NoResult";
+      }
+
       return PartialView("_Result", model);
     }
 
     [HttpPost]
-    public async Task<ActionResult> Booking(ShipmentBookingDtos model)
+    public async Task<ActionResult> Booking(ShipmentBookingDtos model, string method = null)
     {
       SetDropDownList();
 
-      if (ModelState.IsValid)
+      switch (method)
       {
-        foreach (var item in model.OrderDetails)
-          if (item.Selected)
+        case "Book":
+          if (ModelState.IsValid)
           {
+            if (model.OrderDetails != null)
             {
-              item.Status = OrderStatus.BookingMade;
+              await _bookingService.CreateOrUpdateBookingAsync(model);
+              ModelState.Clear();
+              model = await _bookingService.ChangeItemStatus(model);
+              ViewBag.ShowModal = "Updated";
             }
           }
-        await _bookingService.CreateOrUpdateBookingAsync(model);
+          break;
+        default:
+          ModelState.Clear();
+          int number = int.Parse(new string(method.Where(char.IsDigit).ToArray()));
+          ViewBag.Page = number;
+          break;
       }
 
       return PartialView("_Result", model);
@@ -68,6 +88,9 @@ namespace WebApp.Controllers
       ViewBag.Ports = new List<string> { "Cẩm Phả", "Cửa Lò", "Hải Phòng", "Hòn Gai", "Nghi Sơn" };
       ViewBag.Statuses = new List<string> { "AwaitingBooking", "BookingMade" };
       ViewBag.Carriers = new List<string> { "DHL", "EMS", "Kerry Express", "TNT", "USPS", "ViettelPost" };
+
+      ViewBag.PageSize = pageSize;
+      ViewBag.Page = 1;
     }
   }
 }
