@@ -12,6 +12,11 @@
 // ========================================================================
 
 .hook-grid-misc() {
+	.uk-grid {
+		margin: 0;
+		padding: 0;
+	}
+
 	.uk-grid .menu-left-header {
 		color: white;
 		margin: 0;
@@ -62,8 +67,35 @@
 		padding: 0;
 	}
 
-	.uk-grid .welcome p:hover{
-		color:wheat;
-		background-color:rgba(51, 51, 51, 0.82);
+	.uk-grid .welcome p:hover {
+		color: wheat;
+		background-color: rgba(51, 51, 51, 0.82);
+	}
+
+	.uk-grid.vessel-table {
+		border: none;
+	}
+
+	.uk-grid.vessel-table tbody {
+		border: none;
+	}
+
+	.uk-grid.vessel-table tbody td {
+		border: none;
+	}
+
+	.uk-grid.vessel-table tbody .uk-select {
+		border: 1px solid #333;
+		padding: 0 5px;
+		height: 25px;
+	}
+
+	.uk-grid .vessel-header {
+		margin: 0;
+	}
+
+	.uk-grid > * {
+		margin: 0;
+		padding: 0;
 	}
 }
