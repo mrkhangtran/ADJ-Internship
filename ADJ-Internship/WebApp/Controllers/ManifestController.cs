@@ -18,11 +18,41 @@ namespace WebApp.Controllers
       _manifestService = manifestService;
     }
     // GET: Manifest
-    public async Task<ActionResult> Index()
+    public async Task<ActionResult> Index(int? pageIndex, string DestinationPort = null, string OriginPort = null, string Carrier = null, DateTime? ETDFrom = null, DateTime? ETDTo = null, string Status = null, string Vendor = null, string PONumber = null, string Item = null,bool? checkClick=null)
     {
-      PagedListResult<ShipmentManifestsDtos> listManifest = await _manifestService.ListManifestDtoAsync();
-
-      return View(listManifest);
+      ViewBag.Size = new List<string> {"20GP","40HC"};
+      ViewBag.PackType = new List<string> {"Boxed","Carton" };
+      ViewBag.Loading = new List<string> { "ROAD" };
+      SearchingManifestItem searchItem = await _manifestService.SearchItem();
+      ViewBag.OriginPorts = searchItem.OriginPorts;
+      ViewBag.Carriers = searchItem.Carriers;
+      ViewBag.Dest = searchItem.DestinationPort;
+      ViewBag.Status = searchItem.Status;
+      int current = pageIndex ?? 1;
+      PagedListResult<ShipmentManifestsDtos> listManifest = await _manifestService.ListManifestDtoAsync(current,2,DestinationPort,OriginPort,Carrier,ETDFrom,ETDTo,Status,Vendor,PONumber,Item);
+      if (checkClick==true)
+      {
+        return PartialView("_SearchingManifestPartial", listManifest);
+      }
+      return View("Index", listManifest);
+    }
+    [HttpPost]
+    public async Task<ActionResult> Index(PagedListResult<ShipmentManifestsDtos> shipmentManifestDtos)
+    {
+      foreach(var manifest in shipmentManifestDtos.Items)
+      {
+       await _manifestService.CreateOrUpdateContainerAsync(manifest);
+      }
+      ViewBag.Size = new List<string> { "20GP", "40HC" };
+      ViewBag.PackType = new List<string> { "Boxed", "Carton" };
+      ViewBag.Loading = new List<string> { "ROAD" };
+      SearchingManifestItem searchItem = await _manifestService.SearchItem();
+      ViewBag.OriginPorts = searchItem.OriginPorts;
+      ViewBag.Carriers = searchItem.Carriers;
+      ViewBag.Dest = searchItem.DestinationPort;
+      ViewBag.Status = searchItem.Status;
+      PagedListResult<ShipmentManifestsDtos> pagedListResult = await _manifestService.ListManifestDtoAsync();
+      return View("Index", pagedListResult);
     }
   }
 }

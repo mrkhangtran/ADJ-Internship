@@ -1,10 +1,12 @@
-﻿using System;
+﻿using ADJ.DataModel.ShipmentTrack;
+using ADJ.Repository.Core;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace ADJ.Repository.Interfaces
 {
-  public interface IContainerRepository
+  public interface IContainerRepository : IRepository<Container>
   {
   }
 }
