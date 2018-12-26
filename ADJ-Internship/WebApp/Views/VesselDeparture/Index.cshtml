@@ -8,24 +8,22 @@
 				<div class="uk-margin">
 					<label class="uk-form-label vessel-header-label" for="form-horizontal-select">Origin</label>
 					<div class="uk-form-controls vassell-header-formSelect">
-						<select class="uk-select" id="form-horizontal-select">
-							@*@Html.DropDownList("Origins", new SelectList(ViewBag.Origins), "Any", new { @id = "Origins", @class = "uk-select" })*@
 
+						@*@Html.DropDownList("Origins", new SelectList(ViewBag.Origins), "Any", new { @id = "Origins", @class = "uk-select" })*@
+						<select class="uk-select" id="form-horizontal-select">
 							<option>VietNam</option>
 							<option>HongKong</option>
 						</select>
+
 					</div>
 				</div>
 
 				<div class="uk-margin">
 					<label class="uk-form-label vessel-header-label" for="form-horizontal-select">Origin Port</label>
 					<div class="uk-form-controls vassell-header-formSelect">
-						<select class="uk-select" id="form-horizontal-select">
-							@*@Html.DropDownList("OriginPorts", new SelectList(ViewBag.OriginPorts), "Any", new { @id = "OriginPorts", @class = "uk-select" })*@
-							<option>VietNam</option>
-							<option>HongKong</option>
 
-						</select>
+						@Html.DropDownList("OriginPorts", new SelectList(ViewBag.OriginPorts), "Any", new { @id = "OriginPorts", @class = "uk-select" })
+
 					</div>
 				</div>
 
@@ -66,8 +64,8 @@
 					<div class="uk-form-controls vassell-header-formSelect">
 						<select class="uk-select" id="form-horizontal-select">
 							@*@Html.DropDownList("Vendor", new SelectList(ViewBag.Vendors), "Any", new { @id = "Vendors", @class = "uk-select" })*@
-							<option>VietNam</option>
-							<option>HongKong</option>
+							<option>Option 1</option>
+							<option>Option 2</option>
 						</select>
 					</div>
 				</div>
@@ -142,26 +140,29 @@
 				<tr>
 					<td>
 						<div class="uk-form-controls">
-							<select class="uk-select" id="form-horizontal-select">
-								<option>HCM</option>
-								<option>Option 02</option>
-							</select>
+							@Html.DropDownList("OriginPorts", new SelectList(ViewBag.OriginPorts), "Any", new { @id = "OriginPorts", @class = "uk-select" })
+							@*<select class="uk-select" id="form-horizontal-select">
+									<option>HCM</option>
+									<option>Option 02</option>
+								</select>*@
 						</div>
 					</td>
 					<td>
 						<div class="uk-form-controls">
-							<select class="uk-select" id="form-horizontal-select">
-								<option>HONGKONG1</option>
-								<option>Option 02</option>
-							</select>
+							@Html.DropDownList("DestPorts", new SelectList(ViewBag.DestPorts), "Any", new { @id = "DestPorts", @class = "uk-select" })
+							@*<select class="uk-select" id="form-horizontal-select">
+									<option>HONGKONG1</option>
+									<option>Option 02</option>
+								</select>*@
 						</div>
 					</td>
 					<td>
 						<div class="uk-form-controls">
-							<select class="uk-select" id="form-horizontal-select">
-								<option>ROAD</option>
-								<option>Option 02</option>
-							</select>
+							@Html.DropDownList("Modes", new SelectList(ViewBag.Modes), "Any", new { @id = "Modes", @class = "uk-select" })
+							@*<select class="uk-select" id="form-horizontal-select">
+			<option>ROAD</option>
+			<option>Option 02</option>
+		</select>*@
 						</div>
 					</td>
 					<td>

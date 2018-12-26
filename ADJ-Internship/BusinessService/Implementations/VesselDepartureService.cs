@@ -35,11 +35,16 @@ namespace ADJ.BusinessService.Implementations
 			var origins = orderModels.Select(x => x.Origin).Distinct();
 			var originports = orderModels.Select(x => x.PortOfLoading).Distinct();
 			var vendors = orderModels.Select(x => x.Vendor).Distinct();
+			var destports = orderModels.Select(x => x.PortOfDelivery).Distinct();
+			var modes = orderModels.Select(x => x.Mode).Distinct();
+
 			GetItemSearchDto getSearchItemDTO = new GetItemSearchDto()
 			{
 				Origins = origins,
 				OriginPorts = originports,
 				Factories = vendors,
+				DestPorts = destports,
+				Modes = modes
 			};
 			return getSearchItemDTO;
 		}

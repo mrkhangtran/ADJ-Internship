@@ -8,6 +8,6 @@ namespace ADJ.BusinessService.Interfaces
 {
 	public interface IVesselDepartureService
 	{
-		
+		Task<GetItemSearchDto> SearchItem();
 	}
 }

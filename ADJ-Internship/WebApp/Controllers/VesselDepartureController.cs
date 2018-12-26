@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using ADJ.BusinessService.Dtos;
-using ADJ.BusinessService.Implementations;
 using ADJ.BusinessService.Interfaces;
 using ADJ.Common;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebApp.Controllers
@@ -13,20 +13,20 @@ namespace WebApp.Controllers
 	public class VesselDepartureController : Controller
 	{
 		private readonly IVesselDepartureService _vesselDepartureService;
-
-		public VesselDepartureController(IVesselDepartureService orderService)
+		public VesselDepartureController(IVesselDepartureService prcService)
 		{
-			_vesselDepartureService = orderService;
+			_vesselDepartureService = prcService;
 		}
-
-
-		public async Task<IActionResult> Index()
+		// GET: ProgressCheckDto
+		public async Task<ActionResult> Index()
 		{
-			//GetItemSearchDto getSearchItem = await _vesselDepartureService.SearchItem();
-			//ViewBag.Origins = getSearchItem.Origins;
-			//ViewBag.OriginPorts = getSearchItem.OriginPorts;
-			//ViewBag.Vendors = getSearchItem.Vendors;
-			return View();
+			GetItemSearchDto getSearchItem = await _vesselDepartureService.SearchItem();
+			ViewBag.Origins = getSearchItem.Origins;
+			ViewBag.OriginPorts = getSearchItem.OriginPorts;
+			ViewBag.DestPorts = getSearchItem.DestPorts;
+			ViewBag.Modes = getSearchItem.Modes;
+
+			return View("Index");
 		}
 	}
 }
