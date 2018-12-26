@@ -1,26 +1,14 @@
-﻿//$(document.body).on('click', '.bookButton', function () {
-//  if ($("#bookingForm").valid()) {
-//    //get data from form
-//    var booking = [];
-//    var items = document.getElementsByClassName("booking");
-//    $.each(items, function () {
-//      filters.push($(this).val());
-//    });
+﻿$(document.body).on('click', '.paging', function () {
+  var value = $(this).attr("value");
+  var name = $(this).attr("name");
+  $('<input />').attr('type', 'hidden')
+    .attr('name', name)
+    .attr('value', value)
+    .attr('id', "pageValue")
+    .appendTo('#bookingForm');
 
-//    $.ajax({
-//      type: "POST",
-//      data: {
-//        booking: booking
-//      },
-//      url: "/ShipmentBooking/Booking",
-//      success: function (objOperations) {
-//        alert("Your shipment is successfully made");
-//        $("#resultPartial").html(objOperations);
-//        rebindValidators();
-//      }
-//    });
-//  }
-//});
+  $("#bookingForm").submit();
+});
 
 $(document.body).on('click', '.searchButton', function () {
   if ($("#filterForm").valid()) {
@@ -62,6 +50,13 @@ $(document.body).on('click', '.searchButton', function () {
     });
   }
 });
+
+showResult = function showResult() {
+  $(document).ready(function () {
+    $('#openmodal').trigger('click');
+    $('#pageValue').remove();
+  });
+};
 
 function rebindValidators() {
   var $form = $("#orderForm");
