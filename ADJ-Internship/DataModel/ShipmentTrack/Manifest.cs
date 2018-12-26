@@ -11,8 +11,6 @@ namespace ADJ.DataModel.ShipmentTrack
 
     public string Seal { get; set; }
 
-    public string Container { get; set; }
-
     public string Loading { get; set; }
 
     public int Bars { get; set; }
@@ -20,8 +18,6 @@ namespace ADJ.DataModel.ShipmentTrack
     public string Equipment { get; set; }
 
     public decimal Quantity { get; set; }
-
-    public int Cartoons { get; set; }
 
     public float Cartons { get; set; }
 
@@ -39,6 +35,10 @@ namespace ADJ.DataModel.ShipmentTrack
 
     public string Size { get; set; }
 
+    public int ContainerId { get; set; }
+
     public virtual Booking Booking { get; set; }
+
+    public virtual Container Container { get; set; }
   }
 }

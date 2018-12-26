@@ -1,21 +1,21 @@
 ﻿@model ADJ.BusinessService.Dtos.ShipmentBookingDtos;
 
 <div class="uk-grid">
-  <div class="uk-width-auto">
+  <div>
     <table class="uk-table uk-table-small uk-table-middle">
       <tr>
         <td>
           <label asp-for="FilterDtos.Origin"></label>
         </td>
         <td>
-          <input asp-for="FilterDtos.Origin" class="uk-input" id="from" onkeyup="copy()" />
+          <select asp-for="FilterDtos.Origin" asp-items="new SelectList(ViewBag.Origins)" class="uk-input filters"></select>
           <span asp-validation-for="FilterDtos.Origin" class="uk-alert-danger"></span>
         </td>
         <td>
           <label asp-for="FilterDtos.Vendor"></label>
         </td>
         <td>
-          <input asp-for="FilterDtos.Vendor" class="uk-input" id="from" onkeyup="copy()" />
+          <input asp-for="FilterDtos.Vendor" class="uk-input filters"/>
           <span asp-validation-for="FilterDtos.Vendor" class="uk-alert-danger"></span>
         </td>
       </tr>
@@ -24,14 +24,14 @@
           <label asp-for="FilterDtos.OriginPort"></label>
         </td>
         <td>
-          <input asp-for="FilterDtos.OriginPort" class="uk-input" id="from" onkeyup="copy()" />
+          <select asp-for="FilterDtos.OriginPort" asp-items="new SelectList(ViewBag.Ports)" class="uk-input filters"></select>
           <span asp-validation-for="FilterDtos.OriginPort" class="uk-alert-danger"></span>
         </td>
         <td>
           <label asp-for="FilterDtos.Warehouse"></label>
         </td>
         <td>
-          <input asp-for="FilterDtos.Warehouse" class="uk-input" id="from" onkeyup="copy()" />
+          <input asp-for="FilterDtos.Warehouse" class="uk-input filters"/>
           <span asp-validation-for="FilterDtos.Warehouse" class="uk-alert-danger"></span>
         </td>
       </tr>
@@ -40,14 +40,14 @@
           <label asp-for="FilterDtos.Mode"></label>
         </td>
         <td>
-          <input asp-for="FilterDtos.Mode" class="uk-input" id="from" onkeyup="copy()" />
+          <select asp-for="FilterDtos.Mode" asp-items="new SelectList(ViewBag.Modes)" class="uk-input filters"></select>
           <span asp-validation-for="FilterDtos.Mode" class="uk-alert-danger"></span>
         </td>
         <td>
           <label asp-for="FilterDtos.Status"></label>
         </td>
         <td>
-          <input asp-for="FilterDtos.Status" class="uk-input" id="from" onkeyup="copy()" />
+          <select asp-for="FilterDtos.Status" asp-items="new SelectList(ViewBag.Statuses)" class="uk-input filters"></select>
           <span asp-validation-for="FilterDtos.Status" class="uk-alert-danger"></span>
         </td>
       </tr>
@@ -56,20 +56,20 @@
           <label asp-for="FilterDtos.PONumber"></label>
         </td>
         <td>
-          <input asp-for="FilterDtos.PONumber" class="uk-input" id="from" onkeyup="copy()" />
+          <input asp-for="FilterDtos.PONumber" class="uk-input filters"/>
           <span asp-validation-for="FilterDtos.PONumber" class="uk-alert-danger"></span>
         </td>
         <td>
           <label asp-for="FilterDtos.ItemNumber"></label>
         </td>
         <td>
-          <input asp-for="FilterDtos.ItemNumber" class="uk-input" id="from" onkeyup="copy()" />
+          <input asp-for="FilterDtos.ItemNumber" class="uk-input filters"/>
           <span asp-validation-for="FilterDtos.ItemNumber" class="uk-alert-danger"></span>
         </td>
       </tr>
     </table>
   </div>
-  <div class="uk-width-1-5">
-    <button type="button" value="Search">Search</button>
+  <div>
+    <button type="button" value="Search" class="uk-button uk-button-primary searchButton">Search</button>
   </div>
 </div>

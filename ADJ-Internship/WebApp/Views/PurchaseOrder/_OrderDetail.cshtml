@@ -53,51 +53,53 @@
 <table class="uk-table uk-table-striped uk-table-hover uk-table-small uk-table-middle">
 
   <!--table header-->
-  <tr>
-    <th>
-      <label asp-for="SingleOrderDetail.ItemNumber"></label>
-    </th>
-    <th>
-      <label asp-for="SingleOrderDetail.Description"></label>
-    </th>
-    <th>
-      <label asp-for="SingleOrderDetail.Tariff"></label>
-    </th>
-    <th>
-      <label asp-for="SingleOrderDetail.Quantity"></label>
-    </th>
-    <th>
-      <label asp-for="SingleOrderDetail.Cartons"></label>
-    </th>
-    <th>
-      <label asp-for="SingleOrderDetail.Cube"></label>
-    </th>
-    <th>
-      <label asp-for="SingleOrderDetail.KGS"></label>
-    </th>
-    <th>
-      <label asp-for="SingleOrderDetail.UnitPrice"></label>
-    </th>
-    <th>
-      <label asp-for="SingleOrderDetail.TotalPrice"></label>
-    </th>
-    <th>
-      <label asp-for="SingleOrderDetail.RetailPrice"></label>
-    </th>
-    <th>
-      <label asp-for="SingleOrderDetail.TotalRetailPrice"></label>
-    </th>
-    <th>
-      <label asp-for="SingleOrderDetail.Warehouse"></label>
-    </th>
-    <th>
-      <label asp-for="SingleOrderDetail.Size"></label>
-    </th>
-    <th>
-      <label asp-for="SingleOrderDetail.Colour"></label>
-    </th>
-    <th></th>
-  </tr>
+  <thead>
+    <tr>
+      <th>
+        <label asp-for="SingleOrderDetail.ItemNumber"></label>
+      </th>
+      <th>
+        <label asp-for="SingleOrderDetail.Description"></label>
+      </th>
+      <th>
+        <label asp-for="SingleOrderDetail.Tariff"></label>
+      </th>
+      <th>
+        <label asp-for="SingleOrderDetail.Quantity"></label>
+      </th>
+      <th>
+        <label asp-for="SingleOrderDetail.Cartons"></label>
+      </th>
+      <th>
+        <label asp-for="SingleOrderDetail.Cube"></label>
+      </th>
+      <th>
+        <label asp-for="SingleOrderDetail.KGS"></label>
+      </th>
+      <th>
+        <label asp-for="SingleOrderDetail.UnitPrice"></label>
+      </th>
+      <th>
+        <label asp-for="SingleOrderDetail.TotalPrice"></label>
+      </th>
+      <th>
+        <label asp-for="SingleOrderDetail.RetailPrice"></label>
+      </th>
+      <th>
+        <label asp-for="SingleOrderDetail.TotalRetailPrice"></label>
+      </th>
+      <th>
+        <label asp-for="SingleOrderDetail.Warehouse"></label>
+      </th>
+      <th>
+        <label asp-for="SingleOrderDetail.Size"></label>
+      </th>
+      <th>
+        <label asp-for="SingleOrderDetail.Colour"></label>
+      </th>
+      <th></th>
+    </tr>
+  </thead>
 
   <!--only show if user want to add new item-->
   @if (ViewBag.ItemId == -1)

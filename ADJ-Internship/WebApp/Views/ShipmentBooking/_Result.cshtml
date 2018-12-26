@@ -1,78 +1,157 @@
 ﻿@model ADJ.BusinessService.Dtos.ShipmentBookingDtos;
 
-<table>
-  <!--header-->
-  <tr>
-    <th></th>
-    <th>
-      <label asp-for="OrderDetails[0].PONumber"></label>
-    </th>
-    <th>
-      <label asp-for="OrderDetails[0].ItemNumber"></label>
-    </th>
-    <th>
-      <label asp-for="OrderDetails[0].Vendor"></label>
-    </th>
-    <th>
-      <label asp-for="OrderDetails[0].Quantity"></label>
-    </th>
-    <th>
-      <label asp-for="OrderDetails[0].BookingQuantity"></label>
-    </th>
-    <th>
-      <label asp-for="OrderDetails[0].BookingCartons"></label>
-    </th>
-    <th>
-      <label asp-for="OrderDetails[0].BookingCube"></label>
-    </th>
-    <th>
-      <label asp-for="OrderDetails[0].PackType"></label>
-    </th>
-    <th>
-      <label asp-for="OrderDetails[0].POShipDate"></label>
-    </th>
-    <th>
-      <label asp-for="OrderDetails[0].Status"></label>
-    </th>
-  </tr>
-  <tr>
-    @for (int i = 0; i < Model.OrderDetails.Count(); i++)
-    {
-      <td>
-        <input type="checkbox" asp-for="OrderDetails[i].Selected"/>
-      </td>
-      <td>
-        @Model.OrderDetails[i].PONumber
-      </td>
-      <td>
-        @Model.OrderDetails[i].ItemNumber
-      </td>
-      <td>
-        @Model.OrderDetails[i].Vendor
-      </td>
-      <td>
-        @Model.OrderDetails[i].Quantity
-      </td>
-      <td>
-        @Model.OrderDetails[i].BookingQuantity
-      </td>
-      <td>
-        @Model.OrderDetails[i].BookingCartons
-      </td>
-      <td>
-        @Model.OrderDetails[i].BookingCube
-      </td>
-      <td>
-        <select asp-for="OrderDetails[i].PackType" asp-items="new SelectList(ViewBag.PackType)" class="uk-input"></select>
-        <span asp-validation-for="OrderDetails[i].PackType" class="uk-alert-danger"></span>
-      </td>
-      <td>
-        <input asp-for="OrderDetails[i].POShipDate" class="uk-input" />
-        <span asp-validation-for="OrderDetails[i].POShipDate" class="uk-alert-danger"></span>
-      </td>
-      <td>
-        @Model.OrderDetails[i].Status
-      </td>
-    }
-  </tr>
-</table>
+<div class="uk-card uk-card-default uk-card-body">
+  <div class="uk-grid">
+    <div>
+      <table class="uk-table uk-table-small uk-table-middle">
+        <tr>
+          <td>
+            <label asp-for="PortOfLoading"></label>
+          </td>
+          <td>
+            <select asp-for="PortOfLoading" asp-items="new SelectList(ViewBag.Ports)" class="uk-input booking"></select>
+            <span asp-validation-for="PortOfLoading" class="uk-alert-danger"></span>
+          </td>
+          <td>
+            <label asp-for="PortOfDelivery"></label>
+          </td>
+          <td>
+            <select asp-for="PortOfDelivery" asp-items="new SelectList(ViewBag.Ports)" class="uk-input booking"></select>
+            <span asp-validation-for="PortOfDelivery" class="uk-alert-danger"></span>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <label asp-for="Carrier"></label>
+          </td>
+          <td>
+            <select asp-for="Carrier" asp-items="new SelectList(ViewBag.Carriers)" class="uk-input booking"></select>
+            <span asp-validation-for="Carrier" class="uk-alert-danger"></span>
+          </td>
+          <td>
+            <label asp-for="Mode"></label>
+          </td>
+          <td>
+            <select asp-for="Mode" asp-items="new SelectList(ViewBag.Modes)" class="uk-input booking"></select>
+            <span asp-validation-for="Mode" class="uk-alert-danger"></span>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <label asp-for="ETD"></label>
+          </td>
+          <td>
+            <input asp-for="ETD" type="date" value=@DateTime.Now.ToString("yyyy-MM-dd") class="uk-input booking" />
+            <span asp-validation-for="ETD" class="uk-alert-danger"></span>
+          </td>
+          <td>
+            <label asp-for="ETA"></label>
+          </td>
+          <td>
+            <input asp-for="ETA" type="date" value=@DateTime.Now.ToString("yyyy-MM-dd") class="uk-input booking" />
+            <span asp-validation-for="ETA" class="uk-alert-danger"></span>
+          </td>
+        </tr>
+      </table>
+    </div>
+    <div>
+      <button type="submit" value="Book" class="uk-button uk-button-primary bookButton">Make Booking</button>
+    </div>
+  </div>
+</div>
+
+<div class="uk-grid-divider" uk-grid></div>
+
+@if (Model.OrderDetails != null)
+{
+  <div class="uk-card uk-card-default uk-card-body">
+    <table class="uk-table uk-table-small uk-table-middle">
+      <!--header-->
+      <thead>
+        <tr>
+          <th></th>
+          <th>
+            <label asp-for="OrderDetails[0].PONumber"></label>
+          </th>
+          <th>
+            <label asp-for="OrderDetails[0].ItemNumber"></label>
+          </th>
+          <th>
+            <label asp-for="OrderDetails[0].Vendor"></label>
+          </th>
+          <th>
+            <label asp-for="OrderDetails[0].Quantity"></label>
+          </th>
+          <th>
+            <label asp-for="OrderDetails[0].BookingQuantity"></label>
+          </th>
+          <th>
+            <label asp-for="OrderDetails[0].BookingCartons"></label>
+          </th>
+          <th>
+            <label asp-for="OrderDetails[0].BookingCube"></label>
+          </th>
+          <th>
+            <label asp-for="OrderDetails[0].PackType"></label>
+          </th>
+          <th>
+            <label asp-for="OrderDetails[0].POShipDate"></label>
+          </th>
+          <th>
+            <label asp-for="OrderDetails[0].Status"></label>
+          </th>
+        </tr>
+      </thead>
+
+      <!--filter result-->
+      @for (int i = 0; i < Model.OrderDetails.Count(); i++)
+      {
+        <tr>
+          <td>
+            <input type="checkbox" asp-for="OrderDetails[i].Selected" class="uk-checkbox booking" />
+          </td>
+          <td>
+            <input type="hidden" asp-for="OrderDetails[i].PONumber" />
+            @Model.OrderDetails[i].PONumber
+          </td>
+          <td>
+            <input type="hidden" asp-for="OrderDetails[i].ItemNumber" />
+            @Model.OrderDetails[i].ItemNumber
+          </td>
+          <td>
+            <input type="hidden" asp-for="OrderDetails[i].Vendor" />
+            @Model.OrderDetails[i].Vendor
+          </td>
+          <td>
+            <input type="hidden" asp-for="OrderDetails[i].Quantity" />
+            @Model.OrderDetails[i].Quantity
+          </td>
+          <td>
+            <input type="hidden" asp-for="OrderDetails[i].BookingQuantity" />
+            @Model.OrderDetails[i].BookingQuantity
+          </td>
+          <td>
+            <input type="hidden" asp-for="OrderDetails[i].BookingCartons" />
+            @Model.OrderDetails[i].BookingCartons
+          </td>
+          <td>
+            <input type="hidden" asp-for="OrderDetails[i].BookingCube" />
+            @Model.OrderDetails[i].BookingCube
+          </td>
+          <td>
+            <select asp-for="OrderDetails[i].PackType" asp-items="new SelectList(ViewBag.PackTypes)" class="uk-input booking"></select>
+            <span asp-validation-for="OrderDetails[i].PackType" class="uk-alert-danger"></span>
+          </td>
+          <td>
+            <input type="hidden" asp-for="OrderDetails[i].POShipDate" />
+            @Model.OrderDetails[i].POShipDate.ToString("MM-dd-yyyy")
+          </td>
+          <td>
+            <input type="hidden" asp-for="OrderDetails[i].Status" />
+            @Model.OrderDetails[i].Status
+          </td>
+        </tr>
+      }
+    </table>
+  </div>
+}

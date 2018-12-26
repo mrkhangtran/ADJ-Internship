@@ -1004,10 +1004,10 @@ a.uk-link-reset:hover,
 }
 .uk-table th {
   color: white;
-  border-right: 0.2px  groove wheat;
+  border-right: 0.2px solid gainsboro;
 }
 .uk-table td {
-  border-right: 0.2px groove gray;
+  border-right: 0.2px solid gainsboro;
 }
 .uk-table {
   border: 0.5px solid #333;
@@ -2087,7 +2087,7 @@ select.uk-form-width-xsmall {
 /*
      * Collapse border
      */
-.uk-button-group > .uk-button:nth-child(n+2),
+.uk-button-group > .uk-button :nth-child(n+2),
 .uk-button-group > div:nth-child(n+2) .uk-button {
   margin-left: -1px;
 }
@@ -2630,13 +2630,14 @@ select.uk-form-width-xsmall {
   border-bottom: 1.2px solid #333;
 }
 .uk-grid .welcome p span {
-  padding-left: 10px;
-  padding-right: 25%;
-  padding-top: 10px;
-  padding-bottom: 10px;
+  padding: 15px 25% 15px 15px;
 }
 .uk-grid .content-right {
   padding: 0;
+}
+.uk-grid .welcome p:hover {
+  color: wheat;
+  background-color: rgba(51, 51, 51, 0.82);
 }
 /* ========================================================================
    Component: Tile
@@ -4759,8 +4760,8 @@ ul.uk-nav-sub {
 }
 .uk-accordion-title::before {
   content: "";
-  width: 1.4em;
-  height: 1.4em;
+  width: 0;
+  height: 0;
   margin-left: 10px;
   float: right;
   background-image: url("../../images/backgrounds/accordion-close.svg");
@@ -4768,6 +4769,8 @@ ul.uk-nav-sub {
   background-position: 50% 50%;
 }
 .uk-open > .uk-accordion-title::before {
+  height: 0;
+  width: 0;
   background-image: url("../../images/backgrounds/accordion-open.svg");
 }
 /* Hover + Focus */
@@ -4794,6 +4797,9 @@ ul.uk-nav-sub {
 .uk-accordion-content p:hover a {
   color: wheat;
   text-decoration: none;
+}
+.uk-accordion-content p:hover {
+  background-color: rgba(51, 51, 51, 0.84);
 }
 /*
  * Micro clearfix
@@ -11968,7 +11974,8 @@ form {
   float: right;
   border-radius: 4px;
   height: 40px;
+  background-color: #2c59eb;
 }
-input[type="text"] .warehouse {
-  clear: both;
+.btnNew span {
+  padding-left: 5px;
 }

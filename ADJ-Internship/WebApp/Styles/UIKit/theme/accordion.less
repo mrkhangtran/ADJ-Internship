@@ -40,8 +40,8 @@
 
 	&::before {
 		content: "";
-		width: (@accordion-title-line-height * 1em);
-		height: (@accordion-title-line-height * 1em);
+		width: 0;
+		height: 0;
 		margin-left: @accordion-icon-margin-left;
 		float: right;
 		.svg-fill(@internal-accordion-close-image, "#000", @accordion-icon-color);
@@ -50,6 +50,8 @@
 	}
 
 	.uk-open > &::before {
+		height: 0;
+		width: 0;
 		.svg-fill(@internal-accordion-open-image, "#000", @accordion-icon-color);
 	}
 }
@@ -78,6 +80,9 @@
 		color: wheat;
 		text-decoration: none;
 	}
+	p:hover{
+		background-color:rgba(51, 51, 51, 0.84);
+	}
 }
 
 
@@ -96,8 +101,7 @@
 .hook-inverse-accordion-item() {
 }
 
-.hook-inverse-accordion-title() {
-}
+.hook-inverse-accordion-title() {}
 
 .hook-inverse-accordion-title-hover() {
 }
