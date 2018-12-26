@@ -24,77 +24,72 @@ namespace ADJ.BusinessService.Implementations
     private readonly IShipmentBookingRepository _shipmentBookingRepository;
     private readonly IDataProvider<Booking> _shipmentBookingDataProvider;
 
-    public ManifestService(IUnitOfWork unitOfWork, IMapper mapper, ApplicationContext appContext, IDataProvider<Manifest> manifestDataProvider, IManifestRepository manifestRepository, IDataProvider<Booking> bookingDataProvider, IShipmentBookingRepository shipmentBookingRepository) : base(unitOfWork, mapper, appContext)
+    private readonly IContainerRepository _containerRepository;
+    private readonly IDataProvider<Container> _containerDataProvider;
+
+    public ManifestService(IUnitOfWork unitOfWork, IMapper mapper, ApplicationContext appContext, IDataProvider<Manifest> manifestDataProvider, IManifestRepository manifestRepository, IDataProvider<Booking> bookingDataProvider, IShipmentBookingRepository shipmentBookingRepository, IContainerRepository containerRepository, IDataProvider<Container> containerDataProvider) : base(unitOfWork, mapper, appContext)
     {
       this._manifestDataProvider = manifestDataProvider;
       this._manifestRepository = manifestRepository;
 
       this._shipmentBookingDataProvider = bookingDataProvider;
       this._shipmentBookingRepository = shipmentBookingRepository;
+
+      this._containerRepository = containerRepository;
+      this._containerDataProvider = containerDataProvider;
+
     }
 
     public async Task<PagedListResult<ShipmentManifestsDtos>> ListManifestDtoAsync(string DestinationPort = null, string OriginPort = null, string Carrier = null, string ETDFrom = null, string ETDTo = null, string Status = null, string Vendor = null, string PONumber = null, string Item = null)
     {
       PagedListResult<ShipmentManifestsDtos> pageResult = new PagedListResult<ShipmentManifestsDtos>();
       List<ShipmentManifestsDtos> shipmentManifestsDtos = new List<ShipmentManifestsDtos>();
-
+      var containers = await _containerDataProvider.ListAsync(null, null, true);
       var bookings = await _shipmentBookingDataProvider.ListAsync();
-      var manifest = await _manifestDataProvider.ListAsync(null, null, true, null, null);
       List<Booking> listBooking = bookings.Items;
-      List<Manifest> listManifest = manifest.Items;
       List<string> originPorts = listBooking.Select(p => p.PortOfLoading).ToList();
       List<DateTime> ETDs = listBooking.Select(p => p.ETD).ToList();
       List<string> destinationPorts = listBooking.Select(p => p.PortOfDelivery).ToList();
-      List<string> containers = listManifest.Select(p => p.Container).ToList();
+
       //BookingHasManifestContainer
-      if (containers.Count > 0)
+      foreach (var container in containers.Items)
       {
-        foreach (var container in containers)
+        List<ItemManifest> itemManifests = new List<ItemManifest>();
+        ShipmentManifestsDtos shipmentManifestsDto = new ShipmentManifestsDtos();
+        foreach (var item in container.Manifests)
         {
-          List<Manifest> manifests = listManifest.Where(p => p.Container == container).ToList();
-          List<ItemManifest> itemManifests = new List<ItemManifest>();
-          ShipmentManifestsDtos shipmentManifestsDto = new ShipmentManifestsDtos();
-          string size = "";
-          string loading = "";
-          string packtype = "";
-          foreach (var item in manifests)
+          ItemManifest itemManifest = new ItemManifest()
           {
-            size = item.Size;
-            loading = item.Loading;
-            packtype = item.PackType;
-            ItemManifest itemManifest = new ItemManifest()
-            {
-              Id = item.Id,
-              Supplier = item.Booking.Factory,
-              Carrier = item.Booking.Carrier,
-              PONumber = item.Booking.PONumber,
-              ItemNumber = item.Booking.ItemNumber,
-              ETDDate = item.Booking.ETD,
-              BookingQuantity = item.Booking.Quantity,
-              OpenQuantity = item.Booking.Quantity - item.Quantity,
-              ShipQuantity = item.Quantity,
-              BookingCartons = item.Booking.Quantity * (decimal)item.Booking.Cartons,
-              ShipCartons = item.Quantity * (decimal)item.Cartons,
-              BookingCube = item.Booking.Quantity * (decimal)item.Booking.Cube,
-              ShipCube = item.Quantity * (decimal)item.Cube,
-              NetWeight = item.Quantity * (decimal)item.KGS,
-              Manifested = item.Booking.Status.ToString(),
-            };
-            itemManifests.Add(itemManifest);
-          }
-          shipmentManifestsDto.itemManifests = itemManifests;
-          shipmentManifestsDto.Container = container;
-          shipmentManifestsDto.Size = size;
-          shipmentManifestsDto.Loading = loading;
-          shipmentManifestsDto.PackType = packtype;
-          shipmentManifestsDtos.Add(shipmentManifestsDto);
+            Id = item.Id,
+            Supplier = item.Booking.Factory,
+            Carrier = item.Booking.Carrier,
+            PONumber = item.Booking.PONumber,
+            ItemNumber = item.Booking.ItemNumber,
+            ETDDate = item.Booking.ETD,
+            BookingQuantity = item.Booking.Quantity,
+            OpenQuantity = item.Booking.Quantity - item.Quantity,
+            ShipQuantity = item.Quantity,
+            BookingCartons = item.Booking.Quantity * (decimal)item.Booking.Cartons,
+            ShipCartons = item.Quantity * (decimal)item.Cartons,
+            BookingCube = item.Booking.Quantity * (decimal)item.Booking.Cube,
+            ShipCube = item.Quantity * (decimal)item.Cube,
+            NetWeight = item.Quantity * (decimal)item.KGS,
+            Manifested = item.Booking.Status.ToString(),
+          };
+          itemManifests.Add(itemManifest);
         }
+        shipmentManifestsDto.itemManifests = itemManifests;
+        shipmentManifestsDto.Container = container.Name;
+        shipmentManifestsDto.Size = container.Size;
+        shipmentManifestsDto.Loading = container.Loading;
+        shipmentManifestsDto.PackType = container.PackType;
+        shipmentManifestsDtos.Add(shipmentManifestsDto);
       }
+
       //BookingHasn'tManifestContainer
-      List<Booking> listBookingNoContainer = listBooking.Where(p => p.Status == OrderStatus.BookingMade).OrderBy(p=>p.PortOfLoading).ToList();
+      List<Booking> listBookingNoContainer = listBooking.Where(p => p.Status == OrderStatus.BookingMade).OrderBy(p => p.PortOfLoading).ToList();
       ShipmentManifestsDtos shipmentNoContainerDto = new ShipmentManifestsDtos();
       List<ItemManifest> itemNoContainer = new List<ItemManifest>();
-
       foreach (var bookingNoContainer in listBookingNoContainer)
       {
         ItemManifest itemManifest = new ItemManifest()
@@ -106,8 +101,8 @@ namespace ADJ.BusinessService.Implementations
           ETDDate = bookingNoContainer.ETD,
           BookingQuantity = bookingNoContainer.Quantity,
           BookingCartons = bookingNoContainer.Quantity * (decimal)bookingNoContainer.Cartons,
-          BookingCube=bookingNoContainer.Quantity*(decimal)bookingNoContainer.Cube,
-          Manifested=bookingNoContainer.Status.ToString(),
+          BookingCube = bookingNoContainer.Quantity * (decimal)bookingNoContainer.Cube,
+          Manifested = bookingNoContainer.Status.ToString(),
         };
         itemNoContainer.Add(itemManifest);
       }
