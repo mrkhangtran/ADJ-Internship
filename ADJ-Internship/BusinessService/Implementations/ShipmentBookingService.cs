@@ -27,8 +27,6 @@ namespace ADJ.BusinessService.Implementations
     private readonly IDataProvider<Booking> _bookingDataProvider;
     private readonly IShipmentBookingRepository _bookingRepository;
 
-    private readonly int pageSize;
-
     public ShipmentBookingService(IUnitOfWork unitOfWork, IMapper mapper, ApplicationContext appContext,
       IDataProvider<OrderDetail> poDetailDataProvider, IOrderDetailRepository orderdetailRepository, IDataProvider<Order> poDataProvider,
       IDataProvider<Booking> bookingDataProvider, IShipmentBookingRepository bookingRepository) : base(unitOfWork, mapper, appContext)
@@ -38,7 +36,6 @@ namespace ADJ.BusinessService.Implementations
       _orderDataProvider = poDataProvider;
       _bookingDataProvider = bookingDataProvider;
       _bookingRepository = bookingRepository;
-      pageSize = 6;
     }
 
     public async Task<List<OrderDetailDTO>> ListShipmentFilterAsync(int? page, string origin = null, string originPort = null, string mode = null, string warehouse = null,

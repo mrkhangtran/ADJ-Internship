@@ -1,4 +1,16 @@
-﻿$(document.body).on('click', '.searchButton', function () {
+﻿$(document.body).on('click', '.paging', function () {
+  var value = $(this).attr("value");
+  var name = $(this).attr("name");
+  $('<input />').attr('type', 'hidden')
+    .attr('name', name)
+    .attr('value', value)
+    .attr('id', "pageValue")
+    .appendTo('#bookingForm');
+
+  $("#bookingForm").submit();
+});
+
+$(document.body).on('click', '.searchButton', function () {
   if ($("#filterForm").valid()) {
     //get data from form
     var page = 1;
@@ -42,6 +54,7 @@
 showResult = function showResult() {
   $(document).ready(function () {
     $('#openmodal').trigger('click');
+    $('#pageValue').remove();
   });
 };
 
