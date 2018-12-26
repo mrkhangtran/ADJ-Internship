@@ -85,7 +85,7 @@ namespace ADJ.BusinessService.Implementations
       }
       if (Status != null)
       {
-        Expression<Func<Order, bool>> filterStatus = x => x.Status.ToString() == Status;
+        Expression<Func<Order, bool>> filterStatus = x => x.OrderDetails.Where(p=>p.Status.ToString()==Status).Count()>0;
         All = All.And(filterStatus);
         //add condition x.depts==depts
       }
@@ -174,6 +174,10 @@ namespace ADJ.BusinessService.Implementations
           {
             temp += item.ReviseQuantity;
             orderDetail.ReviseQuantity = item.ReviseQuantity;
+            if (orderDetail.Quantity == item.ReviseQuantity)
+            {
+              orderDetail.Status = OrderStatus.AwaitingBooking;
+            }
             _orderdetailRepository.Update(orderDetail);
           }
           else
@@ -205,6 +209,10 @@ namespace ADJ.BusinessService.Implementations
           {
             temp += item.ReviseQuantity;
             orderDetail.ReviseQuantity = item.ReviseQuantity;
+            if (orderDetail.Quantity == item.ReviseQuantity)
+            {
+              orderDetail.Status = OrderStatus.AwaitingBooking;
+            }
             _orderdetailRepository.Update(orderDetail);
           }
           else

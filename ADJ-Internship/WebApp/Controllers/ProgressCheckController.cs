@@ -18,7 +18,7 @@ namespace WebApp.Controllers
       _prcService = prcService;
     }
     // GET: ProgressCheckDto
-    public async Task<ActionResult> Index(int? pageIndex, string PONumberSearch = null, string ItemSearch = null, string Suppliers = null, string Factories = null, string Origins = null, string OriginPorts = null, string Depts = null,string Status=null)
+    public async Task<ActionResult> Index(int? pageIndex, string PONumberSearch = null, string ItemSearch = null, string Suppliers = null, string Factories = null, string Origins = null, string OriginPorts = null, string Depts = null,string Status=null,bool? checkClick=null)
     {
       string check = PONumberSearch + ItemSearch + Suppliers + Factories + Origins + OriginPorts + Depts+Status;
       GetItemSearchDto getSearchItem = await _prcService.SearchItem();
@@ -31,7 +31,7 @@ namespace WebApp.Controllers
       int current = pageIndex ?? 1;
       ViewBag.pageIndex = current;
       PagedListResult<ProgressCheckDto> lstPrc = await _prcService.ListProgressCheckDtoAsync(current, 2, PONumberSearch, ItemSearch, Suppliers, Factories, Origins, OriginPorts, Depts,Status);
-      if (!String.IsNullOrEmpty(check))
+      if (checkClick==true)
       {
         return PartialView("_SearchingPartial", lstPrc);
       }
