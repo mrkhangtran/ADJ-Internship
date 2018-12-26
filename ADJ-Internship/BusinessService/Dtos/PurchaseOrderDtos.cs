@@ -189,6 +189,7 @@ namespace ADJ.BusinessService.Dtos
     public float UnitPrice { get; set; }
 
     //Item Quantity*Unit Price = Total Price
+    [Display(Name = "Total Price")]
     public float TotalPrice
     {
       get
@@ -203,6 +204,7 @@ namespace ADJ.BusinessService.Dtos
     public float RetailPrice { get; set; }
 
     //Item Quantity*Retail Price = Total Retail Price
+    [Display(Name = "Total Retail Price")]
     public float TotalRetailPrice
     {
       get

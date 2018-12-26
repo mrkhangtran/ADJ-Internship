@@ -44,6 +44,7 @@ $(document.body).on('click', '.searchButton', function () {
       },
       url: "/ShipmentBooking/Filter",
       success: function (objOperations) {
+        showResult();
         $("#resultPartial").html(objOperations);
         rebindValidators();
       }

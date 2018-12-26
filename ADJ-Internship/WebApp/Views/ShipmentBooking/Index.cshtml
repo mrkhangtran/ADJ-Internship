@@ -8,19 +8,19 @@
     <partial name="_Filter" model="Model" />
   </div>
 
-  <div class="uk-grid-divider" uk-grid></div>
-
 </form>
 
+<hr class="uk-divider-icon" />
+
 <form asp-action="Booking" asp-controller="ShipmentBooking" id="bookingForm"
-data-ajax-success="showResult"
+      data-ajax-success="showResult"
       data-ajax="true"
       data-ajax-method="POST"
       data-ajax-mode="replace"
       data-ajax-update="#resultPartial">
 
-  <div id="resultPartial" class="uk-grid">
-      <partial name="_Result" model="Model" />
+  <div id="resultPartial">
+    <partial name="_Result" model="Model" />
   </div>
 </form>
 
