@@ -184,6 +184,11 @@ namespace ADJ.WebApp.Controllers
       }
 
       ModelState.Clear();
+
+      if (method.Contains("ReadOnly"))
+      {
+        return PartialView("_OrderDetail_ReadOnly", addModel);
+      }
       return PartialView("_OrderDetail", addModel);
     }
 
@@ -213,6 +218,33 @@ namespace ADJ.WebApp.Controllers
       ViewBag.PageSize = pageSize;
 
       return View(editModel);
+    }
+
+    public async Task<ActionResult> Detail(string PONumber)
+    {
+      if (PONumber == null)
+      {
+        return StatusCode(404);
+      }
+
+      OrderDTO viewModel = new OrderDTO();
+      viewModel = await _poService.GetOrderByPONumber(PONumber);
+
+      if (viewModel.Id == 0)
+      {
+        return StatusCode(404);
+      }
+
+      viewModel.Method = "Detail for Order Number: " + viewModel.PONumber;
+      viewModel.SingleOrderDetail = new OrderDetailDTO();
+      viewModel.SingleOrderDetail.OrderId = viewModel.Id;
+      viewModel.SingleOrderDetail.ItemNumber = viewModel.PODetails.Items[0].ItemNumber;
+
+      SetDropDownList();
+      ViewBag.ItemId = -2;
+      ViewBag.PageSize = pageSize;
+
+      return View(viewModel);
     }
 
     //Copy an Order

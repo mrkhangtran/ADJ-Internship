@@ -4,31 +4,29 @@
 
 <h3>@Model.Method</h3>
 
+<span class="uk-alert-danger">@ViewBag.OrderDetailError</span>
+
 <form asp-action="Create" asp-controller="PurchaseOrder" id="orderForm">
   <input asp-for="Method" value=@Model.Method type="hidden" />
   <input asp-for="Id" value=@Model.Id type="hidden" />
   <input asp-for="RowVersion" value=@Model.RowVersion type="hidden" />
   <input asp-for="SingleOrderDetail.Id" value=@Model.SingleOrderDetail.Id type="hidden" />
 
-  <span class="uk-alert-danger">@ViewBag.OrderDetailError</span>
-
   <div class="uk-card uk-card-default uk-card-body">
-    <partial name="_Order" model="Model" />
+    <partial name="_Order_ReadOnly" model="Model" />
   </div>
 
   <hr class="uk-divider-icon">
 
   <div class="uk-card uk-card-default uk-card-body" id="orderDetailPartial">
-    <partial name="_OrderDetail" model="Model" />
-  </div>
-
-  <hr class="uk-divider-icon">
-
-  <div class="uk-card uk-card-default uk-card-body">
-    <a class="uk-link-text" asp-controller="Order" asp-action="Display">Back to List</a>
+    <partial name="_OrderDetail_ReadOnly" model="Model" />
   </div>
 
 </form>
+
+<div class="uk-card uk-card-default uk-card-body">
+  <a class="uk-link-text" asp-controller="Order" asp-action="Display">Back to List</a>
+</div>
 
 @section Scripts
   {
