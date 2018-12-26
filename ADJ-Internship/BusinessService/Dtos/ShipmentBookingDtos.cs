@@ -65,7 +65,7 @@ namespace ADJ.BusinessService.Dtos
 
     public OrderStatus Status { get; set; }
 
-    public Guid Shipment { get; set; }
+    public Guid ShipmentID { get; set; }
 
     public List<ShipmentResultDtos> OrderDetails { get; set; }
 
@@ -151,7 +151,6 @@ namespace ADJ.BusinessService.Dtos
     public string PackType { get; set; }
 
     [Display(Name = "PO Ship Date")]
-    [NotInThePast(ErrorMessage = "Cannot be set in the past")]
     public DateTime POShipDate { get; set; }
 
     //Default as "Awaiting Booking"

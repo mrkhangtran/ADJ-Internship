@@ -102,6 +102,22 @@ namespace ADJ.BusinessService.Implementations
       return Mapper.Map<List<OrderDetailDTO>>(result.Items);
     }
 
+    public async Task<List<ShipmentResultDtos>> UpdatePackType(List<ShipmentResultDtos> input)
+    {
+      List<ShipmentResultDtos> output = input;
+
+      foreach (var item in output)
+      {
+        if (item.Status == OrderStatus.BookingMade)
+        {
+          Booking booking = await GetBookingByItemNumber(item.ItemNumber);
+          item.PackType = booking.PackType;
+        }
+      }
+
+      return output;
+    }
+
     public async Task<List<ShipmentResultDtos>> ConvertToResultAsync(List<OrderDetailDTO> input)
     {
       List<ShipmentResultDtos> result = new List<ShipmentResultDtos>();
@@ -137,23 +153,35 @@ namespace ADJ.BusinessService.Implementations
 
       List<ShipmentBookingDtos> bookings = ConvertToBookingList(booking);
 
+      PagedListResult<Booking> bookingDb = await _bookingDataProvider.ListAsync();
+
       foreach (var item in bookings)
       {
-        Booking entity;
+        Booking entity = new Booking();
         if (item.Status == OrderStatus.BookingMade)
         {
-          entity = await GetBookingByItemNumber(item.ItemNumber);
+          //entity = await GetBookingByItemNumber(item.ItemNumber);
+          foreach (var detail in bookingDb.Items)
+          {
+            if (detail.ItemNumber == item.ItemNumber)
+            {
+              entity = detail;
+              break;
+            }
+          }
+
           if (entity == null)
           {
             throw new AppException("Booking Not Found");
           }
 
           item.Id = entity.Id;
-          item.RowVersion = entity.RowVersion.ToString();
-
-          entity = Mapper.Map(booking, entity);
+          var temp = entity.RowVersion;
+          entity = Mapper.Map(item, entity);
+          entity.RowVersion = temp;
 
           _bookingRepository.Update(entity);
+          result.Add(entity);
         }
         else
         {
@@ -174,7 +202,7 @@ namespace ADJ.BusinessService.Implementations
     {
       List<ShipmentBookingDtos> result = new List<ShipmentBookingDtos>();
 
-      Guid shipment = Guid.NewGuid();
+      Guid shipmentId = Guid.NewGuid();
 
       foreach (var item in input.OrderDetails)
         if (item.Selected)
@@ -196,7 +224,7 @@ namespace ADJ.BusinessService.Implementations
             output.ETD = input.ETD;
             output.ETA = input.ETA;
 
-            output.Shipment = shipment;
+            output.ShipmentID = shipmentId;
 
             result.Add(output);
           }
@@ -207,15 +235,20 @@ namespace ADJ.BusinessService.Implementations
 
     public async Task<ShipmentBookingDtos> ChangeItemStatus(ShipmentBookingDtos input)
     {
-      //List<OrderDetailDTO> _orderDetailRepository.Query(x => x.ItemNumber == )
-
       foreach (var item in input.OrderDetails)
         if (item.Selected)
         {
           {
             item.Status = OrderStatus.BookingMade;
+
+            List<OrderDetail> orderDetails = await _orderDetailRepository.Query(x => x.ItemNumber == item.ItemNumber, false).SelectAsync();
+            orderDetails[0].Status = OrderStatus.BookingMade;
+
+            _orderDetailRepository.Update(orderDetails[0]);
           }
         }
+
+      await UnitOfWork.SaveChangesAsync();
 
       return input;
     }

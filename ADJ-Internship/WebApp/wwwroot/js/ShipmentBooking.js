@@ -1,28 +1,4 @@
-﻿//$(document.body).on('click', '.bookButton', function () {
-//  if ($("#bookingForm").valid()) {
-//    //get data from form
-//    var booking = [];
-//    var items = document.getElementsByClassName("booking");
-//    $.each(items, function () {
-//      filters.push($(this).val());
-//    });
-
-//    $.ajax({
-//      type: "POST",
-//      data: {
-//        booking: booking
-//      },
-//      url: "/ShipmentBooking/Booking",
-//      success: function (objOperations) {
-//        alert("Your shipment is successfully made");
-//        $("#resultPartial").html(objOperations);
-//        rebindValidators();
-//      }
-//    });
-//  }
-//});
-
-$(document.body).on('click', '.searchButton', function () {
+﻿$(document.body).on('click', '.searchButton', function () {
   if ($("#filterForm").valid()) {
     //get data from form
     var page = 1;
@@ -62,6 +38,12 @@ $(document.body).on('click', '.searchButton', function () {
     });
   }
 });
+
+showResult = function showResult() {
+  $(document).ready(function () {
+    $('#openmodal').trigger('click');
+  });
+};
 
 function rebindValidators() {
   var $form = $("#orderForm");

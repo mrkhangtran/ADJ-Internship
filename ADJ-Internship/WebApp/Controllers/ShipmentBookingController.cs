@@ -37,6 +37,8 @@ namespace WebApp.Controllers
 
       model.OrderDetails = await _bookingService.ConvertToResultAsync(await _bookingService.ListShipmentFilterAsync(page, origin, originPort, mode, warehouse, status, vendor, poNumber, itemNumber));
 
+      model.OrderDetails = await _bookingService.UpdatePackType(model.OrderDetails);
+
       return PartialView("_Result", model);
     }
 
@@ -47,9 +49,13 @@ namespace WebApp.Controllers
 
       if (ModelState.IsValid)
       {
-        await _bookingService.CreateOrUpdateBookingAsync(model);
-        ModelState.Clear();
-        
+        if (model.OrderDetails != null)
+        {
+          await _bookingService.CreateOrUpdateBookingAsync(model);
+          ModelState.Clear();
+          model = await _bookingService.ChangeItemStatus(model);
+          ViewBag.ShowModal = true;
+        }
       }
 
       return PartialView("_Result", model);

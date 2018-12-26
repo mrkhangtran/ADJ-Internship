@@ -1,5 +1,27 @@
 ﻿@model ADJ.BusinessService.Dtos.ShipmentBookingDtos;
 
+@if (ViewBag.ShowModal == true)
+{
+  <button type="button" uk-toggle="target: #resultModal" id="openmodal" hidden="hidden">Open</button>
+
+  <div id="resultModal" uk-modal>
+    <div class="uk-modal-dialog uk-modal-body">
+      <h2 class="uk-modal-title">Shipment created</h2>
+      <p>Shipment contain following items: </p>
+      @foreach (var item in Model.OrderDetails)
+      {
+        @if (item.Selected)
+        {
+          <span>@item.ItemNumber </span>
+        }
+      }
+      <p class="uk-text-right">
+        <button class="uk-button uk-button-default uk-modal-close" type="button">Close</button>
+      </p>
+    </div>
+  </div>
+}
+
 <div class="uk-card uk-card-default uk-card-body">
   <div class="uk-grid">
     <div>
@@ -65,7 +87,7 @@
 @if (Model.OrderDetails != null)
 {
   <div class="uk-card uk-card-default uk-card-body">
-    <table class="uk-table uk-table-small uk-table-middle">
+    <table class="uk-table uk-table-small uk-table-middle uk-table-striped uk-table-hover">
       <!--header-->
       <thead>
         <tr>
