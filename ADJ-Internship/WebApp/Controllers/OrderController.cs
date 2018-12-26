@@ -28,12 +28,6 @@ namespace WebApp.Controllers
 			int pageSize = 20;
 			PagedListResult<OrderDto> pagedlistResult = await _orderService.DisplaysAsync(poNumberFilter, current, pageSize);
 
-			if (pagedlistResult.Items.Count == 0)
-			{
-				ViewBag.Message = "There is no available PO";
-				return View(pagedlistResult);
-			}
-
 			return View(pagedlistResult);
 		}
 

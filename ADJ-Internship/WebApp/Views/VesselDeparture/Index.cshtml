@@ -1,0 +1,218 @@
+﻿
+<div class="vessel-right">
+
+	@*header*@
+	<div class="uk-grid uk-width-1-1 vessel-header">
+		<div class="uk-width-2-5">
+			<form class="uk-form-horizontal uk-margin-large">
+				<div class="uk-margin">
+					<label class="uk-form-label vessel-header-label" for="form-horizontal-select">Origin</label>
+					<div class="uk-form-controls vassell-header-formSelect">
+						<select class="uk-select" id="form-horizontal-select">
+							@*@Html.DropDownList("Origins", new SelectList(ViewBag.Origins), "Any", new { @id = "Origins", @class = "uk-select" })*@
+
+							<option>VietNam</option>
+							<option>HongKong</option>
+						</select>
+					</div>
+				</div>
+
+				<div class="uk-margin">
+					<label class="uk-form-label vessel-header-label" for="form-horizontal-select">Origin Port</label>
+					<div class="uk-form-controls vassell-header-formSelect">
+						<select class="uk-select" id="form-horizontal-select">
+							@*@Html.DropDownList("OriginPorts", new SelectList(ViewBag.OriginPorts), "Any", new { @id = "OriginPorts", @class = "uk-select" })*@
+							<option>VietNam</option>
+							<option>HongKong</option>
+
+						</select>
+					</div>
+				</div>
+
+				<div class="uk-margin">
+					<label class="uk-form-label vessel-header-label" for="form-horizontal-select">Loading</label>
+					<div class="uk-form-controls vassell-header-formSelect">
+						<select class="uk-select" id="form-horizontal-select">
+							<option>Option 01</option>
+							<option>Option 02</option>
+						</select>
+					</div>
+				</div>
+
+				<div class="uk-margin">
+					<label class="uk-form-label vessel-header-label" for="form-horizontal-text">Warehouse</label>
+					<div class="uk-form-controls vassell-header-formSelect">
+						<input class="uk-input" id="form-horizontal-text" type="text" placeholder="Some text...">
+					</div>
+				</div>
+
+				<div class="uk-margin">
+					<label class="uk-form-label vessel-header-label" for="form-horizontal-select">Status</label>
+					<div class="uk-form-controls vassell-header-formSelect">
+						<select class="uk-select" id="form-horizontal-select">
+							<option>Pending</option>
+							<option>Despatched</option>
+						</select>
+					</div>
+				</div>
+
+			</form>
+		</div>
+
+		<div class="uk-width-2-5">
+			<form class="uk-form-horizontal uk-margin-large">
+				<div class="uk-margin">
+					<label class="uk-form-label vessel-header-label" for="form-horizontal-select">Vendor</label>
+					<div class="uk-form-controls vassell-header-formSelect">
+						<select class="uk-select" id="form-horizontal-select">
+							@*@Html.DropDownList("Vendor", new SelectList(ViewBag.Vendors), "Any", new { @id = "Vendors", @class = "uk-select" })*@
+							<option>VietNam</option>
+							<option>HongKong</option>
+						</select>
+					</div>
+				</div>
+
+				<div class="uk-margin">
+					<label class="uk-form-label vessel-header-label" for="form-horizontal-select">ETD From</label>
+					<div class="uk-form-controls vassell-header-formSelect">
+						<select class="uk-select" id="form-horizontal-select">
+							<option>Option 01</option>
+							<option>Option 02</option>
+						</select>
+					</div>
+				</div>
+
+				<div class="uk-margin">
+					<label class="uk-form-label vessel-header-label" for="form-horizontal-select">ETD To</label>
+					<div class="uk-form-controls vassell-header-formSelect">
+						<select class="uk-select" id="form-horizontal-select">
+							<option>Option 01</option>
+							<option>Option 02</option>
+						</select>
+					</div>
+				</div>
+
+				<div class="uk-margin">
+					<label class="uk-form-label vessel-header-label" for="form-horizontal-text">PO Number</label>
+					<div class="uk-form-controls vassell-header-formSelect">
+						<input class="uk-input" id="form-horizontal-text" type="text" placeholder="Some text...">
+					</div>
+				</div>
+
+				<div class="uk-margin">
+					<label class="uk-form-label vessel-header-label" for="form-horizontal-text">Item</label>
+					<div class="uk-form-controls vassell-header-formSelect">
+						<input class="uk-input" id="form-horizontal-text" type="text" placeholder="Some text...">
+					</div>
+				</div>
+
+			</form>
+		</div>
+		<div class="uk-width-1-5">
+			<p uk-margin>
+				<button class="uk-button uk-button-primary">
+					Search<span uk-icon="search"></span>
+				</button>
+			</p>
+			<p uk-margin>
+				<button class="uk-button uk-button-danger">
+					Achieve<span uk-icon="check"></span>
+				</button>
+			</p>
+		</div>
+	</div> @*end header*@
+
+	@*table 1*@
+	<div class="uk-grid uk-width-1-1">
+		<table class="uk-table table1">
+			<thead>
+				<tr>
+					<th>Origin Port</th>
+					<th>Dest Port</th>
+					<th>Mode</th>
+					<th>Carrier</th>
+					<th>Voyage</th>
+					<th>ETD</th>
+					<th>ETA</th>
+					<th>Transhipment</th>
+				</tr>
+			</thead>
+
+			<tbody>
+				<tr>
+					<td>
+						<div class="uk-form-controls">
+							<select class="uk-select" id="form-horizontal-select">
+								<option>HCM</option>
+								<option>Option 02</option>
+							</select>
+						</div>
+					</td>
+					<td>
+						<div class="uk-form-controls">
+							<select class="uk-select" id="form-horizontal-select">
+								<option>HONGKONG1</option>
+								<option>Option 02</option>
+							</select>
+						</div>
+					</td>
+					<td>
+						<div class="uk-form-controls">
+							<select class="uk-select" id="form-horizontal-select">
+								<option>ROAD</option>
+								<option>Option 02</option>
+							</select>
+						</div>
+					</td>
+					<td>
+						<div class="uk-form-controls">
+							<select class="uk-select" id="form-horizontal-select">
+								<option>XEKO</option>
+								<option>Option 02</option>
+							</select>
+						</div>
+					</td>
+					<td>test</td>
+					<td>test</td>
+					<td>test</td>
+					<td>
+						<div class="uk-form-controls">
+							<select class="uk-select" id="form-horizontal-select">
+								<option>Confirmed</option>
+								<option>Option 02</option>
+							</select>
+						</div>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+
+	@*table2*@
+	<div class="uk-grid uk-width-1-2">
+		<table class="uk-table">
+			<thead>
+				<tr>
+					<th></th>
+					<th>Container</th>
+					<th>Size</th>
+					<th>Status</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>
+						<div class="uk-margin uk-grid-small uk-child-width-auto uk-grid">
+							<label><input class="uk-checkbox" type="checkbox"></label>
+						</div>
+					</td>
+					<td>test</td>
+					<td>test</td>
+					<td>test</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+
+
+</div>
