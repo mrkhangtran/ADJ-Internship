@@ -124,9 +124,9 @@
       <div class="uk-margin-small uk-container">
         @Html.HiddenFor(model => model.Items[i].OrderId, new { Value = Model.Items[i].OrderId })
         @Html.HiddenFor(model => model.Items[i].Id, new { Value = Model.Items[i].Id })
-        <table class="uk-margin-small">
-          <thead style="color:white">
-            <tr style="background-color:#333">
+        <table class="uk-margin-small uk-table uk-table-small">
+          <thead>
+            <tr>
               <td>
                 Supplier
               </td>
@@ -283,7 +283,8 @@
                 Depts: $('#Depts').val(),
                 PONumberSearch: $('#PONumberSearch').val(),
                 ItemSearch: $('#ItemSearch').val(),
-                Status: $('#Status').val()
+                Status: $('#Status').val(),
+                checkClick:true,
 
             },
             success: function (data) {

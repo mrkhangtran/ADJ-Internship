@@ -85,7 +85,7 @@ namespace ADJ.BusinessService.Implementations
       }
       if (Status != null)
       {
-        Expression<Func<Order, bool>> filterStatus = x => x.Status.ToString() == Status;
+        Expression<Func<Order, bool>> filterStatus = x => x.OrderDetails.Where(p=>p.Status.ToString()==Status).Count()>0;
         All = All.And(filterStatus);
         //add condition x.depts==depts
       }
