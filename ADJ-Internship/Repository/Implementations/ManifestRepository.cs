@@ -10,14 +10,15 @@ using System.Text;
 
 namespace ADJ.Repository.Implementations
 {
-	public class ContainerRepository : RepositoryBase<Container>, IContainerRepository
+	public class ManifestRepository : RepositoryBase<Manifest>, IManifestRepository
 	{
-		public ContainerRepository(ApplicationDbContext dbContext) : base(dbContext)
+		public ManifestRepository(ApplicationDbContext dbContext) : base(dbContext)
 		{
 		}
 
-		protected override Func<IQueryable<Container>, IQueryable<Container>> IncludeDependents =>
-			con => con.Include(x => x.Manifests);
+		protected override Func<IQueryable<Manifest>, IQueryable<Manifest>> IncludeDependents =>
+				null;
 	}
 }
+
 
