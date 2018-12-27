@@ -240,19 +240,15 @@ namespace ADJ.BusinessService.Implementations
             var booking = await _shipmentBookingRepository.Query(p => p.Id == item.BookingId, false).SelectAsync();
             entity.Quantity = item.ShipQuantity;
             entity.Container = container;
-            entity.Loading = container.Loading;
-            entity.Cartons = 12;
-            entity.Cube = 12;
-            entity.KGS = 12;
-            entity.FreightTerms = "abc";
+            entity.Loading = container.Loading;          
             entity.Loading = container.Loading;
             entity.PackType = container.PackType;
             entity.Size = container.Size;
             entity.BookingId = item.BookingId;
-            //entity.Cartons = orderDeatail[0].Cartons;
-            //entity.Cube = orderDeatail[0].Cube;
-            //entity.FreightTerms = item.FreightTerms;
-            //entity.KGS = orderDeatail[0].KGS;
+            entity.Cartons = orderDeatail[0].Cartons;
+            entity.Cube = orderDeatail[0].Cube;
+            entity.FreightTerms = item.FreightTerms;
+            entity.KGS = orderDeatail[0].KGS;
             if (item.BookingQuantity - item.ShipQuantity == 0)
             {
               booking[0].Status = OrderStatus.Manifested;
