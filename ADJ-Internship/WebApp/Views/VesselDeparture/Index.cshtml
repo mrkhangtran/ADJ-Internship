@@ -1,4 +1,5 @@
-﻿
+﻿@model ADJ.Common.PagedListResult<ADJ.BusinessService.Dtos.VesselDepartureDtos.ContainerDto>
+
 <div class="vessel-right">
 
 	@*header*@
@@ -93,25 +94,26 @@
 				<div class="uk-margin">
 					<label class="uk-form-label vessel-header-label" for="form-horizontal-text">PO Number</label>
 					<div class="uk-form-controls vassell-header-formSelect">
-						<input class="uk-input" id="form-horizontal-text" type="text" placeholder="Some text...">
+						<input class="uk-input" id="PONumberSearch" type="text" placeholder="Some text...">
 					</div>
 				</div>
 
 				<div class="uk-margin">
 					<label class="uk-form-label vessel-header-label" for="form-horizontal-text">Item</label>
 					<div class="uk-form-controls vassell-header-formSelect">
-						<input class="uk-input" id="form-horizontal-text" type="text" placeholder="Some text...">
+						<input class="uk-input" name="itemSearch" type="text" value="@Model.CurrentFilter" placeholder="Some text...">
 					</div>
 				</div>
 
 			</form>
 		</div>
 		<div class="uk-width-1-5">
-			<p uk-margin>
-				<button class="uk-button uk-button-primary">
-					Search<span uk-icon="search"></span>
-				</button>
-			</p>
+			<input type="submit" value="Search" class="btnFilter" />
+			@*<p uk-margin>
+			<button class="uk-button uk-button-primary">
+				Search<span uk-icon="search"></span>
+			</button>
+		</p>*@
 			<p uk-margin>
 				<button class="uk-button uk-button-danger">
 					Achieve<span uk-icon="check"></span>
@@ -160,9 +162,9 @@
 						<div class="uk-form-controls">
 							@Html.DropDownList("Modes", new SelectList(ViewBag.Modes), "Any", new { @id = "Modes", @class = "uk-select" })
 							@*<select class="uk-select" id="form-horizontal-select">
-			<option>ROAD</option>
-			<option>Option 02</option>
-		</select>*@
+									<option>ROAD</option>
+									<option>Option 02</option>
+								</select>*@
 						</div>
 					</td>
 					<td>
@@ -201,16 +203,20 @@
 				</tr>
 			</thead>
 			<tbody>
-				<tr>
-					<td>
-						<div class="uk-margin uk-grid-small uk-child-width-auto uk-grid">
-							<label><input class="uk-checkbox" type="checkbox"></label>
-						</div>
-					</td>
-					<td>test</td>
-					<td>test</td>
-					<td>test</td>
-				</tr>
+				@foreach (var i in Model.Items)
+				{
+					<tr>
+						<td>
+							<div class="uk-margin uk-grid-small uk-child-width-auto uk-grid">
+								<label><input class="uk-checkbox" type="checkbox"></label>
+							</div>
+						</td>
+						<td>@i.Name</td>
+						<td>@i.Size</td>
+						<td>@i.Status</td>
+					</tr>
+				}
+
 			</tbody>
 		</table>
 	</div>

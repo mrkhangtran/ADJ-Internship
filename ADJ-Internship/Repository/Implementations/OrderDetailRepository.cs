@@ -16,7 +16,7 @@ namespace ADJ.Repository.Implementations
 		public OrderDetailRepository(ApplicationDbContext dbContext) : base(dbContext)
 		{
 		}
-		protected override Func<IQueryable<OrderDetail>, IQueryable<OrderDetail>> IncludeDependents => null;
+		protected override Func<IQueryable<OrderDetail>, IQueryable<OrderDetail>> IncludeDependents => con => con.Include(x => x.Order);
 
 
 	}
