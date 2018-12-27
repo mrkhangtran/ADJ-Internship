@@ -99,8 +99,6 @@ namespace ADJ.BusinessService.Implementations
       List<string> originPorts = listBooking.Select(p => p.PortOfLoading).ToList();
       List<DateTime> ETDs = listBooking.Select(p => p.ETD).ToList();
       List<string> destinationPorts = listBooking.Select(p => p.PortOfDelivery).ToList();
-
-      //BookingHasManifestContainer
       foreach (var container in containers.Items)
       {
         List<ItemManifest> itemManifests = new List<ItemManifest>();
@@ -135,7 +133,8 @@ namespace ADJ.BusinessService.Implementations
         shipmentManifestsDto.PackType = container.PackType;
         shipmentManifestsDtos.Add(shipmentManifestsDto);
       }
-      //BookingHasn'tManifestContainer
+      pageResult.Items = shipmentManifestsDtos;
+      pageResult.PageCount = containers.PageCount;
       List<Booking> listBookingNoContainer = listBooking.Where(p => p.Status == OrderStatus.BookingMade).OrderBy(p => p.PortOfLoading).ToList();
       ShipmentManifestsDtos shipmentNoContainerDto = new ShipmentManifestsDtos();
       List<ItemManifest> itemNoContainer = new List<ItemManifest>();
@@ -161,17 +160,14 @@ namespace ADJ.BusinessService.Implementations
         }
         shipmentNoContainerDto.Id = 0;
         shipmentNoContainerDto.Manifests = itemNoContainer;
-      }
-      //shipmentManifestsDtos.Add(shipmentNoContainerDto);
-      pageResult.Items = shipmentManifestsDtos;
-      pageResult.PageCount = containers.PageCount;
-      if (containers.PageCount % 2 == 0 && shipmentNoContainerDto.Id!=0)
-      {
-        pageResult.PageCount = containers.PageCount + 1;
-      }
-      if (pageIndex == pageResult.PageCount && shipmentNoContainerDto.Id!=0)
-      {
-        pageResult.Items.Add(shipmentNoContainerDto);
+        if (containers.TotalCount % 2 == 0)
+        {
+          pageResult.PageCount = containers.PageCount + 1;
+        }
+        if (pageIndex == pageResult.PageCount)
+        {
+          pageResult.Items.Add(shipmentNoContainerDto);
+        }
       }
 
       return pageResult;
@@ -200,13 +196,18 @@ namespace ADJ.BusinessService.Implementations
       if (rq.Id > 0)
       {
         container = await _containerRepository.GetByIdAsync(rq.Id, true);
+        container.Name = rq.Name;
+        container.Size = rq.Size;
+        container.Loading = rq.Loading;
+        container.PackType = rq.PackType;
+        _containerRepository.Update(container);
         foreach (var itemManifest in rq.Manifests)
         {
           var manifest = await _manifestRepository.Query(p => p.Id == itemManifest.Id, true).SelectAsync();
           entity = manifest[0];
           if (entity == null)
           {
-            throw new AppException("Progress Check Not Found");
+            throw new AppException("Shipment Manifest Not Found");
           }
           else
           {
@@ -233,41 +234,46 @@ namespace ADJ.BusinessService.Implementations
         List<Manifest> manifests = new List<Manifest>();
         foreach (var item in rq.Manifests)
         {
-          var orderDeatail = await _orderDetailRepository.Query(p => p.ItemNumber == item.ItemNumber, false).SelectAsync();
-          var booking = await _shipmentBookingRepository.Query(p => p.Id == item.BookingId, false).SelectAsync();
-          entity.Quantity = item.ShipQuantity;
-          entity.Container = container;
-          entity.Loading = container.Loading;
-          entity.Cartons = 12;
-          entity.Cube = 12;
-          entity.KGS = 12;
-          entity.FreightTerms = "abc";
-          entity.Loading = container.Loading;
-          entity.PackType = container.PackType;
-          entity.Size = container.Size;
-          entity.BookingId = item.BookingId;
-          //entity.Cartons = orderDeatail[0].Cartons;
-          //entity.Cube = orderDeatail[0].Cube;
-          //entity.FreightTerms = item.FreightTerms;
-          //entity.KGS = orderDeatail[0].KGS;
-          if (item.BookingQuantity - item.ShipQuantity == 0)
+          if (item.selectedItem == true)
           {
-            booking[0].Status = OrderStatus.Manifested;
-          }
-          if (item.BookingQuantity - item.ShipQuantity > 0)
-          {
-            booking[0].Status = OrderStatus.PartlyManifested;
-          }
-          entity.Booking = booking[0];
-          manifests.Add(entity);
-          _shipmentBookingRepository.Update(booking[0]);
+            var orderDeatail = await _orderDetailRepository.Query(p => p.ItemNumber == item.ItemNumber, false).SelectAsync();
+            var booking = await _shipmentBookingRepository.Query(p => p.Id == item.BookingId, false).SelectAsync();
+            entity.Quantity = item.ShipQuantity;
+            entity.Container = container;
+            entity.Loading = container.Loading;
+            entity.Cartons = 12;
+            entity.Cube = 12;
+            entity.KGS = 12;
+            entity.FreightTerms = "abc";
+            entity.Loading = container.Loading;
+            entity.PackType = container.PackType;
+            entity.Size = container.Size;
+            entity.BookingId = item.BookingId;
+            //entity.Cartons = orderDeatail[0].Cartons;
+            //entity.Cube = orderDeatail[0].Cube;
+            //entity.FreightTerms = item.FreightTerms;
+            //entity.KGS = orderDeatail[0].KGS;
+            if (item.BookingQuantity - item.ShipQuantity == 0)
+            {
+              booking[0].Status = OrderStatus.Manifested;
+            }
+            if (item.BookingQuantity - item.ShipQuantity > 0)
+            {
+              booking[0].Status = OrderStatus.PartlyManifested;
+            }
+            entity.Booking = booking[0];
 
+            manifests.Add(entity);
+            _shipmentBookingRepository.Update(booking[0]);
+          }
         }
-        container.Manifests = manifests;
-        _containerRepository.Insert(container);
+        if (manifests.Count > 0)
+        {
+          container.Manifests = manifests;
+          _containerRepository.Insert(container);
+        }
       }
       await UnitOfWork.SaveChangesAsync();
-
       var rs = Mapper.Map<ShipmentManifestsDtos>(container);
       return rs;
     }

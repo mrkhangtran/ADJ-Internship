@@ -1,6 +1,5 @@
 ﻿@model ADJ.Common.PagedListResult<ADJ.BusinessService.Dtos.ShipmentManifestsDtos>
-@using (Html.BeginForm())
-{
+<form id="manifest" asp-action="CreateOrUpdate" asp-controller="Manifest">
   <div class="uk-container">
     <div class="uk-grid">
       <div class="uk-width-1-3">
@@ -47,8 +46,8 @@
           <tbody>
             <tr>
               <td><label>Vendor</label></td>
-              <td>             
-                  <input id="Vendor" class="uk-input" />
+              <td>
+                <input id="Vendor" class="uk-input" />
               </td>
             </tr>
             <tr>
@@ -127,9 +126,12 @@
           </thead>
           <tbody>
             <tr>
-              <td></td>
               <td>
-                <input asp-for="Items[i].Name" class="uk-input" />
+                <input type="checkbox" asp-for="Items[i].selectedContainer" />
+              </td>
+              <td>
+                <input id="containerName" asp-for="Items[i].Name" class="uk-input" />
+                <span class="uk-text-danger" asp-validation-for="Items[i].Name" id="validationName" hidden></span>
               </td>
               <td>
                 @Html.DropDownListFor(model=>model.Items[i].Size,
@@ -137,11 +139,11 @@
               </td>
               <td>
                 @Html.DropDownListFor(model=>model.Items[i].Loading,
-                    new SelectList(ViewBag.Size),Model.Items[i].Loading, new { @class = "uk-input" })
+                    new SelectList(ViewBag.Loading),Model.Items[i].Loading, new { @class = "uk-input" })
               </td>
               <td>
                 @Html.DropDownListFor(model=>model.Items[i].PackType,
-                    new SelectList(ViewBag.Size),Model.Items[i].PackType, new { @class = "uk-input" })
+                    new SelectList(ViewBag.PackType),Model.Items[i].PackType, new { @class = "uk-input" })
               </td>
             </tr>
           </tbody>
@@ -206,7 +208,12 @@
               @Html.HiddenFor(model => model.Items[i].Manifests[j].Id, new { Value = Model.Items[i].Manifests[j].Id })
 
               <tr>
-                <td></td>
+                <td>
+                  @if (Model.Items[i].Id == 0)
+                  {
+                  <input type="checkbox" asp-for="Items[i].Manifests[j].selectedItem" />
+                  }
+                </td>
                 <td>
                   @Model.Items[i].Manifests[j].Supplier
                 </td>
@@ -229,7 +236,8 @@
                   @Model.Items[i].Manifests[j].OpenQuantity
                 </td>
                 <td>
-                  <input asp-for="Items[i].Manifests[j].ShipQuantity" class="uk-input" />
+                  <input id="shipQuantity" asp-for="Items[i].Manifests[j].ShipQuantity" class="uk-input" />
+                  <span class="uk-text-danger" asp-validation-for="Items[i].Manifests[j].ShipQuantity" id="validationShipQuantity" hidden></span>
                 </td>
                 <td>
                   @Model.Items[i].Manifests[j].BookingCartons
@@ -280,6 +288,26 @@
   </div>
   <br />
   <br />
+</form>
+@if (ViewBag.modalResult != null)
+{
+  string result = ViewBag.modalResult;
+  <button type="button" uk-toggle="target: #modal-center" id="openmodal" hidden="hidden">Open</button>
+  <div id="modal-center" class="uk-flex-top" uk-modal>
+    <div class="uk-modal-dialog uk-modal-body uk-margin-auto-vertical">
+      <button class="uk-modal-close-default" type="button" uk-close></button>
+      @{
+        if (result == "success")
+        {
+          <p class="uk-text-success">Your shipment is successfully manifested</p>
+        }
+        else if (result == "invalid")
+        {
+          <p class="uk-text-danger">Ship Quantity is invalid, please try again</p>
+        }
+      }
+    </div>
+  </div>
 }
 <script src="~/js/jquery-3.3.1.min.js"></script>
 <script type="text/javascript">
@@ -309,6 +337,14 @@
   $("#Achieve").click(function (event) {
     if (!confirm('Are you sure that you want to submit the form'))
       event.preventDefault();
+  });
+  $(document).ready(function () {
+     $('#openmodal').trigger('click');
+  });
+  $('#manifest').submit(function () {
+    if ($('#containerName').val() == "" || $('#shipQuantity').val() == "") {
+      alert("Please fill in all Required fields.")
+    }
   });
 </script>
 

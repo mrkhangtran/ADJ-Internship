@@ -5,12 +5,15 @@ using ADJ.DataModel.ShipmentTrack;
 using AutoMapper;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Text;
+using static ADJ.BusinessService.Validators.ContainerDtoValidators;
 
 namespace ADJ.BusinessService.Dtos
 {
   public class ShipmentManifestsDtos : EntityDtoBase, ICreateMapping
   {
+    [Required]
     public string Name { get; set; }
 
     public OrderStatus Status { get; set; }
@@ -22,6 +25,7 @@ namespace ADJ.BusinessService.Dtos
     public string PackType { get; set; }
 
     public List<ItemManifest> Manifests { get; set; }
+    public bool selectedContainer { get; set; }
 
     public void CreateMapping(Profile profile)
     {
@@ -31,7 +35,7 @@ namespace ADJ.BusinessService.Dtos
   }
   public class ItemManifest : EntityDtoBase, ICreateMapping
   {
-    public bool selected { get; set; }
+    public bool selectedItem { get; set; }
 
     public int BookingId { get; set; }
 
@@ -47,6 +51,8 @@ namespace ADJ.BusinessService.Dtos
 
     public decimal OpenQuantity { get; set; }     //= Booking Quantity - Total Ship Quantity (recorded in database)
 
+    [Required]
+    [ShipQuantityValidation("BookingQuantity")]
     public decimal ShipQuantity { get; set; }
 
     public decimal BookingCartons { get; set; } //= Booking Qty* Carton(of 1 item)

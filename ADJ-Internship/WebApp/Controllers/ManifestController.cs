@@ -18,10 +18,10 @@ namespace WebApp.Controllers
       _manifestService = manifestService;
     }
     // GET: Manifest
-    public async Task<ActionResult> Index(int? pageIndex, string DestinationPort = null, string OriginPort = null, string Carrier = null, DateTime? ETDFrom = null, DateTime? ETDTo = null, string Status = null, string Vendor = null, string PONumber = null, string Item = null,bool? checkClick=null)
+    public async Task<ActionResult> Index(int? pageIndex, string DestinationPort = null, string OriginPort = null, string Carrier = null, DateTime? ETDFrom = null, DateTime? ETDTo = null, string Status = null, string Vendor = null, string PONumber = null, string Item = null, bool? checkClick = null)
     {
-      ViewBag.Size = new List<string> {"20GP","40HC"};
-      ViewBag.PackType = new List<string> {"Boxed","Carton" };
+      ViewBag.Size = new List<string> { "20GP", "40HC" };
+      ViewBag.PackType = new List<string> { "Boxed", "Carton" };
       ViewBag.Loading = new List<string> { "ROAD" };
       SearchingManifestItem searchItem = await _manifestService.SearchItem();
       ViewBag.OriginPorts = searchItem.OriginPorts;
@@ -29,19 +29,31 @@ namespace WebApp.Controllers
       ViewBag.Dest = searchItem.DestinationPort;
       ViewBag.Status = searchItem.Status;
       int current = pageIndex ?? 1;
-      PagedListResult<ShipmentManifestsDtos> listManifest = await _manifestService.ListManifestDtoAsync(current,2,DestinationPort,OriginPort,Carrier,ETDFrom,ETDTo,Status,Vendor,PONumber,Item);
-      if (checkClick==true)
+      PagedListResult<ShipmentManifestsDtos> listManifest = await _manifestService.ListManifestDtoAsync(current, 2, DestinationPort, OriginPort, Carrier, ETDFrom, ETDTo, Status, Vendor, PONumber, Item);
+      if (checkClick == true)
       {
         return PartialView("_SearchingManifestPartial", listManifest);
       }
       return View("Index", listManifest);
     }
     [HttpPost]
-    public async Task<ActionResult> Index(PagedListResult<ShipmentManifestsDtos> shipmentManifestDtos)
+    public async Task<ActionResult> CreateOrUpdate(PagedListResult<ShipmentManifestsDtos> shipmentManifestDtos)
     {
-      foreach(var manifest in shipmentManifestDtos.Items)
+      ViewBag.modalResult = null;     
+      if (ModelState.IsValid)
       {
-       await _manifestService.CreateOrUpdateContainerAsync(manifest);
+        foreach (var manifest in shipmentManifestDtos.Items)
+        {
+          if (manifest.selectedContainer == true)
+          {
+            await _manifestService.CreateOrUpdateContainerAsync(manifest);
+            ViewBag.modalResult = "success";
+          }
+        }
+      }
+      else
+      {     
+          ViewBag.modalResult = "invalid";       
       }
       ViewBag.Size = new List<string> { "20GP", "40HC" };
       ViewBag.PackType = new List<string> { "Boxed", "Carton" };

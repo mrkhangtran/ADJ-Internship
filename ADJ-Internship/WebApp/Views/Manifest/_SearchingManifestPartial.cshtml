@@ -1,12 +1,13 @@
 ﻿@model ADJ.Common.PagedListResult<ADJ.BusinessService.Dtos.ShipmentManifestsDtos>
 @if (Model.Items.Count() == 0)
 {
-  <p>asdasdasdasdasd</p>
+<p class="uk-text-warning">No matching results were found. Please try again</p>
 }
 else
 {
   @for (var i = 0; i < Model.Items.Count(); i++)
   {
+    @Html.HiddenFor(model => model.Items[i].Id, new { Value = Model.Items[i].Id })
     <br />
     <br />
     <div class="uk-container">
@@ -30,21 +31,24 @@ else
         </thead>
         <tbody>
           <tr>
-            <td></td>
             <td>
-              <input asp-for="Items[i].Name" class="uk-input" />
+              <input class="checkbox" type="checkbox" asp-for="Items[i].selectedContainer" />
             </td>
             <td>
-              @Html.DropDownListFor(model => model.Items[i].Size,
-                 new SelectList(ViewBag.Size), Model.Items[i].Size, new { @class = "uk-input" })
+              <input id="containerName" asp-for="Items[i].Name" class="uk-input" />
+              <span class="uk-text-danger" asp-validation-for="Items[i].Name" id="validationName" hidden></span>
             </td>
             <td>
-              @Html.DropDownListFor(model => model.Items[i].Loading,
-               new SelectList(ViewBag.Size), Model.Items[i].Loading, new { @class = "uk-input" })
+              @Html.DropDownListFor(model=>model.Items[i].Size,
+                    new SelectList(ViewBag.Size),Model.Items[i].Size,new {@class="uk-input" })
             </td>
             <td>
-              @Html.DropDownListFor(model => model.Items[i].PackType,
-               new SelectList(ViewBag.Size), Model.Items[i].PackType, new { @class = "uk-input" })
+              @Html.DropDownListFor(model=>model.Items[i].Loading,
+                  new SelectList(ViewBag.Loading),Model.Items[i].Loading, new { @class = "uk-input" })
+            </td>
+            <td>
+              @Html.DropDownListFor(model=>model.Items[i].PackType,
+                  new SelectList(ViewBag.PackType),Model.Items[i].PackType, new { @class = "uk-input" })
             </td>
           </tr>
         </tbody>
@@ -101,10 +105,20 @@ else
           </tr>
         </thead>
         <tbody>
-          @for (var j = 0; j < Model.Items[i].Manifests.Count; j++)
+          @for (var j = 0; j < Model.Items[i].Manifests.Count(); j++)
           {
+            @Html.HiddenFor(model => model.Items[i].Manifests[j].BookingId, new { Value = Model.Items[i].Manifests[j].BookingId })
+            @Html.HiddenFor(model => model.Items[i].Manifests[j].ItemNumber, new { Value = Model.Items[i].Manifests[j].ItemNumber })
+            @Html.HiddenFor(model => model.Items[i].Manifests[j].BookingQuantity, new { Value = Model.Items[i].Manifests[j].BookingQuantity })
+            @Html.HiddenFor(model => model.Items[i].Manifests[j].Id, new { Value = Model.Items[i].Manifests[j].Id })
+
             <tr>
-              <td></td>
+              <td>
+                @if (Model.Items[i].Id == 0)
+                {
+                  <input class="uk-checkbox" type="checkbox" asp-for="Items[i].Manifests[j].selectedItem" />
+                }
+              </td>
               <td>
                 @Model.Items[i].Manifests[j].Supplier
               </td>
@@ -127,7 +141,8 @@ else
                 @Model.Items[i].Manifests[j].OpenQuantity
               </td>
               <td>
-                <input asp-for="Items[i].Manifests[j].ShipQuantity" class="uk-input" />
+                <input id="shipQuantity" asp-for="Items[i].Manifests[j].ShipQuantity" class="uk-input" />
+                <span class="uk-text-danger" asp-validation-for="Items[i].Manifests[j].ShipQuantity" id="validationShipQuantity" hidden></span>
               </td>
               <td>
                 @Model.Items[i].Manifests[j].BookingCartons
@@ -163,13 +178,13 @@ else
         if (i == ViewBag.pageIndex)
         {
           <li class="uk-disabled">
-            <a class="page-link ">@i</a>
+            <a asp-action="Index" asp-controller="Manifest" asp-route-pageIndex="@i" class="page-link">@i</a>
           </li>
         }
         else
         {
           <li class="uk-active">
-            <a class="filterItem page-link" value=@i>@i</a>
+            <a asp-action="Index" asp-controller="Manifest" asp-route-pageIndex="@i" class="page-link">@i</a>
           </li>
         }
       }
