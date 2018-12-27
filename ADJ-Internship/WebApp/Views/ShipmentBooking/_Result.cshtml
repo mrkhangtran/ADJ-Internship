@@ -248,6 +248,15 @@
                 </td>
               </tr>
             }
+            else
+            {
+              <tr style="display: none">
+                <td>
+                  <input type="checkbox" asp-for="OrderDetails[i].Selected" hidden="hidden"/>
+                  <input type="hidden" asp-for="OrderDetails[i].PackType" />
+                </td>
+              </tr>
+            }
           }
         </table>
       }

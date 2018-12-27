@@ -334,7 +334,7 @@ namespace ADJ.WebApp.Controllers
     {
       ViewBag.PageSize = pageSize;
       ViewBag.Seasons = SeasonList();
-      ViewBag.Ports = new List<string> { "Cẩm Phả", "Hòn Gai", "Hải Phòng", "Nghi Sơn", "Cửa Lò" };
+      ViewBag.Ports = new List<string> { "Cẩm Phả", "Cửa Lò", "Hải Phòng", "Hòn Gai", "Nghi Sơn" };
       ViewBag.Modes = new List<string> { "Road", "Sea", "Air" };
       ViewBag.Origins = new List<string> { "HongKong", "Vietnam" };
 
