@@ -15,7 +15,7 @@ namespace ADJ.DataModel.ShipmentTrack
 
         public string Voyage { get; set; }
 
-        public DateTime CTD { get; set; }
+        public DateTime ETD { get; set; }
 
         public DateTime ETA { get; set; }
 
