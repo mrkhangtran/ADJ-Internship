@@ -230,7 +230,7 @@ namespace ADJ.BusinessService.Implementations
         container.Size = rq.Size;
         container.Loading = rq.Loading;
         container.PackType = rq.PackType;
-        container.Status = OrderStatus.Pending;
+        container.Status = ContainerStatus.Pending;
         List<Manifest> manifests = new List<Manifest>();
         foreach (var item in rq.Manifests)
         {
