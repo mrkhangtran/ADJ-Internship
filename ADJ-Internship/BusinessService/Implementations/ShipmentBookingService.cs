@@ -211,7 +211,7 @@ namespace ADJ.BusinessService.Implementations
             output.Cartons = item.Cartons;
             output.Cube = item.Cube;
             output.PackType = item.PackType;
-            output.Status = item.Status;
+            output.Status = OrderStatus.BookingMade;
 
             output.PortOfLoading = input.PortOfLoading;
             output.PortOfDelivery = input.PortOfDelivery;
