@@ -1,5 +1,6 @@
 ﻿using ADJ.Common;
 using ADJ.DataModel.Core;
+using ADJ.DataModel.OrderTrack;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -55,6 +56,10 @@ namespace ADJ.DataModel.ShipmentTrack
     public string BookingType { get; set; }
 
     public OrderStatus Status { get; set; }
+
+    public int OrderId { get; set; }
+
+    public virtual Order Order { get; set; }
 
     public virtual ICollection<Manifest> Manifests { get; set; }
 

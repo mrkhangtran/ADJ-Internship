@@ -57,7 +57,6 @@ namespace ADJ.WebApp.Controllers
       defaultModel.PODetails.Items = new List<OrderDetailDTO>();
       SetDropDownList();
       ViewBag.ItemId = -2;
-      ViewBag.PageSize = pageSize;
 
       return View(defaultModel);
     }
@@ -68,7 +67,6 @@ namespace ADJ.WebApp.Controllers
       SetDropDownList();
       string viewName = addModel.Method.Substring(0, addModel.Method.IndexOf(" "));
       ViewBag.Method = addModel.Method;
-      ViewBag.PageSize = pageSize;
 
 
       if ((addModel.PODetails == null) || (addModel.PODetails.Items == null))
@@ -101,7 +99,10 @@ namespace ADJ.WebApp.Controllers
           }
         }
 
-        return RedirectToAction("Index", new { id = addModel.PONumber, method = viewName });
+        //return RedirectToAction("Index", new { id = addModel.PONumber, method = viewName });
+        //return RedirectToAction("Display", "Order");
+        ViewBag.Modal_id = addModel.PONumber;
+        ViewBag.Modal_method = viewName;
       }
 
       return View(viewName, addModel);
@@ -117,7 +118,6 @@ namespace ADJ.WebApp.Controllers
 
       SetDropDownList();
       ViewBag.CurrentPage = currentPage ?? 1;
-      ViewBag.PageSize = pageSize;
       if (newItem.Count > 0)
       {
         addModel.SingleOrderDetail = ConvertToDto(newItem)[0];
@@ -129,12 +129,6 @@ namespace ADJ.WebApp.Controllers
 
       switch (method)
       {
-        case "Previous":
-          ViewBag.CurrentPage--;
-          break;
-        case "Next":
-          ViewBag.CurrentPage++;
-          break;
         case "Save":
           if (addModel.PODetails == null) { addModel.PODetails = new PagedListResult<OrderDetailDTO>(); }
           if (addModel.PODetails.Items == null) { addModel.PODetails.Items = new List<OrderDetailDTO>(); }
@@ -184,6 +178,11 @@ namespace ADJ.WebApp.Controllers
       }
 
       ModelState.Clear();
+
+      if (method.Contains("ReadOnly"))
+      {
+        return PartialView("_OrderDetail_ReadOnly", addModel);
+      }
       return PartialView("_OrderDetail", addModel);
     }
 
@@ -210,9 +209,34 @@ namespace ADJ.WebApp.Controllers
 
       SetDropDownList();
       ViewBag.ItemId = -2;
-      ViewBag.PageSize = pageSize;
 
       return View(editModel);
+    }
+
+    public async Task<ActionResult> Detail(string PONumber)
+    {
+      if (PONumber == null)
+      {
+        return StatusCode(404);
+      }
+
+      OrderDTO viewModel = new OrderDTO();
+      viewModel = await _poService.GetOrderByPONumber(PONumber);
+
+      if (viewModel.Id == 0)
+      {
+        return StatusCode(404);
+      }
+
+      viewModel.Method = "Detail for Order Number: " + viewModel.PONumber;
+      viewModel.SingleOrderDetail = new OrderDetailDTO();
+      viewModel.SingleOrderDetail.OrderId = viewModel.Id;
+      viewModel.SingleOrderDetail.ItemNumber = viewModel.PODetails.Items[0].ItemNumber;
+
+      SetDropDownList();
+      ViewBag.ItemId = -2;
+
+      return View(viewModel);
     }
 
     //Copy an Order
@@ -246,7 +270,6 @@ namespace ADJ.WebApp.Controllers
 
       copyModel.PONumber = "";
       ViewBag.ItemId = -2;
-      ViewBag.PageSize = pageSize;
 
       return View(copyModel);
     }
@@ -309,6 +332,7 @@ namespace ADJ.WebApp.Controllers
     //Set DropDownList to select on View
     private void SetDropDownList()
     {
+      ViewBag.PageSize = pageSize;
       ViewBag.Seasons = SeasonList();
       ViewBag.Ports = new List<string> { "Cẩm Phả", "Hòn Gai", "Hải Phòng", "Nghi Sơn", "Cửa Lò" };
       ViewBag.Modes = new List<string> { "Road", "Sea", "Air" };

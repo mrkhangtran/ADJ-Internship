@@ -4,14 +4,16 @@ using ADJ.DataAccess;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace ADJ.DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20181227041342_fix_ETD_typo")]
+    partial class fix_ETD_typo
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -512,8 +514,6 @@ namespace ADJ.DataAccess.Migrations
 
                     b.Property<DateTime?>("ModifiedDateUtc");
 
-                    b.Property<int>("OrderId");
-
                     b.Property<string>("PONumber");
 
                     b.Property<string>("PackType");
@@ -537,8 +537,6 @@ namespace ADJ.DataAccess.Migrations
                     b.Property<string>("Voyage");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("OrderId");
 
                     b.ToTable("Bookings");
                 });
@@ -719,14 +717,6 @@ namespace ADJ.DataAccess.Migrations
                     b.HasOne("ADJ.DataModel.ShipmentTrack.Booking", "Booking")
                         .WithMany("ArriveOfDespatches")
                         .HasForeignKey("BookingId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("ADJ.DataModel.ShipmentTrack.Booking", b =>
-                {
-                    b.HasOne("ADJ.DataModel.OrderTrack.Order", "Order")
-                        .WithMany("Bookings")
-                        .HasForeignKey("OrderId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

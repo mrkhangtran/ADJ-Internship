@@ -54,9 +54,14 @@ namespace ADJ.BusinessService.Dtos
     public IEnumerable<string> Factories { get; set; }
     public IEnumerable<string> Suppliers { get; set; }
     public IEnumerable<string> Status { get; set; }
-    public IEnumerable<string> Depts { get; set; }      
+    public IEnumerable<string> Depts { get; set; }
+		
+		//add by Tan
+		public IEnumerable<String> DestPorts { get; set; }
+		public IEnumerable<String> Modes { get; set; }
 
-  }
+
+	}
   public class OrderDetailDto : EntityDtoBase, ICreateMapping
   {
     public string ItemNumber { get; set; }
