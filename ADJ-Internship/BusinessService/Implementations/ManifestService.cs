@@ -47,7 +47,6 @@ namespace ADJ.BusinessService.Implementations
       this._orderDetailDataProvider = orderDetailDataProvider;
 
     }
-
     public async Task<PagedListResult<ShipmentManifestsDtos>> ListManifestDtoAsync(int pageIndex = 1, int pageSize = 2, string DestinationPort = null, string OriginPort = null, string Carrier = null, DateTime? ETDFrom = null, DateTime? ETDTo = null, string Status = null, string Vendor = null, string PONumber = null, string Item = null)
     {
       PagedListResult<ShipmentManifestsDtos> pageResult = new PagedListResult<ShipmentManifestsDtos>();
@@ -231,6 +230,7 @@ namespace ADJ.BusinessService.Implementations
         container.Size = rq.Size;
         container.Loading = rq.Loading;
         container.PackType = rq.PackType;
+        container.Status = OrderStatus.Pending;
         List<Manifest> manifests = new List<Manifest>();
         foreach (var item in rq.Manifests)
         {
