@@ -33,4 +33,10 @@
     Manifested,
     Pending
   }
+
+  public enum ContainerStatus
+  {
+    Pending,
+    Despatch,
+  }
 }

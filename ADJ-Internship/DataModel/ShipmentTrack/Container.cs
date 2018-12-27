@@ -16,7 +16,7 @@ namespace ADJ.DataModel.ShipmentTrack
 
     public string PackType { get; set; }
 
-    public OrderStatus Status { get; set; }
+    public ContainerStatus Status { get; set; }
 
     public virtual ICollection<Manifest> Manifests { get; set; }
   }
