@@ -6,8 +6,8 @@ using System.Text;
 
 namespace ADJ.Repository.Interfaces
 {
-	public interface IManifestRepository : IRepository<Manifest>
-	{
-
-	}
+  public interface IManifestRepository : IRepository<Manifest>
+  {
+    Manifest GetManifestByBookingId(int id);
+  }
 }

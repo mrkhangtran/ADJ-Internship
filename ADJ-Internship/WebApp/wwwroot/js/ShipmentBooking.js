@@ -1,8 +1,9 @@
 ﻿$(document.body).on('click', '#checkAll', function () {
   var checkBoxes = document.getElementsByClassName("checkBoxes");
-  $.each(checkBoxes, function () {
-    $(this).checked = "true";
-  });
+  var current = $("#checkAll")[0].checked;
+  for (i = 0; i < checkBoxes.length; i++) {
+    checkBoxes[i].checked = current;
+  };
 });
 
 $(document.body).on('click', '.paging', function () {

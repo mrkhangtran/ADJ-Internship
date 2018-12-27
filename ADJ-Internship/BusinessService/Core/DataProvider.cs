@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Dynamic.Core;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
@@ -37,8 +36,15 @@ namespace ADJ.BusinessService.Core
 			// order by
 			if (sortData != null)
 			{
-				//var orderBy = TransformOrderByClause(sortData);
-				query = query.OrderBy(sortData);
+				try
+				{
+
+					//var orderBy = TransformOrderByClause(sortData);
+					query = query.OrderBy(sortData);
+				} catch(Exception ex)
+				{
+
+				}
 			}
 
 			// paging
