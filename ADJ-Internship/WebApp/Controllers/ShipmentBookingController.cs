@@ -20,10 +20,18 @@ namespace WebApp.Controllers
       pageSize = 6;
     }
 
-    public ActionResult Index()
+    public async Task<ActionResult> Index()
     {
       SetDropDownList();
       ShipmentBookingDtos model = new ShipmentBookingDtos();
+      model.OrderDetails = new List<ShipmentResultDtos>();
+
+      model.OrderDetails = await _bookingService.ConvertToResultAsync(await _bookingService.ListShipmentFilterAsync(null, null, null, null, null, null, null, null, null));
+
+      if (model.OrderDetails.Count == 0)
+      {
+        ViewBag.ShowModal = "NoResult";
+      }
 
       return View(model);
     }
