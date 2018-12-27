@@ -12,20 +12,21 @@
         case "Updated":
           <h2 class="uk-modal-title">Shipment created</h2>
           <p>Shipment contain following items: </p>
-          @for (int i = 0; i < Model.OrderDetails.Count; i++)
+
+          string message = "";
+          for (int i = 0; i < Model.OrderDetails.Count; i++)
           {
             if (Model.OrderDetails[i].Selected)
             {
-              if (i != Model.OrderDetails.Count - 1)
-              {
-                <span>@Model.OrderDetails[i].ItemNumber, </span>
-              }
-              else
-              {
-                <span>and @Model.OrderDetails[i].ItemNumber</span>
-              }
+              message += Model.OrderDetails[i].ItemNumber + ", ";
             }
           }
+          message = message.Remove(message.Length - 2);
+          string endMsg = message.Substring(message.LastIndexOf(",") + 2);
+          message = message.Substring(0, message.LastIndexOf(","));
+          message += " and " + endMsg;
+
+          <span>@message</span>
           break;
         case "NoResult":
           <p>Cannot find any record match filter.</p>

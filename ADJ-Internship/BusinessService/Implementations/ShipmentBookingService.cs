@@ -181,6 +181,7 @@ namespace ADJ.BusinessService.Implementations
         }
         else
         {
+          item.Status = OrderStatus.BookingMade;
           entity = Mapper.Map<Booking>(item);
 
           result.Add(entity);
