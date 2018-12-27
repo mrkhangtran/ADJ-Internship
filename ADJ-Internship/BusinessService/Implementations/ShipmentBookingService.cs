@@ -181,6 +181,7 @@ namespace ADJ.BusinessService.Implementations
         }
         else
         {
+          item.Status = OrderStatus.BookingMade;
           entity = Mapper.Map<Booking>(item);
 
           result.Add(entity);
@@ -211,7 +212,7 @@ namespace ADJ.BusinessService.Implementations
             output.Cartons = item.Cartons;
             output.Cube = item.Cube;
             output.PackType = item.PackType;
-            output.Status = OrderStatus.BookingMade;
+            output.Status = item.Status;
 
             output.PortOfLoading = input.PortOfLoading;
             output.PortOfDelivery = input.PortOfDelivery;

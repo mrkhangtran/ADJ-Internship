@@ -32,4 +32,10 @@
     PartlyManifested,
     Manifested,
   }
+
+  public enum ContainerStatus
+  {
+    Pending,
+    Despatch,
+  }
 }
