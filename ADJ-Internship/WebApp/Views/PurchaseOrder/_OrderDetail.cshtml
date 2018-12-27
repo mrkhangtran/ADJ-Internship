@@ -23,7 +23,7 @@
           <ul class="uk-pagination uk-flex-center">
             @if (currentPage > 1)
             {
-              <li><a value="Previous" class="itemButton"><span uk-pagination-previous></span></a></li>
+              <li><a value="Page @(currentPage - 1)" class="itemButton"><span uk-pagination-previous></span></a></li>
             }
 
             @for (int i = 1; i <= totalPage; i++)
@@ -34,14 +34,13 @@
               }
               else
               {
-                @*<button type="button" value="Page @i" class="uk-button uk-button-secondary itemButton">@i</button>*@
                 <li><a value="Page @i" class="itemButton">@i</a></li>
               }
             }
 
             @if (currentPage < totalPage)
             {
-              <li><a value="Next" class="itemButton"><span uk-pagination-next></span></a></li>
+              <li><a value="Page @(currentPage + 1)" class="itemButton"><span uk-pagination-next></span></a></li>
             }
           </ul>
         }

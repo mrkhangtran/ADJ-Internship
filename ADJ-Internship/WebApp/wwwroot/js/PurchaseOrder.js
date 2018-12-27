@@ -42,6 +42,18 @@ $(document.body).on('click', '.itemButton', function () {
   }
 });
 
+$(document).ready(function showResult() {
+  $(document).ready(function () {
+    $('#openmodal').trigger('click');
+  });
+});
+
+$("#resultModal").on({
+  'hide.uk.modal': function () {
+    window.location.href = "/Order/Display";
+  }
+});
+
 function rebindValidators() {
   var $form = $("#orderForm");
   $form.unbind();

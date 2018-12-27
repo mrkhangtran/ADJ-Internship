@@ -1,4 +1,11 @@
-﻿$(document.body).on('click', '.paging', function () {
+﻿$(document.body).on('click', '#checkAll', function () {
+  var checkBoxes = document.getElementsByClassName("checkBoxes");
+  $.each(checkBoxes, function () {
+    $(this).checked = "true";
+  });
+});
+
+$(document.body).on('click', '.paging', function () {
   var value = $(this).attr("value");
   var name = $(this).attr("name");
   $('<input />').attr('type', 'hidden')
