@@ -1,68 +1,71 @@
 ﻿using ADJ.Common;
 using ADJ.DataModel.Core;
+using ADJ.DataModel.ShipmentTrack;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
 namespace ADJ.DataModel.OrderTrack
 {
-    public class Order : EntityBase
-    {
-        public string PONumber { get; set; }
+  public class Order : EntityBase
+  {
+    public string PONumber { get; set; }
 
-        public DateTime OrderDate { get; set; } = DateTime.Now;
+    public DateTime OrderDate { get; set; } = DateTime.Now;
 
-        [StringLength(30)]
-        public string Company { get; set; }
+    [StringLength(30)]
+    public string Company { get; set; }
 
-        [StringLength(30)]
-        public string Supplier { get; set; }
+    [StringLength(30)]
+    public string Supplier { get; set; }
 
-        [Required]
-        public string Origin { get; set; }
+    [Required]
+    public string Origin { get; set; }
 
-        [Required]
-        public string PortOfLoading { get; set; }
+    [Required]
+    public string PortOfLoading { get; set; }
 
-        [Required]
-        public string PortOfDelivery { get; set; }
+    [Required]
+    public string PortOfDelivery { get; set; }
 
-        [StringLength(30)]
-        public string Buyer { get; set; }
+    [StringLength(30)]
+    public string Buyer { get; set; }
 
-        [StringLength(30)]
-        public string Department { get; set; }
+    [StringLength(30)]
+    public string Department { get; set; }
 
-        [StringLength(30)]
-        public string OrderType { get; set; }
+    [StringLength(30)]
+    public string OrderType { get; set; }
 
-        public string Season { get; set; }
+    public string Season { get; set; }
 
-        [StringLength(30)]
-        public string Factory { get; set; }
+    [StringLength(30)]
+    public string Factory { get; set; }
 
-        public Currency Currency { get; set; }
-
-
+    public Currency Currency { get; set; }
 
 
-        public DateTime ShipDate { get; set; }
 
-        public DateTime LatestShipDate { get; set; }
 
-        public DateTime DeliveryDate { get; set; }
+    public DateTime ShipDate { get; set; }
 
-        public string Mode { get; set; }
+    public DateTime LatestShipDate { get; set; }
 
-        [StringLength(30)]
-        public string Vendor { get; set; }
+    public DateTime DeliveryDate { get; set; }
 
-        public decimal POQuantity { get; set; }
+    public string Mode { get; set; }
 
-        public OrderStatus Status { get; set; }
+    [StringLength(30)]
+    public string Vendor { get; set; }
 
-				public virtual ICollection<OrderDetail> OrderDetails { get; set; }
+    public decimal POQuantity { get; set; }
 
-				public virtual ProgressCheck ProgressCheck { get; set; }
-    }
+    public OrderStatus Status { get; set; }
+
+    public virtual ICollection<Booking> Bookings { get; set; }
+
+    public virtual ICollection<OrderDetail> OrderDetails { get; set; }
+
+    public virtual ProgressCheck ProgressCheck { get; set; }
+  }
 }

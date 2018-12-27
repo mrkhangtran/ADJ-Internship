@@ -308,6 +308,8 @@ namespace ADJ.DataAccess.Migrations
                     b.Property<string>("Size")
                         .HasMaxLength(30);
 
+                    b.Property<int>("Status");
+
                     b.Property<string>("Tariff");
 
                     b.Property<float>("UnitPrice");
@@ -419,15 +421,13 @@ namespace ADJ.DataAccess.Migrations
                     b.ToTable("PurchaseOrderItems");
                 });
 
-            modelBuilder.Entity("ADJ.DataModel.ShipmentTrack.ArriveOfDespacth", b =>
+            modelBuilder.Entity("ADJ.DataModel.ShipmentTrack.ArriveOfDespatch", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int>("BookingId");
-
-                    b.Property<DateTime>("CTD");
 
                     b.Property<string>("Carrier");
 
@@ -441,6 +441,8 @@ namespace ADJ.DataAccess.Migrations
                     b.Property<string>("DestinationPort");
 
                     b.Property<DateTime>("ETA");
+
+                    b.Property<DateTime>("ETD");
 
                     b.Property<string>("Mode");
 
@@ -475,9 +477,9 @@ namespace ADJ.DataAccess.Migrations
 
                     b.Property<string>("BookingType");
 
-                    b.Property<string>("Carier");
+                    b.Property<string>("Carrier");
 
-                    b.Property<int>("Cartoons");
+                    b.Property<float>("Cartons");
 
                     b.Property<string>("Consignee");
 
@@ -486,17 +488,19 @@ namespace ADJ.DataAccess.Migrations
 
                     b.Property<DateTime>("CreatedDateUtc");
 
-                    b.Property<decimal>("Cube");
+                    b.Property<float>("Cube");
 
                     b.Property<DateTime>("ETA");
 
                     b.Property<DateTime>("ETD");
 
+                    b.Property<string>("Factory");
+
                     b.Property<string>("FreightTerms");
 
                     b.Property<decimal>("GrossWeight");
 
-                    b.Property<string>("Item");
+                    b.Property<string>("ItemNumber");
 
                     b.Property<string>("Line");
 
@@ -508,11 +512,15 @@ namespace ADJ.DataAccess.Migrations
 
                     b.Property<DateTime?>("ModifiedDateUtc");
 
-                    b.Property<string>("Order");
-
                     b.Property<int>("OrderId");
 
+                    b.Property<string>("PONumber");
+
                     b.Property<string>("PackType");
+
+                    b.Property<string>("PortOfDelivery");
+
+                    b.Property<string>("PortOfLoading");
 
                     b.Property<decimal>("Quantity");
 
@@ -520,11 +528,17 @@ namespace ADJ.DataAccess.Migrations
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate();
 
+                    b.Property<Guid>("ShipmentID");
+
+                    b.Property<int>("Status");
+
                     b.Property<string>("Vessel");
 
                     b.Property<string>("Voyage");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("OrderId");
 
                     b.ToTable("Bookings");
                 });
@@ -559,6 +573,40 @@ namespace ADJ.DataAccess.Migrations
                     b.ToTable("CAs");
                 });
 
+            modelBuilder.Entity("ADJ.DataModel.ShipmentTrack.Container", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired();
+
+                    b.Property<DateTime>("CreatedDateUtc");
+
+                    b.Property<string>("Loading");
+
+                    b.Property<string>("ModifiedBy");
+
+                    b.Property<DateTime?>("ModifiedDateUtc");
+
+                    b.Property<string>("Name");
+
+                    b.Property<string>("PackType");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate();
+
+                    b.Property<string>("Size");
+
+                    b.Property<int>("Status");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Container");
+                });
+
             modelBuilder.Entity("ADJ.DataModel.ShipmentTrack.Manifest", b =>
                 {
                     b.Property<int>("Id")
@@ -569,26 +617,24 @@ namespace ADJ.DataAccess.Migrations
 
                     b.Property<int>("BookingId");
 
-                    b.Property<string>("Cartons");
-
-                    b.Property<int>("Cartoons");
+                    b.Property<float>("Cartons");
 
                     b.Property<decimal>("ChargeableKGS");
 
-                    b.Property<string>("Container");
+                    b.Property<int>("ContainerId");
 
                     b.Property<string>("CreatedBy")
                         .IsRequired();
 
                     b.Property<DateTime>("CreatedDateUtc");
 
-                    b.Property<decimal>("Cube");
+                    b.Property<float>("Cube");
 
                     b.Property<string>("Equipment");
 
                     b.Property<string>("FreightTerms");
 
-                    b.Property<decimal>("KGS");
+                    b.Property<float>("KGS");
 
                     b.Property<string>("Loading");
 
@@ -608,9 +654,13 @@ namespace ADJ.DataAccess.Migrations
 
                     b.Property<string>("Seal");
 
+                    b.Property<string>("Size");
+
                     b.HasKey("Id");
 
                     b.HasIndex("BookingId");
+
+                    b.HasIndex("ContainerId");
 
                     b.ToTable("Manifests");
                 });
@@ -664,18 +714,26 @@ namespace ADJ.DataAccess.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("ADJ.DataModel.ShipmentTrack.ArriveOfDespacth", b =>
+            modelBuilder.Entity("ADJ.DataModel.ShipmentTrack.ArriveOfDespatch", b =>
                 {
                     b.HasOne("ADJ.DataModel.ShipmentTrack.Booking", "Booking")
-                        .WithMany()
+                        .WithMany("ArriveOfDespatches")
                         .HasForeignKey("BookingId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("ADJ.DataModel.ShipmentTrack.Booking", b =>
+                {
+                    b.HasOne("ADJ.DataModel.OrderTrack.Order", "Order")
+                        .WithMany("Bookings")
+                        .HasForeignKey("OrderId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("ADJ.DataModel.ShipmentTrack.CA", b =>
                 {
                     b.HasOne("ADJ.DataModel.ShipmentTrack.Booking", "Booking")
-                        .WithMany()
+                        .WithMany("CAs")
                         .HasForeignKey("BookingId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
@@ -683,8 +741,13 @@ namespace ADJ.DataAccess.Migrations
             modelBuilder.Entity("ADJ.DataModel.ShipmentTrack.Manifest", b =>
                 {
                     b.HasOne("ADJ.DataModel.ShipmentTrack.Booking", "Booking")
-                        .WithMany()
+                        .WithMany("Manifests")
                         .HasForeignKey("BookingId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("ADJ.DataModel.ShipmentTrack.Container", "Container")
+                        .WithMany("Manifests")
+                        .HasForeignKey("ContainerId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618

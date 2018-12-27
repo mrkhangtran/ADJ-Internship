@@ -5,7 +5,7 @@ using System.Text;
 
 namespace ADJ.DataModel.ShipmentTrack
 {
-    public class ArriveOfDespacth : EntityBase
+    public class ArriveOfDespatch : EntityBase
     {
         public int BookingId { get; set; }
 
@@ -15,7 +15,7 @@ namespace ADJ.DataModel.ShipmentTrack
 
         public string Voyage { get; set; }
 
-        public DateTime CTD { get; set; }
+        public DateTime ETD { get; set; }
 
         public DateTime ETA { get; set; }
 

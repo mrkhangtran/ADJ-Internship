@@ -11,72 +11,108 @@
 // New
 //
 
-@accordion-icon-margin-left:                   10px;
-@accordion-icon-color:                         @global-color;
-@internal-accordion-open-image:                "../../images/backgrounds/accordion-open.svg";
-@internal-accordion-close-image:               "../../images/backgrounds/accordion-close.svg";
+@accordion-icon-margin-left: 10px;
+@accordion-icon-color: @global-color;
+@internal-accordion-open-image: "../../images/backgrounds/accordion-open.svg";
+@internal-accordion-close-image: "../../images/backgrounds/accordion-close.svg";
 
 
 // Component
 // ========================================================================
 
-.hook-accordion() {}
+.hook-accordion() {
+	margin: 0;
+}
 
 
 // Item
 // ========================================================================
 
-.hook-accordion-item() {}
+.hook-accordion-item() {
+}
 
 
 // Title
 // ========================================================================
 
 .hook-accordion-title() {
+	overflow: hidden;
 
-    overflow: hidden;
+	&::before {
+		content: "";
+		width: 0;
+		height: 0;
+		margin-left: @accordion-icon-margin-left;
+		float: right;
+		.svg-fill(@internal-accordion-close-image, "#000", @accordion-icon-color);
+		background-repeat: no-repeat;
+		background-position: 50% 50%;
+	}
 
-    &::before {
-        content: "";
-        width: (@accordion-title-line-height * 1em);
-        height: (@accordion-title-line-height * 1em);
-        margin-left: @accordion-icon-margin-left;
-        float: right;
-        .svg-fill(@internal-accordion-close-image, "#000", @accordion-icon-color);
-        background-repeat: no-repeat;
-        background-position: 50% 50%;
-    }
-
-    .uk-open > &::before { .svg-fill(@internal-accordion-open-image, "#000", @accordion-icon-color); }
-
+	.uk-open > &::before {
+		height: 0;
+		width: 0;
+		.svg-fill(@internal-accordion-open-image, "#000", @accordion-icon-color);
+	}
 }
 
-.hook-accordion-title-hover() {}
+.hook-accordion-title-hover() {
+}
 
 
 // Content
 // ========================================================================
 
-.hook-accordion-content() {}
+.hook-accordion-content() {
+	margin: 0;
+
+	p {
+		margin: 0;
+		padding:10px 0 10px 25%;
+		border-bottom: 1.2px solid #333;
+	}
+
+	p a {
+		color: white;
+	}
+
+	p:hover a {
+		color: wheat;
+		text-decoration: none;
+	}
+	p:hover{
+		background-color:rgba(51, 51, 51, 0.84);
+	}
+}
 
 
 // Miscellaneous
 // ========================================================================
 
-.hook-accordion-misc() {}
+.hook-accordion-misc() {
+	.uk-accordion .item {
+		margin: 0;
+	}
+}
 
 // Inverse
 // ========================================================================
 
-.hook-inverse-accordion-item() {}
+.hook-inverse-accordion-item() {
+}
 
 .hook-inverse-accordion-title() {}
-.hook-inverse-accordion-title-hover() {}
+
+.hook-inverse-accordion-title-hover() {
+}
 
 .hook-inverse() {
 
-    .uk-accordion-title::before { .svg-fill(@internal-accordion-close-image, "#000", @inverse-global-color); }
+	.uk-accordion-title::before {
+		.svg-fill(@internal-accordion-close-image, "#000", @inverse-global-color);
+	}
 
-    .uk-open > .uk-accordion-title::before { .svg-fill(@internal-accordion-open-image, "#000", @inverse-global-color); }
-
+	.uk-open > .uk-accordion-title::before {
+		.svg-fill(@internal-accordion-open-image, "#000", @inverse-global-color);
+	}
 }

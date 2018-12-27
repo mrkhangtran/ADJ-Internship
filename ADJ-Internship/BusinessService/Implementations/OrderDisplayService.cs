@@ -26,8 +26,6 @@ namespace ADJ.BusinessService.Implementations
 		{
 			this._orderDataProvider = orderDataProvider;
 			this._orderRepository = orderRepository;
-
-
 		}
 
 		public async Task<PagedListResult<OrderDto>> DisplaysAsync(string poNumber, int? pageIndex, int? pageSize)
@@ -42,7 +40,7 @@ namespace ADJ.BusinessService.Implementations
 			{
 				query = (p => p.PONumber == poNumber);
 			}
-
+			//string sortStr = "OrderDate DESC";
 			var poResult = await _orderDataProvider.ListAsync(query, null, true, pageIndex, pageSize);
 
 			var pagedResult = new PagedListResult<OrderDto>
@@ -58,7 +56,6 @@ namespace ADJ.BusinessService.Implementations
 
 
 		}
-
 
 	}
 }
