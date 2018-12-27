@@ -130,8 +130,8 @@
                 <input type="checkbox" asp-for="Items[i].selectedContainer" />
               </td>
               <td>
-                <input id="containerName" asp-for="Items[i].Name" class="uk-input" />
-                <span class="uk-text-danger" asp-validation-for="Items[i].Name" id="validationName" hidden></span>
+                <input id="containerName" asp-for="Items[i].Name" class="validationName uk-input" />
+                <span class=" uk-text-danger" asp-validation-for="Items[i].Name" id="validationName" hidden></span>
               </td>
               <td>
                 @Html.DropDownListFor(model=>model.Items[i].Size,
@@ -209,7 +209,7 @@
 
               <tr>
                 <td>
-                  @if (Model.Items[i].Id == 0)
+                  @if (Model.Items[i].Id == 0 || Model.Items[i].Manifests[j].Manifested == "PartlyManifested")
                   {
                   <input type="checkbox" asp-for="Items[i].Manifests[j].selectedItem" />
                   }
@@ -236,8 +236,17 @@
                   @Model.Items[i].Manifests[j].OpenQuantity
                 </td>
                 <td>
-                  <input id="shipQuantity" asp-for="Items[i].Manifests[j].ShipQuantity" class="uk-input" />
-                  <span class="uk-text-danger" asp-validation-for="Items[i].Manifests[j].ShipQuantity" id="validationShipQuantity" hidden></span>
+                  @{ 
+                    if (Model.Items[i].Manifests[j].Manifested == "Manifested")
+                    {
+                      @Model.Items[i].Manifests[j].ShipQuantity
+                    }
+                    else
+                    {
+                  <input id="shipQuantity" asp-for="Items[i].Manifests[j].ShipQuantity" class="validationShipQuantity uk-input" />
+                  <span class=" uk-text-danger" asp-validation-for="Items[i].Manifests[j].ShipQuantity" id="validationShipQuantity" hidden></span>
+                      }
+                    }
                 </td>
                 <td>
                   @Model.Items[i].Manifests[j].BookingCartons
@@ -342,8 +351,19 @@
      $('#openmodal').trigger('click');
   });
   $('#manifest').submit(function () {
-    if ($('#containerName').val() == "" || $('#shipQuantity').val() == "") {
-      alert("Please fill in all Required fields.")
+    var blank = document.getElementsByClassName("validationName");
+    for (i = 0; i < blank.length; i++) {
+      if (blank[i].value=="") {
+        alert("Please fill in all Required fields.")
+        break;
+      }  
+    }
+    var blank = document.getElementsByClassName("validationShipQuantity");
+    for (i = 0; i < blank.length; i++) {
+      if (blank[i].value == "") {
+        alert("Please fill in all Required fields.")
+        break;
+      }
     }
   });
 </script>

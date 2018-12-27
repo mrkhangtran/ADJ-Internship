@@ -44,7 +44,7 @@ namespace WebApp.Controllers
       {
         foreach (var manifest in shipmentManifestDtos.Items)
         {
-          if (manifest.selectedContainer == true)
+          if (manifest.selectedContainer == true||manifest.Manifests.Where(p=>p.selectedItem==true).Count()>0)
           {
             await _manifestService.CreateOrUpdateContainerAsync(manifest);
             ViewBag.modalResult = "success";

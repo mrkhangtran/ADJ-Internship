@@ -241,7 +241,6 @@ namespace ADJ.BusinessService.Implementations
             entity.Quantity = item.ShipQuantity;
             entity.Container = container;
             entity.Loading = container.Loading;          
-            entity.Loading = container.Loading;
             entity.PackType = container.PackType;
             entity.Size = container.Size;
             entity.BookingId = item.BookingId;
