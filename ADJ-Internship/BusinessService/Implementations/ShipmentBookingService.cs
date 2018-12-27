@@ -20,6 +20,7 @@ namespace ADJ.BusinessService.Implementations
   public class ShipmentBookingService : ServiceBase, IShipmentBookingService
   {
     private readonly IDataProvider<Order> _orderDataProvider;
+    private readonly IOrderRepository _orderRepository;
 
     private readonly IDataProvider<OrderDetail> _orderDetailDataProvider;
     private readonly IOrderDetailRepository _orderDetailRepository;
@@ -28,12 +29,16 @@ namespace ADJ.BusinessService.Implementations
     private readonly IShipmentBookingRepository _bookingRepository;
 
     public ShipmentBookingService(IUnitOfWork unitOfWork, IMapper mapper, ApplicationContext appContext,
-      IDataProvider<OrderDetail> poDetailDataProvider, IOrderDetailRepository orderdetailRepository, IDataProvider<Order> poDataProvider,
+      IDataProvider<OrderDetail> poDetailDataProvider, IOrderDetailRepository orderdetailRepository, 
+      IDataProvider<Order> poDataProvider, IOrderRepository orderRepository,
       IDataProvider<Booking> bookingDataProvider, IShipmentBookingRepository bookingRepository) : base(unitOfWork, mapper, appContext)
     {
       _orderDetailDataProvider = poDetailDataProvider;
       _orderDetailRepository = orderdetailRepository;
+
       _orderDataProvider = poDataProvider;
+      _orderRepository = orderRepository;
+
       _bookingDataProvider = bookingDataProvider;
       _bookingRepository = bookingRepository;
     }
@@ -242,6 +247,9 @@ namespace ADJ.BusinessService.Implementations
             orderDetails[0].Status = OrderStatus.BookingMade;
 
             _orderDetailRepository.Update(orderDetails[0]);
+
+            //update Order info
+            List<Order> order = await _orderRepository.Query(x => x.Id == item.OrderId, false).SelectAsync();
           }
         }
 
