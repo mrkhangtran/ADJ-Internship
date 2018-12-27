@@ -1,5 +1,39 @@
 ﻿@model ADJ.BusinessService.Dtos.OrderDTO;
+<!--Popup-->
+@if (ViewBag.Modal_method != null)
+{
+  string method = ViewBag.Modal_method;
+  <button type="button" uk-toggle="target: #resultModal" id="openmodal" hidden="hidden">Open</button>
 
+  <div id="resultModal" uk-modal>
+    <div class="uk-modal-dialog uk-modal-body">
+      <!--Modal content-->
+      The Purchase Order number @ViewBag.Modal_id is
+      @{
+        string message = null;
+        switch (method)
+        {
+          case "Create":
+            message += "created";
+           break;
+          case "Edit":
+            message += "edited";
+            break;
+          case "Copy":
+            message += "copied";
+            break;
+        }
+      }
+      @message successfully. Thank you.
+
+      <p class="uk-text-right">
+        <button class="uk-button uk-button-default uk-modal-close" type="button">Close</button>
+      </p>
+    </div>
+  </div>
+}
+
+<!--Order Table-->
 <table class="uk-table uk-table-small uk-table-middle">
   <tr>
     <td>
