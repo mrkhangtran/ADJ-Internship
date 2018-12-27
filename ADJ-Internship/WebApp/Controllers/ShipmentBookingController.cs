@@ -62,12 +62,19 @@ namespace WebApp.Controllers
           if (ModelState.IsValid)
           {
             if (model.OrderDetails != null)
-            {
-              await _bookingService.CreateOrUpdateBookingAsync(model);
-              ModelState.Clear();
-              model = await _bookingService.ChangeItemStatus(model);
-              ViewBag.ShowModal = "Updated";
-            }
+              if (SelectAtLeastOne(model.OrderDetails))
+              {
+                {
+                  await _bookingService.CreateOrUpdateBookingAsync(model);
+                  ModelState.Clear();
+                  model = await _bookingService.ChangeItemStatus(model);
+                  ViewBag.ShowModal = "Updated";
+                }
+              }
+              else
+              {
+                ViewBag.ShowModal = "NoItem";
+              }
           }
           break;
         default:
@@ -78,6 +85,19 @@ namespace WebApp.Controllers
       }
 
       return PartialView("_Result", model);
+    }
+
+    public bool SelectAtLeastOne(List<ShipmentResultDtos> input)
+    {
+      foreach (var item in input)
+      {
+        if (item.Selected)
+        {
+          return true;
+        }
+      }
+
+      return false;
     }
 
     public void SetDropDownList()

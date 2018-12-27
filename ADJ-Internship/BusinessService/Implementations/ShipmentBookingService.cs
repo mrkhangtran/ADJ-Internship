@@ -162,7 +162,6 @@ namespace ADJ.BusinessService.Implementations
         Booking entity = new Booking();
         if (item.Status == OrderStatus.BookingMade)
         {
-          //entity = await GetBookingByItemNumber(item.ItemNumber);
           foreach (var detail in bookingDb.Items)
           {
             if (detail.ItemNumber == item.ItemNumber)
@@ -170,11 +169,6 @@ namespace ADJ.BusinessService.Implementations
               entity = detail;
               break;
             }
-          }
-
-          if (entity == null)
-          {
-            throw new AppException("Booking Not Found");
           }
 
           item.Id = entity.Id;
@@ -189,12 +183,12 @@ namespace ADJ.BusinessService.Implementations
         {
           entity = Mapper.Map<Booking>(item);
 
-          _bookingRepository.Insert(entity);
           result.Add(entity);
+          _bookingRepository.Insert(entity);
         }
       }
 
-      await UnitOfWork.SaveChangesAsync();
+      //await UnitOfWork.SaveChangesAsync();
 
       var rs = Mapper.Map<List<ShipmentBookingDtos>>(result);
       return rs;
@@ -250,6 +244,19 @@ namespace ADJ.BusinessService.Implementations
 
             //update Order info
             List<Order> order = await _orderRepository.Query(x => x.Id == item.OrderId, false).SelectAsync();
+            if (order == null)
+            {
+              throw new AppException("Order not found.");
+            }
+
+            if ((order[0].PortOfLoading != input.PortOfLoading) || (order[0].PortOfDelivery != input.PortOfDelivery) || (order[0].Mode != input.Mode))
+            {
+              order[0].PortOfLoading = input.PortOfLoading;
+              order[0].PortOfDelivery = input.PortOfDelivery;
+              order[0].Mode = input.Mode;
+
+              _orderRepository.Update(order[0]);
+            }
           }
         }
 
