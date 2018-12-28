@@ -206,8 +206,8 @@
                 <input type="hidden" asp-for="OrderDetails[i].Vendor" />
                 <input type="hidden" asp-for="OrderDetails[i].Quantity" />
                 <input type="hidden" asp-for="OrderDetails[i].BookingQuantity" />
-                <input type="hidden" asp-for="OrderDetails[i].BookingCartons" />
-                <input type="hidden" asp-for="OrderDetails[i].BookingCube" />
+                <input type="hidden" asp-for="OrderDetails[i].Cartons" />
+                <input type="hidden" asp-for="OrderDetails[i].Cube" />
                 <input type="hidden" asp-for="OrderDetails[i].POShipDate" />
                 <input type="hidden" asp-for="OrderDetails[i].Status" />
               </td>
@@ -256,8 +256,8 @@
             {
               <tr style="display: none">
                 <td>
-                  @*<input type="checkbox" asp-for="OrderDetails[i].Selected" hidden="hidden"/>
-                    <input type="hidden" asp-for="OrderDetails[i].PackType" />*@
+                  <input type="checkbox" asp-for="OrderDetails[i].Selected" hidden="hidden" />
+                  <input type="hidden" asp-for="OrderDetails[i].PackType" />
                 </td>
               </tr>
             }
