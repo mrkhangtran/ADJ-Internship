@@ -1,4 +1,6 @@
-﻿$("#to").keyup(function () { $("#from").val($("#to").val()); });
+﻿
+
+$("#to").keyup(function () { $("#from").val($("#to").val()); });
 $("#from").keyup(function () { $("#to").val($("#from").val()); });
 
 function getTotalUnit() {
@@ -43,10 +45,43 @@ $(document.body).on('click', '.itemButton', function () {
 });
 
 $(document).ready(function showResult() {
-  $(document).ready(function () {
-    $('#openmodal').trigger('click');
-  });
+  $('#openmodal').trigger('click');
+  changePorts();
 });
+
+$("#origin").change(function () {
+  changePorts();
+});
+
+function changePorts() {
+  var origin = $("#origin").val();
+
+  var vnPorts = document.getElementsByClassName("vnPorts");
+  var hkPorts = document.getElementsByClassName("hkPorts");
+
+  var ports = document.getElementsByClassName("ports");
+
+  var options = [];
+
+  if (origin == "Vietnam") {
+    $.each(vnPorts, function () {
+      options.push($(this).text());
+    });
+  }
+  else if (origin == "HongKong") {
+    $.each(hkPorts, function () {
+      options.push($(this).text());
+    });
+  }
+
+  for (i = 0; i < ports.length; i++) {
+    ports[i].options.length = 0;
+    for (j = 0; j < options.length; j++) {
+      ports[i].options[ports[i].options.length] = new Option(options[j], options[j]);
+    }
+  }
+
+};
 
 $("#resultModal").on({
   'hide.uk.modal': function () {
