@@ -52,6 +52,8 @@ namespace ADJ.BusinessService.Dtos
 
     public int OrderId { get; set; }
 
+    public string PONumber { get; set; }
+
     public string ItemNumber { get; set; }
 
     //DropList of Boxed/Carton
@@ -89,7 +91,7 @@ namespace ADJ.BusinessService.Dtos
     public string Warehouse { get; set; } = "";
 
     //DropList of Awaiting_Booking and Booking_Made
-    public OrderStatus Status { get; set; }
+    public string Status { get; set; }
 
     [StringLength(30)]
     [RegularExpression("^[a-zA-Z0-9]+$", ErrorMessage = "Letters and numbers only")]

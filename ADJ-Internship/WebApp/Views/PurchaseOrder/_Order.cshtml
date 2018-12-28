@@ -15,7 +15,7 @@
         {
           case "Create":
             message += "created";
-           break;
+            break;
           case "Edit":
             message += "edited";
             break;
@@ -31,6 +31,16 @@
       </p>
     </div>
   </div>
+}
+
+@foreach (var item in ViewBag.VNPorts)
+{
+  <p class="vnPorts" hidden="hidden">@item</p>
+}
+
+@foreach (var item in ViewBag.HKPorts)
+{
+  <p class="hkPorts" hidden="hidden">@item</p>
 }
 
 <!--Order Table-->
@@ -123,7 +133,7 @@
     </td>
     <td>
       <div class="col-md-10">
-        <select asp-for="Origin" asp-items="new SelectList(ViewBag.Origins)" class="uk-input"></select>
+        <select asp-for="Origin" asp-items="new SelectList(ViewBag.Origins)" class="uk-input" id="origin"></select>
         <span asp-validation-for="Origin" class="uk-alert-danger"></span>
       </div>
     </td>
@@ -152,7 +162,7 @@
     </td>
     <td>
       <div class="col-md-10">
-        <select asp-for="PortOfLoading" asp-items="new SelectList(ViewBag.Ports)" class="uk-input"></select>
+        <select asp-for="PortOfLoading" class="uk-input ports"></select>
         <span asp-validation-for="PortOfLoading" class="uk-alert-danger"></span>
       </div>
     </td>
@@ -181,7 +191,7 @@
     </td>
     <td>
       <div class="col-md-10">
-        <select asp-for="PortOfDelivery" asp-items="new SelectList(ViewBag.Ports)" class="uk-input"></select>
+        <select asp-for="PortOfDelivery" class="uk-input ports"></select>
         <span asp-validation-for="PortOfDelivery" class="uk-alert-danger"></span>
       </div>
     </td>
@@ -219,8 +229,7 @@
     </td>
     <td>
       <div class="col-md-10">
-        <select asp-for="Status" asp-items="new SelectList(ViewBag.Statuses)" class="uk-input"></select>
-        <span asp-validation-for="Status" class="uk-alert-danger"></span>
+        <select asp-for="Status" asp-items="new SelectList(ViewBag.Statuses)" class="uk-input" disabled></select>
       </div>
     </td>
   </tr>
