@@ -114,7 +114,7 @@ namespace WebApp.Controllers
       ViewBag.PackTypes = new List<string> { "Boxed", "Carton" };
       ViewBag.Origins = new List<string> { "HongKong", "Vietnam" };
       ViewBag.Ports = new List<string> { "Cẩm Phả", "Cửa Lò", "Hải Phòng", "Hòn Gai", "Nghi Sơn" };
-      ViewBag.Statuses = new List<string> { "AwaitingBooking", "BookingMade" };
+      ViewBag.Statuses = new List<string> { OrderStatus.AwaitingBooking.ToString() , OrderStatus.BookingMade.ToString() };
       ViewBag.Carriers = new List<string> { "DHL", "EMS", "Kerry Express", "TNT", "USPS", "ViettelPost" };
 
       ViewBag.PageSize = pageSize;
