@@ -106,7 +106,6 @@ function changePorts() {
 
   for (i = 0; i < ports.length; i++) {
     ports[i].options.length = 0;
-    if (i == 0) { ports[i].options[ports[i].options.length] = new Option("Any", ""); }
     for (j = 0; j < options.length; j++) {
       ports[i].options[ports[i].options.length] = new Option(options[j], options[j]);
     }
