@@ -105,7 +105,7 @@
       @Html.HiddenFor(model => model.Items[i].Id, new { Value = Model.Items[i].Id })
       <br />
       <br />
-      <div class="uk-container">
+      <div class="uk-grid">
         <table class="uk-table uk-table-small">
           <thead>
             <tr>
@@ -127,11 +127,25 @@
           <tbody>
             <tr>
               <td>
-                <input type="checkbox" asp-for="Items[i].selectedContainer" />
+                @if (Model.Items[i].Id == 0)
+                {
+                  <input type="checkbox" asp-for="Items[i].selectedContainer" />
+                }
               </td>
               <td>
-                <input id="containerName" asp-for="Items[i].Name" class="validationName uk-input" />
-                <span class=" uk-text-danger" asp-validation-for="Items[i].Name" id="validationName" hidden></span>
+                @{
+                  if (Model.Items[i].Id == 0)
+                  {
+                    <input id="validationName" asp-for="Items[i].Name" class="validationName uk-input" />
+                    <span class=" uk-text-danger" asp-validation-for="Items[i].Name" id="validationShipQuantity" hidden></span>
+                  }
+                  else
+                  {
+                    <input readonly id="validationName" asp-for="Items[i].Name" class="validationName uk-input" />
+                  }
+
+                }
+
               </td>
               <td>
                 @Html.DropDownListFor(model=>model.Items[i].Size,
@@ -206,12 +220,12 @@
               @Html.HiddenFor(model => model.Items[i].Manifests[j].ItemNumber, new { Value = Model.Items[i].Manifests[j].ItemNumber })
               @Html.HiddenFor(model => model.Items[i].Manifests[j].BookingQuantity, new { Value = Model.Items[i].Manifests[j].BookingQuantity })
               @Html.HiddenFor(model => model.Items[i].Manifests[j].Id, new { Value = Model.Items[i].Manifests[j].Id })
-
+              @Html.HiddenFor(model => model.Items[i].Manifests[j].OpenQuantity, new { Value = Model.Items[i].Manifests[j].OpenQuantity })
               <tr>
                 <td>
-                  @if (Model.Items[i].Id == 0 || Model.Items[i].Manifests[j].Manifested == "PartlyManifested")
+                  @if (Model.Items[i].Id == 0)
                   {
-                  <input type="checkbox" asp-for="Items[i].Manifests[j].selectedItem" />
+                    <input type="checkbox" asp-for="Items[i].Manifests[j].selectedItem" />
                   }
                 </td>
                 <td>
@@ -236,17 +250,17 @@
                   @Model.Items[i].Manifests[j].OpenQuantity
                 </td>
                 <td>
-                  @{ 
-                    if (Model.Items[i].Manifests[j].Manifested == "Manifested")
+                  @{
+                    if (Model.Items[i].Id > 0)
                     {
                       @Model.Items[i].Manifests[j].ShipQuantity
                     }
                     else
                     {
-                  <input id="shipQuantity" asp-for="Items[i].Manifests[j].ShipQuantity" class="validationShipQuantity uk-input" />
-                  <span class=" uk-text-danger" asp-validation-for="Items[i].Manifests[j].ShipQuantity" id="validationShipQuantity" hidden></span>
-                      }
+                      <input id="shipQuantity" asp-for="Items[i].Manifests[j].ShipQuantity" class="validationShipQuantity uk-input" />
+                      <span class=" uk-text-danger" asp-validation-for="Items[i].Manifests[j].ShipQuantity" id="validationShipQuantity" hidden></span>
                     }
+                  }
                 </td>
                 <td>
                   @Model.Items[i].Manifests[j].BookingCartons
@@ -353,7 +367,7 @@
       if (blank[i].value=="") {
         alert("Please fill in all Required fields.")
         break;
-      }  
+      }
     }
     var blank = document.getElementsByClassName("validationShipQuantity");
     for (i = 0; i < blank.length; i++) {
