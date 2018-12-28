@@ -8,10 +8,10 @@ namespace ADJ.DataModel.ShipmentTrack
 {
     public class CA : EntityBase
     {
-        public int BookingId { get; set; }
+        public int ContainerId { get; set; }
 
         public DateTime ArrivalDate { get; set; }
 
-        public virtual Booking Booking { get; set; }
+        public virtual Container Container { get; set; }
     }
 }

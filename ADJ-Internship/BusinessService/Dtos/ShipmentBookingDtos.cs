@@ -48,6 +48,7 @@ namespace ADJ.BusinessService.Dtos
     [Required]
     [NotInThePast(ErrorMessage = "Cannot be set in the past")]
     [LaterThanOtherDate("ETD")]
+    [Not30DaysApart("ETD")]
     public DateTime ETA { get; set; }
 
     public int OrderId { get; set; }
