@@ -229,23 +229,34 @@
       <br />
     }
 
-    <div>
+    <div class="uk-align-right">
       <ul class="uk-pagination">
-        @for (var i = 1; i <= Model.PageCount; i++)
-        {
-          if (i == ViewBag.pageIndex)
+        @{
+          if (ViewBag.pageIndex > 1)
           {
-            <li class="uk-disabled">
-              <a asp-action="Index" asp-controller="ProgressCheck" asp-route-pageIndex="@i" class="page-link">@i</a>
-            </li>
+            <li><a asp-action="Index" asp-controller="Manifest" asp-route-pageIndex="@(ViewBag.pageIndex - 1)" class="page-link"><span uk-pagination-previous></span></a></li>
           }
-          else
+          for (var i = 1; i <= Model.PageCount; i++)
           {
-            <li class="uk-active">
-              <a asp-action="Index" asp-controller="ProgressCheck" asp-route-pageIndex="@i" class="page-link">@i</a>
-            </li>
+            if (i == ViewBag.pageIndex)
+            {
+              <li class="uk-disabled">
+                <a asp-action="Index" asp-controller="Manifest" asp-route-pageIndex="@i" class="page-link">@i</a>
+              </li>
+            }
+            else
+            {
+              <li class="uk-active">
+                <a asp-action="Index" asp-controller="Manifest" asp-route-pageIndex="@i" class="page-link">@i</a>
+              </li>
+            }
+          }
+          if (ViewBag.pageIndex < Model.PageCount)
+          {
+            <li><a asp-action="Index" asp-controller="Manifest" asp-route-pageIndex="@(ViewBag.pageIndex + 1)" class="page-link"><span uk-pagination-next></span></a></li>
           }
         }
+
       </ul>
     </div>
   </div>
@@ -256,10 +267,10 @@
   <div id="modal-center" class="uk-flex-top" uk-modal>
     <div class="uk-modal-dialog uk-modal-body uk-margin-auto-vertical">
       <button class="uk-modal-close-default" type="button" uk-close></button>
-     @foreach(var item in ViewBag.POUpdate)
-     {
-      <p class="uk-text-success uk-text-bold">Your PO @item has been successfully updated</p>
-     }
+      @foreach (var item in ViewBag.POUpdate)
+      {
+        <p class="uk-text-success uk-text-bold">Your PO @item has been successfully updated</p>
+      }
     </div>
   </div>
 }
