@@ -70,6 +70,7 @@ namespace WebApp.Controllers
           if (ModelState.IsValid)
           {
             if (model.OrderDetails != null)
+            {
               if (SelectAtLeastOne(model.OrderDetails))
               {
                 {
@@ -83,6 +84,7 @@ namespace WebApp.Controllers
               {
                 ViewBag.ShowModal = "NoItem";
               }
+            }
           }
           break;
         default:
