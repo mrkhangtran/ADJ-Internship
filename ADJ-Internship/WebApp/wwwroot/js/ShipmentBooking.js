@@ -60,6 +60,14 @@ $(document.body).on('click', '.searchButton', function () {
   }
 });
 
+function rebindValidators() {
+  var $form = $("#orderForm");
+  $form.unbind();
+  $form.data("validator", null);
+  $.validator.unobtrusive.parse($form);
+  $form.validate($form.data("unobtrusiveValidation").options);
+};
+
 showResult = function showResult() {
   $(document).ready(function () {
     $('#openmodal').trigger('click');
@@ -67,10 +75,40 @@ showResult = function showResult() {
   });
 };
 
-function rebindValidators() {
-  var $form = $("#orderForm");
-  $form.unbind();
-  $form.data("validator", null);
-  $.validator.unobtrusive.parse($form);
-  $form.validate($form.data("unobtrusiveValidation").options);
+$(document).ready(function () {
+  changePorts();
+});
+
+$("#origin").change(function () {
+  changePorts();
+});
+
+function changePorts() {
+  var origin = $("#origin").val();
+
+  var vnPorts = document.getElementsByClassName("vnPorts");
+  var hkPorts = document.getElementsByClassName("hkPorts");
+
+  var ports = document.getElementsByClassName("ports");
+
+  var options = [];
+
+  if (origin == "Vietnam") {
+    $.each(vnPorts, function () {
+      options.push($(this).text());
+    });
+  }
+  else if (origin == "HongKong") {
+    $.each(hkPorts, function () {
+      options.push($(this).text());
+    });
+  }
+
+  for (i = 0; i < ports.length; i++) {
+    ports[i].options.length = 0;
+    if (i == 0) { ports[i].options[ports[i].options.length] = new Option("Any", ""); }
+    for (j = 0; j < options.length; j++) {
+      ports[i].options[ports[i].options.length] = new Option(options[j], options[j]);
+    }
+  }
 };
