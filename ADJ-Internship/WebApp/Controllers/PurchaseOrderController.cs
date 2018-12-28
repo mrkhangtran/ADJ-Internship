@@ -337,6 +337,7 @@ namespace ADJ.WebApp.Controllers
       ViewBag.Ports = new List<string> { "Cẩm Phả", "Cửa Lò", "Hải Phòng", "Hòn Gai", "Nghi Sơn" };
       ViewBag.Modes = new List<string> { "Road", "Sea", "Air" };
       ViewBag.Origins = new List<string> { "HongKong", "Vietnam" };
+      ViewBag.Statuses = new List<string> { OrderStatus.New.ToString() };
 
       List<string> temp = new List<string>();
 
@@ -345,14 +346,6 @@ namespace ADJ.WebApp.Controllers
         temp.Add(i.ToString());
       }
       ViewBag.Currencies = temp;
-
-      temp = new List<string>();
-
-      foreach (var i in Enum.GetValues(typeof(OrderStatus)))
-      {
-        temp.Add(i.ToString());
-      }
-      ViewBag.Statuses = temp;
     }
 
     //Set list of years for Season field

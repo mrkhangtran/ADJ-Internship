@@ -213,6 +213,7 @@ namespace ADJ.BusinessService.Implementations
             output.Cube = item.Cube;
             output.PackType = item.PackType;
             output.Status = item.Status;
+            output.PONumber = item.PONumber;
 
             output.PortOfLoading = input.PortOfLoading;
             output.PortOfDelivery = input.PortOfDelivery;

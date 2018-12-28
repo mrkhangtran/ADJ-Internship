@@ -22,9 +22,13 @@
             }
           }
           message = message.Remove(message.Length - 2);
-          string endMsg = message.Substring(message.LastIndexOf(",") + 2);
-          message = message.Substring(0, message.LastIndexOf(","));
-          message += " and " + endMsg;
+
+          if (message.LastIndexOf(",") > 0)
+          {
+            string endMsg = message.Substring(message.LastIndexOf(",") + 2);
+            message = message.Substring(0, message.LastIndexOf(","));
+            message += " and " + endMsg;
+          }
 
           <span>@message</span>
           break;
@@ -252,8 +256,8 @@
             {
               <tr style="display: none">
                 <td>
-                  <input type="checkbox" asp-for="OrderDetails[i].Selected" hidden="hidden"/>
-                  <input type="hidden" asp-for="OrderDetails[i].PackType" />
+                  @*<input type="checkbox" asp-for="OrderDetails[i].Selected" hidden="hidden"/>
+                    <input type="hidden" asp-for="OrderDetails[i].PackType" />*@
                 </td>
               </tr>
             }

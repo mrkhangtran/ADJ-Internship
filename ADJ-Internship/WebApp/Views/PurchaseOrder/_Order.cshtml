@@ -219,8 +219,7 @@
     </td>
     <td>
       <div class="col-md-10">
-        <select asp-for="Status" asp-items="new SelectList(ViewBag.Statuses)" class="uk-input"></select>
-        <span asp-validation-for="Status" class="uk-alert-danger"></span>
+        <select asp-for="Status" asp-items="new SelectList(ViewBag.Statuses)" class="uk-input" disabled></select>
       </div>
     </td>
   </tr>

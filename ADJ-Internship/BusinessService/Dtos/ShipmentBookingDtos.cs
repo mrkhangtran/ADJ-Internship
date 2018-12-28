@@ -53,6 +53,8 @@ namespace ADJ.BusinessService.Dtos
 
     public int OrderId { get; set; }
 
+    public string PONumber { get; set; }
+
     public string ItemNumber { get; set; }
 
     //DropList of Boxed/Carton
