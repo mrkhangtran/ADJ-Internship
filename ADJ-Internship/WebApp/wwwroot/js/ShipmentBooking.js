@@ -54,6 +54,7 @@ $(document.body).on('click', '.searchButton', function () {
       success: function (objOperations) {
         showResult();
         $("#resultPartial").html(objOperations);
+        changePorts();
         rebindValidators();
       }
     });
@@ -70,6 +71,7 @@ function rebindValidators() {
 
 showResult = function showResult() {
   $(document).ready(function () {
+    changePorts();
     $('#openmodal').trigger('click');
     $('#pageValue').remove();
   });
