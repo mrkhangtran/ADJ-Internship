@@ -15,6 +15,7 @@ namespace ADJ.Repository.Implementations
     {
 
     }
-    protected override Func<System.Linq.IQueryable<Booking>, System.Linq.IQueryable<Booking>> IncludeDependents => null;
+    protected override Func<System.Linq.IQueryable<Booking>, System.Linq.IQueryable<Booking>> IncludeDependents => po => po.Include(x => x.Manifests);
+
   }
 }

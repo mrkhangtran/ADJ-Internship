@@ -205,6 +205,7 @@
               <input asp-for="PODetails.Items[i].Warehouse" value=@Model.PODetails.Items[i].Warehouse type="hidden" class="itemProperty" />
               <input asp-for="PODetails.Items[i].Size" value=@Model.PODetails.Items[i].Size type="hidden" class="itemProperty" />
               <input asp-for="PODetails.Items[i].Colour" value=@Model.PODetails.Items[i].Colour type="hidden" class="itemProperty" />
+              <input asp-for="PODetails.Items[i].ReviseQuantity" value=@Model.PODetails.Items[i].ReviseQuantity type="hidden" class="itemProperty" />
             </td>
           </tr>
           @if ((i >= start) && (i < end))

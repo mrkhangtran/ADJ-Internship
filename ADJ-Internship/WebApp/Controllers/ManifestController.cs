@@ -29,6 +29,7 @@ namespace WebApp.Controllers
       ViewBag.Dest = searchItem.DestinationPort;
       ViewBag.Status = searchItem.Status;
       int current = pageIndex ?? 1;
+      ViewBag.pageIndex = current;
       PagedListResult<ShipmentManifestsDtos> listManifest = await _manifestService.ListManifestDtoAsync(current, 2, DestinationPort, OriginPort, Carrier, ETDFrom, ETDTo, Status, Vendor, PONumber, Item);
       if (checkClick == true)
       {
@@ -39,12 +40,12 @@ namespace WebApp.Controllers
     [HttpPost]
     public async Task<ActionResult> CreateOrUpdate(PagedListResult<ShipmentManifestsDtos> shipmentManifestDtos)
     {
-      ViewBag.modalResult = null;     
+      ViewBag.modalResult = null;
       if (ModelState.IsValid)
       {
         foreach (var manifest in shipmentManifestDtos.Items)
         {
-          if (manifest.selectedContainer == true||manifest.Manifests.Where(p=>p.selectedItem==true).Count()>0)
+          if (manifest.selectedContainer == true || manifest.Manifests.Where(p => p.selectedItem == true).Count() > 0)
           {
             await _manifestService.CreateOrUpdateContainerAsync(manifest);
             ViewBag.modalResult = "success";
@@ -52,8 +53,8 @@ namespace WebApp.Controllers
         }
       }
       else
-      {     
-          ViewBag.modalResult = "invalid";       
+      {
+        ViewBag.modalResult = "invalid";
       }
       ViewBag.Size = new List<string> { "20GP", "40HC" };
       ViewBag.PackType = new List<string> { "Boxed", "Carton" };
