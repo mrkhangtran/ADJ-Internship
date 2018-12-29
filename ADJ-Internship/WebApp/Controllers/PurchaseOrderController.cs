@@ -279,7 +279,7 @@ namespace ADJ.WebApp.Controllers
     {
       List<OrderDetailDTO> orderDetailDTOs = new List<OrderDetailDTO>();
 
-      int totalProperty = 15;
+      int totalProperty = 16;
       for (int i = 0; i < (orderDetailStrings.Count / totalProperty); i++)
       {
         OrderDetailDTO orderDetail = new OrderDetailDTO();
@@ -287,19 +287,21 @@ namespace ADJ.WebApp.Controllers
         orderDetail.Id = int.Parse(orderDetailStrings[0 + (i * totalProperty)]);
         orderDetail.OrderId = int.Parse(orderDetailStrings[1 + (i * totalProperty)]);
         orderDetail.RowVersion = orderDetailStrings[2 + (i * totalProperty)];
+        orderDetail.ReviseQuantity = decimal.Parse(orderDetailStrings[3 + (i * totalProperty)]);
 
-        orderDetail.ItemNumber = orderDetailStrings[3 + (i * totalProperty)];
-        orderDetail.Description = orderDetailStrings[4 + (i * totalProperty)];
-        orderDetail.Tariff = orderDetailStrings[5 + (i * totalProperty)];
-        orderDetail.Quantity = decimal.Parse(orderDetailStrings[6 + (i * totalProperty)]);
-        orderDetail.Cartons = float.Parse(orderDetailStrings[7 + (i * totalProperty)]);
-        orderDetail.Cube = float.Parse(orderDetailStrings[8 + (i * totalProperty)]);
-        orderDetail.KGS = float.Parse(orderDetailStrings[9 + (i * totalProperty)]);
-        orderDetail.UnitPrice = float.Parse(orderDetailStrings[10 + (i * totalProperty)]);
-        orderDetail.RetailPrice = float.Parse(orderDetailStrings[11 + (i * totalProperty)]);
-        orderDetail.Warehouse = orderDetailStrings[12 + (i * totalProperty)];
-        orderDetail.Size = orderDetailStrings[13 + (i * totalProperty)];
-        orderDetail.Colour = orderDetailStrings[14 + (i * totalProperty)];
+        orderDetail.ItemNumber = orderDetailStrings[4 + (i * totalProperty)];
+        orderDetail.Description = orderDetailStrings[5 + (i * totalProperty)];
+        orderDetail.Tariff = orderDetailStrings[6 + (i * totalProperty)];
+        orderDetail.Quantity = decimal.Parse(orderDetailStrings[7 + (i * totalProperty)]);
+        orderDetail.Cartons = float.Parse(orderDetailStrings[8 + (i * totalProperty)]);
+        orderDetail.Cube = float.Parse(orderDetailStrings[9 + (i * totalProperty)]);
+        orderDetail.KGS = float.Parse(orderDetailStrings[10 + (i * totalProperty)]);
+        orderDetail.UnitPrice = float.Parse(orderDetailStrings[11 + (i * totalProperty)]);
+        orderDetail.RetailPrice = float.Parse(orderDetailStrings[12 + (i * totalProperty)]);
+        orderDetail.Warehouse = orderDetailStrings[13 + (i * totalProperty)];
+        orderDetail.Size = orderDetailStrings[14 + (i * totalProperty)];
+        orderDetail.Colour = orderDetailStrings[15 + (i * totalProperty)];
+
         orderDetail.Status = OrderStatus.AwaitingBooking;
 
         orderDetailDTOs.Add(orderDetail);
