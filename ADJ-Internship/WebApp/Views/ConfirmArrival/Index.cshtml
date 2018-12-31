@@ -1,7 +1,35 @@
-﻿
-@{
-    ViewData["Title"] = "Index";
+﻿@model ADJ.BusinessService.Dtos.ConfirmArrivalDtos
+
+<h3>Confirm Arrival</h3>
+
+<form asp-action="Search" asp-controller="ConfirmArrival" id="searchForm"
+      data-ajax="true"
+      data-ajax-method="POST"
+      data-ajax-mode="replace"
+      data-ajax-update="#resultPartial">
+
+  <div class="uk-card uk-card-default uk-card-body">
+    <partial name="_Search" model="Model" />
+  </div>
+
+</form>
+
+<hr class="uk-divider-icon" />
+
+<form asp-action="Achieve" asp-controller="ConfirmArrival" id="achieveForm"
+      data-ajax="true"
+      data-ajax-method="POST"
+      data-ajax-mode="replace"
+      data-ajax-update="#resultPartial">
+
+  <div id="resultPartial">
+    <partial name="_Result" model="Model" />
+  </div>
+</form>
+
+@section Scripts
+  {
+  <script type="text/javascript" src="@Url.Content("~/js/ConfirmArrival.js")"></script>
 }
 
-<h2>Index</h2>
 

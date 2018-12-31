@@ -22,7 +22,9 @@ namespace ADJ.BusinessService.Dtos
     [Display(Name = "Arrival Date")]
     public DateTime ArrivalDate { get; set; }
 
-    ConfirmArrivalFilterDtos FilterDtos { get; set; }
+    public ConfirmArrivalFilterDtos FilterDtos { get; set; }
+
+    public List<ConfirmArrivalResultDtos> Containers { get; set; }
   }
 
   public class ConfirmArrivalFilterDtos : EntityDtoBase
@@ -45,8 +47,8 @@ namespace ADJ.BusinessService.Dtos
     public DateTime ETAFrom { get; set; }
 
     [Display(Name = "ETA To")]
-    [SimilarOrLaterThanOtherDate("ETD")]
-    public DateTime ETA { get; set; }
+    [SimilarOrLaterThanOtherDate("ETAFrom")]
+    public DateTime ETATo { get; set; }
 
     //DropList of Despatched and Arrived
     public string Status { get; set; }
