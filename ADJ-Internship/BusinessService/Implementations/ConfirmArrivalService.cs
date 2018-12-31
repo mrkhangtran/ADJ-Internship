@@ -44,7 +44,7 @@ namespace ADJ.BusinessService.Implementations
 
       if (mode != null)
       {
-        Expression<Func<Container, bool>> filter = x => x.Manifests.Where(p => p.Booking.Mode == mode).Count() > 0;
+        Expression<Func<Container, bool>> filter = x => x.Loading == mode;
         All = All.And(filter);
       }
 
@@ -109,7 +109,7 @@ namespace ADJ.BusinessService.Implementations
 
         output.DestinationPort = (item.Manifests.ToList())[0].Booking.PortOfDelivery;
         output.Origin = (item.Manifests.ToList())[0].Booking.Order.Origin;
-        output.Mode = (item.Manifests.ToList())[0].Booking.Mode;
+        output.Mode = item.Loading;
         output.Carrier = (item.Manifests.ToList())[0].Booking.Carrier;
         output.ArrivalDate = (item.Manifests.ToList())[0].Booking.ETA;
 
