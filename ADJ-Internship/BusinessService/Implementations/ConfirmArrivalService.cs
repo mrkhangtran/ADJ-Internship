@@ -143,19 +143,15 @@ namespace ADJ.BusinessService.Implementations
           if (i + 1 < input.Count)
           {
             var currentProperty = typeof(ConfirmArrivalResultDtos).GetProperties()[property];
-            if (currentProperty.GetValue(input[i]).ToString().CompareTo(currentProperty.GetValue(input[i + 1]).ToString()) != 0)
+            if ((currentProperty.GetValue(input[i]).ToString().CompareTo(currentProperty.GetValue(input[i + 1]).ToString()) != 0) || (i == input.Count))
             {
-              input = Quick_Sort(input, start, i + 1, property);
+              input = Quick_Sort(input, start, i, property);
               start = i + 1;
             }
           }
         }
-        input = Quick_Sort(input, start, input.Count, property);
       }
       
-
-      
-
       return input;
     }
 
