@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ADJ.BusinessService.Dtos;
+using ADJ.BusinessService.Interfaces;
 using ADJ.Common;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,19 +11,52 @@ namespace WebApp.Controllers
 {
   public class ConfirmArrivalController : Controller
   {
-    public IActionResult Index()
+    private readonly IConfirmArrivalService _CAService;
+    private readonly int pageSize;
+
+    public ConfirmArrivalController(IConfirmArrivalService CAService)
+    {
+      _CAService = CAService;
+      pageSize = 6;
+    }
+
+    public async Task<ActionResult> Index()
+    {
+      SetDropDownList();
+      ConfirmArrivalDtos model = new ConfirmArrivalDtos();
+      model.Containers = new List<ConfirmArrivalResultDtos>();
+
+      model.Containers = await _CAService.ListContainerFilterAsync(null, null, null, "HongKong", null, null, null, null);
+      
+      if (model.Containers.Count == 0)
+      {
+        ViewBag.ShowModal = "NoResult";
+      }
+
+      return View(model);
+    }
+
+    public async Task<ActionResult> Search(int? page, ConfirmArrivalDtos model)
     {
       SetDropDownList();
 
-      return View();
+      model.Containers = new List<ConfirmArrivalResultDtos>();
+
+      model.Containers = await _CAService.ListContainerFilterAsync(page, model.FilterDtos.ETAFrom, model.FilterDtos.ETATo, model.FilterDtos.Origin,
+        model.FilterDtos.Mode, model.FilterDtos.Vendor, model.FilterDtos.Container, model.FilterDtos.Status);
+
+      if (model.Containers.Count == 0)
+      {
+        ViewBag.ShowModal = "NoResult";
+      }
+
+      return PartialView("_Result", model);
     }
 
     public void SetDropDownList()
     {
-      ViewBag.PackTypes = new List<string> { "Boxed", "Carton" };
+      ViewBag.Modes = new List<string> { "Road", "Sea", "Air" };
       ViewBag.Origins = new List<string> { "HongKong", "Vietnam" };
-      ViewBag.VNPorts = new List<string> { "Cẩm Phả", "Cửa Lò", "Hải Phòng", "Hòn Gai", "Nghi Sơn" };
-      ViewBag.HKPorts = new List<string> { "Aberdeen", "Crooked Harbour", "Double Haven", "Gin Drinkers Bay", "Inner Port Shelter" };
       ViewBag.Statuses = new List<string> { ContainerStatus.Despatch.ToString(), ContainerStatus.Arrived.ToString() };
 
       ViewBag.Page = 1;

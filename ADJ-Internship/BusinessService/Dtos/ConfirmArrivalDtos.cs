@@ -44,11 +44,11 @@ namespace ADJ.BusinessService.Dtos
     public string Container { get; set; } = "";
 
     [Display(Name = "ETA From")]
-    public DateTime ETAFrom { get; set; }
+    public DateTime? ETAFrom { get; set; }
 
     [Display(Name = "ETA To")]
     [SimilarOrLaterThanOtherDate("ETAFrom")]
-    public DateTime ETATo { get; set; }
+    public DateTime? ETATo { get; set; }
 
     //DropList of Despatched and Arrived
     public string Status { get; set; }

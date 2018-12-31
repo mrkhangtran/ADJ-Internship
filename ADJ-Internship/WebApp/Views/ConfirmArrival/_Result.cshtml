@@ -1,7 +1,93 @@
 ﻿@model ADJ.BusinessService.Dtos.ConfirmArrivalDtos;
+<!--Result Popup-->
+@if (ViewBag.ShowModal != null)
+{
+  string modal = ViewBag.ShowModal;
+  <button type="button" uk-toggle="target: #resultModal" id="openmodal" hidden="hidden">Open</button>
 
-<table class="uk-table uk-table-small">
-  <thead>
+  <div id="resultModal" uk-modal>
+    <div class="uk-modal-dialog uk-modal-body">
+      @switch (modal)
+      {
+        case "Updated":
+          <p>Your Arrival Date is updated</p>
+          break;
+        case "NoResult":
+          <p>Cannot find any record match filter.</p>
+          break;
+        case "NoItem":
+          <p>Please select at least 1 item.</p>
+          break;
+      }
 
-  </thead>
-</table>
+      <p class="uk-text-right">
+        <button class="uk-button uk-button-default uk-modal-close" type="button">Close</button>
+      </p>
+
+    </div>
+  </div>
+}
+
+@if (Model.Containers != null)
+{
+  for (int i = 0; i < Model.Containers.Count; i++)
+  {
+    <table class="uk-table uk-table-small uk-table-middle uk-table-striped">
+      <thead>
+        <tr>
+          <td>
+            <label asp-for="Containers[i].DestinationPort"></label>
+          </td>
+          <td>
+            <label asp-for="Containers[i].Origin"></label>
+          </td>
+          <td>
+            <label asp-for="Containers[i].Mode"></label>
+          </td>
+          <td>
+            <label asp-for="Containers[i].Carrier"></label>
+          </td>
+          <td>
+            <label asp-for="Containers[i].ArrivalDate"></label>
+          </td>
+        </tr>
+      </thead>
+      <tr>
+        <td>@Model.Containers[i].DestinationPort</td>
+        <td>@Model.Containers[i].Origin</td>
+        <td>@Model.Containers[i].Mode</td>
+        <td>@Model.Containers[i].Carrier</td>
+        <td>
+          <input asp-for="Containers[i].ArrivalDate" type="datetime" />
+        </td>
+      </tr>
+    </table>
+
+    <table class="uk-table uk-table-small uk-table-middle uk-table-striped">
+      <thead>
+        <tr>
+          <td>
+            <input type="checkbox" />
+          </td>
+          <td>
+            <label asp-for="Containers[i].Vendor"></label>
+          </td>
+          <td>
+            <label asp-for="Containers[i].Container"></label>
+          </td>
+          <td>
+            <label asp-for="Containers[i].Status"></label>
+          </td>
+        </tr>
+      </thead>
+      <tr>
+        <td>
+          <input asp-for="Containers[i].Selected" type="checkbox" />
+        </td>
+        <td>@Model.Containers[i].Vendor</td>
+        <td>@Model.Containers[i].Container</td>
+        <td>@Model.Containers[i].Status</td>
+      </tr>
+    </table>
+  }
+}
