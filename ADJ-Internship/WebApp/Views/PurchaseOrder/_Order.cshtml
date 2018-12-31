@@ -162,7 +162,7 @@
     </td>
     <td>
       <div class="col-md-10">
-        <select asp-for="PortOfLoading" class="uk-input ports"></select>
+        <select asp-for="PortOfLoading" value=@Model.PortOfLoading class="uk-input ports"></select>
         <span asp-validation-for="PortOfLoading" class="uk-alert-danger"></span>
       </div>
     </td>
@@ -191,7 +191,7 @@
     </td>
     <td>
       <div class="col-md-10">
-        <select asp-for="PortOfDelivery" class="uk-input ports"></select>
+        <select asp-for="PortOfDelivery" value=@Model.PortOfDelivery class="uk-input ports"></select>
         <span asp-validation-for="PortOfDelivery" class="uk-alert-danger"></span>
       </div>
     </td>
