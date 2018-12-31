@@ -183,7 +183,7 @@ else
           if (i == ViewBag.pageIndex)
           {
             <li class="uk-disabled">
-              <a asp-action="Index" asp-controller="Manifest" asp-route-pageIndex="@i" class="page-link">@i</a>
+              <a asp-action="Index" asp-controller="Manifest" asp-route-pageIndex="@i" class="page-link"><u>@i</u></a>
             </li>
           }
           else
