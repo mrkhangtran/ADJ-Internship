@@ -2,16 +2,15 @@
 using ADJ.BusinessService.Dtos;
 using ADJ.BusinessService.Interfaces;
 using ADJ.Common;
-using ADJ.DataModel.OrderTrack;
 using ADJ.DataModel.ShipmentTrack;
 using ADJ.Repository.Core;
+using ADJ.Repository.Interfaces;
 using AutoMapper;
 using LinqKit;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace ADJ.BusinessService.Implementations
@@ -19,12 +18,14 @@ namespace ADJ.BusinessService.Implementations
   public class ConfirmArrivalService : ServiceBase, IConfirmArrivalService
   {
     private readonly IDataProvider<Container> _containerDataProvider;
+    private readonly IConfirmArrivalRepository _confirmArrivalRepository;
     private readonly int pageSize;
 
     public ConfirmArrivalService(IUnitOfWork unitOfWork, IMapper mapper, ApplicationContext appContext,
-      IDataProvider<Container> containerDataProvider) : base(unitOfWork, mapper, appContext)
+      IDataProvider<Container> containerDataProvider, IConfirmArrivalRepository confirmArrivalRepository) : base(unitOfWork, mapper, appContext)
     {
       _containerDataProvider = containerDataProvider;
+      _confirmArrivalRepository = confirmArrivalRepository;
 
       pageSize = 6;
     }
@@ -203,6 +204,38 @@ namespace ADJ.BusinessService.Implementations
           return right;
         }
       }
+    }
+
+    public async Task<ConfirmArrivalDtos> CreateOrUpdateBookingAsync(int containerId, DateTime arrivalDate)
+    {
+      CA entity = new CA();
+      ConfirmArrivalDtos input = new ConfirmArrivalDtos();
+
+      input.ContainerId = containerId;
+      input.ArrivalDate = arrivalDate;
+
+      if (containerId != 0)
+      {
+        entity = await _confirmArrivalRepository.GetByIdAsync(containerId, false);
+        if (entity == null)
+        {
+          throw new AppException("Purchase Order Not Found");
+        }
+
+        entity = Mapper.Map(input, entity);
+
+        _confirmArrivalRepository.Update(entity);
+      }
+      else
+      {
+        entity = Mapper.Map<CA>(input);
+
+        _confirmArrivalRepository.Insert(entity);
+      }
+
+      await UnitOfWork.SaveChangesAsync();
+
+      return Mapper.Map<ConfirmArrivalDtos>(entity);
     }
   }
 }

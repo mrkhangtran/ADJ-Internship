@@ -27,7 +27,7 @@ namespace WebApp.Controllers
       model.Containers = new List<ConfirmArrivalResultDtos>();
 
       model.Containers = await _CAService.ListContainerFilterAsync(null, null, null, "HongKong", null, null, null, null);
-      
+
       if (model.Containers.Count == 0)
       {
         ViewBag.ShowModal = "NoResult";
@@ -51,6 +51,48 @@ namespace WebApp.Controllers
       }
 
       return PartialView("_Result", model);
+    }
+
+    public async Task<ActionResult> Achieve(ConfirmArrivalDtos model)
+    {
+      SetDropDownList();
+
+      if (ModelState.IsValid)
+      {
+        if (model.Containers != null)
+        {
+          if (SelectAtLeastOne(model.Containers))
+          {
+            {
+              foreach (var item in model.Containers)
+              {
+                await _CAService.CreateOrUpdateBookingAsync(item.Id, model.ArrivalDate);
+              }
+              ModelState.Clear();
+              ViewBag.ShowModal = "Updated";
+            }
+          }
+          else
+          {
+            ViewBag.ShowModal = "NoItem";
+          }
+        }
+      }
+
+      return PartialView("_Result", model);
+    }
+
+    public bool SelectAtLeastOne(List<ConfirmArrivalResultDtos> input)
+    {
+      foreach (var item in input)
+      {
+        if (item.Selected)
+        {
+          return true;
+        }
+      }
+
+      return false;
     }
 
     public void SetDropDownList()

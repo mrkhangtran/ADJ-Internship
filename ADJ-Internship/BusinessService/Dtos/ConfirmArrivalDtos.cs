@@ -19,6 +19,8 @@ namespace ADJ.BusinessService.Dtos
       profile.CreateMap<ConfirmArrivalDtos, CA>().IncludeBase<EntityDtoBase, EntityBase>();
     }
 
+    public int ContainerId { get; set; }
+
     [Display(Name = "Arrival Date")]
     public DateTime ArrivalDate { get; set; }
 

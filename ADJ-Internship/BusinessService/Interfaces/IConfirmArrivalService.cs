@@ -12,5 +12,7 @@ namespace ADJ.BusinessService.Interfaces
     Task<List<ConfirmArrivalResultDtos>> ListContainerFilterAsync(int? page, DateTime? ETAFrom, DateTime? ETATo, string origin = null, string mode = null,
       string vendor = null, string container = null, string status = null);
     List<ConfirmArrivalResultDtos> ConvertToResultAsync(List<Container> containers);
+
+    Task<ConfirmArrivalDtos> CreateOrUpdateBookingAsync(int containerId, DateTime arrivalDate);
   }
 }
