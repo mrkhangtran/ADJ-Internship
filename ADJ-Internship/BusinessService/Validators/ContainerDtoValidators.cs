@@ -7,11 +7,11 @@ namespace ADJ.BusinessService.Validators
 {
   public class ContainerDtoValidators
   {
-    public class ShipQuantityValidation : ValidationAttribute
+    public class QuantityValidation : ValidationAttribute
     {
       private readonly string _otherProperty;
 
-      public ShipQuantityValidation(string otherProperty)
+      public QuantityValidation(string otherProperty)
       {
         _otherProperty = otherProperty;
       }
@@ -25,7 +25,7 @@ namespace ADJ.BusinessService.Validators
           decimal openQuantity = decimal.Parse(otherValue.ToString());
           if (shipQuantity > openQuantity)
           {
-            return new ValidationResult(ErrorMessage = "Ship Quantity is invalid, please try again");
+            return new ValidationResult(ErrorMessage = "Quantity is invalid, please try again");
           }
         }
         return ValidationResult.Success;

@@ -221,6 +221,8 @@
               @Html.HiddenFor(model => model.Items[i].Manifests[j].BookingQuantity, new { Value = Model.Items[i].Manifests[j].BookingQuantity })
               @Html.HiddenFor(model => model.Items[i].Manifests[j].Id, new { Value = Model.Items[i].Manifests[j].Id })
               @Html.HiddenFor(model => model.Items[i].Manifests[j].OpenQuantity, new { Value = Model.Items[i].Manifests[j].OpenQuantity })
+              @Html.HiddenFor(model => model.Items[i].Manifests[j].NetWeight, new { Value = Model.Items[i].Manifests[j].NetWeight })
+
               <tr>
                 <td>
                   @if (Model.Items[i].Id == 0)
@@ -278,7 +280,18 @@
                   @Model.Items[i].Manifests[j].NetWeight
                 </td>
                 <td>
-                  <input asp-for="Items[i].Manifests[j].GrossWeight" class="uk-input" />
+                  @{
+                    if (Model.Items[i].Id > 0)
+                    {
+                      @Model.Items[i].Manifests[j].GrossWeight
+                    }
+                    else
+                    {
+                      <input id="shipQuantity" asp-for="Items[i].Manifests[j].GrossWeight" class="validationShipQuantity uk-input" />
+                      <span class=" uk-text-danger" asp-validation-for="Items[i].Manifests[j].GrossWeight" id="" hidden></span>
+                    }
+                  }
+
                 </td>
                 <td>
                   @Model.Items[i].Manifests[j].Manifested
@@ -294,26 +307,26 @@
         @{
           if (ViewBag.pageIndex > 1)
           {
-            <li><a asp-action="Index" asp-controller="Manifest" asp-route-pageIndex="@(ViewBag.pageIndex - 1)" class="page-link"><span uk-pagination-previous></span></a></li>
+            <li><a value="@(ViewBag.pageIndex - 1)" class="filterItem page-link"><span uk-pagination-previous></span></a></li>
           }
           for (var i = 1; i <= Model.PageCount; i++)
           {
             if (i == ViewBag.pageIndex)
             {
               <li class="uk-disabled">
-                <a asp-action="Index" asp-controller="Manifest" asp-route-pageIndex="@i" class="page-link"><u>@i</u></a>
+                <a value="@i" class="page-link"><u>@i</u></a>
               </li>
             }
             else
             {
               <li class="uk-active">
-                <a asp-action="Index" asp-controller="Manifest" asp-route-pageIndex="@i" class="page-link">@i</a>
+                <a value="@i" class="filterItem page-link">@i</a>
               </li>
             }
           }
           if (ViewBag.pageIndex < Model.PageCount)
           {
-            <li><a asp-action="Index" asp-controller="Manifest" asp-route-pageIndex="@(ViewBag.pageIndex + 1)" class="page-link"><span uk-pagination-next></span></a></li>
+            <li><a value="@(ViewBag.pageIndex + 1)" class="filterItem page-link"><span uk-pagination-next></span></a></li>
           }
         }
 
@@ -323,7 +336,7 @@
   <br />
   <br />
 </form>
-@if (ViewBag.modalResult != null)
+@if (ViewBag.modalResult != null && ViewBag.modalResult != "grossWeightInvalid")
 {
   string result = ViewBag.modalResult;
   <button type="button" uk-toggle="target: #modal-center" id="openmodal" hidden="hidden">Open</button>

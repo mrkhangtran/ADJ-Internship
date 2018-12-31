@@ -25,6 +25,7 @@ namespace ADJ.BusinessService.Dtos
     public string PackType { get; set; }
 
     public List<ItemManifest> Manifests { get; set; }
+
     public bool selectedContainer { get; set; }
 
     public void CreateMapping(Profile profile)
@@ -52,7 +53,7 @@ namespace ADJ.BusinessService.Dtos
     public decimal OpenQuantity { get; set; }     //= Booking Quantity - Total Ship Quantity (recorded in database)
 
     [Required]
-    [ShipQuantityValidation("OpenQuantity")]
+    [QuantityValidation("OpenQuantity")]
     public decimal ShipQuantity { get; set; }
 
     public decimal BookingCartons { get; set; } //= Booking Qty* Carton(of 1 item)
@@ -67,6 +68,7 @@ namespace ADJ.BusinessService.Dtos
 
     public DateTime ETDDate { get; set; } //value taken from shipment booking
 
+    [QuantityValidation("NetWeight")]
     public decimal GrossWeight { get; set; }
 
     public string Manifested { get; set; }

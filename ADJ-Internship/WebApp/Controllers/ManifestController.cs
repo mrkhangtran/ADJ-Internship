@@ -54,6 +54,11 @@ namespace WebApp.Controllers
       }
       else
       {
+        if (shipmentManifestDtos.Items.Where(p => p.Manifests.Where(x => x.GrossWeight > x.NetWeight).Count() > 0).Count() > 0)
+        {
+          ViewBag.modalResult = "grossWeightInvalid";
+        }
+        else
         ViewBag.modalResult = "invalid";
       }
       ViewBag.Size = new List<string> { "20GP", "40HC" };
