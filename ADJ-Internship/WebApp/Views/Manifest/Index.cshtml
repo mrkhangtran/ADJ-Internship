@@ -9,7 +9,7 @@
               <td><label>Destination Port</label></td>
               <td>
                 <div class="uk-form-select" data-uk-form-select>
-                  @Html.DropDownList("DestinationPort", new SelectList(ViewBag.Dest), "Any", new { @id = "DestinationPort", @class = "uk-select" })
+                  @Html.DropDownList("DestinationPort", new SelectList(ViewBag.Dest), new { @id = "DestinationPort", @class = "uk-select" })
                 </div>
               </td>
             </tr>
@@ -17,7 +17,7 @@
               <td><label>Origin Port</label></td>
               <td>
                 <div class="uk-form-select" data-uk-form-select>
-                  @Html.DropDownList("OriginPorts", new SelectList(ViewBag.OriginPorts), "Any", new { @id = "OriginPorts", @class = "uk-select" })
+                  @Html.DropDownList("OriginPorts", new SelectList(ViewBag.OriginPorts), new { @id = "OriginPorts", @class = "uk-select" })
                 </div>
               </td>
             </tr>
@@ -26,7 +26,7 @@
               <td>
                 <div class="uk-form-select" data-uk-form-select>
                   <span></span>
-                  @Html.DropDownList("Carriers", new SelectList(ViewBag.Carriers), "Any", new { @id = "Carriers", @class = "uk-select" })
+                  @Html.DropDownList("Carriers", new SelectList(ViewBag.Carriers), new { @id = "Carriers", @class = "uk-select" })
                 </div>
               </td>
             </tr>
@@ -307,31 +307,32 @@
         @{
           if (ViewBag.pageIndex > 1)
           {
-            <li><a value="@(ViewBag.pageIndex - 1)" class="filterItem page-link"><span uk-pagination-previous></span></a></li>
+            <li><a asp-action="Index" asp-controller="Manifest" asp-route-pageIndex="@(ViewBag.pageIndex - 1)" class="page-link"><span uk-pagination-previous></span></a></li>
           }
           for (var i = 1; i <= Model.PageCount; i++)
           {
             if (i == ViewBag.pageIndex)
             {
               <li class="uk-disabled">
-                <a value="@i" class="page-link"><u>@i</u></a>
+                <a asp-action="Index" asp-controller="Manifest" asp-route-pageIndex="@i" class="page-link"><u>@i</u></a>
               </li>
             }
             else
             {
               <li class="uk-active">
-                <a value="@i" class="filterItem page-link">@i</a>
+                <a asp-action="Index" asp-controller="Manifest" asp-route-pageIndex="@i" class="page-link">@i</a>
               </li>
             }
           }
           if (ViewBag.pageIndex < Model.PageCount)
           {
-            <li><a value="@(ViewBag.pageIndex + 1)" class="filterItem page-link"><span uk-pagination-next></span></a></li>
+            <li><a asp-action="Index" asp-controller="Manifest" asp-route-pageIndex="@(ViewBag.pageIndex + 1)" class="page-link"><span uk-pagination-next></span></a></li>
           }
         }
 
       </ul>
     </div>
+
   </div>
   <br />
   <br />

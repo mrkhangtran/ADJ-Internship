@@ -29,6 +29,12 @@ namespace WebApp.Controllers
       ViewBag.Dest = searchItem.DestinationPort;
       ViewBag.Status = searchItem.Status;
       int current = pageIndex ?? 1;
+      if (String.IsNullOrEmpty(DestinationPort) && String.IsNullOrEmpty(OriginPort) && String.IsNullOrEmpty(Carrier))
+      {
+        DestinationPort = searchItem.DestinationPort.First();
+        OriginPort = searchItem.OriginPorts.First();
+        Carrier = searchItem.Carriers.First();
+      }
       ViewBag.pageIndex = current;
       PagedListResult<ShipmentManifestsDtos> listManifest = await _manifestService.ListManifestDtoAsync(current, 2, DestinationPort, OriginPort, Carrier, ETDFrom, ETDTo, Status, Vendor, PONumber, Item);
       if (checkClick == true)
