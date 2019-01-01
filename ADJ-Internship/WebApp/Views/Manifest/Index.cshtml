@@ -223,80 +223,89 @@
               @Html.HiddenFor(model => model.Items[i].Manifests[j].OpenQuantity, new { Value = Model.Items[i].Manifests[j].OpenQuantity })
               @Html.HiddenFor(model => model.Items[i].Manifests[j].NetWeight, new { Value = Model.Items[i].Manifests[j].NetWeight })
 
-              <tr>
-                <td>
-                  @if (Model.Items[i].Id == 0)
+            <tr>
+              <td>
+                @if (Model.Items[i].Id == 0)
+                {
+                  <input type="checkbox" asp-for="Items[i].Manifests[j].selectedItem" />
+                }
+              </td>
+              <td>
+                @Model.Items[i].Manifests[j].Supplier
+              </td>
+              <td>
+                @Model.Items[i].Manifests[j].Carrier
+              </td>
+              <td>
+                @Model.Items[i].Manifests[j].PONumber
+              </td>
+              <td>
+                @Model.Items[i].Manifests[j].ItemNumber
+              </td>
+              <td>
+                @Model.Items[i].Manifests[j].ETDDate.ToString("dd/MM/yyyy")
+              </td>
+              <td>
+                @Model.Items[i].Manifests[j].BookingQuantity
+              </td>
+              <td>
+                @Model.Items[i].Manifests[j].OpenQuantity
+              </td>
+              <td>
+                @{
+                  if (Model.Items[i].Id > 0)
                   {
-                    <input type="checkbox" asp-for="Items[i].Manifests[j].selectedItem" />
+                    @Model.Items[i].Manifests[j].ShipQuantity
                   }
-                </td>
-                <td>
-                  @Model.Items[i].Manifests[j].Supplier
-                </td>
-                <td>
-                  @Model.Items[i].Manifests[j].Carrier
-                </td>
-                <td>
-                  @Model.Items[i].Manifests[j].PONumber
-                </td>
-                <td>
-                  @Model.Items[i].Manifests[j].ItemNumber
-                </td>
-                <td>
-                  @Model.Items[i].Manifests[j].ETDDate.ToString("dd/MM/yyyy")
-                </td>
-                <td>
-                  @Model.Items[i].Manifests[j].BookingQuantity
-                </td>
-                <td>
-                  @Model.Items[i].Manifests[j].OpenQuantity
-                </td>
-                <td>
-                  @{
-                    if (Model.Items[i].Id > 0)
-                    {
-                      @Model.Items[i].Manifests[j].ShipQuantity
-                    }
-                    else
-                    {
-                      <input id="shipQuantity" asp-for="Items[i].Manifests[j].ShipQuantity" class="validationShipQuantity uk-input" />
-                      <span class=" uk-text-danger" asp-validation-for="Items[i].Manifests[j].ShipQuantity" id="validationShipQuantity" hidden></span>
-                    }
+                  else
+                  {
+                    <input id="@("shipQuantity"+Model.Items[i].Manifests[j].ItemNumber)" asp-for="Items[i].Manifests[j].ShipQuantity" class="validationShipQuantity uk-input" />
+                    <span class=" uk-text-danger" asp-validation-for="Items[i].Manifests[j].ShipQuantity" id="validationShipQuantity" hidden></span>
                   }
-                </td>
-                <td>
-                  @Model.Items[i].Manifests[j].BookingCartons
-                </td>
-                <td>
-                  @Model.Items[i].Manifests[j].ShipCartons
-                </td>
-                <td>
-                  @Model.Items[i].Manifests[j].BookingCube
-                </td>
-                <td>
-                  @Model.Items[i].Manifests[j].ShipCube
-                </td>
-                <td>
-                  @Model.Items[i].Manifests[j].NetWeight
-                </td>
-                <td>
-                  @{
-                    if (Model.Items[i].Id > 0)
-                    {
-                      @Model.Items[i].Manifests[j].GrossWeight
-                    }
-                    else
-                    {
-                      <input id="shipQuantity" asp-for="Items[i].Manifests[j].GrossWeight" class="validationShipQuantity uk-input" />
-                      <span class=" uk-text-danger" asp-validation-for="Items[i].Manifests[j].GrossWeight" id="" hidden></span>
-                    }
+                }
+              </td>
+              <td>
+                @Model.Items[i].Manifests[j].BookingCartons
+              </td>
+              <td>
+                <input id="@("shipCarton"+@Model.Items[i].Manifests[j].ItemNumber)" asp-for="Items[i].Manifests[j].ShipCartons" readonly class=" uk-input" />
+              </td>
+              <td>
+                @Model.Items[i].Manifests[j].BookingCube
+              </td>
+              <td>
+                <input id="@("shipCube"+@Model.Items[i].Manifests[j].ItemNumber)" asp-for="Items[i].Manifests[j].ShipCube" readonly class=" uk-input" />
+              </td>
+              <td>
+                @Model.Items[i].Manifests[j].NetWeight
+              </td>
+              <td>
+                @{
+                  if (Model.Items[i].Id > 0)
+                  {
+                    @Model.Items[i].Manifests[j].GrossWeight
                   }
+                  else
+                  {
+                    <input id="@("shipGrossWeight"+Model.Items[i].Manifests[j].ItemNumber)" asp-for="Items[i].Manifests[j].GrossWeight" class="validationShipQuantity uk-input" />
+                    <span class=" uk-text-danger" asp-validation-for="Items[i].Manifests[j].GrossWeight" id="" hidden></span>
+                  }
+                }
 
-                </td>
-                <td>
-                  @Model.Items[i].Manifests[j].Manifested
-                </td>
-              </tr>
+              </td>
+              <td>
+                @Model.Items[i].Manifests[j].Manifested
+              </td>
+              <td style="display:none">
+                <input id="@("carton"+Model.Items[i].Manifests[j].ItemNumber)" value="@Model.Items[i].Manifests[j].Carton" asp-for="Items[i].Manifests[j].Carton" class=" uk-input" />
+              </td>
+              <td style="display:none">
+                <input id="@("cube"+Model.Items[i].Manifests[j].ItemNumber)" value="@Model.Items[i].Manifests[j].Cube" asp-for="Items[i].Manifests[j].Cube" class=" uk-input" />
+              </td>
+              <td style="display:none">
+                <input id="@("kgs"+Model.Items[i].Manifests[j].ItemNumber)" value="@Model.Items[i].Manifests[j].Carton" asp-for="Items[i].Manifests[j].KGS" class=" uk-input" />
+              </td>
+            </tr>
             }
           </tbody>
         </table>
@@ -401,6 +410,9 @@
         break;
       }
     }
+  });
+  $(document.body).on('keyup', '.validationShipQuantity', function () {
+   
   });
 </script>
 

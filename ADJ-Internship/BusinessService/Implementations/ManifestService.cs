@@ -261,7 +261,10 @@ namespace ADJ.BusinessService.Implementations
         if (pageIndex == 1)
         {
           shipmentManifestsDtos.Add(shipmentNoContainerDto);
-          shipmentManifestsDtos.Add(currentPage[0]);
+          if (currentPage.Count() > 0)
+          {
+            shipmentManifestsDtos.Add(currentPage[0]);
+          }
           pageResult.Items = shipmentManifestsDtos;
         }
         if (pageIndex > 1)
