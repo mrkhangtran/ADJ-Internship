@@ -13,6 +13,6 @@ namespace ADJ.BusinessService.Interfaces
       string vendor = null, string container = null, string status = null);
     List<ConfirmArrivalResultDtos> ConvertToResultAsync(List<Container> containers);
 
-    Task<ConfirmArrivalDtos> CreateOrUpdateBookingAsync(int containerId, DateTime arrivalDate);
+    Task<ConfirmArrivalDtos> CreateOrUpdateCAAsync(int containerId, DateTime arrivalDate);
   }
 }

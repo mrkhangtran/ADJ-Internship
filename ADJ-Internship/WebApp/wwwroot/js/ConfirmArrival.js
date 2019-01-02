@@ -1,4 +1,8 @@
-﻿showResult = function showResult() {
+﻿$(document.body).on('click', '#achieveButton', function () {
+  $("#achieveForm").submit();
+});
+
+showResult = function showResult() {
   $(document).ready(function () {
     $('#openmodal').trigger('click');
     $('#pageValue').remove();

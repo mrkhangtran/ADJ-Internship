@@ -66,7 +66,7 @@ namespace WebApp.Controllers
             {
               foreach (var item in model.Containers)
               {
-                await _CAService.CreateOrUpdateBookingAsync(item.Id, model.ArrivalDate);
+                await _CAService.CreateOrUpdateCAAsync(item.Id, model.ArrivalDate);
               }
               ModelState.Clear();
               ViewBag.ShowModal = "Updated";

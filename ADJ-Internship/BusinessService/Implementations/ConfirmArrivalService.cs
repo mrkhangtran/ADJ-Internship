@@ -93,8 +93,6 @@ namespace ADJ.BusinessService.Implementations
         All = All1.Or(All2);
       }
 
-      //NOT YET adding Orderby
-
       PagedListResult<Container> result = await _containerDataProvider.ListAsync(All, null, true, page, pageSize);
 
       return ConvertToResultAsync(result.Items);
@@ -206,7 +204,7 @@ namespace ADJ.BusinessService.Implementations
       }
     }
 
-    public async Task<ConfirmArrivalDtos> CreateOrUpdateBookingAsync(int containerId, DateTime arrivalDate)
+    public async Task<ConfirmArrivalDtos> CreateOrUpdateCAAsync(int containerId, DateTime arrivalDate)
     {
       CA entity = new CA();
       ConfirmArrivalDtos input = new ConfirmArrivalDtos();
