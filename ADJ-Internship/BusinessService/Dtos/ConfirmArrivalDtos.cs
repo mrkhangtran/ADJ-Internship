@@ -26,7 +26,7 @@ namespace ADJ.BusinessService.Dtos
 
     public ConfirmArrivalFilterDtos FilterDtos { get; set; }
 
-    public List<ConfirmArrivalResultDtos> Containers { get; set; }
+    public PagedListResult<ConfirmArrivalResultDtos> Containers { get; set; }
   }
 
   public class ConfirmArrivalFilterDtos : EntityDtoBase

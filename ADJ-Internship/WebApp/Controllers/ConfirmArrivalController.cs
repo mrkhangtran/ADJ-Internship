@@ -12,23 +12,21 @@ namespace WebApp.Controllers
   public class ConfirmArrivalController : Controller
   {
     private readonly IConfirmArrivalService _CAService;
-    private readonly int pageSize;
 
     public ConfirmArrivalController(IConfirmArrivalService CAService)
     {
       _CAService = CAService;
-      pageSize = 6;
     }
 
     public async Task<ActionResult> Index()
     {
       SetDropDownList();
       ConfirmArrivalDtos model = new ConfirmArrivalDtos();
-      model.Containers = new List<ConfirmArrivalResultDtos>();
+      model.Containers = new PagedListResult<ConfirmArrivalResultDtos>();
 
       model.Containers = await _CAService.ListContainerFilterAsync(null, null, null, "HongKong", null, null, null, null);
 
-      if (model.Containers.Count == 0)
+      if (model.Containers.Items.Count == 0)
       {
         ViewBag.ShowModal = "NoResult";
       }
@@ -39,13 +37,14 @@ namespace WebApp.Controllers
     public async Task<ActionResult> Search(int? page, ConfirmArrivalDtos model)
     {
       SetDropDownList();
+      ViewBag.Page = page ?? 1;
 
-      model.Containers = new List<ConfirmArrivalResultDtos>();
+      model.Containers = new PagedListResult<ConfirmArrivalResultDtos>();
 
       model.Containers = await _CAService.ListContainerFilterAsync(page, model.FilterDtos.ETAFrom, model.FilterDtos.ETATo, model.FilterDtos.Origin,
         model.FilterDtos.Mode, model.FilterDtos.Vendor, model.FilterDtos.Container, model.FilterDtos.Status);
 
-      if (model.Containers.Count == 0)
+      if (model.Containers.Items.Count == 0)
       {
         ViewBag.ShowModal = "NoResult";
       }
@@ -61,10 +60,10 @@ namespace WebApp.Controllers
       {
         if (model.Containers != null)
         {
-          if (SelectAtLeastOne(model.Containers))
+          if (SelectAtLeastOne(model.Containers.Items))
           {
             {
-              foreach (var item in model.Containers)
+              foreach (var item in model.Containers.Items)
               {
                 await _CAService.CreateOrUpdateCAAsync(item.Id, model.ArrivalDate);
               }

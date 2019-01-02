@@ -1,4 +1,16 @@
-﻿$(document.body).on('click', '#achieveButton', function () {
+﻿$(document.body).on('click', '.paging', function () {
+  var value = $(this).attr("value");
+  var name = $(this).attr("name");
+  $('<input />').attr('type', 'hidden')
+    .attr('name', name)
+    .attr('value', value)
+    .attr('id', "pageValue")
+    .appendTo('#achieveForm');
+
+  $("#achieveForm").submit();
+});
+
+$(document.body).on('click', '#achieveButton', function () {
   $("#achieveForm").submit();
 });
 

@@ -30,76 +30,108 @@
 
 @if (Model.Containers != null)
 {
-  int start = 0;
-  for (int i = 0; i < Model.Containers.Count; i++)
+  if (Model.Containers.Items != null)
   {
-    if (i + 1 < Model.Containers.Count)
+    int start = 0;
+    for (int i = 0; i < Model.Containers.Items.Count; i++)
     {
-      if ((Model.Containers[i].ArrivalDate.CompareTo(Model.Containers[i + 1].ArrivalDate) != 0) || (i == Model.Containers.Count)) 
+      if (i + 1 < Model.Containers.Items.Count)
       {
-        <table class="uk-table uk-table-small uk-table-middle uk-table-striped">
-          <thead>
-            <tr>
-              <td>
-                <label asp-for="Containers[i].DestinationPort"></label>
-              </td>
-              <td>
-                <label asp-for="Containers[i].Origin"></label>
-              </td>
-              <td>
-                <label asp-for="Containers[i].Mode"></label>
-              </td>
-              <td>
-                <label asp-for="Containers[i].Carrier"></label>
-              </td>
-              <td>
-                <label asp-for="Containers[i].ArrivalDate"></label>
-              </td>
-            </tr>
-          </thead>
-          <tr>
-            <td>@Model.Containers[i].DestinationPort</td>
-            <td>@Model.Containers[i].Origin</td>
-            <td>@Model.Containers[i].Mode</td>
-            <td>@Model.Containers[i].Carrier</td>
-            <td>
-              <input asp-for="Containers[i].ArrivalDate" type="datetime" />
-            </td>
-          </tr>
-        </table>
-
-        for (int j = start; j < i + 1; j++)
+        if ((Model.Containers.Items[i].ArrivalDate.CompareTo(Model.Containers.Items[i + 1].ArrivalDate) != 0) || (i == Model.Containers.Items.Count))
         {
           <table class="uk-table uk-table-small uk-table-middle uk-table-striped">
             <thead>
               <tr>
                 <td>
-                  <input type="checkbox" />
+                  <label asp-for="Containers.Items[i].DestinationPort"></label>
                 </td>
                 <td>
-                  <label asp-for="Containers[i].Vendor"></label>
+                  <label asp-for="Containers.Items[i].Origin"></label>
                 </td>
                 <td>
-                  <label asp-for="Containers[i].Container"></label>
+                  <label asp-for="Containers.Items[i].Mode"></label>
                 </td>
                 <td>
-                  <label asp-for="Containers[i].Status"></label>
+                  <label asp-for="Containers.Items[i].Carrier"></label>
+                </td>
+                <td>
+                  <label asp-for="Containers.Items[i].ArrivalDate"></label>
                 </td>
               </tr>
             </thead>
             <tr>
+              <td>@Model.Containers.Items[i].DestinationPort</td>
+              <td>@Model.Containers.Items[i].Origin</td>
+              <td>@Model.Containers.Items[i].Mode</td>
+              <td>@Model.Containers.Items[i].Carrier</td>
               <td>
-                <input asp-for="Containers[i].Selected" type="checkbox" />
+                <input asp-for="Containers.Items[i].ArrivalDate" type="datetime" />
               </td>
-              <td>@Model.Containers[i].Vendor</td>
-              <td>@Model.Containers[i].Container</td>
-              <td>@Model.Containers[i].Status</td>
             </tr>
           </table>
+
+          for (int j = start; j < i + 1; j++)
+          {
+            <table class="uk-table uk-table-small uk-table-middle uk-table-striped">
+              <thead>
+                <tr>
+                  <td>
+                    <input type="checkbox" />
+                  </td>
+                  <td>
+                    <label asp-for="Containers.Items[i].Vendor"></label>
+                  </td>
+                  <td>
+                    <label asp-for="Containers.Items[i].Container"></label>
+                  </td>
+                  <td>
+                    <label asp-for="Containers.Items[i].Status"></label>
+                  </td>
+                </tr>
+              </thead>
+              <tr>
+                <td>
+                  <input asp-for="Containers.Items[i].Selected" type="checkbox" />
+                </td>
+                <td>@Model.Containers.Items[i].Vendor</td>
+                <td>@Model.Containers.Items[i].Container</td>
+                <td>@Model.Containers.Items[i].Status</td>
+              </tr>
+            </table>
+          }
+          start = i + 1;
         }
-        start = i + 1;
       }
     }
   }
 }
 
+<!--Paging-->
+@{
+  int currentPage = ViewBag.Page;
+  int totalPage = Model.Containers.PageCount;
+
+  <ul class="uk-pagination uk-flex-center">
+    @if (currentPage > 1)
+    {
+      <li><a value="@(currentPage - 1)" name="page" class="paging"><span uk-pagination-previous></span></a></li>
+    }
+
+    @for (int i = 1; i <= totalPage; i++)
+    {
+      if (i == currentPage)
+      {
+        <li class="uk-active"><a value="@i" name="page" class="paging">@i</a></li>
+      }
+      else
+      {
+        <li><a value="@i" name="page" class="paging">@i</a></li>
+      }
+    }
+
+    @if (currentPage < totalPage)
+    {
+      <li><a value="@(currentPage + 1)" name="page" class="paging"><span uk-pagination-next></span></a></li>
+    }
+  </ul>
+}
