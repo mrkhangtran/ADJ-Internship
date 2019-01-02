@@ -1,5 +1,8 @@
 ﻿@model ADJ.Common.PagedListResult<ADJ.BusinessService.Dtos.ShipmentManifestsDtos>
-<form id="manifest" asp-action="CreateOrUpdate" asp-controller="Manifest">
+<form id="manifest" asp-action="CreateOrUpdate" asp-controller="Manifest"  data-ajax="true"
+      data-ajax-method="POST"
+      data-ajax-mode="replace"
+      data-ajax-update="#renderSearching">
   <div class="uk-container">
     <div class="uk-grid">
       <div class="uk-width-1-3">
@@ -88,7 +91,7 @@
             </tr>
             <tr>
               <td>
-                <button type="submit" class="uk-button uk-button-danger" value="@ViewBag.pageIndex">Achieve</button>
+                <button id="achieve" type="button" class="uk-button uk-button-danger">Achieve</button>
               </td>
             </tr>
 
@@ -328,32 +331,30 @@
         @{
           if (ViewBag.pageIndex > 1)
           {
-            <li><a asp-action="Index" asp-controller="Manifest" asp-route-pageIndex="@(ViewBag.pageIndex - 1)" class="page-link"><span uk-pagination-previous></span></a></li>
+            <li><a value="@(ViewBag.pageIndex - 1)" class="filterItem page-link"><span uk-pagination-previous></span></a></li>
           }
           for (var i = 1; i <= Model.PageCount; i++)
           {
             if (i == ViewBag.pageIndex)
             {
               <li class="uk-disabled">
-                <a asp-action="Index" asp-controller="Manifest" asp-route-pageIndex="@i" class="page-link"><u>@i</u></a>
+                <a value="@i" class="page-link"><u>@i</u></a>
               </li>
             }
             else
             {
               <li class="uk-active">
-                <a asp-action="Index" asp-controller="Manifest" asp-route-pageIndex="@i" class="page-link">@i</a>
+                <a value="@i" class="filterItem page-link">@i</a>
               </li>
             }
           }
           if (ViewBag.pageIndex < Model.PageCount)
           {
-            <li><a asp-action="Index" asp-controller="Manifest" asp-route-pageIndex="@(ViewBag.pageIndex + 1)" class="page-link"><span uk-pagination-next></span></a></li>
+            <li><a value="@(ViewBag.pageIndex + 1)" class="filterItem page-link"><span uk-pagination-next></span></a></li>
           }
         }
-
       </ul>
     </div>
-
   </div>
   <br />
   <br />
@@ -456,6 +457,9 @@
     $(shipcartonID).val(shipcarton);
     $(shipcubeID).val(shipcube);
     $(shipkgsID).val(netWeight);
+  });
+  $('#achieve').click(function () {
+    $('#manifest').submit();
   });
 </script>
 
