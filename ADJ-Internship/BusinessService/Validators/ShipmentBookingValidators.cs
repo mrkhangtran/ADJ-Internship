@@ -26,10 +26,6 @@ namespace ADJ.BusinessService.Validators
         {
           return new ValidationResult(ErrorMessage = "Must be after " + _otherProperty.ToString());
         }
-        if ((date1 - date2).Days > 30)
-        {
-          return new ValidationResult(ErrorMessage = "Cannot be more than 30 days apart");
-        }
       }
 
       return ValidationResult.Success;

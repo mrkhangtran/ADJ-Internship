@@ -110,11 +110,13 @@ namespace ADJ.BusinessService.Dtos
 
     [Display(Name = "Latest Ship Date")]
     [SimilarOrLaterThanOtherDate("ShipDate")]
+    [Not30DaysApart("ShipDate")]
     [NotInThePast(ErrorMessage = "Cannot be set in the past")]
     public DateTime LatestShipDate { get; set; }
 
     [Display(Name = "Delivery Date")]
     [SimilarOrLaterThanOtherDate("ShipDate")]
+    [Not30DaysApart("ShipDate")]
     [NotInThePast(ErrorMessage = "Cannot be set in the past")]
     public DateTime DeliveryDate { get; set; }
 
