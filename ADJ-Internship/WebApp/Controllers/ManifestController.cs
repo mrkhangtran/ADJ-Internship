@@ -31,9 +31,9 @@ namespace WebApp.Controllers
       int current = pageIndex ?? 1;
       if (String.IsNullOrEmpty(DestinationPort) && String.IsNullOrEmpty(OriginPort) && String.IsNullOrEmpty(Carrier))
       {
-        DestinationPort = searchItem.DestinationPort.First();
-        OriginPort = searchItem.OriginPorts.First();
-        Carrier = searchItem.Carriers.First();
+        DestinationPort = searchItem.DestinationPort.FirstOrDefault();
+        OriginPort = searchItem.OriginPorts.FirstOrDefault();
+        Carrier = searchItem.Carriers.FirstOrDefault();
       }
       ViewBag.pageIndex = current;
       PagedListResult<ShipmentManifestsDtos> listManifest = await _manifestService.ListManifestDtoAsync(current, 2, DestinationPort, OriginPort, Carrier, ETDFrom, ETDTo, Status, Vendor, PONumber, Item);
@@ -65,7 +65,7 @@ namespace WebApp.Controllers
           ViewBag.modalResult = "grossWeightInvalid";
         }
         else
-        ViewBag.modalResult = "invalid";
+          ViewBag.modalResult = "invalid";
       }
       ViewBag.Size = new List<string> { "20GP", "40HC" };
       ViewBag.PackType = new List<string> { "Boxed", "Carton" };
@@ -75,7 +75,10 @@ namespace WebApp.Controllers
       ViewBag.Carriers = searchItem.Carriers;
       ViewBag.Dest = searchItem.DestinationPort;
       ViewBag.Status = searchItem.Status;
-      PagedListResult<ShipmentManifestsDtos> pagedListResult = await _manifestService.ListManifestDtoAsync();
+      string DestinationPort = searchItem.DestinationPort.FirstOrDefault();
+      string OriginPort = searchItem.OriginPorts.FirstOrDefault();
+      string Carrier = searchItem.Carriers.FirstOrDefault();
+      PagedListResult<ShipmentManifestsDtos> pagedListResult = await _manifestService.ListManifestDtoAsync(1,2,DestinationPort,OriginPort,Carrier);
       return View("Index", pagedListResult);
     }
   }
