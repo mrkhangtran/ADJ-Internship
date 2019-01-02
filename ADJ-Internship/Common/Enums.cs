@@ -31,6 +31,7 @@
     BookingMade,
     PartlyManifested,
     Manifested,
+    Pending
   }
 
   public enum ContainerStatus

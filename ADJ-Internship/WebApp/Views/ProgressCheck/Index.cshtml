@@ -9,16 +9,17 @@
             <tr>
               <td><label>Origin</label></td>
               <td>
-                <div class="uk-form-select" data-uk-form-select>
-                  @Html.DropDownList("Origins", new SelectList(ViewBag.Origins), "Any", new { @id = "Origins", @class = "uk-select" })
+                <div onchange="changePorts()" class="uk-form-select" data-uk-form-select>
+                  @Html.DropDownList("Origins", new SelectList(ViewBag.Origins), new { @id = "Origins", @class = "uk-select" })
                 </div>
               </td>
             </tr>
             <tr>
               <td><label>Origin Port</label></td>
               <td>
-                <div class="uk-form-select" data-uk-form-select>
-                  @Html.DropDownList("OriginPorts", new SelectList(ViewBag.OriginPorts), "Any", new { @id = "OriginPorts", @class = "uk-select" })
+                <div class="col-md-10">
+                  <select class="uk-input ports" id="OriginPorts"></select>
+                  <span class="uk-alert-danger"></span>
                 </div>
               </td>
             </tr>
@@ -98,33 +99,17 @@
         </table>
 
       </div>
-
     </div>
   </div>
-  @if (ViewBag.Check == 1)
-  {
-    @foreach (var item in ViewBag.POUpdate)
-    {
-      <p class="uk-text-success uk-text-bold">Your PO @item has been successfully updated</p>
-    }
-  }
-  @if (ViewBag.Check == 2)
-  {
-    <p class="uk-text-danger uk-text-bold">Please check PO you want to update or your value is invalid. </p>
-
-  }
-  @if (ViewBag.Check == 3)
-  {
-    <p class="uk-text-danger uk-text-bold">Your PO list id empty. </p>
-
-  }
+  <br />
+  <br />
   <div id="renderSearching">
     @for (int i = 0; i < Model.Items.Count(); i++)
     {
-      <div class="uk-margin-small uk-container">
+      <div class="uk-grid uk-margin-small">
         @Html.HiddenFor(model => model.Items[i].OrderId, new { Value = Model.Items[i].OrderId })
         @Html.HiddenFor(model => model.Items[i].Id, new { Value = Model.Items[i].Id })
-        <table class="uk-margin-small uk-table uk-table-small">
+        <table class="uk-table uk-table-small">
           <thead>
             <tr>
               <td>
@@ -144,7 +129,7 @@
             </tr>
           </tbody>
         </table>
-        <table class="uk-table uk-table-small uk-margin-small">
+        <table class="uk-table uk-table-small">
           <thead>
             <tr>
               <td></td>
@@ -185,11 +170,11 @@
               <td>@Model.Items[i].ShipDate</td>
               <td>
                 @Html.TextBoxFor(model => model.Items[i].InspectionDate, Model.Items[i].InspectionDate.ToString("yyyy-MM-dd"), new { type = "date", @class = "uk-input" })
-                @Html.ValidationMessageFor(model => model.Items[i].InspectionDate, "", new { @class = "text-danger" })
+                @Html.ValidationMessageFor(model => model.Items[i].InspectionDate, "", new { @class = "uk-text-danger" })
               </td>
               <td>
                 @Html.TextBoxFor(model => model.Items[i].IntendedShipDate, Model.Items[i].IntendedShipDate.ToString("yyyy-MM-dd"), new { type = "date", @class = "uk-input" })
-                @Html.ValidationMessageFor(model => model.Items[i].IntendedShipDate, "", new { @class = "text-danger" })
+                @Html.ValidationMessageFor(model => model.Items[i].IntendedShipDate, "", new { @class = "uk-text-danger" })
 
               </td>
               <td>
@@ -207,7 +192,7 @@
             </tr>
           </tbody>
         </table>
-        <table class="uk-table uk-table-small uk-margin-small">
+        <table class="uk-table uk-table-small">
           <thead>
             <tr>
               <td></td>
@@ -235,7 +220,7 @@
                 @Html.HiddenFor(model => model.Items[i].ListOrderDetailDto[j].Quantity)
                 <td>
                   @Html.TextBoxFor(model => model.Items[i].ListOrderDetailDto[j].ReviseQuantity, new { @class = "uk-input", Type = "Number" })
-                  @Html.ValidationMessageFor(model => model.Items[i].ListOrderDetailDto[j].ReviseQuantity, "", new { @class = "text-danger" })
+                  @Html.ValidationMessageFor(model => model.Items[i].ListOrderDetailDto[j].ReviseQuantity, "", new { @class = "uk-text-danger" })
                 </td>
               </tr>
             }
@@ -245,27 +230,61 @@
       <br />
     }
 
-    <div>
+    <div class="uk-align-right">
       <ul class="uk-pagination">
-        @for (var i = 1; i <= Model.PageCount; i++)
-        {
-          if (i == ViewBag.pageIndex)
+        @{
+          if (ViewBag.pageIndex > 1)
           {
-            <li class="uk-disabled">
-              <a asp-action="Index" asp-controller="ProgressCheck" asp-route-pageIndex="@i" class="page-link">@i</a>
-            </li>
+            <li><a asp-action="Index" asp-controller="ProgressCheck" asp-route-pageIndex="@(ViewBag.pageIndex - 1)" class="page-link"><span uk-pagination-previous></span></a></li>
           }
-          else
+          for (var i = 1; i <= Model.PageCount; i++)
           {
-            <li class="uk-active">
-              <a asp-action="Index" asp-controller="ProgressCheck" asp-route-pageIndex="@i" class="page-link">@i</a>
-            </li>
+            if (i == ViewBag.pageIndex)
+            {
+              <li class="uk-disabled">
+                <a asp-action="Index" asp-controller="ProgressCheck" asp-route-pageIndex="@i" class="page-link"><u>@i</u></a>
+              </li>
+            }
+            else
+            {
+              <li class="uk-active">
+                <a asp-action="Index" asp-controller="ProgressCheck" asp-route-pageIndex="@i" class="page-link">@i</a>
+              </li>
+            }
+          }
+          if (ViewBag.pageIndex < Model.PageCount)
+          {
+            <li><a asp-action="Index" asp-controller="ProgressCheck" asp-route-pageIndex="@(ViewBag.pageIndex + 1)" class="page-link"><span uk-pagination-next></span></a></li>
           }
         }
+
       </ul>
     </div>
   </div>
 }
+@if (ViewBag.check == 1)
+{
+  <button type="button" uk-toggle="target: #modal-center" id="openmodal" hidden="hidden">Open</button>
+  <div id="modal-center" class="uk-flex-top" uk-modal>
+    <div class="uk-modal-dialog uk-modal-body uk-margin-auto-vertical">
+      <button class="uk-modal-close-default" type="button" uk-close></button>
+      @foreach (var item in ViewBag.POUpdate)
+      {
+        <p class="uk-text-success uk-text-bold">Your PO @item has been successfully updated</p>
+      }
+    </div>
+  </div>
+}
+@foreach (var item in ViewBag.VNPorts)
+{
+  <p class="vnPorts" hidden="hidden">@item</p>
+}
+
+@foreach (var item in ViewBag.HKPorts)
+{
+  <p class="hkPorts" hidden="hidden">@item</p>
+}
+
 <script src="~/js/jquery-3.3.1.min.js"></script>
 <script type="text/javascript">
   $(document.body).on('click', '.filterItem', function () {
@@ -279,7 +298,7 @@
                 Suppliers: $('#Suppliers').val(),
                 Factories: $('#Factories').val(),
                 Origins: $('#Origins').val(),
-                OriginPorts: $('#OriginPorts').val(),
+              OriginPorts: $('#OriginPorts option:selected').val(),
                 Depts: $('#Depts').val(),
                 PONumberSearch: $('#PONumberSearch').val(),
                 ItemSearch: $('#ItemSearch').val(),
@@ -296,6 +315,43 @@
       if (!confirm('Are you sure that you want to submit the form'))
         event.preventDefault();
   });
+  $(document).ready(function () {
+    $('#openmodal').trigger('click');
+    changePorts();
+  });
+
+
+
+  function changePorts() {
+    var origin = $("#Origins").val();
+
+    var vnPorts = document.getElementsByClassName("vnPorts");
+    var hkPorts = document.getElementsByClassName("hkPorts");
+
+    var ports = document.getElementsByClassName("ports");
+
+    var options = [];
+
+    if (origin == "Vietnam") {
+      $.each(vnPorts, function () {
+        options.push($(this).text());
+      });
+    }
+    else if (origin == "HongKong") {
+      $.each(hkPorts, function () {
+        options.push($(this).text());
+      });
+    }
+
+    for (i = 0; i < ports.length; i++) {
+      ports[i].options.length = 0;
+      ports[i].options[ports[i].options.length] = new Option("Any",null);
+      for (j = 0; j < options.length; j++) {
+        ports[i].options[ports[i].options.length] = new Option(options[j], options[j]);
+      }
+    }
+
+  };
 </script>
 
 
