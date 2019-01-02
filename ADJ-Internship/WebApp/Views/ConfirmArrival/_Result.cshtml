@@ -33,72 +33,95 @@
   if (Model.Containers.Items != null)
   {
     int start = 0;
+    int groupId = 0;
+    Model.ListArrivalDate = new List<DateTime>();
+
+
     for (int i = 0; i < Model.Containers.Items.Count; i++)
     {
-      if (i + 1 < Model.Containers.Items.Count)
+      if ((i + 1 < Model.Containers.Items.Count) || (i == (Model.Containers.Items.Count - 1)))
       {
-        if ((Model.Containers.Items[i].ArrivalDate.CompareTo(Model.Containers.Items[i + 1].ArrivalDate) != 0) || (i == Model.Containers.Items.Count))
+        int different = 0;
+        if (i + 1 < Model.Containers.Items.Count)
         {
+          different = Model.Containers.Items[i].ArrivalDate.CompareTo(Model.Containers.Items[i + 1].ArrivalDate)
+            + Model.Containers.Items[i].Carrier.CompareTo(Model.Containers.Items[i + 1].Carrier)
+            + Model.Containers.Items[i].Mode.CompareTo(Model.Containers.Items[i + 1].Mode)
+            + Model.Containers.Items[i].Origin.CompareTo(Model.Containers.Items[i + 1].Origin)
+            + Model.Containers.Items[i].DestinationPort.CompareTo(Model.Containers.Items[i + 1].DestinationPort);
+        }
+
+        if ((i == (Model.Containers.Items.Count - 1)) || (different != 0))
+        {
+          DateTime dateTime = new DateTime();
+          Model.ListArrivalDate.Add(dateTime);
           <table class="uk-table uk-table-small uk-table-middle uk-table-striped">
             <thead>
               <tr>
                 <td>
-                  <label asp-for="Containers.Items[i].DestinationPort"></label>
+                  <label asp-for="Containers.Items[start].DestinationPort"></label>
                 </td>
                 <td>
-                  <label asp-for="Containers.Items[i].Origin"></label>
+                  <label asp-for="Containers.Items[start].Origin"></label>
                 </td>
                 <td>
-                  <label asp-for="Containers.Items[i].Mode"></label>
+                  <label asp-for="Containers.Items[start].Mode"></label>
                 </td>
                 <td>
-                  <label asp-for="Containers.Items[i].Carrier"></label>
+                  <label asp-for="Containers.Items[start].Carrier"></label>
                 </td>
                 <td>
-                  <label asp-for="Containers.Items[i].ArrivalDate"></label>
+                  <label asp-for="ListArrivalDate"></label>
                 </td>
               </tr>
             </thead>
             <tr>
-              <td>@Model.Containers.Items[i].DestinationPort</td>
-              <td>@Model.Containers.Items[i].Origin</td>
-              <td>@Model.Containers.Items[i].Mode</td>
-              <td>@Model.Containers.Items[i].Carrier</td>
+              <td>@Model.Containers.Items[start].DestinationPort</td>
+              <td>@Model.Containers.Items[start].Origin</td>
+              <td>@Model.Containers.Items[start].Mode</td>
+              <td>@Model.Containers.Items[start].Carrier</td>
               <td>
-                <input asp-for="Containers.Items[i].ArrivalDate" type="datetime" />
+                <input asp-for="ListArrivalDate[groupId]" value=@Model.Containers.Items[start].ArrivalDate.ToString("yyyy-MM-dd") class="uk-input" type="date" />
               </td>
             </tr>
           </table>
 
-          for (int j = start; j < i + 1; j++)
-          {
-            <table class="uk-table uk-table-small uk-table-middle uk-table-striped">
-              <thead>
-                <tr>
-                  <td>
-                    <input type="checkbox" />
-                  </td>
-                  <td>
-                    <label asp-for="Containers.Items[i].Vendor"></label>
-                  </td>
-                  <td>
-                    <label asp-for="Containers.Items[i].Container"></label>
-                  </td>
-                  <td>
-                    <label asp-for="Containers.Items[i].Status"></label>
-                  </td>
-                </tr>
-              </thead>
+          <table class="uk-table uk-table-small uk-table-middle uk-table-striped">
+            <thead>
               <tr>
                 <td>
-                  <input asp-for="Containers.Items[i].Selected" type="checkbox" />
+                  <input type="checkbox" class="uk-checkbox checkAll" id="checkAll_@i" />
                 </td>
-                <td>@Model.Containers.Items[i].Vendor</td>
-                <td>@Model.Containers.Items[i].Container</td>
-                <td>@Model.Containers.Items[i].Status</td>
+                <td>
+                  <label asp-for="Containers.Items[start].Vendor"></label>
+                </td>
+                <td>
+                  <label asp-for="Containers.Items[start].Container"></label>
+                </td>
+                <td>
+                  <label asp-for="Containers.Items[start].Status"></label>
+                </td>
               </tr>
-            </table>
-          }
+            </thead>
+            @for (int j = start; j < i + 1; j++)
+            {
+              <tr>
+                <td style="display: none">
+                  <input asp-for="Containers.Items[j].Id" type="hidden" />
+                </td>
+                <td>
+                  <input asp-for="Containers.Items[j].Selected" type="checkbox" class="uk-checkbox checkBox_@i" />
+                </td>
+                <td>@Model.Containers.Items[j].Vendor</td>
+                <td>@Model.Containers.Items[j].Container</td>
+                <td>@Model.Containers.Items[j].Status</td>
+              </tr>
+
+              Model.Containers.Items[j].GroupId = groupId;
+            }
+          </table>
+
+          groupId++;
           start = i + 1;
         }
       }
@@ -121,7 +144,7 @@
     {
       if (i == currentPage)
       {
-        <li class="uk-active"><a value="@i" name="page" class="paging">@i</a></li>
+        <li class="uk-disabled"><a value="@i" name="page" class="paging">@i</a></li>
       }
       else
       {

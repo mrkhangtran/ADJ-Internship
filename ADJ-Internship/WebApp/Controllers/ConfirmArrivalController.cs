@@ -34,14 +34,17 @@ namespace WebApp.Controllers
       return View(model);
     }
 
-    public async Task<ActionResult> Search(int? page, ConfirmArrivalDtos model)
+    [HttpPost]
+    public async Task<ActionResult> Search(ConfirmArrivalDtos model, string page = null)
     {
       SetDropDownList();
-      ViewBag.Page = page ?? 1;
+      if (page == null) { page = "1"; }
+      int pageIndex = int.Parse(page);
+      ViewBag.Page = pageIndex;
 
       model.Containers = new PagedListResult<ConfirmArrivalResultDtos>();
-
-      model.Containers = await _CAService.ListContainerFilterAsync(page, model.FilterDtos.ETAFrom, model.FilterDtos.ETATo, model.FilterDtos.Origin,
+      
+      model.Containers = await _CAService.ListContainerFilterAsync(pageIndex, model.FilterDtos.ETAFrom, model.FilterDtos.ETATo, model.FilterDtos.Origin,
         model.FilterDtos.Mode, model.FilterDtos.Vendor, model.FilterDtos.Container, model.FilterDtos.Status);
 
       if (model.Containers.Items.Count == 0)
@@ -65,7 +68,7 @@ namespace WebApp.Controllers
             {
               foreach (var item in model.Containers.Items)
               {
-                await _CAService.CreateOrUpdateCAAsync(item.Id, model.ArrivalDate);
+                await _CAService.CreateOrUpdateCAAsync(item.Id, model.ListArrivalDate[item.GroupId]);
               }
               ModelState.Clear();
               ViewBag.ShowModal = "Updated";

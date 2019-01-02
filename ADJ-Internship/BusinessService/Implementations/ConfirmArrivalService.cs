@@ -2,6 +2,7 @@
 using ADJ.BusinessService.Dtos;
 using ADJ.BusinessService.Interfaces;
 using ADJ.Common;
+using ADJ.DataModel.OrderTrack;
 using ADJ.DataModel.ShipmentTrack;
 using ADJ.Repository.Core;
 using ADJ.Repository.Interfaces;
@@ -18,13 +19,21 @@ namespace ADJ.BusinessService.Implementations
   public class ConfirmArrivalService : ServiceBase, IConfirmArrivalService
   {
     private readonly IDataProvider<Container> _containerDataProvider;
+    private readonly IDataProvider<Booking> _bookingDataProvider;
+    private readonly IDataProvider<Order> _orderDataProvider;
+
     private readonly IConfirmArrivalRepository _confirmArrivalRepository;
+
     private readonly int pageSize;
 
     public ConfirmArrivalService(IUnitOfWork unitOfWork, IMapper mapper, ApplicationContext appContext,
-      IDataProvider<Container> containerDataProvider, IConfirmArrivalRepository confirmArrivalRepository) : base(unitOfWork, mapper, appContext)
+      IDataProvider<Container> containerDataProvider, IDataProvider<Booking> bookingDataProvider, IDataProvider<Order> orderDataProvider,
+    IConfirmArrivalRepository confirmArrivalRepository) : base(unitOfWork, mapper, appContext)
     {
       _containerDataProvider = containerDataProvider;
+      _bookingDataProvider = bookingDataProvider;
+      _orderDataProvider = orderDataProvider;
+
       _confirmArrivalRepository = confirmArrivalRepository;
 
       pageSize = 6;
@@ -93,32 +102,38 @@ namespace ADJ.BusinessService.Implementations
         All = All1.Or(All2);
       }
 
+      Expression<Func<Container, bool>> test = x => x.Id > 0;
+
       PagedListResult<Container> result = await _containerDataProvider.ListAsync(All, null, true, page, pageSize);
       PagedListResult<ConfirmArrivalResultDtos> rs = new PagedListResult<ConfirmArrivalResultDtos>();
-      rs.Items = ConvertToResultAsync(result.Items);
+      rs.Items = await ConvertToResultAsync(result.Items);
       rs.PageCount = result.PageCount;
       rs.TotalCount = result.TotalCount;
 
       return rs;
     }
 
-    public List<ConfirmArrivalResultDtos> ConvertToResultAsync(List<Container> containers)
+    public async Task<List<ConfirmArrivalResultDtos>> ConvertToResultAsync(List<Container> containers)
     {
       List<ConfirmArrivalResultDtos> result = new List<ConfirmArrivalResultDtos>();
 
       foreach (var item in containers)
       {
         ConfirmArrivalResultDtos output = new ConfirmArrivalResultDtos();
+        Booking booking = await _bookingDataProvider.GetByIdAsync((item.Manifests.ToList())[0].BookingId);
+        Order order = await _orderDataProvider.GetByIdAsync(booking.OrderId);
 
-        output.DestinationPort = (item.Manifests.ToList())[0].Booking.PortOfDelivery;
-        output.Origin = (item.Manifests.ToList())[0].Booking.Order.Origin;
+        output.DestinationPort = booking.PortOfDelivery;
+        output.Origin = order.Origin;
         output.Mode = item.Loading;
-        output.Carrier = (item.Manifests.ToList())[0].Booking.Carrier;
-        output.ArrivalDate = (item.Manifests.ToList())[0].Booking.ETA;
+        output.Carrier = booking.Carrier;
+        output.ArrivalDate = booking.ETA;
 
-        output.Vendor = (item.Manifests.ToList())[0].Booking.Order.Vendor;
+        output.Vendor = order.Vendor;
         output.Container = item.Name;
         output.Status = item.Status;
+
+        output.Id = item.Id;
 
         var test = typeof(ConfirmArrivalResultDtos).GetProperties()[0].GetValue(output);
 
@@ -132,21 +147,21 @@ namespace ADJ.BusinessService.Implementations
     private List<ConfirmArrivalResultDtos> Sort(List<ConfirmArrivalResultDtos> input)
     {
       //Order by Destination Port (property number = 0)
-      input = Quick_Sort(input, 0, input.Count, 0);
+      input = Quick_Sort(input, 0, input.Count - 1, 0);
 
       //Order by Origin (property number = 1)
       //Order by Mode (property number = 2)
       //Order by Carrier (property number = 3)
       //Order by Arrival Date (property number = 4)
-      for (int property = 1; property < 5; property ++)
+      for (int property = 1; property < 5; property++)
       {
         int start = 0;
         for (int i = 0; i < input.Count; i++)
         {
-          if (i + 1 < input.Count)
+          if ((i + 1 < input.Count) || (i == input.Count - 1))
           {
             var currentProperty = typeof(ConfirmArrivalResultDtos).GetProperties()[property];
-            if ((currentProperty.GetValue(input[i]).ToString().CompareTo(currentProperty.GetValue(input[i + 1]).ToString()) != 0) || (i == input.Count))
+            if ((i == input.Count - 1) || (currentProperty.GetValue(input[i]).ToString().CompareTo(currentProperty.GetValue(input[i + 1]).ToString()) != 0))
             {
               input = Quick_Sort(input, start, i, property);
               start = i + 1;
@@ -154,7 +169,7 @@ namespace ADJ.BusinessService.Implementations
           }
         }
       }
-      
+
       return input;
     }
 
@@ -179,10 +194,12 @@ namespace ADJ.BusinessService.Implementations
 
     private static int Partition(List<ConfirmArrivalResultDtos> arr, int left, int right, int property)
     {
-      ConfirmArrivalResultDtos pivot = arr[left];
+      var currentProperty = typeof(ConfirmArrivalResultDtos).GetProperties()[property];
+
+      string pivot = currentProperty.GetValue(arr[left]).ToString();
+
       while (true)
       {
-        var currentProperty = typeof(ConfirmArrivalResultDtos).GetProperties()[property];
         while (currentProperty.GetValue(arr[left]).ToString().CompareTo(pivot) < 0)
         {
           left++;
@@ -195,7 +212,7 @@ namespace ADJ.BusinessService.Implementations
 
         if (left < right)
         {
-          if (arr[left] == arr[right]) return right;
+          if (currentProperty.GetValue(arr[left]).ToString().Equals(currentProperty.GetValue(arr[right]).ToString())) return right;
 
           ConfirmArrivalResultDtos temp = arr[left];
           arr[left] = arr[right];
@@ -210,13 +227,15 @@ namespace ADJ.BusinessService.Implementations
 
     public async Task<ConfirmArrivalDtos> CreateOrUpdateCAAsync(int containerId, DateTime arrivalDate)
     {
-      CA entity = new CA();
+      CA entity;
       ConfirmArrivalDtos input = new ConfirmArrivalDtos();
 
       input.ContainerId = containerId;
       input.ArrivalDate = arrivalDate;
 
-      if (containerId != 0)
+      CA ca = await GetCAbyContainerId(containerId);
+
+      if (ca != null)
       {
         entity = await _confirmArrivalRepository.GetByIdAsync(containerId, false);
         if (entity == null)
@@ -238,6 +257,20 @@ namespace ADJ.BusinessService.Implementations
       await UnitOfWork.SaveChangesAsync();
 
       return Mapper.Map<ConfirmArrivalDtos>(entity);
+    }
+
+    public async Task<CA> GetCAbyContainerId(int containerId)
+    {
+      List<CA> findCA = await _confirmArrivalRepository.Query(x => x.ContainerId == containerId, false).SelectAsync();
+
+      if (findCA.Count != 0)
+      {
+        return findCA[0];
+      }
+      else
+      {
+        return null;
+      }
     }
   }
 }

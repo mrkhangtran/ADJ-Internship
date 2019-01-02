@@ -21,8 +21,10 @@ namespace ADJ.BusinessService.Dtos
 
     public int ContainerId { get; set; }
 
-    [Display(Name = "Arrival Date")]
     public DateTime ArrivalDate { get; set; }
+
+    [Display(Name = "Arrival Date")]
+    public List<DateTime> ListArrivalDate { get; set; }
 
     public ConfirmArrivalFilterDtos FilterDtos { get; set; }
 
@@ -67,7 +69,6 @@ namespace ADJ.BusinessService.Dtos
 
     public string Carrier { get; set; }
 
-    [Display(Name = "Destination Port")]
     public DateTime ArrivalDate { get; set; }
 
     public bool Selected { get; set; }
@@ -75,6 +76,8 @@ namespace ADJ.BusinessService.Dtos
     public string Vendor { get; set; }
 
     public string Container { get; set; }
+
+    public int GroupId { get; set; }
 
     public ContainerStatus Status { get; set; }
   }
