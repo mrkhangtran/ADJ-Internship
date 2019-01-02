@@ -170,11 +170,11 @@
               <td>@Model.Items[i].ShipDate</td>
               <td>
                 @Html.TextBoxFor(model => model.Items[i].InspectionDate, Model.Items[i].InspectionDate.ToString("yyyy-MM-dd"), new { type = "date", @class = "uk-input" })
-                @Html.ValidationMessageFor(model => model.Items[i].InspectionDate, "", new { @class = "uk-text-danger" })
+                @Html.ValidationMessageFor(model => model.Items[i].InspectionDate, "", new { @class = "text-danger" })
               </td>
               <td>
                 @Html.TextBoxFor(model => model.Items[i].IntendedShipDate, Model.Items[i].IntendedShipDate.ToString("yyyy-MM-dd"), new { type = "date", @class = "uk-input" })
-                @Html.ValidationMessageFor(model => model.Items[i].IntendedShipDate, "", new { @class = "uk-text-danger" })
+                @Html.ValidationMessageFor(model => model.Items[i].IntendedShipDate, "", new { @class = "text-danger" })
 
               </td>
               <td>
@@ -220,7 +220,7 @@
                 @Html.HiddenFor(model => model.Items[i].ListOrderDetailDto[j].Quantity)
                 <td>
                   @Html.TextBoxFor(model => model.Items[i].ListOrderDetailDto[j].ReviseQuantity, new { @class = "uk-input", Type = "Number" })
-                  @Html.ValidationMessageFor(model => model.Items[i].ListOrderDetailDto[j].ReviseQuantity, "", new { @class = "uk-text-danger" })
+                  @Html.ValidationMessageFor(model => model.Items[i].ListOrderDetailDto[j].ReviseQuantity, "", new { @class = "text-danger" })
                 </td>
               </tr>
             }
