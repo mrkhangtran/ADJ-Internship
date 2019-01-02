@@ -36,6 +36,8 @@ namespace WebApp.Controllers
         Carrier = searchItem.Carriers.FirstOrDefault();
       }
       ViewBag.pageIndex = current;
+      PagedListResult<ShipmentManifestsDtos> pagedListResult = await _manifestService.ListManifestDtoAsync(1, 2, DestinationPort, OriginPort, Carrier);
+
       PagedListResult<ShipmentManifestsDtos> listManifest = await _manifestService.ListManifestDtoAsync(current, 2, DestinationPort, OriginPort, Carrier, ETDFrom, ETDTo, Status, Vendor, PONumber, Item);
       if (checkClick == true)
       {
@@ -44,9 +46,10 @@ namespace WebApp.Controllers
       return View("Index", listManifest);
     }
     [HttpPost]
-    public async Task<ActionResult> CreateOrUpdate(PagedListResult<ShipmentManifestsDtos> shipmentManifestDtos)
+    public async Task<ActionResult> CreateOrUpdate(string pageIndex, PagedListResult<ShipmentManifestsDtos> shipmentManifestDtos)
     {
       ViewBag.modalResult = null;
+
       if (ModelState.IsValid)
       {
         foreach (var manifest in shipmentManifestDtos.Items)
@@ -63,6 +66,7 @@ namespace WebApp.Controllers
         if (shipmentManifestDtos.Items.Where(p => p.Manifests.Where(x => x.GrossWeight > x.NetWeight).Count() > 0).Count() > 0)
         {
           ViewBag.modalResult = "grossWeightInvalid";
+
         }
         else
           ViewBag.modalResult = "invalid";
@@ -75,11 +79,11 @@ namespace WebApp.Controllers
       ViewBag.Carriers = searchItem.Carriers;
       ViewBag.Dest = searchItem.DestinationPort;
       ViewBag.Status = searchItem.Status;
-      string DestinationPort = searchItem.DestinationPort.FirstOrDefault();
-      string OriginPort = searchItem.OriginPorts.FirstOrDefault();
-      string Carrier = searchItem.Carriers.FirstOrDefault();
-      PagedListResult<ShipmentManifestsDtos> pagedListResult = await _manifestService.ListManifestDtoAsync(1,2,DestinationPort,OriginPort,Carrier);
-      return View("Index", pagedListResult);
+      string DestinationPort = searchItem.DestinationPort.First();
+      string OriginPort = searchItem.OriginPorts.First();
+      string Carrier = searchItem.Carriers.First();
+      PagedListResult<ShipmentManifestsDtos> pagedListResult = await _manifestService.ListManifestDtoAsync(1, 2, DestinationPort, OriginPort, Carrier);
+      return PartialView("_AchieveManifestPartial", pagedListResult);
     }
   }
 }
