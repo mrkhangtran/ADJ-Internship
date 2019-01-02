@@ -172,6 +172,7 @@ namespace ADJ.BusinessService.Implementations
       {
         foreach (var bookingNoContainer in listBookingNoContainer)
         {
+          var orderDeatail = await _orderDetailRepository.Query(p => p.ItemNumber == bookingNoContainer.ItemNumber, false).SelectAsync();
           if (bookingNoContainer.Status == OrderStatus.BookingMade)
           {
             ItemManifest itemManifest = new ItemManifest()
@@ -187,7 +188,10 @@ namespace ADJ.BusinessService.Implementations
               OpenQuantity = bookingNoContainer.Quantity,
               BookingCube = bookingNoContainer.Quantity * (decimal)bookingNoContainer.Cube,
               Manifested = bookingNoContainer.Status.ToString(),
-              BookingId = bookingNoContainer.Id
+              BookingId = bookingNoContainer.Id,
+              Cube=bookingNoContainer.Cube,
+              Carton=bookingNoContainer.Cartons,
+              KGS=orderDeatail[0].KGS,
             };
             itemNoContainer.Add(itemManifest);
           }
@@ -206,6 +210,9 @@ namespace ADJ.BusinessService.Implementations
               BookingCube = bookingNoContainer.Quantity * (decimal)bookingNoContainer.Cube,
               Manifested = bookingNoContainer.Status.ToString(),
               BookingId = bookingNoContainer.Id,
+              Cube = bookingNoContainer.Cube,
+              Carton = bookingNoContainer.Cartons,
+              KGS = orderDeatail[0].KGS,
             };
             decimal temp = 0;
             foreach (var quantity in bookingNoContainer.Manifests)
@@ -298,7 +305,6 @@ namespace ADJ.BusinessService.Implementations
     }
     public async Task<ShipmentManifestsDtos> CreateOrUpdateContainerAsync(ShipmentManifestsDtos rq)
     {
-      Manifest entity = new Manifest();
       Container container = new Container();
       container.Name = rq.Name;
       container.Size = rq.Size;
@@ -308,6 +314,7 @@ namespace ADJ.BusinessService.Implementations
       List<Manifest> manifests = new List<Manifest>();
       foreach (var item in rq.Manifests)
       {
+        Manifest entity = new Manifest();
         if (item.selectedItem == true)
         {
           var orderDeatail = await _orderDetailRepository.Query(p => p.ItemNumber == item.ItemNumber, false).SelectAsync();

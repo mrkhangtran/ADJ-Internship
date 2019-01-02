@@ -44,7 +44,7 @@ namespace WebApp.Controllers
       return View("Index", listManifest);
     }
     [HttpPost]
-    public async Task<ActionResult> CreateOrUpdate(PagedListResult<ShipmentManifestsDtos> shipmentManifestDtos)
+    public async Task<ActionResult> CreateOrUpdate(string pageIndex, PagedListResult<ShipmentManifestsDtos> shipmentManifestDtos)
     {
       ViewBag.modalResult = null;
       if (ModelState.IsValid)
@@ -78,7 +78,7 @@ namespace WebApp.Controllers
       string DestinationPort = searchItem.DestinationPort.FirstOrDefault();
       string OriginPort = searchItem.OriginPorts.FirstOrDefault();
       string Carrier = searchItem.Carriers.FirstOrDefault();
-      PagedListResult<ShipmentManifestsDtos> pagedListResult = await _manifestService.ListManifestDtoAsync(1,2,DestinationPort,OriginPort,Carrier);
+      PagedListResult<ShipmentManifestsDtos> pagedListResult = await _manifestService.ListManifestDtoAsync(1, 2, DestinationPort, OriginPort, Carrier);
       return View("Index", pagedListResult);
     }
   }
