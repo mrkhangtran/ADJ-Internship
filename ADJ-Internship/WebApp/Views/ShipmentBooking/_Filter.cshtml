@@ -1,5 +1,15 @@
 ﻿@model ADJ.BusinessService.Dtos.ShipmentBookingDtos;
 
+@foreach (var item in ViewBag.VNPorts)
+{
+  <p class="vnPorts" hidden="hidden">@item</p>
+}
+
+@foreach (var item in ViewBag.HKPorts)
+{
+  <p class="hkPorts" hidden="hidden">@item</p>
+}
+
 <div class="uk-grid">
   <div class="uk-width-2-3">
     <table class="uk-table uk-table-small uk-table-middle">
@@ -8,14 +18,14 @@
           <label asp-for="FilterDtos.Origin"></label>
         </td>
         <td>
-          <select asp-for="FilterDtos.Origin" asp-items="new SelectList(ViewBag.Origins)" class="uk-input filters"></select>
+          <select asp-for="FilterDtos.Origin" asp-items="new SelectList(ViewBag.Origins)" class="uk-input filters" id="origin"></select>
           <span asp-validation-for="FilterDtos.Origin" class="uk-alert-danger"></span>
         </td>
         <td>
           <label asp-for="FilterDtos.Vendor"></label>
         </td>
         <td>
-          <input asp-for="FilterDtos.Vendor" class="uk-input filters"/>
+          <input asp-for="FilterDtos.Vendor" class="uk-input filters" />
           <span asp-validation-for="FilterDtos.Vendor" class="uk-alert-danger"></span>
         </td>
       </tr>
@@ -24,14 +34,14 @@
           <label asp-for="FilterDtos.OriginPort"></label>
         </td>
         <td>
-          <select asp-for="FilterDtos.OriginPort" asp-items="new SelectList(ViewBag.Ports)" class="uk-input filters"></select>
+          <select asp-for="FilterDtos.OriginPort" class="uk-input filters ports"></select>
           <span asp-validation-for="FilterDtos.OriginPort" class="uk-alert-danger"></span>
         </td>
         <td>
           <label asp-for="FilterDtos.Warehouse"></label>
         </td>
         <td>
-          <input asp-for="FilterDtos.Warehouse" class="uk-input filters"/>
+          <input asp-for="FilterDtos.Warehouse" class="uk-input filters" />
           <span asp-validation-for="FilterDtos.Warehouse" class="uk-alert-danger"></span>
         </td>
       </tr>
@@ -40,14 +50,18 @@
           <label asp-for="FilterDtos.Mode"></label>
         </td>
         <td>
-          <select asp-for="FilterDtos.Mode" asp-items="new SelectList(ViewBag.Modes)" class="uk-input filters"></select>
+          <select asp-for="FilterDtos.Mode" asp-items="new SelectList(ViewBag.Modes)" class="uk-input filters">
+            <option selected value="">Any</option>
+          </select>
           <span asp-validation-for="FilterDtos.Mode" class="uk-alert-danger"></span>
         </td>
         <td>
           <label asp-for="FilterDtos.Status"></label>
         </td>
         <td>
-          <select asp-for="FilterDtos.Status" asp-items="new SelectList(ViewBag.Statuses)" class="uk-input filters"></select>
+          <select asp-for="FilterDtos.Status" asp-items="new SelectList(ViewBag.Statuses)" class="uk-input filters">
+            <option selected value="">Any</option>
+          </select>
           <span asp-validation-for="FilterDtos.Status" class="uk-alert-danger"></span>
         </td>
       </tr>
@@ -56,14 +70,14 @@
           <label asp-for="FilterDtos.PONumber"></label>
         </td>
         <td>
-          <input asp-for="FilterDtos.PONumber" class="uk-input filters"/>
+          <input asp-for="FilterDtos.PONumber" class="uk-input filters" />
           <span asp-validation-for="FilterDtos.PONumber" class="uk-alert-danger"></span>
         </td>
         <td>
           <label asp-for="FilterDtos.ItemNumber"></label>
         </td>
         <td>
-          <input asp-for="FilterDtos.ItemNumber" class="uk-input filters"/>
+          <input asp-for="FilterDtos.ItemNumber" class="uk-input filters" />
           <span asp-validation-for="FilterDtos.ItemNumber" class="uk-alert-danger"></span>
         </td>
       </tr>

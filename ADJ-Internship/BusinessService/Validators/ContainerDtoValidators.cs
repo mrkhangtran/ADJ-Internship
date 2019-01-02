@@ -22,8 +22,8 @@ namespace ADJ.BusinessService.Validators
         if ((value != null) && (otherValue != null))
         {
           decimal shipQuantity = decimal.Parse(value.ToString());
-          decimal bookQuantity = decimal.Parse(otherValue.ToString());
-          if (shipQuantity > bookQuantity)
+          decimal openQuantity = decimal.Parse(otherValue.ToString());
+          if (shipQuantity > openQuantity)
           {
             return new ValidationResult(ErrorMessage = "Ship Quantity is invalid, please try again");
           }

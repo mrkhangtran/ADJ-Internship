@@ -29,7 +29,7 @@ namespace ADJ.BusinessService.Implementations
     private readonly IShipmentBookingRepository _bookingRepository;
 
     public ShipmentBookingService(IUnitOfWork unitOfWork, IMapper mapper, ApplicationContext appContext,
-      IDataProvider<OrderDetail> poDetailDataProvider, IOrderDetailRepository orderdetailRepository, 
+      IDataProvider<OrderDetail> poDetailDataProvider, IOrderDetailRepository orderdetailRepository,
       IDataProvider<Order> poDataProvider, IOrderRepository orderRepository,
       IDataProvider<Booking> bookingDataProvider, IShipmentBookingRepository bookingRepository) : base(unitOfWork, mapper, appContext)
     {
@@ -98,6 +98,15 @@ namespace ADJ.BusinessService.Implementations
         Expression<Func<OrderDetail, bool>> filter = x => x.Status.ToString() == status;
         All = All.And(filter);
       }
+      else
+      {
+        Expression<Func<OrderDetail, bool>> All1 = x => x.Status == OrderStatus.AwaitingBooking;
+        All1 = All.And(All1);
+        Expression<Func<OrderDetail, bool>> All2 = x => x.Status == OrderStatus.BookingMade;
+        All2 = All.And(All2);
+
+        All = All1.Or(All2);
+      }
 
       PagedListResult<OrderDetail> result = await _orderDetailDataProvider.ListAsync(All, null, true);
 
@@ -141,6 +150,8 @@ namespace ADJ.BusinessService.Implementations
         output.BookingQuantity = item.ReviseQuantity;
         output.Status = item.Status;
         output.OrderId = item.OrderId;
+        output.Cartons = item.Cartons;
+        output.Cube = item.Cube;
 
         //add item to result
         result.Add(output);
@@ -213,6 +224,7 @@ namespace ADJ.BusinessService.Implementations
             output.Cube = item.Cube;
             output.PackType = item.PackType;
             output.Status = item.Status;
+            output.PONumber = item.PONumber;
 
             output.PortOfLoading = input.PortOfLoading;
             output.PortOfDelivery = input.PortOfDelivery;

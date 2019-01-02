@@ -12,63 +12,60 @@ namespace WebApp.Controllers
 {
 	public class VesselDepartureController : Controller
 	{
-		private readonly IVesselDepartureService _vessleDepartureService;
-		public VesselDepartureController(IVesselDepartureService vessleDepartureService)
+		private readonly IVesselDepartureService _vesselDepartureService;
+		public VesselDepartureController(IVesselDepartureService vesselDepartureService)
 		{
-			_vessleDepartureService = vessleDepartureService;
+			_vesselDepartureService = vesselDepartureService;
 		}
-		// GET: Manifest
-		public async Task<ActionResult> Index(int? pageIndex, string Origin = null, string OriginPort = null, string Loading = null, DateTime? ETDFrom = null, DateTime? ETDTo = null, string Status = null, string Vendor = null, string PONumber = null, string Item = null,string Warehouse = null, bool? checkClick = null)
+
+		public async Task<ActionResult> Index(string origin, string originPort, string container, string status, DateTime etdFrom, DateTime etdTo, int? pageIndex)
 		{
-			ViewBag.Size = new List<string> { "20GP", "40HC" };
-			ViewBag.PackType = new List<string> { "Boxed", "Carton" };
-			ViewBag.Loading = new List<string> { "ROAD" };
-			SearchItem searchItem = await _vessleDepartureService.SearchItem();
-			ViewBag.OriginPorts = searchItem.OriginPorts;
-			ViewBag.Carriers = searchItem.Carriers;
-			ViewBag.Dest = searchItem.Dest;
-			ViewBag.Status = new List<string> { "Pending", "Despatch" };
-			ViewBag.Origins = new List<string> { "Vietnam", "HongKong" };
-			ViewBag.Voyages = new List<string> { "045FF", "Other" };
-			ViewBag.Transhipments = new List<string> { "Confirmred", "Other" };
-			ViewBag.Vendors = new List<string> { "Other" };
+			ViewBag.Origin = new List<string> { "VietNam", "HongKong" }.OrderBy(x => x).ToList();
+			ViewBag.Mode = new List<string> { "ROAD", "Others" }.OrderBy(x => x).ToList();
+			ViewBag.Status = new List<string> { "Pending", "Despatch" }.OrderBy(x => x).ToList();
+
+			SearchItem searchItem = await _vesselDepartureService.SearchItem();
+			ViewBag.OriginPort = searchItem.OriginPorts.OrderBy(x => x).ToList();
+			ViewBag.Carrier = searchItem.Carriers.OrderBy(x => x).ToList();
+			ViewBag.Dest = searchItem.DestPorts.OrderBy(x => x).ToList();
+			
+
 			int current = pageIndex ?? 1;
-			PagedListResult<ContainerDto> listContainer = await _vessleDepartureService.ListContainerAsync(current, 2, Origin, OriginPort, Loading, ETDFrom, ETDTo, Status, Vendor, PONumber, Item, Warehouse);
-			if (checkClick == true)
-			{
-				return PartialView("_SearchingManifestPartial", listContainer);
-			}
-			return View("Index", listContainer);
+			int pageSize = 2;
+			ViewBag.pageIndex = current;
+			PagedListResult<ContainerDto> lstContainer = await _vesselDepartureService.ListManifestDtoAsync(origin, originPort, container, status, etdFrom, etdTo, current, pageSize);
+			
+			return View("Index", lstContainer);
 		}
-		[HttpPost]
-		public async Task<ActionResult> CreateOrUpdate(PagedListResult<ShipmentManifestsDtos> shipmentManifestDtos)
-		{
-			ViewBag.modalResult = null;
-			if (ModelState.IsValid)
-			{
-				foreach (var manifest in shipmentManifestDtos.Items)
-				{
-					if (manifest.selectedContainer == true)
-					{
-						await _vessleDepartureService.CreateOrUpdateContainerAsync(manifest);
-						ViewBag.modalResult = "success";
-					}
-				}
-			}
-			else
-			{
-				ViewBag.modalResult = "invalid";
-			}
-			ViewBag.Size = new List<string> { "20GP", "40HC" };
-			ViewBag.PackType = new List<string> { "Boxed", "Carton" };
-			ViewBag.Loading = new List<string> { "ROAD" };
-			SearchItem searchItem = await _vessleDepartureService.SearchItem();
-			ViewBag.OriginPorts = searchItem.OriginPorts;
-			ViewBag.Carriers = searchItem.Carriers;
-			ViewBag.Dest = searchItem.Dest;
-			ViewBag.Status = searchItem.Status;
-			PagedListResult<ContainerDto> pagedListResult = await _vessleDepartureService.ListContainerAsync();
-			return View("Index", pagedListResult);
-		}
+		//[HttpPost]
+		//public async Task<ActionResult> CreateOrUpdate(PagedListResult<ShipmentManifestsDtos> shipmentManifestDtos)
+		//{
+		//	ViewBag.modalResult = null;
+		//	if (ModelState.IsValid)
+		//	{
+		//		foreach (var manifest in shipmentManifestDtos.Items)
+		//		{
+		//			if (manifest.selectedContainer == true || manifest.Manifests.Where(p => p.selectedItem == true).Count() > 0)
+		//			{
+		//				await _manifestService.CreateOrUpdateContainerAsync(manifest);
+		//				ViewBag.modalResult = "success";
+		//			}
+		//		}
+		//	}
+		//	else
+		//	{
+		//		ViewBag.modalResult = "invalid";
+		//	}
+		//	ViewBag.Size = new List<string> { "20GP", "40HC" };
+		//	ViewBag.PackType = new List<string> { "Boxed", "Carton" };
+		//	ViewBag.Loading = new List<string> { "ROAD" };
+		//	SearchingManifestItem searchItem = await _manifestService.SearchItem();
+		//	ViewBag.OriginPorts = searchItem.OriginPorts;
+		//	ViewBag.Carriers = searchItem.Carriers;
+		//	ViewBag.Dest = searchItem.DestinationPort;
+		//	ViewBag.Status = searchItem.Status;
+		//	PagedListResult<ShipmentManifestsDtos> pagedListResult = await _manifestService.ListManifestDtoAsync();
+		//	return View("Index", pagedListResult);
+		//}
 	}
 }

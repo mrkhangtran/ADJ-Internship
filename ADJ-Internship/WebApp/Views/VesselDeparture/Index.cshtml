@@ -1,228 +1,247 @@
 ﻿@model ADJ.Common.PagedListResult<ADJ.BusinessService.Dtos.ContainerDto>
-<form id="manifest" asp-action="CreateOrUpdate" asp-controller="Manifest">
 
 
+<div class="vessel-right">
 
-		<form asp-action="Index"
-					asp-controller="Order" method="get">
-			@*header*@
-			<div class="uk-grid uk-width-1-1 vessel-header">
-				<div class="uk-width-2-5">
-					<form class="uk-form-horizontal uk-margin-large">
-						<div class="uk-margin">
-							<label class="uk-form-label vessel-header-label" for="form-horizontal-select">Origin</label>
-							<div class="uk-form-controls vassell-header-formSelect">
+	<form asp-action="Index"
+				asp-controller="VesselDeparture" method="get">
+		@*header*@
+		<div class="uk-grid uk-width-1-1 vessel-header">
+			<div class="uk-width-2-5">
 
-								@Html.DropDownList("Origins", new SelectList(ViewBag.Origins), "Any", new { @id = "Origins", @class = "uk-select" })
+				<div class="uk-margin">
+					<label class="uk-form-label vessel-header-label" for="form-horizontal-select">Origin</label>
+					<div class="uk-form-controls vassell-header-formSelect" id="origin">
 
-							</div>
-						</div>
+						<select name="origin" class="uk-select" id="form-horizontal-select">
+							<option>VietNam</option>
+							<option>HongKong</option>
+						</select>
 
-						<div class="uk-margin">
-							<label class="uk-form-label vessel-header-label" for="form-horizontal-select">Origin Port</label>
-							<div class="uk-form-controls vassell-header-formSelect">
-
-								@Html.DropDownList("OriginPorts", new SelectList(ViewBag.OriginPorts), "Any", new { @id = "OriginPorts", @class = "uk-select" })
-
-							</div>
-						</div>
-
-						<div class="uk-margin">
-							<label class="uk-form-label vessel-header-label" for="form-horizontal-select">Loading</label>
-							<div class="uk-form-controls vassell-header-formSelect">
-								@Html.DropDownList("Loading", new SelectList(ViewBag.Loading), "Any", new { @id = "Loadings", @class = "uk-select" })
-							</div>
-						</div>
-
-						<div class="uk-margin">
-							<label class="uk-form-label vessel-header-label" for="form-horizontal-text">Warehouse</label>
-							<div class="uk-form-controls vassell-header-formSelect">
-								<input class="uk-input" id="Warehouses" type="text" placeholder="Some text...">
-							</div>
-						</div>
-
-						<div class="uk-margin">
-							<label class="uk-form-label vessel-header-label" for="form-horizontal-select">Status</label>
-							<div class="uk-form-controls vassell-header-formSelect">
-								@Html.DropDownList("Status", new SelectList(ViewBag.Status), "Any", new { @id = "Statuses", @class = "uk-select" })
-							</div>
-						</div>
-
-					</form>
+					</div>
 				</div>
 
-				<div class="uk-width-2-5">
-					<form class="uk-form-horizontal uk-margin-large">
-						<div class="uk-margin">
-							<label class="uk-form-label vessel-header-label" for="form-horizontal-select">Vendor</label>
-							<div class="uk-form-controls vassell-header-formSelect">
-								
-									@Html.DropDownList("Vendors", new SelectList(ViewBag.Vendors), "Any", new { @id = "Vendors", @class = "uk-select" })
+				<div class="uk-margin">
+					<label class="uk-form-label vessel-header-label" for="form-horizontal-select">Origin Port</label>
+					<div class="uk-form-controls vassell-header-formSelect" id="originPort">
+						<select name="originPort" class="uk-select" id="form-horizontal-select">
+							@foreach (var i in ViewBag.OriginPort)
+							{
+								<option>@i</option>
+							}
+						</select>
 
-							</div>
-						</div>
-
-						<div class="uk-margin">
-							<label class="uk-form-label vessel-header-label" for="form-horizontal-select">ETD From</label>
-							<div class="uk-form-controls vassell-header-formSelect">
-								<input id="ETDFroms" type="date" class="uk-input">
-							</div>
-						</div>
-
-						<div class="uk-margin">
-							<label class="uk-form-label vessel-header-label" for="form-horizontal-select">ETD To</label>
-							<div class="uk-form-controls vassell-header-formSelect">
-								<input id="ETDTos" type="date" class="uk-input">
-							</div>
-						</div>
-
-						<div class="uk-margin">
-							<label class="uk-form-label vessel-header-label" for="form-horizontal-text">PO Number</label>
-							<div class="uk-form-controls vassell-header-formSelect">
-								<input class="uk-input" id="PONumberSearches" type="text" placeholder="Some text...">
-							</div>
-						</div>
-
-						<div class="uk-margin">
-							<label class="uk-form-label vessel-header-label" for="form-horizontal-text">Item</label>
-							<div class="uk-form-controls vassell-header-formSelect">
-								<input class="uk-input" id="itemSearches" type="text" value="@Model.CurrentFilter" placeholder="Some text...">
-							</div>
-						</div>
-
-					</form>
+					</div>
 				</div>
-				<div class="uk-width-1-5">
-					<p uk-margin>
-						<button type="button" class="filterItem uk-button uk-button-primary" value=1>Search</button>
-					</p>
-					<p uk-margin>
-						<input id="Achieve" class="uk-button uk-button-danger" type="submit" data-uk-button value="Achieve">
-					</p>
-				</div>
-			</div> @*end header*@
-		</form>
 
-	<div id="renderSearching">
-		@for (var i = 0; i < Model.Items.Count(); i++)
+				<div class="uk-margin">
+					<label class="uk-form-label vessel-header-label" for="form-horizontal-text">Container</label>
+					<div class="uk-form-controls vassell-header-formSelect">
+						<input class="uk-input" name="container" id="form-horizontal-text" type="text" placeholder="Some text...">
+					</div>
+				</div>
+
+			</div>
+
+			<div class="uk-width-2-5">
+
+				<div class="uk-margin">
+					<label class="uk-form-label vessel-header-label" for="form-horizontal-select">Status</label>
+					<div class="uk-form-controls vassell-header-formSelect" id="status">
+						<select class="uk-select" name="status" id="form-horizontal-select">
+							<option>Pending</option>
+							<option>Despatch</option>
+						</select>
+					</div>
+				</div>
+
+				<div class="uk-margin">
+					<label class="uk-form-label vessel-header-label" for="form-horizontal-select">ETD From</label>
+					<div class="uk-form-controls vassell-header-formSelect">
+						<input id="etdFrom" type="date" class="uk-input">
+					</div>
+				</div>
+
+				<div class="uk-margin">
+					<label class="uk-form-label vessel-header-label" for="form-horizontal-select">ETD To</label>
+					<div class="uk-form-controls vassell-header-formSelect">
+						<input id="etdTo" type="date" class="uk-input">
+					</div>
+				</div>
+
+
+			</div>
+			<div class="uk-width-1-5">
+				<p uk-margin>
+					<button type="submit" class="uk-button uk-button-primary" style="color:white">
+						@Html.ActionLink("Search", "Index", "VesselDeparture")<span uk-icon="search"></span>
+					</button>
+				</p>
+
+				@*<p uk-margin>
+						<button class="uk-button uk-button-danger">
+								Achieve<span uk-icon="check"></span>
+							</button>
+						<button class="uk-button uk-button-danger">
+							Achieve<span uk-icon="check"></span>
+						</button>
+					</p>*@
+			</div>
+		</div> @*end header*@
+	</form>
+
+	@if (Model.Items.Count == 0)
+	{
+		<h4>No matching results were found. Please try again</h4>
+	}
+	else
+	{
+		@*table 1*@
+		@for(int i = 1; i <= Model.Items.Count;i++)
 		{
-			@Html.HiddenFor(model => model.Items[i].Id, new { Value = Model.Items[i].Id })
-			<br />
-			<br />
-			<div>
-				<table class="uk-table uk-table-small">
+			for(int j = i + 1; j <= Model.Items.Count;i++)
+			{
+				if (Model.Items[i].Carrier != Model.Items[j].Carrier)
+				{
+
+				}
+			}
+		}
+
+
+		@foreach (var container in Model.Items)
+		{
+
+
+
+			<div class="uk-grid uk-width-1-1">
+				<table class="uk-table table1">
 					<thead>
 						<tr>
-							<td>Origin Port</td>
-							<td>Dest Port</td>
-							<td>Mode</td>
-							<td>Carrier</td>
-							<td>Voyage</td>
-							<td>ETD</td>
-							<td>ETA</td>
-							<td>Transhipment</td>
+							<th>Origin Port</th>
+							<th>Dest Port</th>
+							<th>Mode</th>
+							<th>Carrier</th>
+							<th>Voyage</th>
+							<th>ETD</th>
+							<th>ETA</th>
+							<th>Transhipment</th>
 						</tr>
 					</thead>
+
 					<tbody>
 						<tr>
 							<td>
-								@Html.DropDownList("Origins", new SelectList(ViewBag.Origins), "Any", new { @id = "Origins", @class = "uk-select" })
-								@*<input type="checkbox" asp-for="Items[i].selectedContainer" />*@
+								<div class="uk-form-controls">
+									<div class="uk-form-controls vassell-header-formSelect" id="originPortChange">
+										<select class="uk-select" name="originPortChange" id="form-horizontal-select">
+											<option>Model.Items[1].OriginPort</option>
+											@foreach (var i in ViewBag.OriginPort)
+											{
+												if (i != Model.Items[1].OriginPort)
+												{
+													<option>@i</option>
+												}
+											}
+										</select>
+									</div>
+								</div>
 							</td>
 							<td>
-								@Html.DropDownList("Dest", new SelectList(ViewBag.Dest), "Any", new { @id = "Dest", @class = "uk-select" })
-								@*<input id="containerName" asp-for="Items[i].Name" class="uk-input" />
-									<span class="uk-text-danger" asp-validation-for="Items[i].Name" id="validationName" hidden></span>*@
+								<div class="uk-form-controls">
+									<div class="uk-form-controls vassell-header-formSelect" id="destChange">
+										<select class="uk-select" name="destChange" id="form-horizontal-select">
+											<option>Model.Items.PortOfDelivery</option>
+											@foreach (var i in ViewBag.Dest)
+											{
+												if (i != Model.Items[1].DestPort)
+												{
+													<option>@i</option>
+												}
+											}
+										</select>
+									</div>
+								</div>
 							</td>
 							<td>
-								@Html.DropDownListFor(model=>model.Items[i].Loading,
-										new SelectList(ViewBag.Loading),Model.Items[i].Loading, new { @class = "uk-input" })
+								<div class="uk-form-controls">
+									<div class="uk-form-controls vassell-header-formSelect" id="modeChange">
+										<select class="uk-select" name="modeChange" id="form-horizontal-select">
+											<option>Model.Items.Loading</option>
+											@foreach (var i in ViewBag.Mode)
+											{
+												if (i != Model.Items[1].Loading)
+												{
+													<option>@i</option>
+												}
+											}
+										</select>
+									</div>
+								</div>
 							</td>
 							<td>
-								@Html.DropDownList("Carriers", new SelectList(ViewBag.Carriers), "Any", new { @id = "Carriers", @class = "uk-select" })
+								<div class="uk-form-controls">
+									<div class="uk-form-controls vassell-header-formSelect" id="carrierChange">
+										<select class="uk-select" name="carrierChange" id="form-horizontal-select">
+											<option>Model.Items[1].Carrier</option>
+											@foreach (var i in ViewBag.Carrier)
+											{
+												if (i != Model.Items[1].Carrier)
+												{
+													<option>@i</option>
+												}
+											}
+										</select>
+									</div>
+								</div>
 							</td>
 							<td>
-								@Html.DropDownList("Voyages", new SelectList(ViewBag.Voyages), "Any", new { @id = "Voyages", @class = "uk-select" })
+								<input class="uk-input" name="voyageChange" id="form-horizontal-text" type="text" value="@Model.Items[1].Voyage">
 							</td>
-							<td></td>
-							<td></td>
-							<td>
-								@Html.DropDownList("Transhipments", new SelectList(ViewBag.Transhipments), "Any", new { @id = "Transhipments", @class = "uk-select" })
-							</td>
+							<td>@Model.Items[1].ETD</td>
+							<td>@Model.Items[1].ETA</td>
 						</tr>
 					</tbody>
 				</table>
-				<table class="uk-table uk-table-small">
+			</div>
+
+			@*table2*@
+			<div class="uk-grid uk-width-1-2">
+				<table class="uk-table">
 					<thead>
 						<tr>
-							<td></td>
-							<td>Container</td>
-							<td>Size</td>
-							<td>Status</td>
+							<th></th>
+							<th>Container</th>
+							<th>Size</th>
+							<th>Status</th>
 						</tr>
 					</thead>
 					<tbody>
-						@foreach(var container in Model.Items)
+						@foreach (var i in Model.Items)
 						{
-						<tr>
-							<td>
-								<input type="checkbox" />
-							</td>
-							<td>@container.Name</td>
-							<td>@container.Size</td>
-							<td>@container.Status</td>
-						</tr>
+							<tr>
+								<td>
+									<input type="checkbox" name="choiseContainer" />
+								</td>
+								<td>@i.Name</td>
+								<td>@i.Size</td>
+								<td>@i.Status</td>
+							</tr>
 						}
 
-						
 					</tbody>
 				</table>
 			</div>
 		}
-		<div>
-			<ul class="uk-pagination">
-				@for (var i = 1; i <= Model.PageCount; i++)
-				{
-					if (i == ViewBag.pageIndex)
-					{
-						<li class="uk-disabled">
-							<a asp-action="Index" asp-controller="VesselDeparture" asp-route-pageIndex="@i" class="page-link">@i</a>
-						</li>
-					}
-					else
-					{
-						<li class="uk-active">
-							<a asp-action="Index" asp-controller="VesselDeparture" asp-route-pageIndex="@i" class="page-link">@i</a>
-						</li>
-					}
-				}
-			</ul>
-		</div>
-	</div>
-	<br />
-	<br />
-</form>
-@*@if (ViewBag.modalResult != null)
-{
-	string result = ViewBag.modalResult;
-	<button type="button" uk-toggle="target: #modal-center" id="openmodal" hidden="hidden">Open</button>
-	<div id="modal-center" class="uk-flex-top" uk-modal>
-		<div class="uk-modal-dialog uk-modal-body uk-margin-auto-vertical">
-			<button class="uk-modal-close-default" type="button" uk-close></button>
-			@{
-				if (result == "success")
-				{
-					<p class="uk-text-success">Your shipment is successfully manifested</p>
-				}
-				else if (result == "invalid")
-				{
-					<p class="uk-text-danger">Ship Quantity is invalid, please try again</p>
-				}
-			}
-		</div>
-	</div>
-}*@
-<script src="~/js/jquery-3.3.1.min.js"></script>
+
+	}
+
+
+
+
+</div>
+
+@*<script src="~/js/jquery-3.3.1.min.js"></script>
 <script type="text/javascript">
   $(document.body).on('click', '.filterItem', function () {
     var pageIndex = $(this).attr("value");
@@ -234,14 +253,11 @@
               pageIndex: pageIndex,
               Origin: $('#Origins').val(),
               OriginPort: $('#OriginPorts').val(),
-              Loading: $('#Loadings').val(),
-              ETDFrom: $('#ETDFroms').val(),
-							ETDTo: $('#ETDTos').val(),
-							Status: $('#Statuses').val(),
-							Vendor:$('#Vendors'),
-              PONumber: $('#PONumberSearches').val(),
-              Item: $('#ItemSearches').val(),
-              Warehouse:$('#Warehouses'),
+              ETDFrom: $('#ETDFrom').val(),
+              ETDTo: $('#ETDTo').val(),
+              PONumber: $('#PONumberSearch').val(),
+              Item: $('#ItemSearch').val(),
+              Status: $('#Status').val(),
               checkClick: true,
             },
             success: function (data) {
@@ -261,7 +277,5 @@
       alert("Please fill in all Required fields.")
     }
   });
-</script>
-
-
+</script>*@
 

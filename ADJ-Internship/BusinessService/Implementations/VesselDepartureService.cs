@@ -32,7 +32,10 @@ namespace ADJ.BusinessService.Implementations
 		private readonly IOrderDetailRepository _orderDetailRepository;
 		private readonly IDataProvider<OrderDetail> _orderDetailDataProvider;
 
-		public VesselDepartureService(IUnitOfWork unitOfWork, IMapper mapper, ApplicationContext appContext, IDataProvider<Manifest> manifestDataProvider, IManifestRepository manifestRepository, IDataProvider<Booking> bookingDataProvider, IShipmentBookingRepository shipmentBookingRepository, IContainerRepository containerRepository, IDataProvider<Container> containerDataProvider, IOrderDetailRepository orderDetailRepository, IDataProvider<OrderDetail> orderDetailDataProvider) : base(unitOfWork, mapper, appContext)
+		public VesselDepartureService(IUnitOfWork unitOfWork, IMapper mapper, ApplicationContext appContext, 
+			IDataProvider<Manifest> manifestDataProvider, IManifestRepository manifestRepository, 
+			IDataProvider<Booking> bookingDataProvider, IShipmentBookingRepository shipmentBookingRepository, IContainerRepository containerRepository, 
+			IDataProvider<Container> containerDataProvider, IOrderDetailRepository orderDetailRepository, IDataProvider<OrderDetail> orderDetailDataProvider) : base(unitOfWork, mapper, appContext)
 		{
 			this._manifestDataProvider = manifestDataProvider;
 			this._manifestRepository = manifestRepository;
@@ -47,63 +50,83 @@ namespace ADJ.BusinessService.Implementations
 			this._orderDetailDataProvider = orderDetailDataProvider;
 
 		}
-		public async Task<PagedListResult<ContainerDto>> ListContainerAsync(int pageIndex = 1, int pageSize = 2, string Origin = null, string OriginPort = null, string Loading = null, DateTime? ETDFrom = null, DateTime? ETDTo = null, string Status = null, string Vendor = null, string PONumber = null, string Item = null, string Warehouse = null)
+		public async Task<PagedListResult<ContainerDto>> ListManifestDtoAsync(string origin, string originPort, string container, string status, DateTime etdFrom, DateTime etdTo, int? pageIndex, int? pageSize)
 		{
+			
 			Expression<Func<Container, bool>> All = x => x.Id > 0;
-			if (Origin != null)
+
+			if(origin==null&& originPort == null && container == null && status == null && etdFrom == null && etdTo == null)
 			{
-				Expression<Func<Container, bool>> filterDestinationPort = x => x.Manifests.Where(p => p.Booking.Order.Origin == Origin).Count() > 0;
-				All = All.And(filterDestinationPort);
-			}
-			if (OriginPort != null)
-			{
-				Expression<Func<Container, bool>> filterOriginPort = x => x.Manifests.Where(p => p.Booking.PortOfLoading == OriginPort).Count() > 0;
-				All = All.And(filterOriginPort);
-			}
-			if (Loading != null)
-			{
-				Expression<Func<Container, bool>> filterCarrier = x => x.Manifests.Where(p => p.Booking.Carrier == Loading).Count() > 0;
-				All = All.And(filterCarrier);
-			}
-			if (ETDFrom != null)
-			{
-				Expression<Func<Container, bool>> filterOriginPort = x => x.Manifests.Where(p => p.Booking.ETD.CompareTo(ETDFrom) > 0).Count() > 0;
-				All = All.And(filterOriginPort);
-			}
-			if (ETDTo != null)
-			{
-				Expression<Func<Container, bool>> filterOriginPort = x => x.Manifests.Where(p => p.Booking.ETD.CompareTo(ETDTo) < 0).Count() > 0;
-				All = All.And(filterOriginPort);
-			}
-			if (Status != null)
-			{
-				Expression<Func<Container, bool>> filterOriginPort = x => x.Manifests.Where(p => p.Booking.Status.ToString() == Status).Count() > 0;
-				All = All.And(filterOriginPort);
-			}
-			if (PONumber != null)
-			{
-				Expression<Func<Container, bool>> filterOriginPort = x => x.Manifests.Where(p => p.Booking.PONumber == PONumber).Count() > 0;
-				All = All.And(filterOriginPort);
-			}
-			if (Item != null)
-			{
-				Expression<Func<Container, bool>> filterOriginPort = x => x.Manifests.Where(p => p.Booking.ItemNumber == Item).Count() > 0;
-				All = All.And(filterOriginPort);
+				All = null;
 			}
 
-			//string sort
-			string sortStr="Status ASC";
+
+			if (origin != null)
+			{
+				Expression<Func<Container, bool>> filterOrigin = x => x.Manifests.Where(p => p.Booking.Order.Origin == origin).Count() > 0;
+				All = All.And(filterOrigin);
+			}
+			if (originPort != null)
+			{
+				Expression<Func<Container, bool>> filterOriginPort = x => x.Manifests.Where(p => p.Booking.PortOfLoading == originPort).Count() > 0;
+				All = All.And(filterOriginPort);
+			}
+			if (container != null)
+			{
+				Expression<Func<Container, bool>> filterContainer = x => x.Manifests.Where(p => p.Container.Id.CompareTo(container) > 0).Count() > 0;
+				All = All.And(filterContainer);
+			}
+			if (etdFrom != null)
+			{
+				Expression<Func<Container, bool>> filterETDFrom = x => x.Manifests.Where(p => p.Booking.ETD >= etdFrom).Count() > 0;
+				All = All.And(filterETDFrom);
+			}
+			if (etdTo != null)
+			{
+				Expression<Func<Container, bool>> filterETDTo = x => x.Manifests.Where(p => p.Booking.ETD <= etdTo).Count() > 0;
+				All = All.And(filterETDTo);
+			}
+			if (status != null)
+			{
+				Expression<Func<Container, bool>> filterStatus = x => x.Status.ToString() == status;
+				All = All.And(filterStatus);
+			}
+
+			//sort string
+			string sortStr = "Status ASC";
 			var containers = await _containerDataProvider.ListAsync(All, sortStr, true, pageIndex, pageSize);
+			var bookings = await _shipmentBookingDataProvider.ListAsync(null, null, true);
+			List<Booking> listBooking = bookings.Items;
+			List<string> originPorts = listBooking.Select(p => p.PortOfLoading).ToList();
+			List<DateTime> ETDs = listBooking.Select(p => p.ETD).ToList();
+			List<string> destinationPorts = listBooking.Select(p => p.PortOfDelivery).ToList();
 
-			var pagedResult = new PagedListResult<ContainerDto>
+			List<ContainerDto> lstContainerResult = new List<ContainerDto>();
+
+			foreach (var i in containers.Items)
 			{
-				TotalCount = containers.TotalCount,
-				PageCount = containers.PageCount,
-				CurrentFilter = null,
-				Items = Mapper.Map<List<ContainerDto>>(containers.Items)
-			};
+				ContainerDto containerDto = new ContainerDto();
+				containerDto.Name = i.Name;
+				containerDto.Size = i.Size;
+				containerDto.Status = i.Status;
+				containerDto.OriginPort = (i.Manifests.ToList())[0].Booking.PortOfLoading;
+				containerDto.DestPort = (i.Manifests.ToList())[0].Booking.PortOfDelivery;
+				containerDto.Carrier = (i.Manifests.ToList())[0].Booking.Carrier;
+				containerDto.Voyage = (i.Manifests.ToList())[0].Booking.Voyage;
 
-			return pagedResult;
+				lstContainerResult.Add(containerDto);
+			}
+
+			//Group By
+			lstContainerResult = lstContainerResult.OrderBy(m => m.OriginPort).OrderBy(m => m.DestPort).OrderBy(m => m.Loading).OrderBy(m=>m.Carrier ).ToList();
+
+			PagedListResult<ContainerDto> pagedlistResult = new PagedListResult<ContainerDto>()
+			{
+				PageCount=containers.PageCount,
+				TotalCount=containers.TotalCount,
+				Items= lstContainerResult
+			};
+			return pagedlistResult;
 		}
 		public async Task<SearchItem> SearchItem()
 		{
@@ -112,102 +135,15 @@ namespace ADJ.BusinessService.Implementations
 			var DestinationPort = bookingModels.Select(x => x.PortOfDelivery).Distinct();
 			var OriginPorts = bookingModels.Select(x => x.PortOfLoading).Distinct();
 			var Carriers = bookingModels.Select(x => x.Carrier).Distinct();
-			var PortOfDeliverys = bookingModels.Select(x => x.PortOfDelivery).Distinct();
-			List<string> status = Enum.GetNames(typeof(OrderStatus)).ToList();
 			SearchItem getSearchItemDTO = new SearchItem()
 			{
+				DestPorts = DestinationPort,
 				OriginPorts = OriginPorts,
 				Carriers = Carriers,
-				Dest= PortOfDeliverys,
-				
 			};
 			return getSearchItemDTO;
 		}
-		public async Task<ShipmentManifestsDtos> CreateOrUpdateContainerAsync(ShipmentManifestsDtos rq)
-		{
-			Manifest entity = new Manifest();
-			Container container = new Container();
-			if (rq.Id > 0)
-			{
-				container = await _containerRepository.GetByIdAsync(rq.Id, true);
-				container.Name = rq.Name;
-				container.Size = rq.Size;
-				container.Loading = rq.Loading;
-				container.PackType = rq.PackType;
-				_containerRepository.Update(container);
-				foreach (var itemManifest in rq.Manifests)
-				{
-					var manifest = await _manifestRepository.Query(p => p.Id == itemManifest.Id, true).SelectAsync();
-					entity = manifest[0];
-					if (entity == null)
-					{
-						throw new AppException("Shipment Manifest Not Found");
-					}
-					else
-					{
-						entity.Quantity = itemManifest.ShipQuantity;
-						if (itemManifest.BookingQuantity - itemManifest.ShipQuantity == 0)
-						{
-							entity.Booking.Status = OrderStatus.Manifested;
-						}
-						if (itemManifest.BookingQuantity - itemManifest.ShipQuantity > 0)
-						{
-							entity.Booking.Status = OrderStatus.PartlyManifested;
-						}
-					}
-					_shipmentBookingRepository.Update(entity.Booking);
-					_manifestRepository.Update(entity);
-				}
-			}
-			else
-			{
-				container.Name = rq.Name;
-				container.Size = rq.Size;
-				container.Loading = rq.Loading;
-				container.PackType = rq.PackType;
-				//container.Status = OrderStatus.Pending;
-				List<Manifest> manifests = new List<Manifest>();
-				foreach (var item in rq.Manifests)
-				{
-					if (item.selectedItem == true)
-					{
-						var orderDeatail = await _orderDetailRepository.Query(p => p.ItemNumber == item.ItemNumber, false).SelectAsync();
-						var booking = await _shipmentBookingRepository.Query(p => p.Id == item.BookingId, false).SelectAsync();
-						entity.Quantity = item.ShipQuantity;
-						entity.Container = container;
-						entity.Loading = container.Loading;
-						entity.Loading = container.Loading;
-						entity.PackType = container.PackType;
-						entity.Size = container.Size;
-						entity.BookingId = item.BookingId;
-						entity.Cartons = orderDeatail[0].Cartons;
-						entity.Cube = orderDeatail[0].Cube;
-						entity.FreightTerms = item.FreightTerms;
-						entity.KGS = orderDeatail[0].KGS;
-						if (item.BookingQuantity - item.ShipQuantity == 0)
-						{
-							booking[0].Status = OrderStatus.Manifested;
-						}
-						if (item.BookingQuantity - item.ShipQuantity > 0)
-						{
-							booking[0].Status = OrderStatus.PartlyManifested;
-						}
-						entity.Booking = booking[0];
-
-						manifests.Add(entity);
-						_shipmentBookingRepository.Update(booking[0]);
-					}
-				}
-				if (manifests.Count > 0)
-				{
-					container.Manifests = manifests;
-					_containerRepository.Insert(container);
-				}
-			}
-			await UnitOfWork.SaveChangesAsync();
-			var rs = Mapper.Map<ShipmentManifestsDtos>(container);
-			return rs;
-		}
+		
 
 
 	}

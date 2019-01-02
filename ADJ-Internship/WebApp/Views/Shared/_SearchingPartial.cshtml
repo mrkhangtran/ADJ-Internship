@@ -7,7 +7,7 @@ else
 {
   @for (int i = 0; i < Model.Items.Count(); i++)
   {
-    <div class="uk-margin-small uk-container">
+    <div class="uk-margin-small uk-grid">
       @Html.HiddenFor(model => model.Items[i].OrderId, new { Value = Model.Items[i].OrderId })
       @Html.HiddenFor(model => model.Items[i].Id, new { Value = Model.Items[i].Id })
       <table class="uk-margin-small uk-table uk-table-small">
@@ -30,7 +30,7 @@ else
           </tr>
         </tbody>
       </table>
-      <table class="uk-margin-small uk-table uk-table-small">
+      <table class=" uk-table uk-table-small">
         <thead>
           <tr>
             <td></td>
@@ -93,7 +93,7 @@ else
           </tr>
         </tbody>
       </table>
-      <table class="uk-table uk-margin-small">
+      <table class="uk-table ">
         <thead>
           <tr>
             <td></td>
@@ -130,23 +130,34 @@ else
     </div>
     <br />
   }
-  <div>
+  <div class="uk-align-right">
     <ul class="uk-pagination">
-      @for (var i = 1; i <= Model.PageCount; i++)
-      {
-        if (i == ViewBag.pageIndex)
+      @{
+        if (ViewBag.pageIndex > 1)
         {
-          <li class="uk-disabled">
-            <a class="page-link ">@i</a>
-          </li>
+          <li><a asp-action="Index" asp-controller="Manifest" asp-route-pageIndex="@(ViewBag.pageIndex - 1)" class="page-link"><span uk-pagination-previous></span></a></li>
         }
-        else
+        for (var i = 1; i <= Model.PageCount; i++)
         {
-          <li class="uk-active">
-            <a class="filterItem page-link" value=@i>@i</a>
-          </li>
+          if (i == ViewBag.pageIndex)
+          {
+            <li class="uk-disabled">
+              <a asp-action="Index" asp-controller="Manifest" asp-route-pageIndex="@i" class="page-link">@i</a>
+            </li>
+          }
+          else
+          {
+            <li class="uk-active">
+              <a asp-action="Index" asp-controller="Manifest" asp-route-pageIndex="@i" class="page-link">@i</a>
+            </li>
+          }
+        }
+        if (ViewBag.pageIndex < Model.PageCount)
+        {
+          <li><a asp-action="Index" asp-controller="Manifest" asp-route-pageIndex="@(ViewBag.pageIndex + 1)" class="page-link"><span uk-pagination-next></span></a></li>
         }
       }
+
     </ul>
   </div>
 }

@@ -52,7 +52,7 @@ namespace ADJ.BusinessService.Dtos
     public decimal OpenQuantity { get; set; }     //= Booking Quantity - Total Ship Quantity (recorded in database)
 
     [Required]
-    [ShipQuantityValidation("BookingQuantity")]
+    [ShipQuantityValidation("OpenQuantity")]
     public decimal ShipQuantity { get; set; }
 
     public decimal BookingCartons { get; set; } //= Booking Qty* Carton(of 1 item)

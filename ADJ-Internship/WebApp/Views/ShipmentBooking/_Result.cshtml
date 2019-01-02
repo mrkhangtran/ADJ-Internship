@@ -22,9 +22,13 @@
             }
           }
           message = message.Remove(message.Length - 2);
-          string endMsg = message.Substring(message.LastIndexOf(",") + 2);
-          message = message.Substring(0, message.LastIndexOf(","));
-          message += " and " + endMsg;
+
+          if (message.LastIndexOf(",") > 0)
+          {
+            string endMsg = message.Substring(message.LastIndexOf(",") + 2);
+            message = message.Substring(0, message.LastIndexOf(","));
+            message += " and " + endMsg;
+          }
 
           <span>@message</span>
           break;
@@ -54,14 +58,14 @@
             <label asp-for="PortOfLoading"></label>
           </td>
           <td>
-            <select asp-for="PortOfLoading" asp-items="new SelectList(ViewBag.Ports)" class="uk-input booking"></select>
+            <select asp-for="PortOfLoading" class="uk-input booking ports"></select>
             <span asp-validation-for="PortOfLoading" class="uk-alert-danger"></span>
           </td>
           <td>
             <label asp-for="PortOfDelivery"></label>
           </td>
           <td>
-            <select asp-for="PortOfDelivery" asp-items="new SelectList(ViewBag.Ports)" class="uk-input booking"></select>
+            <select asp-for="PortOfDelivery" class="uk-input booking ports"></select>
             <span asp-validation-for="PortOfDelivery" class="uk-alert-danger"></span>
           </td>
         </tr>
@@ -202,8 +206,8 @@
                 <input type="hidden" asp-for="OrderDetails[i].Vendor" />
                 <input type="hidden" asp-for="OrderDetails[i].Quantity" />
                 <input type="hidden" asp-for="OrderDetails[i].BookingQuantity" />
-                <input type="hidden" asp-for="OrderDetails[i].BookingCartons" />
-                <input type="hidden" asp-for="OrderDetails[i].BookingCube" />
+                <input type="hidden" asp-for="OrderDetails[i].Cartons" />
+                <input type="hidden" asp-for="OrderDetails[i].Cube" />
                 <input type="hidden" asp-for="OrderDetails[i].POShipDate" />
                 <input type="hidden" asp-for="OrderDetails[i].Status" />
               </td>
@@ -245,6 +249,15 @@
                 </td>
                 <td>
                   @Model.OrderDetails[i].Status
+                </td>
+              </tr>
+            }
+            else
+            {
+              <tr style="display: none">
+                <td>
+                  <input type="checkbox" asp-for="OrderDetails[i].Selected" hidden="hidden" />
+                  <input type="hidden" asp-for="OrderDetails[i].PackType" />
                 </td>
               </tr>
             }

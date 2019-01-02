@@ -105,7 +105,7 @@
       @Html.HiddenFor(model => model.Items[i].Id, new { Value = Model.Items[i].Id })
       <br />
       <br />
-      <div class="uk-container">
+      <div class="uk-grid">
         <table class="uk-table uk-table-small">
           <thead>
             <tr>
@@ -127,23 +127,37 @@
           <tbody>
             <tr>
               <td>
-                <input type="checkbox" asp-for="Items[i].selectedContainer" />
+                @if (Model.Items[i].Id == 0)
+                {
+                  <input type="checkbox" asp-for="Items[i].selectedContainer" />
+                }
               </td>
               <td>
-                <input id="containerName" asp-for="Items[i].Name" class="uk-input" />
-                <span class="uk-text-danger" asp-validation-for="Items[i].Name" id="validationName" hidden></span>
+                @{
+                  if (Model.Items[i].Id == 0)
+                  {
+                    <input id="validationName" asp-for="Items[i].Name" class="validationName uk-input" />
+                    <span class=" uk-text-danger" asp-validation-for="Items[i].Name" id="validationShipQuantity" hidden></span>
+                  }
+                  else
+                  {
+                    <input readonly id="validationName" asp-for="Items[i].Name" class="validationName uk-input" />
+                  }
+
+                }
+
               </td>
               <td>
-                @Html.DropDownListFor(model=>model.Items[i].Size,
-                      new SelectList(ViewBag.Size),Model.Items[i].Size,new {@class="uk-input" })
+                @Html.DropDownListFor(model => model.Items[i].Size,
+             new SelectList(ViewBag.Size), Model.Items[i].Size, new { @class = "uk-input" })
               </td>
               <td>
-                @Html.DropDownListFor(model=>model.Items[i].Loading,
-                    new SelectList(ViewBag.Loading),Model.Items[i].Loading, new { @class = "uk-input" })
+                @Html.DropDownListFor(model => model.Items[i].Loading,
+           new SelectList(ViewBag.Loading), Model.Items[i].Loading, new { @class = "uk-input" })
               </td>
               <td>
-                @Html.DropDownListFor(model=>model.Items[i].PackType,
-                    new SelectList(ViewBag.PackType),Model.Items[i].PackType, new { @class = "uk-input" })
+                @Html.DropDownListFor(model => model.Items[i].PackType,
+           new SelectList(ViewBag.PackType), Model.Items[i].PackType, new { @class = "uk-input" })
               </td>
             </tr>
           </tbody>
@@ -206,12 +220,12 @@
               @Html.HiddenFor(model => model.Items[i].Manifests[j].ItemNumber, new { Value = Model.Items[i].Manifests[j].ItemNumber })
               @Html.HiddenFor(model => model.Items[i].Manifests[j].BookingQuantity, new { Value = Model.Items[i].Manifests[j].BookingQuantity })
               @Html.HiddenFor(model => model.Items[i].Manifests[j].Id, new { Value = Model.Items[i].Manifests[j].Id })
-
+              @Html.HiddenFor(model => model.Items[i].Manifests[j].OpenQuantity, new { Value = Model.Items[i].Manifests[j].OpenQuantity })
               <tr>
                 <td>
                   @if (Model.Items[i].Id == 0)
                   {
-                  <input type="checkbox" asp-for="Items[i].Manifests[j].selectedItem" />
+                    <input type="checkbox" asp-for="Items[i].Manifests[j].selectedItem" />
                   }
                 </td>
                 <td>
@@ -236,8 +250,17 @@
                   @Model.Items[i].Manifests[j].OpenQuantity
                 </td>
                 <td>
-                  <input id="shipQuantity" asp-for="Items[i].Manifests[j].ShipQuantity" class="uk-input" />
-                  <span class="uk-text-danger" asp-validation-for="Items[i].Manifests[j].ShipQuantity" id="validationShipQuantity" hidden></span>
+                  @{
+                    if (Model.Items[i].Id > 0)
+                    {
+                      @Model.Items[i].Manifests[j].ShipQuantity
+                    }
+                    else
+                    {
+                      <input id="shipQuantity" asp-for="Items[i].Manifests[j].ShipQuantity" class="validationShipQuantity uk-input" />
+                      <span class=" uk-text-danger" asp-validation-for="Items[i].Manifests[j].ShipQuantity" id="validationShipQuantity" hidden></span>
+                    }
+                  }
                 </td>
                 <td>
                   @Model.Items[i].Manifests[j].BookingCartons
@@ -266,23 +289,34 @@
         </table>
       </div>
     }
-    <div>
+    <div class="uk-align-right">
       <ul class="uk-pagination">
-        @for (var i = 1; i <= Model.PageCount; i++)
-        {
-          if (i == ViewBag.pageIndex)
+        @{
+          if (ViewBag.pageIndex > 1)
           {
-            <li class="uk-disabled">
-              <a asp-action="Index" asp-controller="Manifest" asp-route-pageIndex="@i" class="page-link">@i</a>
-            </li>
+            <li><a asp-action="Index" asp-controller="Manifest" asp-route-pageIndex="@(ViewBag.pageIndex - 1)" class="page-link"><span uk-pagination-previous></span></a></li>
           }
-          else
+          for (var i = 1; i <= Model.PageCount; i++)
           {
-            <li class="uk-active">
-              <a asp-action="Index" asp-controller="Manifest" asp-route-pageIndex="@i" class="page-link">@i</a>
-            </li>
+            if (i == ViewBag.pageIndex)
+            {
+              <li class="uk-disabled">
+                <a asp-action="Index" asp-controller="Manifest" asp-route-pageIndex="@i" class="page-link">@i</a>
+              </li>
+            }
+            else
+            {
+              <li class="uk-active">
+                <a asp-action="Index" asp-controller="Manifest" asp-route-pageIndex="@i" class="page-link">@i</a>
+              </li>
+            }
+          }
+          if (ViewBag.pageIndex < Model.PageCount)
+          {
+            <li><a asp-action="Index" asp-controller="Manifest" asp-route-pageIndex="@(ViewBag.pageIndex + 1)" class="page-link"><span uk-pagination-next></span></a></li>
           }
         }
+
       </ul>
     </div>
   </div>
@@ -327,6 +361,7 @@
               PONumber: $('#PONumberSearch').val(),
               Item: $('#ItemSearch').val(),
               Status: $('#Status').val(),
+              Vendor: $('#Vendor').val(),
               checkClick: true,
             },
             success: function (data) {
@@ -334,16 +369,23 @@
             }
         });
   });
-  $("#Achieve").click(function (event) {
-    if (!confirm('Are you sure that you want to submit the form'))
-      event.preventDefault();
-  });
   $(document).ready(function () {
      $('#openmodal').trigger('click');
   });
   $('#manifest').submit(function () {
-    if ($('#containerName').val() == "" || $('#shipQuantity').val() == "") {
-      alert("Please fill in all Required fields.")
+    var blank = document.getElementsByClassName("validationName");
+    for (i = 0; i < blank.length; i++) {
+      if (blank[i].value=="") {
+        alert("Please fill in all Required fields.")
+        break;
+      }
+    }
+    var blank = document.getElementsByClassName("validationShipQuantity");
+    for (i = 0; i < blank.length; i++) {
+      if (blank[i].value == "") {
+        alert("Please fill in all Required fields.")
+        break;
+      }
     }
   });
 </script>
