@@ -76,17 +76,10 @@ namespace WebApp.Controllers
       ViewBag.Carriers = searchItem.Carriers;
       ViewBag.Dest = searchItem.DestinationPort;
       ViewBag.Status = searchItem.Status;
-<<<<<<< HEAD
       string DestinationPort = searchItem.DestinationPort.First();
       string OriginPort = searchItem.OriginPorts.First();
       string Carrier = searchItem.Carriers.First();
       PagedListResult<ShipmentManifestsDtos> pagedListResult = await _manifestService.ListManifestDtoAsync(1,2,DestinationPort,OriginPort,Carrier);
-=======
-      string DestinationPort = searchItem.DestinationPort.FirstOrDefault();
-      string OriginPort = searchItem.OriginPorts.FirstOrDefault();
-      string Carrier = searchItem.Carriers.FirstOrDefault();
-      PagedListResult<ShipmentManifestsDtos> pagedListResult = await _manifestService.ListManifestDtoAsync(1, 2, DestinationPort, OriginPort, Carrier);
->>>>>>> master
       return View("Index", pagedListResult);
     }
   }
