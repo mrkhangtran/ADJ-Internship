@@ -69,8 +69,9 @@ namespace WebApp.Controllers
       
       GetItemSearchDto getSearchItem = await _prcService.SearchItem();
       ViewBag.Suppliers = getSearchItem.Suppliers;
-      ViewBag.Origins = getSearchItem.Origins;
-      ViewBag.OriginPorts = getSearchItem.OriginPorts;
+      ViewBag.VNPorts = new List<string> { "Cẩm Phả", "Cửa Lò", "Hải Phòng", "Hòn Gai", "Nghi Sơn" };
+      ViewBag.HKPorts = new List<string> { "Aberdeen", "Crooked Harbour", "Double Haven", "Gin Drinkers Bay", "Inner Port Shelter" };
+      ViewBag.Origins = new List<string> { "HongKong", "Vietnam" };
       ViewBag.Factories = getSearchItem.Factories;
       ViewBag.Depts = getSearchItem.Depts;
       ViewBag.Status = getSearchItem.Status;

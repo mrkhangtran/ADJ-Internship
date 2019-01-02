@@ -18,8 +18,7 @@
               <td><label>Origin Port</label></td>
               <td>
                 <div class="col-md-10">
-                  <select class="uk-input ports" id="OriginPorts">
-                  </select>
+                  <select class="uk-input ports" id="OriginPorts"></select>
                   <span class="uk-alert-danger"></span>
                 </div>
               </td>
@@ -171,11 +170,11 @@
               <td>@Model.Items[i].ShipDate</td>
               <td>
                 @Html.TextBoxFor(model => model.Items[i].InspectionDate, Model.Items[i].InspectionDate.ToString("yyyy-MM-dd"), new { type = "date", @class = "uk-input" })
-                @Html.ValidationMessageFor(model => model.Items[i].InspectionDate, "", new { @class = "text-danger" })
+                @Html.ValidationMessageFor(model => model.Items[i].InspectionDate, "", new { @class = "uk-text-danger" })
               </td>
               <td>
                 @Html.TextBoxFor(model => model.Items[i].IntendedShipDate, Model.Items[i].IntendedShipDate.ToString("yyyy-MM-dd"), new { type = "date", @class = "uk-input" })
-                @Html.ValidationMessageFor(model => model.Items[i].IntendedShipDate, "", new { @class = "text-danger" })
+                @Html.ValidationMessageFor(model => model.Items[i].IntendedShipDate, "", new { @class = "uk-text-danger" })
 
               </td>
               <td>
@@ -221,7 +220,7 @@
                 @Html.HiddenFor(model => model.Items[i].ListOrderDetailDto[j].Quantity)
                 <td>
                   @Html.TextBoxFor(model => model.Items[i].ListOrderDetailDto[j].ReviseQuantity, new { @class = "uk-input", Type = "Number" })
-                  @Html.ValidationMessageFor(model => model.Items[i].ListOrderDetailDto[j].ReviseQuantity, "", new { @class = "text-danger" })
+                  @Html.ValidationMessageFor(model => model.Items[i].ListOrderDetailDto[j].ReviseQuantity, "", new { @class = "uk-text-danger" })
                 </td>
               </tr>
             }
@@ -236,26 +235,26 @@
         @{
           if (ViewBag.pageIndex > 1)
           {
-            <li><a asp-action="Index" asp-controller="Manifest" asp-route-pageIndex="@(ViewBag.pageIndex - 1)" class="page-link"><span uk-pagination-previous></span></a></li>
+            <li><a asp-action="Index" asp-controller="ProgressCheck" asp-route-pageIndex="@(ViewBag.pageIndex - 1)" class="page-link"><span uk-pagination-previous></span></a></li>
           }
           for (var i = 1; i <= Model.PageCount; i++)
           {
             if (i == ViewBag.pageIndex)
             {
               <li class="uk-disabled">
-                <a asp-action="Index" asp-controller="Manifest" asp-route-pageIndex="@i" class="page-link">@i</a>
+                <a asp-action="Index" asp-controller="ProgressCheck" asp-route-pageIndex="@i" class="page-link"><u>@i</u></a>
               </li>
             }
             else
             {
               <li class="uk-active">
-                <a asp-action="Index" asp-controller="Manifest" asp-route-pageIndex="@i" class="page-link">@i</a>
+                <a asp-action="Index" asp-controller="ProgressCheck" asp-route-pageIndex="@i" class="page-link">@i</a>
               </li>
             }
           }
           if (ViewBag.pageIndex < Model.PageCount)
           {
-            <li><a asp-action="Index" asp-controller="Manifest" asp-route-pageIndex="@(ViewBag.pageIndex + 1)" class="page-link"><span uk-pagination-next></span></a></li>
+            <li><a asp-action="Index" asp-controller="ProgressCheck" asp-route-pageIndex="@(ViewBag.pageIndex + 1)" class="page-link"><span uk-pagination-next></span></a></li>
           }
         }
 

@@ -135,26 +135,26 @@ else
       @{
         if (ViewBag.pageIndex > 1)
         {
-          <li><a asp-action="Index" asp-controller="Manifest" asp-route-pageIndex="@(ViewBag.pageIndex - 1)" class="page-link"><span uk-pagination-previous></span></a></li>
+          <li><a value="@(ViewBag.pageIndex - 1)" class="filterItem page-link"><span uk-pagination-previous></span></a></li>
         }
         for (var i = 1; i <= Model.PageCount; i++)
         {
           if (i == ViewBag.pageIndex)
           {
             <li class="uk-disabled">
-              <a asp-action="Index" asp-controller="Manifest" asp-route-pageIndex="@i" class="page-link">@i</a>
+              <a class="page-link"><u>@i</u></a>
             </li>
           }
           else
           {
             <li class="uk-active">
-              <a asp-action="Index" asp-controller="Manifest" asp-route-pageIndex="@i" class="page-link">@i</a>
+              <a value="@i" class="filterItem page-link">@i</a>
             </li>
           }
         }
         if (ViewBag.pageIndex < Model.PageCount)
         {
-          <li><a asp-action="Index" asp-controller="Manifest" asp-route-pageIndex="@(ViewBag.pageIndex + 1)" class="page-link"><span uk-pagination-next></span></a></li>
+          <li><a value="@(ViewBag.pageIndex + 1)" class="filterItem page-link"><span uk-pagination-next></span></a></li>
         }
       }
 

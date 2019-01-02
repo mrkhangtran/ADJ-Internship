@@ -10,7 +10,7 @@ else
     @Html.HiddenFor(model => model.Items[i].Id, new { Value = Model.Items[i].Id })
     <br />
     <br />
-    <div class="uk-grid uk-margin-small">
+    <div class="uk-grid">
       <table class="uk-table uk-table-small">
         <thead>
           <tr>
@@ -32,23 +32,37 @@ else
         <tbody>
           <tr>
             <td>
-              <input class="checkbox" type="checkbox" asp-for="Items[i].selectedContainer" />
+              @if (Model.Items[i].Id == 0)
+              {
+                <input type="checkbox" asp-for="Items[i].selectedContainer" />
+              }
             </td>
             <td>
-              <input id="containerName" asp-for="Items[i].Name" class="uk-input" />
-              <span class="uk-text-danger" asp-validation-for="Items[i].Name" id="validationName" hidden></span>
+              @{
+                if (Model.Items[i].Id == 0)
+                {
+                  <input id="validationName" asp-for="Items[i].Name" class="validationName uk-input" />
+                  <span class=" uk-text-danger" asp-validation-for="Items[i].Name" id="validationShipQuantity" hidden></span>
+                }
+                else
+                {
+                  <input readonly id="validationName" asp-for="Items[i].Name" class="validationName uk-input" />
+                }
+
+              }
+
             </td>
             <td>
-              @Html.DropDownListFor(model=>model.Items[i].Size,
-                    new SelectList(ViewBag.Size),Model.Items[i].Size,new {@class="uk-input" })
+              @Html.DropDownListFor(model => model.Items[i].Size,
+           new SelectList(ViewBag.Size), Model.Items[i].Size, new { @class = "uk-input" })
             </td>
             <td>
-              @Html.DropDownListFor(model=>model.Items[i].Loading,
-                  new SelectList(ViewBag.Loading),Model.Items[i].Loading, new { @class = "uk-input" })
+              @Html.DropDownListFor(model => model.Items[i].Loading,
+         new SelectList(ViewBag.Loading), Model.Items[i].Loading, new { @class = "uk-input" })
             </td>
             <td>
-              @Html.DropDownListFor(model=>model.Items[i].PackType,
-                  new SelectList(ViewBag.PackType),Model.Items[i].PackType, new { @class = "uk-input" })
+              @Html.DropDownListFor(model => model.Items[i].PackType,
+         new SelectList(ViewBag.PackType), Model.Items[i].PackType, new { @class = "uk-input" })
             </td>
           </tr>
         </tbody>
@@ -111,12 +125,14 @@ else
             @Html.HiddenFor(model => model.Items[i].Manifests[j].ItemNumber, new { Value = Model.Items[i].Manifests[j].ItemNumber })
             @Html.HiddenFor(model => model.Items[i].Manifests[j].BookingQuantity, new { Value = Model.Items[i].Manifests[j].BookingQuantity })
             @Html.HiddenFor(model => model.Items[i].Manifests[j].Id, new { Value = Model.Items[i].Manifests[j].Id })
+            @Html.HiddenFor(model => model.Items[i].Manifests[j].OpenQuantity, new { Value = Model.Items[i].Manifests[j].OpenQuantity })
+            @Html.HiddenFor(model => model.Items[i].Manifests[j].NetWeight, new { Value = Model.Items[i].Manifests[j].NetWeight })
 
             <tr>
               <td>
                 @if (Model.Items[i].Id == 0)
                 {
-                  <input class="uk-checkbox" type="checkbox" asp-for="Items[i].Manifests[j].selectedItem" />
+                  <input type="checkbox" asp-for="Items[i].Manifests[j].selectedItem" />
                 }
               </td>
               <td>
@@ -141,8 +157,17 @@ else
                 @Model.Items[i].Manifests[j].OpenQuantity
               </td>
               <td>
-                <input id="shipQuantity" asp-for="Items[i].Manifests[j].ShipQuantity" class="uk-input" />
-                <span class="uk-text-danger" asp-validation-for="Items[i].Manifests[j].ShipQuantity" id="validationShipQuantity" hidden></span>
+                @{
+                  if (Model.Items[i].Id > 0)
+                  {
+                    @Model.Items[i].Manifests[j].ShipQuantity
+                  }
+                  else
+                  {
+                    <input id="shipQuantity" asp-for="Items[i].Manifests[j].ShipQuantity" class="validationShipQuantity uk-input" />
+                    <span class=" uk-text-danger" asp-validation-for="Items[i].Manifests[j].ShipQuantity" id="validationShipQuantity" hidden></span>
+                  }
+                }
               </td>
               <td>
                 @Model.Items[i].Manifests[j].BookingCartons
@@ -160,7 +185,18 @@ else
                 @Model.Items[i].Manifests[j].NetWeight
               </td>
               <td>
-                <input asp-for="Items[i].Manifests[j].GrossWeight" class="uk-input" />
+                @{
+                  if (Model.Items[i].Id > 0)
+                  {
+                    @Model.Items[i].Manifests[j].GrossWeight
+                  }
+                  else
+                  {
+                    <input id="shipQuantity" asp-for="Items[i].Manifests[j].GrossWeight" class="validationShipQuantity uk-input" />
+                    <span class=" uk-text-danger" asp-validation-for="Items[i].Manifests[j].GrossWeight" id="" hidden></span>
+                  }
+                }
+
               </td>
               <td>
                 @Model.Items[i].Manifests[j].Manifested
@@ -176,26 +212,26 @@ else
       @{
         if (ViewBag.pageIndex > 1)
         {
-          <li><a asp-action="Index" asp-controller="Manifest" asp-route-pageIndex="@(ViewBag.pageIndex - 1)" class="page-link"><span uk-pagination-previous></span></a></li>
+          <li><a value="@(ViewBag.pageIndex - 1)" class="filterItem page-link"><span uk-pagination-previous></span></a></li>
         }
         for (var i = 1; i <= Model.PageCount; i++)
         {
           if (i == ViewBag.pageIndex)
           {
             <li class="uk-disabled">
-              <a asp-action="Index" asp-controller="Manifest" asp-route-pageIndex="@i" class="page-link">@i</a>
+              <a value="@i" class="page-link"><u>@i</u></a>
             </li>
           }
           else
           {
             <li class="uk-active">
-              <a asp-action="Index" asp-controller="Manifest" asp-route-pageIndex="@i" class="page-link">@i</a>
+              <a value="@i" class="filterItem page-link">@i</a>
             </li>
           }
         }
         if (ViewBag.pageIndex < Model.PageCount)
         {
-          <li><a asp-action="Index" asp-controller="Manifest" asp-route-pageIndex="@(ViewBag.pageIndex + 1)" class="page-link"><span uk-pagination-next></span></a></li>
+          <li><a value="@(ViewBag.pageIndex + 1)" class="filterItem page-link"><span uk-pagination-next></span></a></li>
         }
       }
 
