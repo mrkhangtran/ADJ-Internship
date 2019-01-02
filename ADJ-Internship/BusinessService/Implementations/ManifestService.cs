@@ -54,6 +54,7 @@ namespace ADJ.BusinessService.Implementations
       List<ShipmentManifestsDtos> currentPage = new List<ShipmentManifestsDtos>();
       List<ShipmentManifestsDtos> previousPage = new List<ShipmentManifestsDtos>();
       Expression<Func<Container, bool>> All = x => x.Id > 0;
+      Expression<Func<Booking, bool>> AllBooking = o => o.Id > 0;
       if (DestinationPort != null)
       {
         Expression<Func<Container, bool>> filterDestinationPort = x => x.Manifests.Where(p => p.Booking.PortOfDelivery == DestinationPort).Count() > 0;
@@ -72,36 +73,49 @@ namespace ADJ.BusinessService.Implementations
       if (ETDFrom != null)
       {
         Expression<Func<Container, bool>> filterETDFrom = x => x.Manifests.Where(p => p.Booking.ETD.CompareTo(ETDFrom) > 0).Count() > 0;
+        Expression<Func<Booking, bool>> filter = x => x.ETD.CompareTo(ETDFrom) > 0;
+        AllBooking = AllBooking.And(filter);
         All = All.And(filterETDFrom);
       }
       if (ETDTo != null)
       {
         Expression<Func<Container, bool>> filterETDTo = x => x.Manifests.Where(p => p.Booking.ETD.CompareTo(ETDTo) < 0).Count() > 0;
+        Expression<Func<Booking, bool>> filter = x => x.ETD.CompareTo(ETDTo) > 0;
+        AllBooking = AllBooking.And(filter);
         All = All.And(filterETDTo);
       }
       if (Status != null)
       {
         Expression<Func<Container, bool>> filterStatus = x => x.Manifests.Where(p => p.Booking.Status.ToString() == Status).Count() > 0;
+        Expression<Func<Booking, bool>> filter = x => x.Status.ToString() == Status;
+        AllBooking = AllBooking.And(filter);
         All = All.And(filterStatus);
       }
       if (Vendor != null)
       {
         Expression<Func<Container, bool>> filterVendor = x => x.Manifests.Where(p => p.Booking.Order.Vendor == Vendor).Count() > 0;
+        Expression<Func<Booking, bool>> filter = x => x.ETD.CompareTo(ETDFrom) > 0;
+        AllBooking = AllBooking.And(filter);
         All = All.And(filterVendor);
       }
       if (PONumber != null)
       {
         Expression<Func<Container, bool>> filterPONumber = x => x.Manifests.Where(p => p.Booking.PONumber == PONumber).Count() > 0;
+        Expression<Func<Booking, bool>> filter = x => x.PONumber == PONumber;
+        AllBooking = AllBooking.And(filter);
         All = All.And(filterPONumber);
       }
       if (Item != null)
       {
         Expression<Func<Container, bool>> filterItem = x => x.Manifests.Where(p => p.Booking.ItemNumber == Item).Count() > 0;
+        Expression<Func<Booking, bool>> filter = x => x.ItemNumber == Item;
+        AllBooking = AllBooking.And(filter);
         All = All.And(filterItem);
       }
       Expression<Func<Booking, bool>> filterBooking = p => p.PortOfLoading == OriginPort && p.PortOfDelivery == DestinationPort && p.Carrier == Carrier;
       var containers = await _containerDataProvider.ListAsync(All, null, true, pageIndex, pageSize);
-      var bookings = await _shipmentBookingDataProvider.ListAsync(filterBooking, null, true);
+      AllBooking = AllBooking.And(filterBooking);
+      var bookings = await _shipmentBookingDataProvider.ListAsync(AllBooking, null, true);
       var previous = await _containerDataProvider.ListAsync(All, null, true, pageIndex, pageSize);
 
       List<Booking> listBooking = bookings.Items;
