@@ -63,7 +63,7 @@ namespace WebApp.Controllers
       }
       else
       {
-        if (shipmentManifestDtos.Items.Where(p => p.Manifests.Where(x => x.GrossWeight > x.NetWeight).Count() > 0).Count() > 0)
+        if (shipmentManifestDtos.Items.Where(p => p.Manifests.Where(x => x.GrossWeight > x.NetWeight).Count() > 0).Count() > 0 && shipmentManifestDtos.Items.Where(p=>p.Manifests.Where(x=>x.ShipQuantity>x.OpenQuantity).Count()>0).Count()<0)
         {
           ViewBag.modalResult = "grossWeightInvalid";
 
@@ -83,7 +83,7 @@ namespace WebApp.Controllers
       string OriginPort = searchItem.OriginPorts.First();
       string Carrier = searchItem.Carriers.First();
       PagedListResult<ShipmentManifestsDtos> pagedListResult = await _manifestService.ListManifestDtoAsync(1, 2, DestinationPort, OriginPort, Carrier);
-      return PartialView("_AchieveManifestPartial", pagedListResult);
+      return View("Index", pagedListResult);
     }
   }
 }
