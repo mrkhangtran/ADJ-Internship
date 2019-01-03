@@ -44,7 +44,7 @@ namespace WebApp.Controllers
       ViewBag.Page = pageIndex;
 
       model.Containers = new PagedListResult<ConfirmArrivalResultDtos>();
-      
+
       model.Containers = await _CAService.ListContainerFilterAsync(pageIndex, model.FilterDtos.ETAFrom, model.FilterDtos.ETATo, model.FilterDtos.Origin,
         model.FilterDtos.Mode, model.FilterDtos.Vendor, model.FilterDtos.Container, model.FilterDtos.Status);
 
@@ -69,7 +69,10 @@ namespace WebApp.Controllers
             {
               foreach (var item in model.Containers.Items)
               {
-                await _CAService.CreateOrUpdateCAAsync(item.Id, model.ListArrivalDate[item.GroupId]);
+                if (item.Selected)
+                {
+                  await _CAService.CreateOrUpdateCAAsync(item.Id, model.ListArrivalDate[item.GroupId]);
+                }
               }
               ModelState.Clear();
               ViewBag.ShowModal = "Updated";

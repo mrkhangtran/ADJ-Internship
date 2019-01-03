@@ -59,7 +59,7 @@
         {
           DateTime dateTime = new DateTime();
           Model.ListArrivalDate.Add(dateTime);
-          <table class="uk-table uk-table-small uk-table-middle uk-table-striped">
+          <table class="uk-table uk-table-small uk-table-middle uk-table-striped uk-width-3-4">
             <thead>
               <tr>
                 <td>
@@ -97,7 +97,7 @@
             </tr>
           </table>
 
-          <table class="uk-table uk-table-small uk-table-middle uk-table-striped">
+          <table class="uk-table uk-table-small uk-table-middle uk-table-striped uk-width-1-2">
             <thead>
               <tr>
                 <td>
@@ -119,6 +119,7 @@
               <tr>
                 <td style="display: none">
                   <input asp-for="Containers.Items[j].Id" type="hidden" />
+                  <input asp-for="Containers.Items[j].GroupId" value=@groupId type="hidden" />;
                 </td>
                 <td>
                   @if (Model.Containers.Items[j].Status == ADJ.Common.ContainerStatus.Despatch)
@@ -130,8 +131,6 @@
                 <td>@Model.Containers.Items[j].Container</td>
                 <td>@Model.Containers.Items[j].Status</td>
               </tr>
-
-              Model.Containers.Items[j].GroupId = groupId;
             }
           </table>
 

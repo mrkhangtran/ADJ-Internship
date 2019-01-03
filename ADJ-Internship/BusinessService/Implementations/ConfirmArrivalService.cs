@@ -22,18 +22,22 @@ namespace ADJ.BusinessService.Implementations
     private readonly IDataProvider<Booking> _bookingDataProvider;
     private readonly IDataProvider<Order> _orderDataProvider;
 
+    private readonly IContainerRepository _containerRepository;
+    private readonly IShipmentBookingRepository _bookingRepository;
     private readonly IConfirmArrivalRepository _confirmArrivalRepository;
 
     private readonly int pageSize;
 
     public ConfirmArrivalService(IUnitOfWork unitOfWork, IMapper mapper, ApplicationContext appContext,
       IDataProvider<Container> containerDataProvider, IDataProvider<Booking> bookingDataProvider, IDataProvider<Order> orderDataProvider,
-    IConfirmArrivalRepository confirmArrivalRepository) : base(unitOfWork, mapper, appContext)
+    IContainerRepository containerRepository, IShipmentBookingRepository bookingRepository, IConfirmArrivalRepository confirmArrivalRepository) : base(unitOfWork, mapper, appContext)
     {
       _containerDataProvider = containerDataProvider;
       _bookingDataProvider = bookingDataProvider;
       _orderDataProvider = orderDataProvider;
 
+      _containerRepository = containerRepository;
+      _bookingRepository = bookingRepository;
       _confirmArrivalRepository = confirmArrivalRepository;
 
       pageSize = 6;
@@ -227,23 +231,15 @@ namespace ADJ.BusinessService.Implementations
 
     public async Task<ConfirmArrivalDtos> CreateOrUpdateCAAsync(int containerId, DateTime arrivalDate)
     {
-      CA entity;
+      CA entity = await GetCAbyContainerId(containerId);
       ConfirmArrivalDtos input = new ConfirmArrivalDtos();
 
       input.ContainerId = containerId;
       input.ArrivalDate = arrivalDate;
 
-      CA ca = await GetCAbyContainerId(containerId);
-
-      if (ca != null)
+      if (entity != null)
       {
-        entity = await _confirmArrivalRepository.GetByIdAsync(containerId, false);
-        if (entity == null)
-        {
-          throw new AppException("Purchase Order Not Found");
-        }
-
-        entity = Mapper.Map(input, entity);
+        entity.ArrivalDate = input.ArrivalDate;
 
         _confirmArrivalRepository.Update(entity);
       }
@@ -253,6 +249,8 @@ namespace ADJ.BusinessService.Implementations
 
         _confirmArrivalRepository.Insert(entity);
       }
+
+      await UpdateContainer(containerId, arrivalDate);
 
       await UnitOfWork.SaveChangesAsync();
 
@@ -271,6 +269,20 @@ namespace ADJ.BusinessService.Implementations
       {
         return null;
       }
+    }
+
+    private async Task<Container> UpdateContainer(int containerId, DateTime arrivalDate)
+    {
+      Container container = await _containerDataProvider.GetByIdAsync(containerId);
+      Booking booking = await _bookingDataProvider.GetByIdAsync((container.Manifests.ToList())[0].BookingId);
+
+      booking.ETA = arrivalDate;
+      _bookingRepository.Update(booking);
+
+      container.Status = ContainerStatus.Arrived;
+      _containerRepository.Update(container);
+
+      return container;
     }
   }
 }
