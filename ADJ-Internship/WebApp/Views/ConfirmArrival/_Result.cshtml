@@ -28,6 +28,8 @@
   </div>
 }
 
+<input asp-for="FilterDtos.Status" value=@Model.FilterDtos.Status type="hidden" />
+
 @if (Model.Containers != null)
 {
   if (Model.Containers.Items != null)
@@ -119,7 +121,17 @@
               <tr>
                 <td style="display: none">
                   <input asp-for="Containers.Items[j].Id" type="hidden" />
-                  <input asp-for="Containers.Items[j].GroupId" value=@groupId type="hidden" />;
+                  <input asp-for="Containers.Items[j].GroupId" value=@groupId type="hidden" />
+
+                  <input asp-for="Containers.Items[j].DestinationPort" value=@Model.Containers.Items[j].DestinationPort type="hidden" />
+                  <input asp-for="Containers.Items[j].Origin" value=@Model.Containers.Items[j].Origin type="hidden" />
+                  <input asp-for="Containers.Items[j].Mode" value=@Model.Containers.Items[j].Mode type="hidden" />
+                  <input asp-for="Containers.Items[j].Carrier" value=@Model.Containers.Items[j].Carrier type="hidden" />
+                  <input asp-for="Containers.Items[j].ArrivalDate" value=@Model.Containers.Items[j].ArrivalDate type="hidden" />
+
+                  <input asp-for="Containers.Items[j].Vendor" value=@Model.Containers.Items[j].Vendor type="hidden" />
+                  <input asp-for="Containers.Items[j].Container" value=@Model.Containers.Items[j].Container type="hidden" />
+                  <input asp-for="Containers.Items[j].Status" value=@Model.Containers.Items[j].Status type="hidden" />
                 </td>
                 <td>
                   @if (Model.Containers.Items[j].Status == ADJ.Common.ContainerStatus.Despatch)

@@ -151,7 +151,7 @@ namespace ADJ.BusinessService.Implementations
     private List<ConfirmArrivalResultDtos> Sort(List<ConfirmArrivalResultDtos> input)
     {
       //Order by Destination Port (property number = 0)
-      input = Quick_Sort(input, 0, input.Count - 1, 0);
+      quickSort(input, 0, input.Count - 1, 0);
 
       //Order by Origin (property number = 1)
       //Order by Mode (property number = 2)
@@ -164,10 +164,23 @@ namespace ADJ.BusinessService.Implementations
         {
           if ((i + 1 < input.Count) || (i == input.Count - 1))
           {
-            var currentProperty = typeof(ConfirmArrivalResultDtos).GetProperties()[property];
-            if ((i == input.Count - 1) || (currentProperty.GetValue(input[i]).ToString().CompareTo(currentProperty.GetValue(input[i + 1]).ToString()) != 0))
+            bool different = false;
+            if (i != input.Count - 1)
             {
-              input = Quick_Sort(input, start, i, property);
+              for (int j = property - 1; j >= 0; j--)
+              {
+                var currentProperty = typeof(ConfirmArrivalResultDtos).GetProperties()[j];
+                if (currentProperty.GetValue(input[i]).ToString().CompareTo(currentProperty.GetValue(input[i + 1]).ToString()) != 0)
+                {
+                  different = true;
+                  break;
+                }
+              }
+            }
+
+            if ((i == input.Count - 1) || (different))
+            {
+              quickSort(input, start, i, property);
               start = i + 1;
             }
           }
@@ -177,56 +190,61 @@ namespace ADJ.BusinessService.Implementations
       return input;
     }
 
-    private static List<ConfirmArrivalResultDtos> Quick_Sort(List<ConfirmArrivalResultDtos> arr, int left, int right, int property)
+    public static void quickSort(List<ConfirmArrivalResultDtos> A, int left, int right, int property)
     {
-      if (left < right)
+      if (left > right || left < 0 || right < 0) return;
+
+      int index = partition(A, left, right, property);
+
+      if (index != -1)
       {
-        int pivot = Partition(arr, left, right, property);
-
-        if (pivot > 1)
-        {
-          Quick_Sort(arr, left, pivot - 1, property);
-        }
-        if (pivot + 1 < right)
-        {
-          Quick_Sort(arr, pivot + 1, right, property);
-        }
+        quickSort(A, left, index - 1, property);
+        quickSort(A, index + 1, right, property);
       }
-
-      return arr;
     }
 
-    private static int Partition(List<ConfirmArrivalResultDtos> arr, int left, int right, int property)
+    private static int partition(List<ConfirmArrivalResultDtos> A, int left, int right, int property)
     {
-      var currentProperty = typeof(ConfirmArrivalResultDtos).GetProperties()[property];
+      if (left > right) return -1;
 
-      string pivot = currentProperty.GetValue(arr[left]).ToString();
+      int end = left;
 
-      while (true)
+      if (property != 4)
       {
-        while (currentProperty.GetValue(arr[left]).ToString().CompareTo(pivot) < 0)
+        var currentProperty = typeof(ConfirmArrivalResultDtos).GetProperties()[property];
+        string pivot = currentProperty.GetValue(A[right]).ToString();    // choose last one to pivot, easy to code
+        for (int i = left; i < right; i++)
         {
-          left++;
-        }
-
-        while (currentProperty.GetValue(arr[right]).ToString().CompareTo(pivot) > 0)
-        {
-          right--;
-        }
-
-        if (left < right)
-        {
-          if (currentProperty.GetValue(arr[left]).ToString().Equals(currentProperty.GetValue(arr[right]).ToString())) return right;
-
-          ConfirmArrivalResultDtos temp = arr[left];
-          arr[left] = arr[right];
-          arr[right] = temp;
-        }
-        else
-        {
-          return right;
+          if (currentProperty.GetValue(A[i]).ToString().CompareTo(pivot) < 0)
+          {
+            swap(A, i, end);
+            end++;
+          }
         }
       }
+      else
+      {
+        DateTime pivot = A[right].ArrivalDate;    // choose last one to pivot, easy to code
+        for (int i = left; i < right; i++)
+        {
+          if (A[i].ArrivalDate.CompareTo(pivot) < 0)
+          {
+            swap(A, i, end);
+            end++;
+          }
+        }
+      }
+
+      swap(A, end, right);
+
+      return end;
+    }
+
+    private static void swap(List<ConfirmArrivalResultDtos> A, int left, int right)
+    {
+      var tmp = A[left];
+      A[left] = A[right];
+      A[right] = tmp;
     }
 
     public async Task<ConfirmArrivalDtos> CreateOrUpdateCAAsync(int containerId, DateTime arrivalDate)
