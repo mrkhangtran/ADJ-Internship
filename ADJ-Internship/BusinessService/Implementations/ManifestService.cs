@@ -46,6 +46,8 @@ namespace ADJ.BusinessService.Implementations
       this._orderDetailRepository = orderDetailRepository;
       this._orderDetailDataProvider = orderDetailDataProvider;
 
+
+
     }
     public async Task<PagedListResult<ShipmentManifestsDtos>> ListManifestDtoAsync(int pageIndex = 1, int pageSize = 2, string DestinationPort = null, string OriginPort = null, string Carrier = null, DateTime? ETDFrom = null, DateTime? ETDTo = null, string Status = null, string Vendor = null, string PONumber = null, string Item = null)
     {
@@ -141,10 +143,11 @@ namespace ADJ.BusinessService.Implementations
           {
             temp += manifest.Quantity;
           }
+          var orderDeatail = await _orderDetailRepository.Query(p => p.ItemNumber == item.Booking.ItemNumber, true).SelectAsync();
           ItemManifest itemManifest = new ItemManifest()
           {
             Id = item.Id,
-            Supplier = item.Booking.Factory,
+            Supplier = orderDeatail[0].Order.Factory,
             Carrier = item.Booking.Carrier,
             PONumber = item.Booking.PONumber,
             ItemNumber = item.Booking.ItemNumber,
@@ -186,13 +189,13 @@ namespace ADJ.BusinessService.Implementations
       {
         foreach (var bookingNoContainer in listBookingNoContainer)
         {
-          var orderDeatail = await _orderDetailRepository.Query(p => p.ItemNumber == bookingNoContainer.ItemNumber, false).SelectAsync();
+          var orderDeatail = await _orderDetailRepository.Query(p => p.ItemNumber == bookingNoContainer.ItemNumber, true).SelectAsync();
           if (bookingNoContainer.Status == OrderStatus.BookingMade)
           {
             ItemManifest itemManifest = new ItemManifest()
             {
               Id = 0,
-              Supplier = bookingNoContainer.Factory,
+              Supplier = orderDeatail[0].Order.Factory,
               Carrier = bookingNoContainer.Carrier,
               PONumber = bookingNoContainer.PONumber,
               ItemNumber = bookingNoContainer.ItemNumber,
@@ -214,7 +217,7 @@ namespace ADJ.BusinessService.Implementations
             ItemManifest itemManifest = new ItemManifest()
             {
               Id = 0,
-              Supplier = bookingNoContainer.Factory,
+              Supplier = orderDeatail[0].Order.Factory,
               Carrier = bookingNoContainer.Carrier,
               PONumber = bookingNoContainer.PONumber,
               ItemNumber = bookingNoContainer.ItemNumber,
