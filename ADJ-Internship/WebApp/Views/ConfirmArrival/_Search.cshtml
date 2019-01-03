@@ -1,0 +1,85 @@
+﻿@model ADJ.BusinessService.Dtos.ConfirmArrivalDtos;
+
+<div class="uk-grid">
+  <div class="uk-width-3-4">
+    <table class="uk-table uk-table-small uk-table-middle">
+      <tr>
+        <td>
+          <label asp-for="FilterDtos.Origin"></label>
+        </td>
+        <td>
+          <select asp-for="FilterDtos.Origin" asp-items="new SelectList(ViewBag.Origins)" class="uk-input filters" id="origin"></select>
+          <span asp-validation-for="FilterDtos.Origin" class="uk-alert-danger"></span>
+        </td>
+        <td>
+          <label asp-for="FilterDtos.Container"></label>
+        </td>
+        <td>
+          <input asp-for="FilterDtos.Container" class="uk-input filters" />
+          <span asp-validation-for="FilterDtos.Container" class="uk-alert-danger"></span>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <label asp-for="FilterDtos.Mode"></label>
+        </td>
+        <td>
+          <select asp-for="FilterDtos.Mode" asp-items="new SelectList(ViewBag.Modes)" class="uk-input filters ports"></select>
+          <span asp-validation-for="FilterDtos.Mode" class="uk-alert-danger"></span>
+        </td>
+        <td>
+          <label asp-for="FilterDtos.ETAFrom"></label>
+        </td>
+        <td>
+          <input asp-for="FilterDtos.ETAFrom" type="date" class="uk-input filters" />
+          <span asp-validation-for="FilterDtos.ETAFrom" class="uk-alert-danger"></span>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <label asp-for="FilterDtos.Status"></label>
+        </td>
+        <td>
+          <select asp-for="FilterDtos.Status" asp-items="new SelectList(ViewBag.Statuses)" class="uk-input filters">
+            <option selected value="">Any</option>
+          </select>
+          <span asp-validation-for="FilterDtos.Status" class="uk-alert-danger"></span>
+        </td>
+        <td>
+          <label asp-for="FilterDtos.ETATo"></label>
+        </td>
+        <td>
+          <input asp-for="FilterDtos.ETATo" type="date" class="uk-input filters" />
+          <span asp-validation-for="FilterDtos.ETATo" class="uk-alert-danger"></span>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <label asp-for="FilterDtos.Vendor"></label>
+        </td>
+        <td>
+          <input asp-for="FilterDtos.Vendor" class="uk-input filters" />
+          <span asp-validation-for="FilterDtos.Vendor" class="uk-alert-danger"></span>
+        </td>
+        <td colspan="2" style="border-top: 0.2px solid gainsboro"></td>
+      </tr>
+    </table>
+  </div>
+  <div class="uk-width-1-4">
+    <table class="uk-table-middle uk-height-1-1 uk-width-1-1" style="text-align: center">
+      <tr>
+        <td>
+          <button class="uk-button uk-button-primary">Search</button>
+        </td>
+      </tr>
+      <tr>
+        <td></td>
+      </tr>
+      <tr>
+        <td>
+          <button type="button" value="Achieve" class="uk-button uk-button-danger" id="achieveButton">Achieve</button>
+        </td>
+      </tr>
+    </table>
+  </div>
+</div>

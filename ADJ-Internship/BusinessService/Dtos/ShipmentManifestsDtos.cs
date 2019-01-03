@@ -85,11 +85,30 @@ namespace ADJ.BusinessService.Dtos
       profile.CreateMap<ItemManifest, Manifest>().IncludeBase<EntityDtoBase, EntityBase>();
     }
   }
+  public class filterItem
+  {
+   public string DestinationPort { get; set; }
+   public string OriginPort { get; set; }
+   public string Carrier { get; set; }
+   public string Status { get; set; }
+   public string Vendor { get; set; }
+   public DateTime? ETDFrom { get; set; }
+   public DateTime? ETDTo { get; set; }
+   public string PONumber { get; set; }
+   public string ItemNumber { get; set; }
+
+  }
   public class SearchingManifestItem
   {
     public IEnumerable<string> DestinationPort { get; set; }
     public IEnumerable<string> OriginPorts { get; set; }
     public IEnumerable<string> Carriers { get; set; }
     public IEnumerable<string> Status { get; set; }
+  }
+  public class ViewManifestDto
+  {
+    public PagedListResult<ShipmentManifestsDtos> pagedListResult { get; set; }
+    public filterItem filterItem { get; set; }
+    public int pageIndex { get; set; }
   }
 }

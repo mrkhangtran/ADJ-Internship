@@ -1,5 +1,8 @@
 ﻿@model ADJ.Common.PagedListResult<ADJ.BusinessService.Dtos.ShipmentManifestsDtos>
-<form id="manifest" asp-action="CreateOrUpdate" asp-controller="Manifest">
+<form id="manifest" asp-action="CreateOrUpdate" asp-controller="Manifest"  data-ajax="true"
+      data-ajax-method="POST"
+      data-ajax-mode="replace"
+      data-ajax-update="#renderSearching">
   <div class="uk-container">
     <div class="uk-grid">
       <div class="uk-width-1-3">
@@ -9,7 +12,7 @@
               <td><label>Destination Port</label></td>
               <td>
                 <div class="uk-form-select" data-uk-form-select>
-                  @Html.DropDownList("DestinationPort", new SelectList(ViewBag.Dest), "Any", new { @id = "DestinationPort", @class = "uk-select" })
+                  @Html.DropDownList("DestinationPort", new SelectList(ViewBag.Dest), new { @id = "DestinationPort", @class = "uk-select" })
                 </div>
               </td>
             </tr>
@@ -17,7 +20,7 @@
               <td><label>Origin Port</label></td>
               <td>
                 <div class="uk-form-select" data-uk-form-select>
-                  @Html.DropDownList("OriginPorts", new SelectList(ViewBag.OriginPorts), "Any", new { @id = "OriginPorts", @class = "uk-select" })
+                  @Html.DropDownList("OriginPorts", new SelectList(ViewBag.OriginPorts), new { @id = "OriginPorts", @class = "uk-select" })
                 </div>
               </td>
             </tr>
@@ -26,7 +29,7 @@
               <td>
                 <div class="uk-form-select" data-uk-form-select>
                   <span></span>
-                  @Html.DropDownList("Carriers", new SelectList(ViewBag.Carriers), "Any", new { @id = "Carriers", @class = "uk-select" })
+                  @Html.DropDownList("Carriers", new SelectList(ViewBag.Carriers), new { @id = "Carriers", @class = "uk-select" })
                 </div>
               </td>
             </tr>
@@ -88,7 +91,7 @@
             </tr>
             <tr>
               <td>
-                <input id="Achieve" class="uk-button uk-button-danger" type="submit" data-uk-button value="Achieve">
+                <button id="achieve" type="button" class="uk-button uk-button-danger">Achieve</button>
               </td>
             </tr>
 
@@ -147,18 +150,32 @@
                 }
 
               </td>
-              <td>
-                @Html.DropDownListFor(model => model.Items[i].Size,
-             new SelectList(ViewBag.Size), Model.Items[i].Size, new { @class = "uk-input" })
-              </td>
-              <td>
-                @Html.DropDownListFor(model => model.Items[i].Loading,
-           new SelectList(ViewBag.Loading), Model.Items[i].Loading, new { @class = "uk-input" })
-              </td>
-              <td>
-                @Html.DropDownListFor(model => model.Items[i].PackType,
-           new SelectList(ViewBag.PackType), Model.Items[i].PackType, new { @class = "uk-input" })
-              </td>
+              @{
+                if (Model.Items[i].Id == 0)
+                {
+                  <td>
+                    <select asp-for="Items[i].Size" asp-items="new SelectList(ViewBag.Size)" class="uk-input filters" id="size"></select>
+                  </td>
+                  <td>
+                    <select asp-for="Items[i].Loading" asp-items="new SelectList(ViewBag.Loading)" class="uk-input filters" id="loading"></select>
+                  </td>
+                  <td>
+                    <select asp-for="Items[i].PackType" asp-items="new SelectList(ViewBag.PackType)" class="uk-input filters" id="packtype"></select>
+                  </td>
+                }
+                else
+                {
+                  <td>
+                    @Model.Items[i].Size
+                  </td>
+                  <td>
+                    @Model.Items[i].Loading
+                  </td>
+                  <td>
+                    @Model.Items[i].PackType
+                  </td>
+                }
+              }
             </tr>
           </tbody>
         </table>
@@ -257,7 +274,7 @@
                     }
                     else
                     {
-                      <input id="shipQuantity" asp-for="Items[i].Manifests[j].ShipQuantity" class="validationShipQuantity uk-input" />
+                      <input type="number" value="" id="@(Model.Items[i].Manifests[j].ItemNumber)" asp-for="Items[i].Manifests[j].ShipQuantity" class="validationShipQuantity uk-input" />
                       <span class=" uk-text-danger" asp-validation-for="Items[i].Manifests[j].ShipQuantity" id="validationShipQuantity" hidden></span>
                     }
                   }
@@ -266,22 +283,42 @@
                   @Model.Items[i].Manifests[j].BookingCartons
                 </td>
                 <td>
-                  @Model.Items[i].Manifests[j].ShipCartons
+                  <input id="@("shipCarton"+@Model.Items[i].Manifests[j].ItemNumber)" asp-for="Items[i].Manifests[j].ShipCartons" readonly class=" uk-input" />
                 </td>
                 <td>
                   @Model.Items[i].Manifests[j].BookingCube
                 </td>
                 <td>
-                  @Model.Items[i].Manifests[j].ShipCube
+                  <input id="@("shipCube"+@Model.Items[i].Manifests[j].ItemNumber)" asp-for="Items[i].Manifests[j].ShipCube" readonly class=" uk-input" />
                 </td>
                 <td>
-                  @Model.Items[i].Manifests[j].NetWeight
+                  <input id="@("netWeight"+@Model.Items[i].Manifests[j].ItemNumber)" asp-for="Items[i].Manifests[j].NetWeight" readonly class=" uk-input" />
                 </td>
                 <td>
-                  <input asp-for="Items[i].Manifests[j].GrossWeight" class="uk-input" />
+                  @{
+                    if (Model.Items[i].Id > 0)
+                    {
+                      @Model.Items[i].Manifests[j].GrossWeight
+                    }
+                    else
+                    {
+                      <input value="" id="@("shipGrossWeight"+Model.Items[i].Manifests[j].ItemNumber)" asp-for="Items[i].Manifests[j].GrossWeight" class="shipGrossWeight uk-input" />
+                      <span class=" uk-text-danger" asp-validation-for="Items[i].Manifests[j].GrossWeight" hidden id=""></span>
+                    }
+                  }
+
                 </td>
                 <td>
                   @Model.Items[i].Manifests[j].Manifested
+                </td>
+                <td style="display:none">
+                  <input id="@("carton"+Model.Items[i].Manifests[j].ItemNumber)" value="@Model.Items[i].Manifests[j].Carton" asp-for="Items[i].Manifests[j].Carton" class=" uk-input" />
+                </td>
+                <td style="display:none">
+                  <input id="@("cube"+Model.Items[i].Manifests[j].ItemNumber)" value="@Model.Items[i].Manifests[j].Cube" asp-for="Items[i].Manifests[j].Cube" class=" uk-input" />
+                </td>
+                <td style="display:none">
+                  <input id="@("kgs"+Model.Items[i].Manifests[j].ItemNumber)" value="@Model.Items[i].Manifests[j].Carton" asp-for="Items[i].Manifests[j].KGS" class=" uk-input" />
                 </td>
               </tr>
             }
@@ -294,29 +331,28 @@
         @{
           if (ViewBag.pageIndex > 1)
           {
-            <li><a asp-action="Index" asp-controller="Manifest" asp-route-pageIndex="@(ViewBag.pageIndex - 1)" class="page-link"><span uk-pagination-previous></span></a></li>
+            <li><a value="@(ViewBag.pageIndex - 1)" class="filterItem page-link"><span uk-pagination-previous></span></a></li>
           }
           for (var i = 1; i <= Model.PageCount; i++)
           {
             if (i == ViewBag.pageIndex)
             {
               <li class="uk-disabled">
-                <a asp-action="Index" asp-controller="Manifest" asp-route-pageIndex="@i" class="page-link">@i</a>
+                <a value="@i" class="page-link"><u>@i</u></a>
               </li>
             }
             else
             {
               <li class="uk-active">
-                <a asp-action="Index" asp-controller="Manifest" asp-route-pageIndex="@i" class="page-link">@i</a>
+                <a value="@i" class="filterItem page-link">@i</a>
               </li>
             }
           }
           if (ViewBag.pageIndex < Model.PageCount)
           {
-            <li><a asp-action="Index" asp-controller="Manifest" asp-route-pageIndex="@(ViewBag.pageIndex + 1)" class="page-link"><span uk-pagination-next></span></a></li>
+            <li><a value="@(ViewBag.pageIndex + 1)" class="filterItem page-link"><span uk-pagination-next></span></a></li>
           }
         }
-
       </ul>
     </div>
   </div>
@@ -338,6 +374,10 @@
         else if (result == "invalid")
         {
           <p class="uk-text-danger">Ship Quantity is invalid, please try again</p>
+        }
+        else if (result == "grossWeightInvalid")
+        {
+          <p class="uk-text-danger">Gross Weight is invalid, please try again</p>
         }
       }
     </div>
@@ -373,20 +413,53 @@
      $('#openmodal').trigger('click');
   });
   $('#manifest').submit(function () {
+    var check = 0;
     var blank = document.getElementsByClassName("validationName");
     for (i = 0; i < blank.length; i++) {
       if (blank[i].value=="") {
-        alert("Please fill in all Required fields.")
+        check++;
         break;
       }
     }
     var blank = document.getElementsByClassName("validationShipQuantity");
     for (i = 0; i < blank.length; i++) {
       if (blank[i].value == "") {
-        alert("Please fill in all Required fields.")
+        check++;
         break;
       }
     }
+    var blank = document.getElementsByClassName("shipGrossWeight");
+    for (i = 0; i < blank.length; i++) {
+      if (blank[i].value == "") {
+        check++;
+        break;
+      }
+    }
+    if (check > 0) {
+      alert("Please fill in all Required fields.");
+    }
+  });
+  $(document.body).on('keyup', '.validationShipQuantity', function () {
+    var quantity = $(this).val();
+    var id = $(this).attr("id");
+    var cartonID = "#carton" + id;
+    var cubeID = "#cube" + id;
+    var kgsID = "#kgs" + id;
+    var shipcartonID = "#shipCarton" + id;
+    var shipcubeID = "#shipCube" + id;
+    var shipkgsID = "#netWeight" + id;
+    var carton = $(cartonID).val();
+    var cube = $(cubeID).val();
+    var kgs = $(kgsID).val();
+    var shipcarton = quantity * carton;
+    var shipcube = quantity * cube;
+    var netWeight = quantity * kgs;
+    $(shipcartonID).val(shipcarton);
+    $(shipcubeID).val(shipcube);
+    $(shipkgsID).val(netWeight);
+  });
+  $('#achieve').click(function () {
+    $('#manifest').submit();
   });
 </script>
 

@@ -29,13 +29,11 @@ namespace ADJ.BusinessService.Implementations
 		private readonly IContainerRepository _containerRepository;
 		private readonly IDataProvider<Container> _containerDataProvider;
 
-		private readonly IOrderDetailRepository _orderDetailRepository;
-		private readonly IDataProvider<OrderDetail> _orderDetailDataProvider;
 
 		public VesselDepartureService(IUnitOfWork unitOfWork, IMapper mapper, ApplicationContext appContext, 
 			IDataProvider<Manifest> manifestDataProvider, IManifestRepository manifestRepository, 
 			IDataProvider<Booking> bookingDataProvider, IShipmentBookingRepository shipmentBookingRepository, IContainerRepository containerRepository, 
-			IDataProvider<Container> containerDataProvider, IOrderDetailRepository orderDetailRepository, IDataProvider<OrderDetail> orderDetailDataProvider) : base(unitOfWork, mapper, appContext)
+			IDataProvider<Container> containerDataProvider) : base(unitOfWork, mapper, appContext)
 		{
 			this._manifestDataProvider = manifestDataProvider;
 			this._manifestRepository = manifestRepository;
@@ -46,10 +44,42 @@ namespace ADJ.BusinessService.Implementations
 			this._containerRepository = containerRepository;
 			this._containerDataProvider = containerDataProvider;
 
-			this._orderDetailRepository = orderDetailRepository;
-			this._orderDetailDataProvider = orderDetailDataProvider;
-
 		}
+
+		public VesselDepartureDtos Achive(VesselDepartureDtos model)
+		{
+			for (int i = 0; i < model.lstContainerDto.Count; i++)
+			{
+				if (model.lstContainerDto[i].checkClick == true)
+				{
+					if (model.lstContainerDto[i].originPortChange != model.lstContainerDto[i].OriginPort)
+					{
+						model.lstContainerDto[i].OriginPort = model.lstContainerDto[i].originPortChange;
+						model.lstContainerDto[i].Status = ContainerStatus.Despatch;
+					}
+					if (model.lstContainerDto[i].destPortChange != model.lstContainerDto[i].DestPort)
+					{
+						model.lstContainerDto[i].DestPort = model.lstContainerDto[i].destPortChange;
+						model.lstContainerDto[i].Status = ContainerStatus.Despatch;
+					}
+					if (model.lstContainerDto[i].modeChange != model.lstContainerDto[i].Loading)
+					{
+						model.lstContainerDto[i].Loading = model.lstContainerDto[i].modeChange;
+						model.lstContainerDto[i].Status = ContainerStatus.Despatch;
+					}
+					if (model.lstContainerDto[i].carrierChange != model.lstContainerDto[i].Carrier)
+					{
+						model.lstContainerDto[i].Carrier = model.lstContainerDto[i].carrierChange;
+						model.lstContainerDto[i].Status = ContainerStatus.Despatch;
+					}
+				}
+
+			}
+
+
+			return model;
+		}
+
 		public async Task<VesselDepartureDtos> ListContainerDtoAsync(int? pageIndex, int? pageSize, string origin = null, string originPort = null, string container = null, string status = null, DateTime? etdFrom = null, DateTime? etdTo = null)
 		{
 			
@@ -90,12 +120,35 @@ namespace ADJ.BusinessService.Implementations
 			string sortStr = "Status ASC";
 			var containers = await _containerDataProvider.ListAsync(All, sortStr, true, pageIndex, pageSize);
 
+			var manifests = await _manifestDataProvider.ListAsync();
+			var bookings = await _shipmentBookingDataProvider.ListAsync();
+
 			VesselDepartureDtos  filterResult = new VesselDepartureDtos();
 			filterResult.lstContainerDto = Mapper.Map<List<ContainerDto>>(containers.Items);
 			filterResult.lstContainerDto= filterResult.lstContainerDto.OrderBy(p => p.OriginPort).OrderBy(m => m.DestPort).OrderBy(m => m.Loading).OrderBy(m => m.Carrier).ToList();
 
+			for(int i = 0; i < filterResult.lstContainerDto.Count; i++)
+			{
+				foreach(var booking in bookings.Items)
+				{
+					foreach (var manifest in manifests.Items)
+					{
+						if (booking.Id == manifest.BookingId && manifest.ContainerId == filterResult.lstContainerDto[i].Id) 
+						{
+							filterResult.lstContainerDto[i].ETA = booking.ETA;
+							filterResult.lstContainerDto[i].ETD = booking.ETD;
+						}
+					}
+				}
+				
+				
+			}
+
 			return filterResult;
 		}
+
+
+
 		public async Task<SearchItem> SearchItem()
 		{
 			var lst = await _shipmentBookingDataProvider.ListAsync();

@@ -38,5 +38,6 @@
   {
     Pending,
     Despatch,
+    Arrived,
   }
 }

@@ -22,6 +22,11 @@ namespace ADJ.BusinessService.Dtos
 		}
 	}
 
+	public class ListContainerReslutDto
+	{
+		public List<ContainerDto> listContainerResult { get; set; }
+	}
+
 	public class FilterDto
 	{
 		public string origin { get; set; }
@@ -31,6 +36,8 @@ namespace ADJ.BusinessService.Dtos
 		public DateTime? etdFrom { get; set; }
 		public DateTime? etdTo { get; set; }
 	}
+
+
 
 	public class ContainerDto : EntityDtoBase, ICreateMapping
 	{
@@ -57,10 +64,49 @@ namespace ADJ.BusinessService.Dtos
 
 		public DateTime ETA { get; set; }
 
+		public string originPortChange { get; set; }
+
+		public string destPortChange { get; set; }
+
+		public string modeChange { get; set; }
+
+		public string carrierChange { get; set; }
+
+		public bool checkClick { get; set; }
+
 		public void CreateMapping(Profile profile)
 		{
 			profile.CreateMap<Container, ContainerDto>().IncludeBase<EntityBase, EntityDtoBase>();
 			profile.CreateMap<ContainerDto, Container>().IncludeBase<EntityDtoBase, EntityBase>();
+		}
+	}
+
+	public class BookingDto : EntityDtoBase, ICreateMapping
+	{
+
+		public DateTime ETD { get; set; }
+
+		public DateTime ETA { get; set; }
+
+
+		public void CreateMapping(Profile profile)
+		{
+			profile.CreateMap<Booking, BookingDto>().IncludeBase<EntityBase, EntityDtoBase>();
+			profile.CreateMap<BookingDto, Booking>().IncludeBase<EntityDtoBase, EntityBase>();
+		}
+	}
+
+	public class ManifestDto : EntityDtoBase, ICreateMapping
+	{
+
+		public int ContainerId { get; set; }
+
+		public int BookingId { get; set; }
+
+		public void CreateMapping(Profile profile)
+		{
+			profile.CreateMap<Manifest, ManifestDto>().IncludeBase<EntityBase, EntityDtoBase>();
+			profile.CreateMap<ManifestDto, Manifest>().IncludeBase<EntityDtoBase, EntityBase>();
 		}
 	}
 

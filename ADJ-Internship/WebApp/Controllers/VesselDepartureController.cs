@@ -55,5 +55,15 @@ namespace WebApp.Controllers
 			ViewBag.PageSize = pageSize;
 			ViewBag.PageIndex = 1;
 		}
+
+		[HttpPost]
+		public async Task<ActionResult> Achive(VesselDepartureDtos model)
+		{
+			await SetDropDownListAsync();
+
+			VesselDepartureDtos result =  _vesselDepartureService.Achive(model);
+
+			return View("Index",result);
+		}
 	}
 }
