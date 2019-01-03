@@ -115,7 +115,6 @@
 									<th>Voyage</th>
 									<th>ETD</th>
 									<th>ETA</th>
-									<th>Transhipment</th>
 								</tr>
 							</thead>
 
@@ -124,6 +123,7 @@
 									<td>
 										<div class="uk-form-controls">
 											<div class="uk-form-controls vassell-header-formSelect" id="originPortChange">
+												<input type="hidden" asp-for="lstContainerDto[x].OriginPort" value="@Model.lstContainerDto[x].OriginPort"  />
 												<select asp-for="lstContainerDto[x].originPortChange" class="uk-select" id="form-horizontal-select">
 													<option>@Model.lstContainerDto[x].OriginPort</option>
 													@foreach (var i in ViewBag.OriginPort)
@@ -140,6 +140,7 @@
 									<td>
 										<div class="uk-form-controls">
 											<div class="uk-form-controls vassell-header-formSelect" id="destChange">
+												<input type="hidden" asp-for="lstContainerDto[x].DestPort" value="@Model.lstContainerDto[x].DestPort" />
 												<select asp-for="lstContainerDto[x].destPortChange" class="uk-select" id="form-horizontal-select">
 													<option>@Model.lstContainerDto[x].DestPort</option>
 													@foreach (var i in ViewBag.Dest)
@@ -156,6 +157,7 @@
 									<td>
 										<div class="uk-form-controls">
 											<div class="uk-form-controls vassell-header-formSelect" id="modeChange">
+												<input type="hidden" asp-for="lstContainerDto[x].Loading" value="@Model.lstContainerDto[x].Loading" />
 												<select asp-for="lstContainerDto[x].modeChange" class="uk-select" id="form-horizontal-select">
 													<option>@Model.lstContainerDto[x].Loading</option>
 													@foreach (var i in ViewBag.Mode)
@@ -172,7 +174,8 @@
 									<td>
 										<div class="uk-form-controls">
 											<div class="uk-form-controls vassell-header-formSelect" id="carrierChange">
-												<select asp-for="lstContainerDto[x].carrierChange" class="uk-select" name="carrierChange" id="form-horizontal-select">
+												<input type="hidden" asp-for="lstContainerDto[x].Carrier" value="@Model.lstContainerDto[x].Carrier" />
+												<select asp-for="lstContainerDto[x].carrierChange" class="uk-select" id="form-horizontal-select">
 													<option>@Model.lstContainerDto[x].Carrier</option>
 													@foreach (var i in ViewBag.Carrier)
 													{
@@ -186,7 +189,7 @@
 										</div>
 									</td>
 									<td>
-										<input class="uk-input" name="voyageChange" id="form-horizontal-text" type="text" value="@Model.lstContainerDto[x].Voyage">
+										<input asp-for="lstContainerDto[x].Voyage"  class="uk-input"  id="form-horizontal-text" type="text" value="@Model.lstContainerDto[x].Voyage">
 									</td>
 									<td>@Model.lstContainerDto[x].ETD.ToString("dd MMM yyyy")</td>
 									<td>@Model.lstContainerDto[x].ETA.ToString("dd MMM yyyy")</td>
@@ -239,7 +242,6 @@
 										<th>Voyage</th>
 										<th>ETD</th>
 										<th>ETA</th>
-										<th>Transhipment</th>
 									</tr>
 								</thead>
 
@@ -248,6 +250,7 @@
 										<td>
 											<div class="uk-form-controls">
 												<div class="uk-form-controls vassell-header-formSelect" id="originPortChange">
+													<input type="hidden" asp-for="lstContainerDto[start].OriginPort" value="@Model.lstContainerDto[x].OriginPort" />
 													<select asp-for="lstContainerDto[start].originPortChange" class="uk-select" id="form-horizontal-select">
 														<option>@Model.lstContainerDto[start].OriginPort</option>
 														@foreach (var i in ViewBag.OriginPort)
@@ -264,6 +267,7 @@
 										<td>
 											<div class="uk-form-controls">
 												<div class="uk-form-controls vassell-header-formSelect" id="destChange">
+													<input type="hidden" asp-for="lstContainerDto[start].DestPort" value="@Model.lstContainerDto[x].DestPort" />
 													<select asp-for="lstContainerDto[start].destPortChange" class="uk-select" id="form-horizontal-select">
 														<option>@Model.lstContainerDto[start].DestPort</option>
 														@foreach (var i in ViewBag.Dest)
@@ -280,6 +284,7 @@
 										<td>
 											<div class="uk-form-controls">
 												<div class="uk-form-controls vassell-header-formSelect" id="modeChange">
+													<input type="hidden" asp-for="lstContainerDto[start].Loading" value="@Model.lstContainerDto[x].Loading" />
 													<select asp-for="lstContainerDto[start].modeChange" class="uk-select" id="form-horizontal-select">
 														<option>@Model.lstContainerDto[start].Loading</option>
 														@foreach (var i in ViewBag.Mode)
@@ -296,7 +301,8 @@
 										<td>
 											<div class="uk-form-controls">
 												<div class="uk-form-controls vassell-header-formSelect" id="carrierChange">
-													<select asp-for="lstContainerDto[start].carrierChange" class="uk-select"  id="form-horizontal-select">
+													<input type="hidden" asp-for="lstContainerDto[start].Carrier" value="@Model.lstContainerDto[x].Carrier" />
+													<select asp-for="lstContainerDto[start].carrierChange" class="uk-select" id="form-horizontal-select">
 														<option>@Model.lstContainerDto[start].Carrier</option>
 														@foreach (var i in ViewBag.Carrier)
 														{
@@ -310,7 +316,7 @@
 											</div>
 										</td>
 										<td>
-											<input class="uk-input" name="voyageChange" id="form-horizontal-text" type="text" value="@Model.lstContainerDto[start].Voyage">
+											<input class="uk-input" asp-for="lstContainerDto[start].Voyage" id="form-horizontal-text" type="text" value="@Model.lstContainerDto[start].Voyage">
 										</td>
 										<td>@Model.lstContainerDto[start].ETD.ToString("dd MMM yyyy")</td>
 										<td>@Model.lstContainerDto[start].ETA.ToString("dd MMM yyyy")</td>

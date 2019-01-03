@@ -75,6 +75,7 @@ namespace ADJ.BusinessService.Implementations
 				}
 
 			}
+			model.lstContainerDto = model.lstContainerDto.OrderBy(p => p.OriginPort).OrderBy(m => m.DestPort).OrderBy(m => m.Loading).OrderBy(m => m.Carrier).ToList();
 
 
 			return model;
