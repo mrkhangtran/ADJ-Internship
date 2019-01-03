@@ -106,7 +106,7 @@
   <div id="renderSearching">
     @for (int i = 0; i < Model.Items.Count(); i++)
     {
-      <div class="uk-grid uk-margin-small">
+      <div class="uk-grid uk-margin-small uk-width-1-2">
         @Html.HiddenFor(model => model.Items[i].OrderId, new { Value = Model.Items[i].OrderId })
         @Html.HiddenFor(model => model.Items[i].Id, new { Value = Model.Items[i].Id })
         <table class="uk-table uk-table-small">
@@ -129,7 +129,7 @@
             </tr>
           </tbody>
         </table>
-        <table class="uk-table uk-table-small">
+        <table class="uk-table uk-table-small uk-width-3-4">
           <thead>
             <tr>
               <td></td>
@@ -352,6 +352,11 @@
     }
 
   };
+  $("#modal-center").on({
+    'hide.uk.modal': function () {
+      window.location.href = "/ProgressCheck";
+    }
+  });
 </script>
 
 
