@@ -72,6 +72,8 @@ namespace WebApp.Controllers
                 if (item.Selected)
                 {
                   await _CAService.CreateOrUpdateCAAsync(item.Id, model.ListArrivalDate[item.GroupId]);
+                  item.ArrivalDate = model.ListArrivalDate[item.GroupId];
+                  item.Status = ContainerStatus.Arrived;
                 }
               }
               ModelState.Clear();
