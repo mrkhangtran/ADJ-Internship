@@ -65,14 +65,14 @@
             <tr>
               <td><label>PO Number</label></td>
               <td>
-                <input id="PONumberSearch" class="uk-input" />
+                <input id="PONumberSearch" class="uk-input" type="number" />
 
               </td>
             </tr>
             <tr>
               <td><label>Item</label></td>
               <td>
-                <input id="ItemSearch" class="uk-input" />
+                <input id="ItemSearch" class="uk-input" type="number" />
               </td>
             </tr>
           </tbody>
@@ -106,7 +106,7 @@
       <br />
       <br />
       <div class="uk-grid">
-        <table class="uk-table uk-table-small">
+        <table class="uk-table uk-table-small uk-width-1-2">
           <thead>
             <tr>
               <td></td>
@@ -129,7 +129,7 @@
               <td>
                 @if (Model.Items[i].Id == 0)
                 {
-                  <input type="checkbox" asp-for="Items[i].selectedContainer" />
+                  <input class="uk-checkbox" type="checkbox" asp-for="Items[i].selectedContainer" />
                 }
               </td>
               <td>
@@ -239,7 +239,7 @@
                 <td>
                   @if (Model.Items[i].Id == 0)
                   {
-                    <input type="checkbox" asp-for="Items[i].Manifests[j].selectedItem" />
+                    <input class="uk-checkbox" type="checkbox" asp-for="Items[i].Manifests[j].selectedItem" />
                   }
                 </td>
                 <td>
@@ -292,18 +292,18 @@
                   <input id="@("netWeight"+@Model.Items[i].Manifests[j].ItemNumber)" asp-for="Items[i].Manifests[j].NetWeight" readonly class=" uk-input" />
                 </td>
                 <td>
-                  @{
-                    if (Model.Items[i].Id > 0)
-                    {
-                      @Model.Items[i].Manifests[j].GrossWeight
-                    }
-                    else
-                    {
-                      <input value="" id="@("shipGrossWeight"+Model.Items[i].Manifests[j].ItemNumber)" asp-for="Items[i].Manifests[j].GrossWeight" class="shipGrossWeight uk-input" />
-                      <span class=" uk-text-danger" asp-validation-for="Items[i].Manifests[j].GrossWeight" hidden id=""></span>
-                    }
-                  }
-
+                  @Model.Items[i].Manifests[j].GrossWeight
+                  @*@{
+                      if (Model.Items[i].Id > 0)
+                      {
+                        @Model.Items[i].Manifests[j].GrossWeight
+                      }
+                      else
+                      {
+                        <input readonly value="" id="@("shipGrossWeight"+Model.Items[i].Manifests[j].ItemNumber)" asp-for="Items[i].Manifests[j].GrossWeight" class="shipGrossWeight uk-input" />
+                        <span class=" uk-text-danger" asp-validation-for="Items[i].Manifests[j].GrossWeight" hidden id=""></span>
+                      }
+                    }*@
                 </td>
                 <td>
                   @Model.Items[i].Manifests[j].Manifested
@@ -433,13 +433,13 @@
         break;
       }
     }
-    var blank = document.getElementsByClassName("shipGrossWeight");
-    for (i = 0; i < blank.length; i++) {
-      if (blank[i].value == "") {
-        check++;
-        break;
-      }
-    }
+    //var blank = document.getElementsByClassName("shipGrossWeight");
+    //for (i = 0; i < blank.length; i++) {
+    //  if (blank[i].value == "") {
+    //    check++;
+    //    break;
+    //  }
+    //}
     if (check > 0) {
       alert("Please fill in all Required fields.");
     }

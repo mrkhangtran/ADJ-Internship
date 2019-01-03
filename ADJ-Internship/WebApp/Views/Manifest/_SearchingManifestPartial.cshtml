@@ -11,7 +11,7 @@ else
     <br />
     <br />
     <div class="uk-grid">
-      <table class="uk-table uk-table-small">
+      <table class="uk-table uk-table-small uk-width-1-2">
         <thead>
           <tr>
             <td></td>
@@ -34,7 +34,7 @@ else
             <td>
               @if (Model.Items[i].Id == 0)
               {
-                <input type="checkbox" asp-for="Items[i].selectedContainer" />
+                <input class="uk-checkbox" type="checkbox" asp-for="Items[i].selectedContainer" />
               }
             </td>
             <td>
@@ -144,7 +144,7 @@ else
               <td>
                 @if (Model.Items[i].Id == 0)
                 {
-                  <input type="checkbox" asp-for="Items[i].Manifests[j].selectedItem" />
+                  <input class="uk-checkbox" type="checkbox" asp-for="Items[i].Manifests[j].selectedItem" />
                 }
               </td>
               <td>
