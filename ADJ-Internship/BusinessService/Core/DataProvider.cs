@@ -37,8 +37,8 @@ namespace ADJ.BusinessService.Core
 			// order by
 			if (sortData != null)
 			{
-				//var orderBy = TransformOrderByClause(sortData);
-				query = query.OrderBy(sortData);
+					//var orderBy = TransformOrderByClause(sortData);
+					query = query.OrderBy(sortData);				
 			}
 
 			// paging
