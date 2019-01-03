@@ -1,163 +1,163 @@
 ﻿@model ADJ.Common.PagedListResult<ADJ.BusinessService.Dtos.ProgressCheckDto>
 @if (Model.Items.Count() == 0)
 {
-  <p class="uk-text-meta uk-text-large">No result match, please try again</p>
+	<p class="uk-text-meta uk-text-large">No result match, please try again</p>
 }
 else
 {
-  @for (int i = 0; i < Model.Items.Count(); i++)
-  {
-    <div class="uk-margin-small uk-grid">
-      @Html.HiddenFor(model => model.Items[i].OrderId, new { Value = Model.Items[i].OrderId })
-      @Html.HiddenFor(model => model.Items[i].Id, new { Value = Model.Items[i].Id })
-      <table class="uk-margin-small uk-table uk-table-small">
-        <thead>
-          <tr>
-            <td>
-              Supplier
-            </td>
-            <td>
-              Factory
-            </td>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>@Model.Items[i].Supplier</td>
-            @Html.HiddenFor(model => model.Items[i].Supplier)
-            <td>@Model.Items[i].Factory</td>
-            @Html.HiddenFor(model => model.Items[i].Factory)
-          </tr>
-        </tbody>
-      </table>
-      <table class=" uk-table uk-table-small">
-        <thead>
-          <tr>
-            <td></td>
-            <td>
-              PO Number
-            </td>
-            <td>
-              PO Quantity
-            </td>
-            <td>
-              PO Check Quantity
-            </td>
-            <td>
-              PO Ship Date
-            </td>
-            <td>
-              Inspection Date
-            </td>
-            <td>
-              Int Ship Date
-            </td>
-            <td>
-              PO Quantity Complete
-            </td>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>
-              @Html.CheckBoxFor(model => model.Items[i].selected)
-            </td>
-            <td>@Model.Items[i].PONumber</td>
-            @Html.HiddenFor(model => model.Items[i].PONumber)
-            <td>@Model.Items[i].POQuantity</td>
-            @Html.HiddenFor(model => model.Items[i].POQuantity)
-            <td>@Model.Items[i].EstQtyToShip</td>
-            @Html.HiddenFor(model => model.Items[i].EstQtyToShip)
-            <td>@Model.Items[i].ShipDate</td>
-            <td>
-              @Html.TextBoxFor(model => model.Items[i].InspectionDate, Model.Items[i].InspectionDate.ToString("yyyy-MM-dd"), new { type = "date", @class = "uk-input" })
-              @Html.ValidationMessageFor(model => model.Items[i].InspectionDate, "", new { @class = "text-danger" })
-            </td>
-            <td>
-              @Html.TextBoxFor(model => model.Items[i].IntendedShipDate, Model.Items[i].IntendedShipDate.ToString("yyyy-MM-dd"), new { type = "date", @class = "uk-input" })
-              @Html.ValidationMessageFor(model => model.Items[i].IntendedShipDate, "", new { @class = "text-danger" })
+	@for (int i = 0; i < Model.Items.Count(); i++)
+	{
+		<div class="uk-margin-small uk-grid">
+			@Html.HiddenFor(model => model.Items[i].OrderId, new { Value = Model.Items[i].OrderId })
+			@Html.HiddenFor(model => model.Items[i].Id, new { Value = Model.Items[i].Id })
+			<table class="uk-margin-small uk-table uk-table-small">
+				<thead>
+					<tr>
+						<td>
+							Supplier
+						</td>
+						<td>
+							Factory
+						</td>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>@Model.Items[i].Supplier</td>
+						@Html.HiddenFor(model => model.Items[i].Supplier)
+						<td>@Model.Items[i].Factory</td>
+						@Html.HiddenFor(model => model.Items[i].Factory)
+					</tr>
+				</tbody>
+			</table>
+			<table class=" uk-table uk-table-small">
+				<thead>
+					<tr>
+						<td></td>
+						<td>
+							PO Number
+						</td>
+						<td>
+							PO Quantity
+						</td>
+						<td>
+							PO Check Quantity
+						</td>
+						<td>
+							PO Ship Date
+						</td>
+						<td>
+							Inspection Date
+						</td>
+						<td>
+							Int Ship Date
+						</td>
+						<td>
+							PO Quantity Complete
+						</td>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>
+							@Html.CheckBoxFor(model => model.Items[i].selected)
+						</td>
+						<td>@Model.Items[i].PONumber</td>
+						@Html.HiddenFor(model => model.Items[i].PONumber)
+						<td>@Model.Items[i].POQuantity</td>
+						@Html.HiddenFor(model => model.Items[i].POQuantity)
+						<td>@Model.Items[i].EstQtyToShip</td>
+						@Html.HiddenFor(model => model.Items[i].EstQtyToShip)
+						<td>@Model.Items[i].ShipDate</td>
+						<td>
+							@Html.TextBoxFor(model => model.Items[i].InspectionDate, Model.Items[i].InspectionDate.ToString("yyyy-MM-dd"), new { type = "date", @class = "uk-input" })
+							@Html.ValidationMessageFor(model => model.Items[i].InspectionDate, "", new { @class = "text-danger" })
+						</td>
+						<td>
+							@Html.TextBoxFor(model => model.Items[i].IntendedShipDate, Model.Items[i].IntendedShipDate.ToString("yyyy-MM-dd"), new { type = "date", @class = "uk-input" })
+							@Html.ValidationMessageFor(model => model.Items[i].IntendedShipDate, "", new { @class = "text-danger" })
 
-            </td>
-            <td>
-              @if (@Model.Items[i].Complete == true)
-              {
-                <p>YES</p>
-              }
-              else
-              {
-                <p>NO</p>
-              }
+						</td>
+						<td>
+							@if (@Model.Items[i].Complete == true)
+							{
+								<p>YES</p>
+							}
+							else
+							{
+								<p>NO</p>
+							}
 
-              @Html.HiddenFor(model => model.Items[i].Complete)
-            </td>
-          </tr>
-        </tbody>
-      </table>
-      <table class="uk-table ">
-        <thead>
-          <tr>
-            <td></td>
-            <td>
-              Item Number
-            </td>
-            <td>
-              Item Quantity
-            </td>
-            <td>
-              Revise Quantity
-            </td>
-          </tr>
-        </thead>
-        <tbody>
-          @for (int j = 0; j < Model.Items[i].ListOrderDetailDto.Count(); j++)
-          {
-            <tr>
-              <td>
-                @Html.CheckBoxFor(model => model.Items[i].ListOrderDetailDto[j].selected)
-              </td>
-              @Html.HiddenFor(model => model.Items[i].ListOrderDetailDto[j].Id)
-              <td>@Model.Items[i].ListOrderDetailDto[j].ItemNumber</td>
-              <td>@Model.Items[i].ListOrderDetailDto[j].Quantity</td>
-              @Html.HiddenFor(model => model.Items[i].ListOrderDetailDto[j].Quantity)
-              <td>
-                @Html.TextBoxFor(model => model.Items[i].ListOrderDetailDto[j].ReviseQuantity, new { @class = "uk-input", Type = "Number" })
-                @Html.ValidationMessageFor(model => model.Items[i].ListOrderDetailDto[j].ReviseQuantity, "", new { @class = "text-danger" })
-              </td>
-            </tr>
-          }
-        </tbody>
-      </table>
-    </div>
-    <br />
-  }
-  <div class="uk-align-right">
-    <ul class="uk-pagination">
-      @{
-        if (ViewBag.pageIndex > 1)
-        {
-          <li><a asp-action="Index" asp-controller="Manifest" asp-route-pageIndex="@(ViewBag.pageIndex - 1)" class="page-link"><span uk-pagination-previous></span></a></li>
-        }
-        for (var i = 1; i <= Model.PageCount; i++)
-        {
-          if (i == ViewBag.pageIndex)
-          {
-            <li class="uk-disabled">
-              <a asp-action="Index" asp-controller="Manifest" asp-route-pageIndex="@i" class="page-link">@i</a>
-            </li>
-          }
-          else
-          {
-            <li class="uk-active">
-              <a asp-action="Index" asp-controller="Manifest" asp-route-pageIndex="@i" class="page-link">@i</a>
-            </li>
-          }
-        }
-        if (ViewBag.pageIndex < Model.PageCount)
-        {
-          <li><a asp-action="Index" asp-controller="Manifest" asp-route-pageIndex="@(ViewBag.pageIndex + 1)" class="page-link"><span uk-pagination-next></span></a></li>
-        }
-      }
+							@Html.HiddenFor(model => model.Items[i].Complete)
+						</td>
+					</tr>
+				</tbody>
+			</table>
+			<table class="uk-table ">
+				<thead>
+					<tr>
+						<td></td>
+						<td>
+							Item Number
+						</td>
+						<td>
+							Item Quantity
+						</td>
+						<td>
+							Revise Quantity
+						</td>
+					</tr>
+				</thead>
+				<tbody>
+					@for (int j = 0; j < Model.Items[i].ListOrderDetailDto.Count(); j++)
+					{
+						<tr>
+							<td>
+								@Html.CheckBoxFor(model => model.Items[i].ListOrderDetailDto[j].selected)
+							</td>
+							@Html.HiddenFor(model => model.Items[i].ListOrderDetailDto[j].Id)
+							<td>@Model.Items[i].ListOrderDetailDto[j].ItemNumber</td>
+							<td>@Model.Items[i].ListOrderDetailDto[j].Quantity</td>
+							@Html.HiddenFor(model => model.Items[i].ListOrderDetailDto[j].Quantity)
+							<td>
+								@Html.TextBoxFor(model => model.Items[i].ListOrderDetailDto[j].ReviseQuantity, new { @class = "uk-input", Type = "Number" })
+								@Html.ValidationMessageFor(model => model.Items[i].ListOrderDetailDto[j].ReviseQuantity, "", new { @class = "text-danger" })
+							</td>
+						</tr>
+					}
+				</tbody>
+			</table>
+		</div>
+		<br />
+	}
+	<div class="uk-align-right">
+		<ul class="uk-pagination">
+			@{
+				if (ViewBag.pageIndex > 1)
+				{
+					<li><a value="@(ViewBag.pageIndex - 1)" class="filterItem page-link"><span uk-pagination-previous></span></a></li>
+				}
+				for (var i = 1; i <= Model.PageCount; i++)
+				{
+					if (i == ViewBag.pageIndex)
+					{
+						<li class="uk-disabled">
+							<a class="page-link"><u>@i</u></a>
+						</li>
+					}
+					else
+					{
+						<li class="uk-active">
+							<a value="@i" class="filterItem page-link">@i</a>
+						</li>
+					}
+				}
+				if (ViewBag.pageIndex < Model.PageCount)
+				{
+					<li><a value="@(ViewBag.pageIndex + 1)" class="filterItem page-link"><span uk-pagination-next></span></a></li>
+				}
+			}
 
-    </ul>
-  </div>
+		</ul>
+	</div>
 }

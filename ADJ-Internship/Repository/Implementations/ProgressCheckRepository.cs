@@ -4,6 +4,11 @@ using ADJ.DataAccess;
 using ADJ.DataModel.OrderTrack;
 using ADJ.Repository.Core;
 using ADJ.Repository.Interfaces;
+using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 
 namespace ADJ.Repository.Implementations
 {
@@ -21,4 +26,3 @@ namespace ADJ.Repository.Implementations
 		}
 	}
 }
-

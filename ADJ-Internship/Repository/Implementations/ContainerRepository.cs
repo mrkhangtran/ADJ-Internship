@@ -14,10 +14,9 @@ namespace ADJ.Repository.Implementations
 	{
 		public ContainerRepository(ApplicationDbContext dbContext) : base(dbContext)
 		{
-		}
 
-		protected override Func<IQueryable<Container>, IQueryable<Container>> IncludeDependents =>
-			con => con.Include(x => x.Manifests);
+		}
+		protected override Func<IQueryable<Container>, IQueryable<Container>> IncludeDependents => ma => ma.Include(x => x.Manifests);
 	}
 }
 

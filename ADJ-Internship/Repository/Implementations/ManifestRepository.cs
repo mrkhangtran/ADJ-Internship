@@ -15,11 +15,6 @@ namespace ADJ.Repository.Implementations
 		public ManifestRepository(ApplicationDbContext dbContext) : base(dbContext)
 		{
 		}
-
-		//protected override Func<IQueryable<Manifest>, IQueryable<Manifest>> IncludeDependents =>
-				//con => con.Include(x => x.Container);
-
-
 		protected override Func<IQueryable<Manifest>, IQueryable<Manifest>> IncludeDependents => ma => ma.Include(x => x.Booking);
 
 		public Manifest GetManifestByBookingId(int id)
