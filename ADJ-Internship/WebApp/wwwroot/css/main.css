@@ -1002,6 +1002,12 @@ a.uk-link-reset:hover,
     padding-right: 0;
   }
 }
+.uk-table .table1 thead tr {
+  padding: 20px;
+}
+.uk-table .table1 tbody tr {
+  padding: 20px;
+}
 .uk-table th {
   color: white;
   border-right: 0.2px solid gainsboro;
@@ -1831,6 +1837,9 @@ select.uk-form-width-xsmall {
 .uk-form-icon-flip ~ .uk-input {
   padding-right: 40px !important;
 }
+.uk-form-controls {
+  padding-right: 15px;
+}
 /* ========================================================================
    Component: Button
  ========================================================================== */
@@ -2594,6 +2603,17 @@ select.uk-form-width-xsmall {
   width: 100%;
   /* 3 */
   flex: auto;
+}
+.uk-grid + .uk-grid,
+.uk-grid > .uk-grid-margin,
+* + .uk-grid-margin {
+  margin-top: 0;
+}
+.uk-grid .table-vessel {
+  padding: 20px;
+}
+.uk-grid .uk-width-1-2 .table-vessel {
+  padding: 20px;
 }
 .uk-grid {
   margin: 0;

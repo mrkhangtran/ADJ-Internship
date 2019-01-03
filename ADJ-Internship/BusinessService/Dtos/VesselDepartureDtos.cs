@@ -11,11 +11,29 @@ namespace ADJ.BusinessService.Dtos
 {
 	public class VesselDepartureDtos : EntityDtoBase, ICreateMapping
 	{
+		public FilterDto filterDto { get; set; }
+
+		public List<ContainerDto> lstContainerDto { get; set; }
+
 		public void CreateMapping(Profile profile)
 		{
-			profile.CreateMap<Container, VesselDepartureDtos>().IncludeBase<EntityBase, EntityDtoBase>();
-			profile.CreateMap<VesselDepartureDtos, Container>().IncludeBase<EntityDtoBase, EntityBase>();
+			profile.CreateMap<Container, ContainerDto>().IncludeBase<EntityBase, EntityDtoBase>();
+			profile.CreateMap<ContainerDto, Container>().IncludeBase<EntityDtoBase, EntityBase>();
 		}
+	}
+
+	public class FilterDto
+	{
+		public string origin { get; set; }
+		public string originPort { get; set; }
+		public string container { get; set; }
+		public string status { get; set; }
+		public DateTime? etdFrom { get; set; }
+		public DateTime? etdTo { get; set; }
+	}
+
+	public class ContainerDto : EntityDtoBase, ICreateMapping
+	{
 
 		public string Name { get; set; }
 
@@ -39,6 +57,11 @@ namespace ADJ.BusinessService.Dtos
 
 		public DateTime ETA { get; set; }
 
+		public void CreateMapping(Profile profile)
+		{
+			profile.CreateMap<Container, ContainerDto>().IncludeBase<EntityBase, EntityDtoBase>();
+			profile.CreateMap<ContainerDto, Container>().IncludeBase<EntityDtoBase, EntityBase>();
+		}
 	}
 
 	public class ArriveOfDespatchDto : EntityDtoBase, ICreateMapping

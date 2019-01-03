@@ -50,16 +50,10 @@ namespace ADJ.BusinessService.Implementations
 			this._orderDetailDataProvider = orderDetailDataProvider;
 
 		}
-		public async Task<PagedListResult<ContainerDto>> ListManifestDtoAsync(string origin, string originPort, string container, string status, DateTime etdFrom, DateTime etdTo, int? pageIndex, int? pageSize)
+		public async Task<VesselDepartureDtos> ListContainerDtoAsync(int? pageIndex, int? pageSize, string origin = null, string originPort = null, string container = null, string status = null, DateTime? etdFrom = null, DateTime? etdTo = null)
 		{
 			
 			Expression<Func<Container, bool>> All = x => x.Id > 0;
-
-			if(origin==null&& originPort == null && container == null && status == null && etdFrom == null && etdTo == null)
-			{
-				All = null;
-			}
-
 
 			if (origin != null)
 			{
@@ -95,38 +89,12 @@ namespace ADJ.BusinessService.Implementations
 			//sort string
 			string sortStr = "Status ASC";
 			var containers = await _containerDataProvider.ListAsync(All, sortStr, true, pageIndex, pageSize);
-			var bookings = await _shipmentBookingDataProvider.ListAsync(null, null, true);
-			List<Booking> listBooking = bookings.Items;
-			List<string> originPorts = listBooking.Select(p => p.PortOfLoading).ToList();
-			List<DateTime> ETDs = listBooking.Select(p => p.ETD).ToList();
-			List<string> destinationPorts = listBooking.Select(p => p.PortOfDelivery).ToList();
 
-			List<ContainerDto> lstContainerResult = new List<ContainerDto>();
+			VesselDepartureDtos  filterResult = new VesselDepartureDtos();
+			filterResult.lstContainerDto = Mapper.Map<List<ContainerDto>>(containers.Items);
+			filterResult.lstContainerDto= filterResult.lstContainerDto.OrderBy(p => p.OriginPort).OrderBy(m => m.DestPort).OrderBy(m => m.Loading).OrderBy(m => m.Carrier).ToList();
 
-			foreach (var i in containers.Items)
-			{
-				ContainerDto containerDto = new ContainerDto();
-				containerDto.Name = i.Name;
-				containerDto.Size = i.Size;
-				containerDto.Status = i.Status;
-				containerDto.OriginPort = (i.Manifests.ToList())[0].Booking.PortOfLoading;
-				containerDto.DestPort = (i.Manifests.ToList())[0].Booking.PortOfDelivery;
-				containerDto.Carrier = (i.Manifests.ToList())[0].Booking.Carrier;
-				containerDto.Voyage = (i.Manifests.ToList())[0].Booking.Voyage;
-
-				lstContainerResult.Add(containerDto);
-			}
-
-			//Group By
-			lstContainerResult = lstContainerResult.OrderBy(m => m.OriginPort).OrderBy(m => m.DestPort).OrderBy(m => m.Loading).OrderBy(m=>m.Carrier ).ToList();
-
-			PagedListResult<ContainerDto> pagedlistResult = new PagedListResult<ContainerDto>()
-			{
-				PageCount=containers.PageCount,
-				TotalCount=containers.TotalCount,
-				Items= lstContainerResult
-			};
-			return pagedlistResult;
+			return filterResult;
 		}
 		public async Task<SearchItem> SearchItem()
 		{

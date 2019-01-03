@@ -8,7 +8,7 @@ namespace ADJ.BusinessService.Interfaces
 {
 	public interface IVesselDepartureService
 	{
-		Task<PagedListResult<ContainerDto>> ListManifestDtoAsync(string origin, string originPort, string container, string status, DateTime etdFrom, DateTime etdTo, int? pageIndex, int? pageSize);
+		Task<VesselDepartureDtos> ListContainerDtoAsync(int? pageIndex, int? pageSize, string origin = null, string originPort = null, string container = null, string status = null, DateTime? etdFrom = null, DateTime? etdTo = null);
 		Task<SearchItem> SearchItem();
 		//Task<ShipmentManifestsDtos> CreateOrUpdateContainerAsync(ShipmentManifestsDtos rq);
 

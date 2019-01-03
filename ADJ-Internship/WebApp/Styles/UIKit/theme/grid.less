@@ -12,6 +12,20 @@
 // ========================================================================
 
 .hook-grid-misc() {
+	.uk-grid + .uk-grid,
+	.uk-grid > .uk-grid-margin,
+	* + .uk-grid-margin {
+		margin-top: 0;
+	}
+
+	.uk-grid .table-vessel {
+		padding: 20px;
+	}
+
+	.uk-grid .uk-width-1-2 .table-vessel {
+		padding: 20px;
+	}
+
 	.uk-grid {
 		margin: 0;
 		padding: 0;
