@@ -270,6 +270,7 @@
                   <input asp-for="SingleOrderDetail.Id" value=@Model.PODetails.Items[i].Id type="hidden" class="newItem" />
                   <input asp-for="SingleOrderDetail.OrderId" value=@Model.PODetails.Items[i].OrderId type="hidden" class="newItem" />
                   <input asp-for="SingleOrderDetail.RowVersion" value=@Model.PODetails.Items[i].RowVersion type="hidden" class="newItem" />
+                  <input asp-for="SingleOrderDetail.ReviseQuantity" value=@Model.PODetails.Items[i].ReviseQuantity type="hidden" class="newItem" />
 
                   <input asp-for="SingleOrderDetail.ItemNumber" class="uk-input newItem" />
                   <span asp-validation-for="SingleOrderDetail.ItemNumber" class="uk-alert-danger"></span>

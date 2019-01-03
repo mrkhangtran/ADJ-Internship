@@ -22,6 +22,7 @@ namespace WebApp.Controllers
     {
       SetDropDownList();
       ConfirmArrivalDtos model = new ConfirmArrivalDtos();
+      model.FilterDtos = new ConfirmArrivalFilterDtos();
       model.Containers = new PagedListResult<ConfirmArrivalResultDtos>();
 
       model.Containers = await _CAService.ListContainerFilterAsync(null, null, null, "HongKong", null, null, null, null);

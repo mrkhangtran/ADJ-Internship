@@ -76,13 +76,13 @@ namespace ADJ.BusinessService.Implementations
 
         if (ETAFrom != null)
         {
-          Expression<Func<Container, bool>> filter = x => x.Manifests.Where(p => p.Booking.ETA.CompareTo(ETAFrom) > 0).Count() > 0;
+          Expression<Func<Container, bool>> filter = x => x.Manifests.Where(p => p.Booking.ETA >= ETAFrom).Count() > 0;
           All = All.And(filter);
         }
 
         if (ETATo != null)
         {
-          Expression<Func<Container, bool>> filter = x => x.Manifests.Where(p => p.Booking.ETA.CompareTo(ETATo) < 0).Count() > 0;
+          Expression<Func<Container, bool>> filter = x => x.Manifests.Where(p => p.Booking.ETA <= ETATo).Count() > 0;
           All = All.And(filter);
         }
       }
