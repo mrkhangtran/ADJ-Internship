@@ -52,7 +52,7 @@
     <td>
       <input asp-for="PONumber" class="uk-input" id="from" onkeyup="copy()" />
       <span asp-validation-for="PONumber" class="uk-alert-danger"></span>
-      @ViewBag.PONumberError
+      <span class="uk-alert-danger">@ViewBag.PONumberError</span>
     </td>
     <td colspan="3" style="border-bottom: 0.2px solid gainsboro"></td>
     <td>
