@@ -13,20 +13,57 @@ namespace WebApp.Controllers
 	public class VesselDepartureController : Controller
 	{
 		private readonly IVesselDepartureService _vesselDepartureService;
-		public VesselDepartureController(IVesselDepartureService prcService)
+		private readonly int pageSize;
+
+		public VesselDepartureController(IVesselDepartureService vesselDepartureService)
 		{
-			_vesselDepartureService = prcService;
+			_vesselDepartureService = vesselDepartureService;
+			pageSize = 3;
 		}
-		// GET: ProgressCheckDto
+
 		public async Task<ActionResult> Index()
 		{
-			GetItemSearchDto getSearchItem = await _vesselDepartureService.SearchItem();
-			ViewBag.Origins = getSearchItem.Origins;
-			ViewBag.OriginPorts = getSearchItem.OriginPorts;
-			ViewBag.DestPorts = getSearchItem.DestPorts;
-			ViewBag.Modes = getSearchItem.Modes;
+			await SetDropDownListAsync();
 
-			return View("Index");
+			VesselDepartureDtos result = await _vesselDepartureService.ListContainerDtoAsync(null, null, null, null, null, null, null, null);
+
+			return View("Index", result);
+		}
+
+		[HttpPost]
+		public async Task<ActionResult> Filter(VesselDepartureDtos filter, int? pageIndex)
+		{
+			await SetDropDownListAsync();
+
+			VesselDepartureDtos result = await _vesselDepartureService.ListContainerDtoAsync(pageIndex, pageSize, filter.filterDto.origin, filter.filterDto.originPort, filter.filterDto.container, filter.filterDto.status, filter.filterDto.etdFrom, filter.filterDto.etdTo);
+
+			return View("Index", result);
+		}
+		
+		public async Task SetDropDownListAsync()
+		{
+			ViewBag.Origin = new List<string> { "VietNam", "HongKong" }.OrderBy(x => x).ToList();
+			ViewBag.Mode = new List<string> { "Road", "Sea","Air" }.OrderBy(x => x).ToList();
+			ViewBag.Status = new List<string> { "Pending", "Despatch" }.OrderBy(x => x).ToList();
+
+			SearchItem searchItem = await _vesselDepartureService.SearchItem();
+			ViewBag.OriginPort = searchItem.OriginPorts.OrderBy(x => x).ToList();
+			ViewBag.Carrier = searchItem.Carriers.OrderBy(x => x).ToList();
+			ViewBag.Dest = searchItem.DestPorts.OrderBy(x => x).ToList();
+
+
+			ViewBag.PageSize = pageSize;
+			ViewBag.PageIndex = 1;
+		}
+
+		[HttpPost]
+		public async Task<ActionResult> Achive(VesselDepartureDtos model)
+		{
+			await SetDropDownListAsync();
+
+			VesselDepartureDtos result =  _vesselDepartureService.Achive(model);
+
+			return View("Index",result);
 		}
 	}
 }

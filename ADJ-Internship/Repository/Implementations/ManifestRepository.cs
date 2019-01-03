@@ -10,16 +10,16 @@ using System.Text;
 
 namespace ADJ.Repository.Implementations
 {
-  public class ManifestRepository : RepositoryBase<Manifest>, IManifestRepository
-  {
-    public ManifestRepository(ApplicationDbContext dbContext) : base(dbContext)
-    {
-    }
-    protected override Func<IQueryable<Manifest>, IQueryable<Manifest>> IncludeDependents => ma => ma.Include(x => x.Booking);
+	public class ManifestRepository : RepositoryBase<Manifest>, IManifestRepository
+	{
+		public ManifestRepository(ApplicationDbContext dbContext) : base(dbContext)
+		{
+		}
+		protected override Func<IQueryable<Manifest>, IQueryable<Manifest>> IncludeDependents => ma => ma.Include(x => x.Booking);
 
-    public Manifest GetManifestByBookingId(int id)
-    {
-      return DbSet.SingleOrDefault(p => p.BookingId == id);
-    }
-  }
+		public Manifest GetManifestByBookingId(int id)
+		{
+			return DbSet.SingleOrDefault(p => p.BookingId == id);
+		}
+	}
 }

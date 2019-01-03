@@ -40,8 +40,8 @@ namespace ADJ.BusinessService.Implementations
 			{
 				query = (p => p.PONumber == poNumber);
 			}
-			//string sortStr = "OrderDate DESC";
-			var poResult = await _orderDataProvider.ListAsync(query, null, true, pageIndex, pageSize);
+			string sortStr = "OrderDate DESC";
+			var poResult = await _orderDataProvider.ListAsync(query, sortStr, true, pageIndex, pageSize);
 
 			var pagedResult = new PagedListResult<OrderDto>
 			{
