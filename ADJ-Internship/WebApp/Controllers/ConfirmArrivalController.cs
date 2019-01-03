@@ -22,6 +22,7 @@ namespace WebApp.Controllers
     {
       SetDropDownList();
       ConfirmArrivalDtos model = new ConfirmArrivalDtos();
+      model.FilterDtos = new ConfirmArrivalFilterDtos();
       model.Containers = new PagedListResult<ConfirmArrivalResultDtos>();
 
       model.Containers = await _CAService.ListContainerFilterAsync(null, null, null, "HongKong", null, null, null, null);
@@ -43,7 +44,7 @@ namespace WebApp.Controllers
       ViewBag.Page = pageIndex;
 
       model.Containers = new PagedListResult<ConfirmArrivalResultDtos>();
-      
+
       model.Containers = await _CAService.ListContainerFilterAsync(pageIndex, model.FilterDtos.ETAFrom, model.FilterDtos.ETATo, model.FilterDtos.Origin,
         model.FilterDtos.Mode, model.FilterDtos.Vendor, model.FilterDtos.Container, model.FilterDtos.Status);
 
@@ -68,7 +69,12 @@ namespace WebApp.Controllers
             {
               foreach (var item in model.Containers.Items)
               {
-                await _CAService.CreateOrUpdateCAAsync(item.Id, model.ListArrivalDate[item.GroupId]);
+                if (item.Selected)
+                {
+                  await _CAService.CreateOrUpdateCAAsync(item.Id, model.ListArrivalDate[item.GroupId]);
+                  item.ArrivalDate = model.ListArrivalDate[item.GroupId];
+                  item.Status = ContainerStatus.Arrived;
+                }
               }
               ModelState.Clear();
               ViewBag.ShowModal = "Updated";

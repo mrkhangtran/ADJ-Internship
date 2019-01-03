@@ -22,18 +22,22 @@ namespace ADJ.BusinessService.Implementations
     private readonly IDataProvider<Booking> _bookingDataProvider;
     private readonly IDataProvider<Order> _orderDataProvider;
 
+    private readonly IContainerRepository _containerRepository;
+    private readonly IShipmentBookingRepository _bookingRepository;
     private readonly IConfirmArrivalRepository _confirmArrivalRepository;
 
     private readonly int pageSize;
 
     public ConfirmArrivalService(IUnitOfWork unitOfWork, IMapper mapper, ApplicationContext appContext,
       IDataProvider<Container> containerDataProvider, IDataProvider<Booking> bookingDataProvider, IDataProvider<Order> orderDataProvider,
-    IConfirmArrivalRepository confirmArrivalRepository) : base(unitOfWork, mapper, appContext)
+    IContainerRepository containerRepository, IShipmentBookingRepository bookingRepository, IConfirmArrivalRepository confirmArrivalRepository) : base(unitOfWork, mapper, appContext)
     {
       _containerDataProvider = containerDataProvider;
       _bookingDataProvider = bookingDataProvider;
       _orderDataProvider = orderDataProvider;
 
+      _containerRepository = containerRepository;
+      _bookingRepository = bookingRepository;
       _confirmArrivalRepository = confirmArrivalRepository;
 
       pageSize = 6;
@@ -76,13 +80,13 @@ namespace ADJ.BusinessService.Implementations
 
         if (ETAFrom != null)
         {
-          Expression<Func<Container, bool>> filter = x => x.Manifests.Where(p => p.Booking.ETA.CompareTo(ETAFrom) > 0).Count() > 0;
+          Expression<Func<Container, bool>> filter = x => x.Manifests.Where(p => p.Booking.ETA >= ETAFrom).Count() > 0;
           All = All.And(filter);
         }
 
         if (ETATo != null)
         {
-          Expression<Func<Container, bool>> filter = x => x.Manifests.Where(p => p.Booking.ETA.CompareTo(ETATo) < 0).Count() > 0;
+          Expression<Func<Container, bool>> filter = x => x.Manifests.Where(p => p.Booking.ETA <= ETATo).Count() > 0;
           All = All.And(filter);
         }
       }
@@ -147,7 +151,7 @@ namespace ADJ.BusinessService.Implementations
     private List<ConfirmArrivalResultDtos> Sort(List<ConfirmArrivalResultDtos> input)
     {
       //Order by Destination Port (property number = 0)
-      input = Quick_Sort(input, 0, input.Count - 1, 0);
+      quickSort(input, 0, input.Count - 1, 0);
 
       //Order by Origin (property number = 1)
       //Order by Mode (property number = 2)
@@ -160,10 +164,23 @@ namespace ADJ.BusinessService.Implementations
         {
           if ((i + 1 < input.Count) || (i == input.Count - 1))
           {
-            var currentProperty = typeof(ConfirmArrivalResultDtos).GetProperties()[property];
-            if ((i == input.Count - 1) || (currentProperty.GetValue(input[i]).ToString().CompareTo(currentProperty.GetValue(input[i + 1]).ToString()) != 0))
+            bool different = false;
+            if (i != input.Count - 1)
             {
-              input = Quick_Sort(input, start, i, property);
+              for (int j = property - 1; j >= 0; j--)
+              {
+                var currentProperty = typeof(ConfirmArrivalResultDtos).GetProperties()[j];
+                if (currentProperty.GetValue(input[i]).ToString().CompareTo(currentProperty.GetValue(input[i + 1]).ToString()) != 0)
+                {
+                  different = true;
+                  break;
+                }
+              }
+            }
+
+            if ((i == input.Count - 1) || (different))
+            {
+              quickSort(input, start, i, property);
               start = i + 1;
             }
           }
@@ -173,77 +190,74 @@ namespace ADJ.BusinessService.Implementations
       return input;
     }
 
-    private static List<ConfirmArrivalResultDtos> Quick_Sort(List<ConfirmArrivalResultDtos> arr, int left, int right, int property)
+    public static void quickSort(List<ConfirmArrivalResultDtos> A, int left, int right, int property)
     {
-      if (left < right)
+      if (left > right || left < 0 || right < 0) return;
+
+      int index = partition(A, left, right, property);
+
+      if (index != -1)
       {
-        int pivot = Partition(arr, left, right, property);
-
-        if (pivot > 1)
-        {
-          Quick_Sort(arr, left, pivot - 1, property);
-        }
-        if (pivot + 1 < right)
-        {
-          Quick_Sort(arr, pivot + 1, right, property);
-        }
+        quickSort(A, left, index - 1, property);
+        quickSort(A, index + 1, right, property);
       }
-
-      return arr;
     }
 
-    private static int Partition(List<ConfirmArrivalResultDtos> arr, int left, int right, int property)
+    private static int partition(List<ConfirmArrivalResultDtos> A, int left, int right, int property)
     {
-      var currentProperty = typeof(ConfirmArrivalResultDtos).GetProperties()[property];
+      if (left > right) return -1;
 
-      string pivot = currentProperty.GetValue(arr[left]).ToString();
+      int end = left;
 
-      while (true)
+      if (property != 4)
       {
-        while (currentProperty.GetValue(arr[left]).ToString().CompareTo(pivot) < 0)
+        var currentProperty = typeof(ConfirmArrivalResultDtos).GetProperties()[property];
+        string pivot = currentProperty.GetValue(A[right]).ToString();    // choose last one to pivot, easy to code
+        for (int i = left; i < right; i++)
         {
-          left++;
-        }
-
-        while (currentProperty.GetValue(arr[right]).ToString().CompareTo(pivot) > 0)
-        {
-          right--;
-        }
-
-        if (left < right)
-        {
-          if (currentProperty.GetValue(arr[left]).ToString().Equals(currentProperty.GetValue(arr[right]).ToString())) return right;
-
-          ConfirmArrivalResultDtos temp = arr[left];
-          arr[left] = arr[right];
-          arr[right] = temp;
-        }
-        else
-        {
-          return right;
+          if (currentProperty.GetValue(A[i]).ToString().CompareTo(pivot) < 0)
+          {
+            swap(A, i, end);
+            end++;
+          }
         }
       }
+      else
+      {
+        DateTime pivot = A[right].ArrivalDate;    // choose last one to pivot, easy to code
+        for (int i = left; i < right; i++)
+        {
+          if (A[i].ArrivalDate.CompareTo(pivot) < 0)
+          {
+            swap(A, i, end);
+            end++;
+          }
+        }
+      }
+
+      swap(A, end, right);
+
+      return end;
+    }
+
+    private static void swap(List<ConfirmArrivalResultDtos> A, int left, int right)
+    {
+      var tmp = A[left];
+      A[left] = A[right];
+      A[right] = tmp;
     }
 
     public async Task<ConfirmArrivalDtos> CreateOrUpdateCAAsync(int containerId, DateTime arrivalDate)
     {
-      CA entity;
+      CA entity = await GetCAbyContainerId(containerId);
       ConfirmArrivalDtos input = new ConfirmArrivalDtos();
 
       input.ContainerId = containerId;
       input.ArrivalDate = arrivalDate;
 
-      CA ca = await GetCAbyContainerId(containerId);
-
-      if (ca != null)
+      if (entity != null)
       {
-        entity = await _confirmArrivalRepository.GetByIdAsync(containerId, false);
-        if (entity == null)
-        {
-          throw new AppException("Purchase Order Not Found");
-        }
-
-        entity = Mapper.Map(input, entity);
+        entity.ArrivalDate = input.ArrivalDate;
 
         _confirmArrivalRepository.Update(entity);
       }
@@ -253,6 +267,8 @@ namespace ADJ.BusinessService.Implementations
 
         _confirmArrivalRepository.Insert(entity);
       }
+
+      await UpdateContainer(containerId, arrivalDate);
 
       await UnitOfWork.SaveChangesAsync();
 
@@ -271,6 +287,20 @@ namespace ADJ.BusinessService.Implementations
       {
         return null;
       }
+    }
+
+    private async Task<Container> UpdateContainer(int containerId, DateTime arrivalDate)
+    {
+      Container container = await _containerDataProvider.GetByIdAsync(containerId);
+      Booking booking = await _bookingDataProvider.GetByIdAsync((container.Manifests.ToList())[0].BookingId);
+
+      booking.ETA = arrivalDate;
+      _bookingRepository.Update(booking);
+
+      container.Status = ContainerStatus.Arrived;
+      _containerRepository.Update(container);
+
+      return container;
     }
   }
 }
