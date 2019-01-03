@@ -46,16 +46,7 @@
 <!--Order Table-->
 <table class="uk-table uk-table-small uk-table-middle">
   <tr>
-    <td>
-      <label asp-for="PONumber"></label>
-    </td>
-    <td>
-      <input asp-for="PONumber" class="uk-input" id="from" onkeyup="copy()" />
-      <span asp-validation-for="PONumber" class="uk-alert-danger"></span>
-      <span class="uk-alert-danger">@ViewBag.PONumberError</span>
-    </td>
-    <td colspan="3" style="border-bottom: 0.2px solid gainsboro"></td>
-    <td>
+    <td colspan="6" style="border-bottom: 0.2px solid gainsboro">
       <button type="submit" asp-action="Apply" asp-controller="PurchaseOrder" value="Apply" class="uk-button uk-button-primary" id="applyButton">Apply</button>
     </td>
   </tr>
