@@ -15,7 +15,7 @@ namespace ADJ.BusinessService.Dtos
 
 		public List<ContainerDto> lstContainerDto { get; set; }
 
-		public ArriveOfDespatchDto ArriveOfDespatchDto { get; set; }
+		public List<ArriveOfDespatchDto> lstArriveOfDespatchDto { get; set; }
 
 		public void CreateMapping(Profile profile)
 		{
@@ -28,7 +28,7 @@ namespace ADJ.BusinessService.Dtos
 	{
 		public string origin { get; set; }
 		public string originPort { get; set; }
-		public string container { get; set; }
+		public int containerId { get; set; }
 		public string status { get; set; }
 		public DateTime? etdFrom { get; set; }
 		public DateTime? etdTo { get; set; }
@@ -85,6 +85,13 @@ namespace ADJ.BusinessService.Dtos
 
 		public DateTime ETA { get; set; }
 
+		public string PortOfLoading { get; set; }
+
+		public string PortOfDelivery { get; set; }
+
+		public string Carrier { get; set; }
+
+		public string Mode { get; set; }
 
 		public void CreateMapping(Profile profile)
 		{
