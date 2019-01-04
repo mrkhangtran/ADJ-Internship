@@ -40,11 +40,11 @@ namespace ADJ.BusinessService.Dtos
     public string Mode { get; set; }
 
     [StringLength(30)]
-    [RegularExpression("^[a-zA-Z0-9]+$", ErrorMessage = "Letters and numbers only")]
+    [RegularExpression("^[a-zA-Z0-9 ]+$", ErrorMessage = "Letters and numbers only")]
     public string Vendor { get; set; } = "";
 
     [StringLength(10)]
-    [RegularExpression("^[a-zA-Z0-9]+$", ErrorMessage = "Letters and numbers only")]
+    [RegularExpression("^[a-zA-Z0-9 ]+$", ErrorMessage = "Letters and numbers only")]
     public string Container { get; set; } = "";
 
     [Display(Name = "ETA From")]

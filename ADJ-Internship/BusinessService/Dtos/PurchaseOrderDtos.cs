@@ -55,7 +55,7 @@ namespace ADJ.BusinessService.Dtos
     public DateTime OrderDate { get; set; } = DateTime.Now;
 
     [StringLength(30, ErrorMessage = "Cannot be longer than 30 character")]
-    [RegularExpression("^[a-zA-Z0-9]+$", ErrorMessage = "Letters and numbers only")]
+    [RegularExpression("^[a-zA-Z0-9 ]+$", ErrorMessage = "Letters and numbers only")]
     public string Buyer { get; set; }
 
     //Default value = USD
@@ -65,15 +65,15 @@ namespace ADJ.BusinessService.Dtos
     public string Season { get; set; }
 
     [StringLength(30, ErrorMessage = "Cannot be longer than 30 characters")]
-    [RegularExpression("^[a-zA-Z0-9]+$", ErrorMessage = "Letters and numbers only")]
+    [RegularExpression("^[a-zA-Z0-9 ]+$", ErrorMessage = "Letters and numbers only")]
     public string Department { get; set; }
 
     [StringLength(30, ErrorMessage = "Cannot be longer than 30 characters")]
-    [RegularExpression("^[a-zA-Z0-9]+$", ErrorMessage = "Letters and numbers only")]
+    [RegularExpression("^[a-zA-Z0-9 ]+$", ErrorMessage = "Letters and numbers only")]
     public string Vendor { get; set; }
 
     [StringLength(30, ErrorMessage = "Cannot be longer than 30 characters")]
-    [RegularExpression("^[a-zA-Z0-9]+$", ErrorMessage = "Letters and numbers only")]
+    [RegularExpression("^[a-zA-Z0-9 ]+$", ErrorMessage = "Letters and numbers only")]
     public string Company { get; set; }
 
     //Droplist Vietnam-HongKong
@@ -93,11 +93,11 @@ namespace ADJ.BusinessService.Dtos
 
     [Display(Name = "Order Type")]
     [StringLength(30, ErrorMessage = "Cannot be longer than 30 characters")]
-    [RegularExpression("^[a-zA-Z0-9]+$", ErrorMessage = "Letters and numbers only")]
+    [RegularExpression("^[a-zA-Z0-9 ]+$", ErrorMessage = "Letters and numbers only")]
     public string OrderType { get; set; }
 
     [StringLength(30, ErrorMessage = "Cannot be longer than 30 characters")]
-    [RegularExpression("^[a-zA-Z0-9]+$", ErrorMessage = "Letters and numbers only")]
+    [RegularExpression("^[a-zA-Z0-9 ]+$", ErrorMessage = "Letters and numbers only")]
     public string Factory { get; set; }
 
     //DropList Road-Sea-Air
@@ -115,7 +115,7 @@ namespace ADJ.BusinessService.Dtos
     public DateTime LatestShipDate { get; set; }
 
     [Display(Name = "Delivery Date")]
-    [SimilarOrLaterThanOtherDate("ShipDate")]
+    [LaterThanOtherDate("ShipDate")]
     [Not30DaysApart("ShipDate")]
     [NotInThePast(ErrorMessage = "Cannot be set in the past")]
     public DateTime DeliveryDate { get; set; }
@@ -151,19 +151,19 @@ namespace ADJ.BusinessService.Dtos
     public string ItemNumber { get; set; }
 
     [StringLength(255)]
-    [RegularExpression("^[a-zA-Z0-9]+$", ErrorMessage = "Letters and numbers only")]
+    [RegularExpression("^[a-zA-Z0-9 ]+$", ErrorMessage = "Letters and numbers only")]
     public string Description { get; set; } = "";
 
     [StringLength(30)]
-    [RegularExpression("^[a-zA-Z0-9]+$", ErrorMessage = "Letters and numbers only")]
+    [RegularExpression("^[a-zA-Z0-9 ]+$", ErrorMessage = "Letters and numbers only")]
     public string Warehouse { get; set; } = "";
 
     [StringLength(30)]
-    [RegularExpression("^[a-zA-Z0-9]+$", ErrorMessage = "Letters and numbers only")]
+    [RegularExpression("^[a-zA-Z0-9 ]+$", ErrorMessage = "Letters and numbers only")]
     public string Colour { get; set; } = "";
 
     [StringLength(30)]
-    [RegularExpression("^[a-zA-Z0-9]+$", ErrorMessage = "Letters and numbers only")]
+    [RegularExpression("^[a-zA-Z0-9 ]+$", ErrorMessage = "Letters and numbers only")]
     public string Size { get; set; } = "";
 
     [Required]
