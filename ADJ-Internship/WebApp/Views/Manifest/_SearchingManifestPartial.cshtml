@@ -5,236 +5,256 @@
 }
 else
 {
-	@for (var i = 0; i < Model.Items.Count(); i++)
-	{
-		@Html.HiddenFor(model => model.Items[i].Id, new { Value = Model.Items[i].Id })
-		<br />
-		<br />
-		<div class="uk-grid">
-			<table class="uk-table uk-table-small">
-				<thead>
-					<tr>
-						<td></td>
-						<td>
-							Container
-						</td>
-						<td>
-							Size
-						</td>
-						<td>
-							Loading
-						</td>
-						<td>
-							Pack Type
-						</td>
-					</tr>
-				</thead>
-				<tbody>
-					<tr>
-						<td>
-							@if (Model.Items[i].Id == 0)
-							{
-								<input type="checkbox" asp-for="Items[i].selectedContainer" />
-							}
-						</td>
-						<td>
-							@{
-								if (Model.Items[i].Id == 0)
-								{
-									<input id="validationName" asp-for="Items[i].Name" class="validationName uk-input" />
-									<span class=" uk-text-danger" asp-validation-for="Items[i].Name" id="validationShipQuantity" hidden></span>
-								}
-								else
-								{
-									<input readonly id="validationName" asp-for="Items[i].Name" class="validationName uk-input" />
-								}
+  @for (var i = 0; i < Model.Items.Count(); i++)
+  {
+    @Html.HiddenFor(model => model.Items[i].Id, new { Value = Model.Items[i].Id })
+    <br />
+    <br />
+    <div class="uk-grid">
+      <table class="uk-table uk-table-small uk-width-1-2">
+        <thead>
+          <tr>
+            <td></td>
+            <td>
+              Container
+            </td>
+            <td>
+              Size
+            </td>
+            <td>
+              Loading
+            </td>
+            <td>
+              Pack Type
+            </td>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              @if (Model.Items[i].Id == 0)
+              {
+                <input class="uk-checkbox" type="checkbox" asp-for="Items[i].selectedContainer" />
+              }
+            </td>
+            <td>
+              @{
+                if (Model.Items[i].Id == 0)
+                {
+                  <input id="validationName" asp-for="Items[i].Name" class="validationName uk-input" />
+                  <span class=" uk-text-danger" asp-validation-for="Items[i].Name" id="validationShipQuantity" hidden></span>
+                }
+                else
+                {
+                  <input readonly id="validationName" asp-for="Items[i].Name" class="validationName uk-input" />
+                }
 
 							}
 
-						</td>
-						<td>
-							@Html.DropDownListFor(model => model.Items[i].Size,
-					 new SelectList(ViewBag.Size), Model.Items[i].Size, new { @class = "uk-input" })
-						</td>
-						<td>
-							@Html.DropDownListFor(model => model.Items[i].Loading,
-				 new SelectList(ViewBag.Loading), Model.Items[i].Loading, new { @class = "uk-input" })
-						</td>
-						<td>
-							@Html.DropDownListFor(model => model.Items[i].PackType,
-				 new SelectList(ViewBag.PackType), Model.Items[i].PackType, new { @class = "uk-input" })
-						</td>
-					</tr>
-				</tbody>
-			</table>
-			<table class="uk-table uk-table-small">
-				<thead>
-					<tr>
-						<td></td>
-						<td>
-							Supplier
-						</td>
-						<td>
-							Carrier
-						</td>
-						<td>
-							PO Number
-						</td>
-						<td>
-							Item Number
-						</td>
-						<td>
-							ETD Date
-						</td>
-						<td>
-							Booking Quantity
-						</td>
-						<td>
-							Open Quantity
-						</td>
-						<td>
-							Ship Quantity
-						</td>
-						<td>
-							Booking Carton
-						</td>
-						<td>
-							Ship Carton
-						</td>
-						<td>
-							Booking Cube
-						</td>
-						<td>
-							Ship Cube
-						</td>
-						<td>
-							Net Weight
-						</td>
-						<td>
-							Gross Weight
-						</td>
-						<td>
-							Manifested
-						</td>
-					</tr>
-				</thead>
-				<tbody>
-					@for (var j = 0; j < Model.Items[i].Manifests.Count(); j++)
-					{
-						@Html.HiddenFor(model => model.Items[i].Manifests[j].BookingId, new { Value = Model.Items[i].Manifests[j].BookingId })
-						@Html.HiddenFor(model => model.Items[i].Manifests[j].ItemNumber, new { Value = Model.Items[i].Manifests[j].ItemNumber })
-						@Html.HiddenFor(model => model.Items[i].Manifests[j].BookingQuantity, new { Value = Model.Items[i].Manifests[j].BookingQuantity })
-						@Html.HiddenFor(model => model.Items[i].Manifests[j].Id, new { Value = Model.Items[i].Manifests[j].Id })
-						@Html.HiddenFor(model => model.Items[i].Manifests[j].OpenQuantity, new { Value = Model.Items[i].Manifests[j].OpenQuantity })
-						@Html.HiddenFor(model => model.Items[i].Manifests[j].NetWeight, new { Value = Model.Items[i].Manifests[j].NetWeight })
+            </td>
+            @{
+              if (Model.Items[i].Id == 0)
+              {
+                <td>
+                  <select asp-for="Items[i].Size" asp-items="new SelectList(ViewBag.Size)" class="uk-input filters" id="size"></select>
+                </td>
+                <td>
+                  <select asp-for="Items[i].Loading" asp-items="new SelectList(ViewBag.Loading)" class="uk-input filters" id="loading"></select>
+                </td>
+                <td>
+                  <select asp-for="Items[i].PackType" asp-items="new SelectList(ViewBag.PackType)" class="uk-input filters" id="packtype"></select>
+                </td>
+              }
+              else
+              {
+                <td>
+                  @Model.Items[i].Size
+                </td>
+                <td>
+                  @Model.Items[i].Loading
+                </td>
+                <td>
+                  @Model.Items[i].PackType
+                </td>
+              }
+            }
+          </tr>
+        </tbody>
+      </table>
+      <table class="uk-table uk-table-small">
+        <thead>
+          <tr>
+            <td></td>
+            <td>
+              Supplier
+            </td>
+            <td>
+              Carrier
+            </td>
+            <td>
+              PO Number
+            </td>
+            <td>
+              Item Number
+            </td>
+            <td>
+              ETD Date
+            </td>
+            <td>
+              Booking Quantity
+            </td>
+            <td>
+              Open Quantity
+            </td>
+            <td>
+              Ship Quantity
+            </td>
+            <td>
+              Booking Carton
+            </td>
+            <td>
+              Ship Carton
+            </td>
+            <td>
+              Booking Cube
+            </td>
+            <td>
+              Ship Cube
+            </td>
+            <td>
+              Net Weight
+            </td>
+            <td>
+              Gross Weight
+            </td>
+            <td>
+              Manifested
+            </td>
+          </tr>
+        </thead>
+        <tbody>
+          @for (var j = 0; j < Model.Items[i].Manifests.Count(); j++)
+          {
+            @Html.HiddenFor(model => model.Items[i].Manifests[j].BookingId, new { Value = Model.Items[i].Manifests[j].BookingId })
+            @Html.HiddenFor(model => model.Items[i].Manifests[j].ItemNumber, new { Value = Model.Items[i].Manifests[j].ItemNumber })
+            @Html.HiddenFor(model => model.Items[i].Manifests[j].BookingQuantity, new { Value = Model.Items[i].Manifests[j].BookingQuantity })
+            @Html.HiddenFor(model => model.Items[i].Manifests[j].Id, new { Value = Model.Items[i].Manifests[j].Id })
+            @Html.HiddenFor(model => model.Items[i].Manifests[j].OpenQuantity, new { Value = Model.Items[i].Manifests[j].OpenQuantity })
+            <tr>
+              <td>
+                @if (Model.Items[i].Id == 0)
+                {
+                  <input class="uk-checkbox" type="checkbox" asp-for="Items[i].Manifests[j].selectedItem" />
+                }
+              </td>
+              <td>
+                @Model.Items[i].Manifests[j].Supplier
+              </td>
+              <td>
+                @Model.Items[i].Manifests[j].Carrier
+              </td>
+              <td>
+                @Model.Items[i].Manifests[j].PONumber
+              </td>
+              <td>
+                @Model.Items[i].Manifests[j].ItemNumber
+              </td>
+              <td>
+                @Model.Items[i].Manifests[j].ETDDate.ToString("dd/MM/yyyy")
+              </td>
+              <td>
+                @Model.Items[i].Manifests[j].BookingQuantity
+              </td>
+              <td>
+                @Model.Items[i].Manifests[j].OpenQuantity
+              </td>
+              <td>
+                @{
+                  if (Model.Items[i].Id > 0)
+                  {
+                    @Model.Items[i].Manifests[j].ShipQuantity
+                  }
+                  else
+                  {
+                    <input type="number" value="" id="@(Model.Items[i].Manifests[j].ItemNumber)" asp-for="Items[i].Manifests[j].ShipQuantity" class="validationShipQuantity uk-input" />
+                    <span class=" uk-text-danger" asp-validation-for="Items[i].Manifests[j].ShipQuantity" id="validationShipQuantity" hidden></span>
+                  }
+                }
+              </td>
+              <td>
+                @Model.Items[i].Manifests[j].BookingCartons
+              </td>
+              <td>
+                <input id="@("shipCarton"+@Model.Items[i].Manifests[j].ItemNumber)" asp-for="Items[i].Manifests[j].ShipCartons" readonly class=" uk-input" />
+              </td>
+              <td>
+                @Model.Items[i].Manifests[j].BookingCube
+              </td>
+              <td>
+                <input id="@("shipCube"+@Model.Items[i].Manifests[j].ItemNumber)" asp-for="Items[i].Manifests[j].ShipCube" readonly class=" uk-input" />
+              </td>
+              <td>
+                <input id="@("netWeight"+@Model.Items[i].Manifests[j].ItemNumber)" asp-for="Items[i].Manifests[j].NetWeight" readonly class=" uk-input" />
+              </td>
+              <td>
+                @{
+                  if (Model.Items[i].Id > 0)
+                  {
+                    @Model.Items[i].Manifests[j].GrossWeight
+                  }
+                  else
+                  {
+                    <input value="" id="@("shipGrossWeight"+Model.Items[i].Manifests[j].ItemNumber)" asp-for="Items[i].Manifests[j].GrossWeight" class="shipGrossWeight uk-input" />
+                    <span class=" uk-text-danger" asp-validation-for="Items[i].Manifests[j].GrossWeight" hidden id=""></span>
+                  }
+                }
 
-						<tr>
-							<td>
-								@if (Model.Items[i].Id == 0)
-								{
-									<input type="checkbox" asp-for="Items[i].Manifests[j].selectedItem" />
-								}
-							</td>
-							<td>
-								@Model.Items[i].Manifests[j].Supplier
-							</td>
-							<td>
-								@Model.Items[i].Manifests[j].Carrier
-							</td>
-							<td>
-								@Model.Items[i].Manifests[j].PONumber
-							</td>
-							<td>
-								@Model.Items[i].Manifests[j].ItemNumber
-							</td>
-							<td>
-								@Model.Items[i].Manifests[j].ETDDate.ToString("dd/MM/yyyy")
-							</td>
-							<td>
-								@Model.Items[i].Manifests[j].BookingQuantity
-							</td>
-							<td>
-								@Model.Items[i].Manifests[j].OpenQuantity
-							</td>
-							<td>
-								@{
-									if (Model.Items[i].Id > 0)
-									{
-										@Model.Items[i].Manifests[j].ShipQuantity
-									}
-									else
-									{
-										<input id="shipQuantity" asp-for="Items[i].Manifests[j].ShipQuantity" class="validationShipQuantity uk-input" />
-										<span class=" uk-text-danger" asp-validation-for="Items[i].Manifests[j].ShipQuantity" id="validationShipQuantity" hidden></span>
-									}
-								}
-							</td>
-							<td>
-								@Model.Items[i].Manifests[j].BookingCartons
-							</td>
-							<td>
-								@Model.Items[i].Manifests[j].ShipCartons
-							</td>
-							<td>
-								@Model.Items[i].Manifests[j].BookingCube
-							</td>
-							<td>
-								@Model.Items[i].Manifests[j].ShipCube
-							</td>
-							<td>
-								@Model.Items[i].Manifests[j].NetWeight
-							</td>
-							<td>
-								@{
-									if (Model.Items[i].Id > 0)
-									{
-										@Model.Items[i].Manifests[j].GrossWeight
-									}
-									else
-									{
-										<input id="shipQuantity" asp-for="Items[i].Manifests[j].GrossWeight" class="validationShipQuantity uk-input" />
-										<span class=" uk-text-danger" asp-validation-for="Items[i].Manifests[j].GrossWeight" id="" hidden></span>
-									}
-								}
-
-							</td>
-							<td>
-								@Model.Items[i].Manifests[j].Manifested
-							</td>
-						</tr>
-					}
-				</tbody>
-			</table>
-		</div>
-	}
-	<div class="uk-align-right">
-		<ul class="uk-pagination">
-			@{
-				if (ViewBag.pageIndex > 1)
-				{
-					<li><a value="@(ViewBag.pageIndex - 1)" class="filterItem page-link"><span uk-pagination-previous></span></a></li>
-				}
-				for (var i = 1; i <= Model.PageCount; i++)
-				{
-					if (i == ViewBag.pageIndex)
-					{
-						<li class="uk-disabled">
-							<a value="@i" class="page-link"><u>@i</u></a>
-						</li>
-					}
-					else
-					{
-						<li class="uk-active">
-							<a value="@i" class="filterItem page-link">@i</a>
-						</li>
-					}
-				}
-				if (ViewBag.pageIndex < Model.PageCount)
-				{
-					<li><a value="@(ViewBag.pageIndex + 1)" class="filterItem page-link"><span uk-pagination-next></span></a></li>
-				}
-			}
-
-		</ul>
-	</div>
+              </td>
+              <td>
+                @Model.Items[i].Manifests[j].Manifested
+              </td>
+              <td style="display:none">
+                <input id="@("carton"+Model.Items[i].Manifests[j].ItemNumber)" value="@Model.Items[i].Manifests[j].Carton" asp-for="Items[i].Manifests[j].Carton" class=" uk-input" />
+              </td>
+              <td style="display:none">
+                <input id="@("cube"+Model.Items[i].Manifests[j].ItemNumber)" value="@Model.Items[i].Manifests[j].Cube" asp-for="Items[i].Manifests[j].Cube" class=" uk-input" />
+              </td>
+              <td style="display:none">
+                <input id="@("kgs"+Model.Items[i].Manifests[j].ItemNumber)" value="@Model.Items[i].Manifests[j].Carton" asp-for="Items[i].Manifests[j].KGS" class=" uk-input" />
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+  <div class="uk-align-right">
+    <ul class="uk-pagination">
+      @{
+        if (ViewBag.pageIndex > 1)
+        {
+          <li><a value="@(ViewBag.pageIndex - 1)" class="filterItem page-link"><span uk-pagination-previous></span></a></li>
+        }
+        for (var i = 1; i <= Model.PageCount; i++)
+        {
+          if (i == ViewBag.pageIndex)
+          {
+            <li class="uk-disabled">
+              <a value="@i" class="page-link"><u>@i</u></a>
+            </li>
+          }
+          else
+          {
+            <li class="uk-active">
+              <a value="@i" class="filterItem page-link">@i</a>
+            </li>
+          }
+        }
+        if (ViewBag.pageIndex < Model.PageCount)
+        {
+          <li><a value="@(ViewBag.pageIndex + 1)" class="filterItem page-link"><span uk-pagination-next></span></a></li>
+        }
+      }
+    </ul>
+  </div>
 }

@@ -1,5 +1,6 @@
 ﻿using ADJ.Common;
 using ADJ.DataModel.Core;
+using ADJ.DataModel.DeliveryTrack;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -18,7 +19,11 @@ namespace ADJ.DataModel.ShipmentTrack
 
     public ContainerStatus Status { get; set; }
 
-		public virtual ArriveOfDespatch ArriveOfDespatch { get; set; }
+    public virtual DCBooking DCBooking { get; set; }
+
+    public virtual DCConfirmation DCConfirmation { get; set; }
+
+    public virtual ArriveOfDespatch ArriveOfDespatch { get; set; }
 
     public virtual ICollection<Manifest> Manifests { get; set; }
   }

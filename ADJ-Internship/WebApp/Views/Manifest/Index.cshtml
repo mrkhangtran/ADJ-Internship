@@ -1,8 +1,5 @@
 ﻿@model ADJ.Common.PagedListResult<ADJ.BusinessService.Dtos.ShipmentManifestsDtos>
-<form id="manifest" asp-action="CreateOrUpdate" asp-controller="Manifest"  data-ajax="true"
-      data-ajax-method="POST"
-      data-ajax-mode="replace"
-      data-ajax-update="#renderSearching">
+<form id="manifest" asp-action="CreateOrUpdate" asp-controller="Manifest">
   <div class="uk-container">
     <div class="uk-grid">
       <div class="uk-width-1-3">
@@ -68,14 +65,14 @@
             <tr>
               <td><label>PO Number</label></td>
               <td>
-                <input id="PONumberSearch" class="uk-input" />
+                <input id="PONumberSearch" class="uk-input" type="number" />
 
               </td>
             </tr>
             <tr>
               <td><label>Item</label></td>
               <td>
-                <input id="ItemSearch" class="uk-input" />
+                <input id="ItemSearch" class="uk-input" type="number" />
               </td>
             </tr>
           </tbody>
@@ -91,7 +88,7 @@
             </tr>
             <tr>
               <td>
-                <button id="achieve" type="button" class="uk-button uk-button-danger">Achieve</button>
+                <button id="achieve" type="submit" class="uk-button uk-button-danger">Achieve</button>
               </td>
             </tr>
 
@@ -109,7 +106,7 @@
       <br />
       <br />
       <div class="uk-grid">
-        <table class="uk-table uk-table-small">
+        <table class="uk-table uk-table-small uk-width-1-2">
           <thead>
             <tr>
               <td></td>
@@ -132,7 +129,7 @@
               <td>
                 @if (Model.Items[i].Id == 0)
                 {
-                  <input type="checkbox" asp-for="Items[i].selectedContainer" />
+                  <input class="uk-checkbox" type="checkbox" asp-for="Items[i].selectedContainer" />
                 }
               </td>
               <td>
@@ -242,7 +239,7 @@
                 <td>
                   @if (Model.Items[i].Id == 0)
                   {
-                    <input type="checkbox" asp-for="Items[i].Manifests[j].selectedItem" />
+                    <input class="uk-checkbox" type="checkbox" asp-for="Items[i].Manifests[j].selectedItem" />
                   }
                 </td>
                 <td>
@@ -295,18 +292,18 @@
                   <input id="@("netWeight"+@Model.Items[i].Manifests[j].ItemNumber)" asp-for="Items[i].Manifests[j].NetWeight" readonly class=" uk-input" />
                 </td>
                 <td>
-                  @{
-                    if (Model.Items[i].Id > 0)
-                    {
-                      @Model.Items[i].Manifests[j].GrossWeight
-                    }
-                    else
-                    {
-                      <input value="" id="@("shipGrossWeight"+Model.Items[i].Manifests[j].ItemNumber)" asp-for="Items[i].Manifests[j].GrossWeight" class="shipGrossWeight uk-input" />
-                      <span class=" uk-text-danger" asp-validation-for="Items[i].Manifests[j].GrossWeight" hidden id=""></span>
-                    }
-                  }
-
+                  @Model.Items[i].Manifests[j].GrossWeight
+                  @*@{
+                      if (Model.Items[i].Id > 0)
+                      {
+                        @Model.Items[i].Manifests[j].GrossWeight
+                      }
+                      else
+                      {
+                        <input readonly value="" id="@("shipGrossWeight"+Model.Items[i].Manifests[j].ItemNumber)" asp-for="Items[i].Manifests[j].GrossWeight" class="shipGrossWeight uk-input" />
+                        <span class=" uk-text-danger" asp-validation-for="Items[i].Manifests[j].GrossWeight" hidden id=""></span>
+                      }
+                    }*@
                 </td>
                 <td>
                   @Model.Items[i].Manifests[j].Manifested
@@ -367,11 +364,7 @@
     <div class="uk-modal-dialog uk-modal-body uk-margin-auto-vertical">
       <button class="uk-modal-close-default" type="button" uk-close></button>
       @{
-        if (result == "success")
-        {
-          <p class="uk-text-success">Your shipment is successfully manifested</p>
-        }
-        else if (result == "invalid")
+        if (result == "invalid")
         {
           <p class="uk-text-danger">Ship Quantity is invalid, please try again</p>
         }
@@ -380,6 +373,17 @@
           <p class="uk-text-danger">Gross Weight is invalid, please try again</p>
         }
       }
+    </div>
+  </div>
+}
+@if (ViewBag.modalResult == "success")
+{
+  string result = ViewBag.modalResult;
+  <button type="button" uk-toggle="target: #modal-success" id="successmodal" hidden="hidden">Open</button>
+  <div id="modal-success" class="uk-flex-top" uk-modal>
+    <div class="uk-modal-dialog uk-modal-body uk-margin-auto-vertical">
+      <button class="uk-modal-close-default" type="button" uk-close></button>
+      <p class="uk-text-success">Your shipment is successfully manifested</p>
     </div>
   </div>
 }
@@ -410,7 +414,8 @@
         });
   });
   $(document).ready(function () {
-     $('#openmodal').trigger('click');
+    $('#openmodal').trigger('click');
+    $('#successmodal').trigger('click');
   });
   $('#manifest').submit(function () {
     var check = 0;
@@ -428,13 +433,13 @@
         break;
       }
     }
-    var blank = document.getElementsByClassName("shipGrossWeight");
-    for (i = 0; i < blank.length; i++) {
-      if (blank[i].value == "") {
-        check++;
-        break;
-      }
-    }
+    //var blank = document.getElementsByClassName("shipGrossWeight");
+    //for (i = 0; i < blank.length; i++) {
+    //  if (blank[i].value == "") {
+    //    check++;
+    //    break;
+    //  }
+    //}
     if (check > 0) {
       alert("Please fill in all Required fields.");
     }
@@ -460,6 +465,11 @@
   });
   $('#achieve').click(function () {
     $('#manifest').submit();
+  });
+  $("#modal-success").on({
+    'hide.uk.modal': function () {
+      window.location.href = "/Manifest";
+    }
   });
 </script>
 

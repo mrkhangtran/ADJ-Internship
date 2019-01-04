@@ -39,5 +39,7 @@
     Pending,
     Despatch,
     Arrived,
+    DCBookingReceived,
+    Delivered,
   }
 }
