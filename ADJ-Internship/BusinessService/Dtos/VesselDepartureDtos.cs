@@ -114,6 +114,8 @@ namespace ADJ.BusinessService.Dtos
 	{
 		public int BookingId { get; set; }
 
+		public int ContainerId { get; set; }
+
 		public string Carrier { get; set; }
 
 		public string Vessel { get; set; }

@@ -18,6 +18,8 @@ namespace ADJ.DataModel.ShipmentTrack
 
     public ContainerStatus Status { get; set; }
 
+		public virtual ArriveOfDespatch ArriveOfDespatch { get; set; }
+
     public virtual ICollection<Manifest> Manifests { get; set; }
   }
 }
