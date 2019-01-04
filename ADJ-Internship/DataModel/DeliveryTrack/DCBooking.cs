@@ -1,4 +1,5 @@
 ﻿using ADJ.DataModel.Core;
+using ADJ.DataModel.ShipmentTrack;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -6,30 +7,29 @@ using System.Text;
 
 namespace ADJ.DataModel.DeliveryTrack
 {
-    public class DCBooking : EntityBase
-    {
+	public class DCBooking : EntityBase
+	{
+		public int ContainerId { get; set; }
 
-        [StringLength(20)]
-        public string DeliveryMethod { get; set; }
+		public string DítributionCenter { get; set; }
 
-        [StringLength(50)]
-        public string WareHouse { get; set; }
+		public string WareHouse { get; set; }
 
-        [StringLength(12)]
-        public string BookingRef { get; set; }
+		public string BookingRef { get; set; }
 
-        public DateTime BookingDate { get; set; }
+		public DateTime BookingDate { get; set; }
 
-        [StringLength(12)]
-        public string BookingTime { get; set; }
+		public string BookingTime { get; set; }
 
-        [StringLength(30)]
-        public string Haulier { get; set; }
+		public string Haulier { get; set; }
 
+		public string Client { get; set; }
 
-        public DateTime Created { get; set; }
+		public DateTime Created { get; set; }
 
-        public virtual ICollection<DCBookingDetail> DCBookingDetails { get; set; }
+		public virtual Container Container { get; set; }
 
-    }
+		public virtual ICollection<DCBookingDetail> DCBookingDetails { get; set; }
+
+	}
 }
