@@ -36,6 +36,8 @@ namespace WebApp.Controllers
         Carrier = searchItem.Carriers.FirstOrDefault();
       }
       ViewBag.pageIndex = current;
+      PagedListResult<ShipmentManifestsDtos> pagedListResult = await _manifestService.ListManifestDtoAsync(1, 2, DestinationPort, OriginPort, Carrier);
+
       PagedListResult<ShipmentManifestsDtos> listManifest = await _manifestService.ListManifestDtoAsync(current, 2, DestinationPort, OriginPort, Carrier, ETDFrom, ETDTo, Status, Vendor, PONumber, Item);
       if (checkClick == true)
       {
@@ -44,9 +46,32 @@ namespace WebApp.Controllers
       return View("Index", listManifest);
     }
     [HttpPost]
-    public async Task<ActionResult> CreateOrUpdate(PagedListResult<ShipmentManifestsDtos> shipmentManifestDtos)
+    public async Task<ActionResult> CreateOrUpdate(string pageIndex, PagedListResult<ShipmentManifestsDtos> shipmentManifestDtos)
     {
       ViewBag.modalResult = null;
+      for(int i = 0; i < shipmentManifestDtos.Items.Count(); i++)
+      {
+        for(int j = 0; j < shipmentManifestDtos.Items[i].Manifests.Count(); j++)
+        {
+          if (shipmentManifestDtos.Items[i].Manifests[j].selectedItem == false && shipmentManifestDtos.Items[i].selectedContainer==true)
+          {
+            string shipQuantity = "Items[" + i + "].Manifests[" + j + "].ShipQuantity";
+            //string netWeight = "Items[" + i + "].Manifests[" + j + "].NetWeight";
+            string id = "Items[" + i + "].Manifests[" + j + "].Id";
+            ModelState[shipQuantity].ValidationState = ModelState[id].ValidationState;
+            //ModelState[netWeight].ValidationState = ModelState[id].ValidationState;
+
+          }
+
+          //if (shipmentManifestDtos.Items[i].Manifests[j].selectedItem == false && shipmentManifestDtos.Items[i].selectedContainer == false)
+          //{
+          //  string text = "Items[" + i + "].Manifests[" + j + "].NetWeight";
+          //  string id = "Items[" + i + "].Manifests[" + j + "].Id";
+          //  ModelState[text].ValidationState = ModelState[id].ValidationState;
+          //}
+        }
+      }
+   
       if (ModelState.IsValid)
       {
         foreach (var manifest in shipmentManifestDtos.Items)
@@ -60,11 +85,12 @@ namespace WebApp.Controllers
       }
       else
       {
-        if (shipmentManifestDtos.Items.Where(p => p.Manifests.Where(x => x.GrossWeight > x.NetWeight).Count() > 0).Count() > 0)
-        {
-          ViewBag.modalResult = "grossWeightInvalid";
-        }
-        else
+      //  if (shipmentManifestDtos.Items.Where(p => p.Manifests.Where(x => x.GrossWeight < x.NetWeight).Count() > 0).Count() > 0 && shipmentManifestDtos.Items.Where(p=>p.Manifests.Where(x=>x.ShipQuantity<x.OpenQuantity).Count()>0).Count()>0)
+      //  {
+      //    ViewBag.modalResult = "grossWeightInvalid";
+
+      //  }
+      //  else
           ViewBag.modalResult = "invalid";
       }
       ViewBag.Size = new List<string> { "20GP", "40HC" };
@@ -75,10 +101,10 @@ namespace WebApp.Controllers
       ViewBag.Carriers = searchItem.Carriers;
       ViewBag.Dest = searchItem.DestinationPort;
       ViewBag.Status = searchItem.Status;
-      string DestinationPort = searchItem.DestinationPort.FirstOrDefault();
-      string OriginPort = searchItem.OriginPorts.FirstOrDefault();
-      string Carrier = searchItem.Carriers.FirstOrDefault();
-      PagedListResult<ShipmentManifestsDtos> pagedListResult = await _manifestService.ListManifestDtoAsync(1,2,DestinationPort,OriginPort,Carrier);
+      string DestinationPort = searchItem.DestinationPort.First();
+      string OriginPort = searchItem.OriginPorts.First();
+      string Carrier = searchItem.Carriers.First();
+      PagedListResult<ShipmentManifestsDtos> pagedListResult = await _manifestService.ListManifestDtoAsync(1, 2, DestinationPort, OriginPort, Carrier);
       return View("Index", pagedListResult);
     }
   }

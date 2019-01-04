@@ -12,6 +12,34 @@
 // ========================================================================
 
 .hook-grid-misc() {
+	.uk-grid + .uk-grid,
+	.uk-grid > .uk-grid-margin,
+	* + .uk-grid-margin {
+		margin-top: 0;
+	}
+
+	.uk-grid .vessel-table th:last-child, .uk-grid .vessel-table td:last-child {
+		border-right: 1px solid #333;
+	}
+
+	.uk-grid #achivebtn {
+		height: 40px;
+		width: 100px;
+	}
+
+	.uk-grid #vesselSubmit {
+		color: white;
+		background: #07C;
+		height: 40px;
+		width: 100px;
+		border: none;
+	}
+
+	.uk-grid .table-vessel {
+		padding-top: 40px;
+	}
+
+
 	.uk-grid {
 		margin: 0;
 		padding: 0;

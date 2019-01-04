@@ -46,6 +46,8 @@ namespace ADJ.BusinessService.Implementations
       this._orderDetailRepository = orderDetailRepository;
       this._orderDetailDataProvider = orderDetailDataProvider;
 
+
+
     }
     public async Task<PagedListResult<ShipmentManifestsDtos>> ListManifestDtoAsync(int pageIndex = 1, int pageSize = 2, string DestinationPort = null, string OriginPort = null, string Carrier = null, DateTime? ETDFrom = null, DateTime? ETDTo = null, string Status = null, string Vendor = null, string PONumber = null, string Item = null)
     {
@@ -54,6 +56,7 @@ namespace ADJ.BusinessService.Implementations
       List<ShipmentManifestsDtos> currentPage = new List<ShipmentManifestsDtos>();
       List<ShipmentManifestsDtos> previousPage = new List<ShipmentManifestsDtos>();
       Expression<Func<Container, bool>> All = x => x.Id > 0;
+      Expression<Func<Booking, bool>> AllBooking = o => o.Id > 0;
       if (DestinationPort != null)
       {
         Expression<Func<Container, bool>> filterDestinationPort = x => x.Manifests.Where(p => p.Booking.PortOfDelivery == DestinationPort).Count() > 0;
@@ -72,36 +75,49 @@ namespace ADJ.BusinessService.Implementations
       if (ETDFrom != null)
       {
         Expression<Func<Container, bool>> filterETDFrom = x => x.Manifests.Where(p => p.Booking.ETD.CompareTo(ETDFrom) > 0).Count() > 0;
+        Expression<Func<Booking, bool>> filter = x => x.ETD.CompareTo(ETDFrom) > 0;
+        AllBooking = AllBooking.And(filter);
         All = All.And(filterETDFrom);
       }
       if (ETDTo != null)
       {
         Expression<Func<Container, bool>> filterETDTo = x => x.Manifests.Where(p => p.Booking.ETD.CompareTo(ETDTo) < 0).Count() > 0;
+        Expression<Func<Booking, bool>> filter = x => x.ETD.CompareTo(ETDTo) > 0;
+        AllBooking = AllBooking.And(filter);
         All = All.And(filterETDTo);
       }
       if (Status != null)
       {
         Expression<Func<Container, bool>> filterStatus = x => x.Manifests.Where(p => p.Booking.Status.ToString() == Status).Count() > 0;
+        Expression<Func<Booking, bool>> filter = x => x.Status.ToString() == Status;
+        AllBooking = AllBooking.And(filter);
         All = All.And(filterStatus);
       }
       if (Vendor != null)
       {
         Expression<Func<Container, bool>> filterVendor = x => x.Manifests.Where(p => p.Booking.Order.Vendor == Vendor).Count() > 0;
+        Expression<Func<Booking, bool>> filter = x => x.ETD.CompareTo(ETDFrom) > 0;
+        AllBooking = AllBooking.And(filter);
         All = All.And(filterVendor);
       }
       if (PONumber != null)
       {
         Expression<Func<Container, bool>> filterPONumber = x => x.Manifests.Where(p => p.Booking.PONumber == PONumber).Count() > 0;
+        Expression<Func<Booking, bool>> filter = x => x.PONumber == PONumber;
+        AllBooking = AllBooking.And(filter);
         All = All.And(filterPONumber);
       }
       if (Item != null)
       {
         Expression<Func<Container, bool>> filterItem = x => x.Manifests.Where(p => p.Booking.ItemNumber == Item).Count() > 0;
+        Expression<Func<Booking, bool>> filter = x => x.ItemNumber == Item;
+        AllBooking = AllBooking.And(filter);
         All = All.And(filterItem);
       }
       Expression<Func<Booking, bool>> filterBooking = p => p.PortOfLoading == OriginPort && p.PortOfDelivery == DestinationPort && p.Carrier == Carrier;
       var containers = await _containerDataProvider.ListAsync(All, null, true, pageIndex, pageSize);
-      var bookings = await _shipmentBookingDataProvider.ListAsync(filterBooking, null, true);
+      AllBooking = AllBooking.And(filterBooking);
+      var bookings = await _shipmentBookingDataProvider.ListAsync(AllBooking, null, true);
       var previous = await _containerDataProvider.ListAsync(All, null, true, pageIndex, pageSize);
 
       List<Booking> listBooking = bookings.Items;
@@ -127,10 +143,11 @@ namespace ADJ.BusinessService.Implementations
           {
             temp += manifest.Quantity;
           }
+          var orderDeatail = await _orderDetailRepository.Query(p => p.ItemNumber == item.Booking.ItemNumber, true).SelectAsync();
           ItemManifest itemManifest = new ItemManifest()
           {
             Id = item.Id,
-            Supplier = item.Booking.Factory,
+            Supplier = orderDeatail[0].Order.Factory,
             Carrier = item.Booking.Carrier,
             PONumber = item.Booking.PONumber,
             ItemNumber = item.Booking.ItemNumber,
@@ -172,12 +189,13 @@ namespace ADJ.BusinessService.Implementations
       {
         foreach (var bookingNoContainer in listBookingNoContainer)
         {
+          var orderDeatail = await _orderDetailRepository.Query(p => p.ItemNumber == bookingNoContainer.ItemNumber, true).SelectAsync();
           if (bookingNoContainer.Status == OrderStatus.BookingMade)
           {
             ItemManifest itemManifest = new ItemManifest()
             {
               Id = 0,
-              Supplier = bookingNoContainer.Factory,
+              Supplier = orderDeatail[0].Order.Factory,
               Carrier = bookingNoContainer.Carrier,
               PONumber = bookingNoContainer.PONumber,
               ItemNumber = bookingNoContainer.ItemNumber,
@@ -187,7 +205,10 @@ namespace ADJ.BusinessService.Implementations
               OpenQuantity = bookingNoContainer.Quantity,
               BookingCube = bookingNoContainer.Quantity * (decimal)bookingNoContainer.Cube,
               Manifested = bookingNoContainer.Status.ToString(),
-              BookingId = bookingNoContainer.Id
+              BookingId = bookingNoContainer.Id,
+              Cube=bookingNoContainer.Cube,
+              Carton=bookingNoContainer.Cartons,
+              KGS=orderDeatail[0].KGS,
             };
             itemNoContainer.Add(itemManifest);
           }
@@ -196,7 +217,7 @@ namespace ADJ.BusinessService.Implementations
             ItemManifest itemManifest = new ItemManifest()
             {
               Id = 0,
-              Supplier = bookingNoContainer.Factory,
+              Supplier = orderDeatail[0].Order.Factory,
               Carrier = bookingNoContainer.Carrier,
               PONumber = bookingNoContainer.PONumber,
               ItemNumber = bookingNoContainer.ItemNumber,
@@ -206,6 +227,9 @@ namespace ADJ.BusinessService.Implementations
               BookingCube = bookingNoContainer.Quantity * (decimal)bookingNoContainer.Cube,
               Manifested = bookingNoContainer.Status.ToString(),
               BookingId = bookingNoContainer.Id,
+              Cube = bookingNoContainer.Cube,
+              Carton = bookingNoContainer.Cartons,
+              KGS = orderDeatail[0].KGS,
             };
             decimal temp = 0;
             foreach (var quantity in bookingNoContainer.Manifests)
@@ -298,7 +322,6 @@ namespace ADJ.BusinessService.Implementations
     }
     public async Task<ShipmentManifestsDtos> CreateOrUpdateContainerAsync(ShipmentManifestsDtos rq)
     {
-      Manifest entity = new Manifest();
       Container container = new Container();
       container.Name = rq.Name;
       container.Size = rq.Size;
@@ -308,6 +331,7 @@ namespace ADJ.BusinessService.Implementations
       List<Manifest> manifests = new List<Manifest>();
       foreach (var item in rq.Manifests)
       {
+        Manifest entity = new Manifest();
         if (item.selectedItem == true)
         {
           var orderDeatail = await _orderDetailRepository.Query(p => p.ItemNumber == item.ItemNumber, false).SelectAsync();

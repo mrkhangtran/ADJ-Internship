@@ -1,7 +1,7 @@
 ﻿@model ADJ.Common.PagedListResult<ADJ.BusinessService.Dtos.ShipmentManifestsDtos>
 @if (Model.Items.Count() == 0)
 {
-  <p class="uk-text-meta uk-text-large">No matching results were found. Please try again</p>
+	<p class="uk-text-meta uk-text-large">No matching results were found. Please try again</p>
 }
 else
 {
@@ -11,7 +11,7 @@ else
     <br />
     <br />
     <div class="uk-grid">
-      <table class="uk-table uk-table-small">
+      <table class="uk-table uk-table-small uk-width-1-2">
         <thead>
           <tr>
             <td></td>
@@ -34,7 +34,7 @@ else
             <td>
               @if (Model.Items[i].Id == 0)
               {
-                <input type="checkbox" asp-for="Items[i].selectedContainer" />
+                <input class="uk-checkbox" type="checkbox" asp-for="Items[i].selectedContainer" />
               }
             </td>
             <td>
@@ -49,21 +49,35 @@ else
                   <input readonly id="validationName" asp-for="Items[i].Name" class="validationName uk-input" />
                 }
 
-              }
+							}
 
             </td>
-            <td>
-              @Html.DropDownListFor(model => model.Items[i].Size,
-           new SelectList(ViewBag.Size), Model.Items[i].Size, new { @class = "uk-input" })
-            </td>
-            <td>
-              @Html.DropDownListFor(model => model.Items[i].Loading,
-         new SelectList(ViewBag.Loading), Model.Items[i].Loading, new { @class = "uk-input" })
-            </td>
-            <td>
-              @Html.DropDownListFor(model => model.Items[i].PackType,
-         new SelectList(ViewBag.PackType), Model.Items[i].PackType, new { @class = "uk-input" })
-            </td>
+            @{
+              if (Model.Items[i].Id == 0)
+              {
+                <td>
+                  <select asp-for="Items[i].Size" asp-items="new SelectList(ViewBag.Size)" class="uk-input filters" id="size"></select>
+                </td>
+                <td>
+                  <select asp-for="Items[i].Loading" asp-items="new SelectList(ViewBag.Loading)" class="uk-input filters" id="loading"></select>
+                </td>
+                <td>
+                  <select asp-for="Items[i].PackType" asp-items="new SelectList(ViewBag.PackType)" class="uk-input filters" id="packtype"></select>
+                </td>
+              }
+              else
+              {
+                <td>
+                  @Model.Items[i].Size
+                </td>
+                <td>
+                  @Model.Items[i].Loading
+                </td>
+                <td>
+                  @Model.Items[i].PackType
+                </td>
+              }
+            }
           </tr>
         </tbody>
       </table>
@@ -126,13 +140,11 @@ else
             @Html.HiddenFor(model => model.Items[i].Manifests[j].BookingQuantity, new { Value = Model.Items[i].Manifests[j].BookingQuantity })
             @Html.HiddenFor(model => model.Items[i].Manifests[j].Id, new { Value = Model.Items[i].Manifests[j].Id })
             @Html.HiddenFor(model => model.Items[i].Manifests[j].OpenQuantity, new { Value = Model.Items[i].Manifests[j].OpenQuantity })
-            @Html.HiddenFor(model => model.Items[i].Manifests[j].NetWeight, new { Value = Model.Items[i].Manifests[j].NetWeight })
-
             <tr>
               <td>
                 @if (Model.Items[i].Id == 0)
                 {
-                  <input type="checkbox" asp-for="Items[i].Manifests[j].selectedItem" />
+                  <input class="uk-checkbox" type="checkbox" asp-for="Items[i].Manifests[j].selectedItem" />
                 }
               </td>
               <td>
@@ -164,7 +176,7 @@ else
                   }
                   else
                   {
-                    <input id="shipQuantity" asp-for="Items[i].Manifests[j].ShipQuantity" class="validationShipQuantity uk-input" />
+                    <input type="number" value="" id="@(Model.Items[i].Manifests[j].ItemNumber)" asp-for="Items[i].Manifests[j].ShipQuantity" class="validationShipQuantity uk-input" />
                     <span class=" uk-text-danger" asp-validation-for="Items[i].Manifests[j].ShipQuantity" id="validationShipQuantity" hidden></span>
                   }
                 }
@@ -173,16 +185,16 @@ else
                 @Model.Items[i].Manifests[j].BookingCartons
               </td>
               <td>
-                @Model.Items[i].Manifests[j].ShipCartons
+                <input id="@("shipCarton"+@Model.Items[i].Manifests[j].ItemNumber)" asp-for="Items[i].Manifests[j].ShipCartons" readonly class=" uk-input" />
               </td>
               <td>
                 @Model.Items[i].Manifests[j].BookingCube
               </td>
               <td>
-                @Model.Items[i].Manifests[j].ShipCube
+                <input id="@("shipCube"+@Model.Items[i].Manifests[j].ItemNumber)" asp-for="Items[i].Manifests[j].ShipCube" readonly class=" uk-input" />
               </td>
               <td>
-                @Model.Items[i].Manifests[j].NetWeight
+                <input id="@("netWeight"+@Model.Items[i].Manifests[j].ItemNumber)" asp-for="Items[i].Manifests[j].NetWeight" readonly class=" uk-input" />
               </td>
               <td>
                 @{
@@ -192,14 +204,23 @@ else
                   }
                   else
                   {
-                    <input id="shipQuantity" asp-for="Items[i].Manifests[j].GrossWeight" class="validationShipQuantity uk-input" />
-                    <span class=" uk-text-danger" asp-validation-for="Items[i].Manifests[j].GrossWeight" id="" hidden></span>
+                    <input value="" id="@("shipGrossWeight"+Model.Items[i].Manifests[j].ItemNumber)" asp-for="Items[i].Manifests[j].GrossWeight" class="shipGrossWeight uk-input" />
+                    <span class=" uk-text-danger" asp-validation-for="Items[i].Manifests[j].GrossWeight" hidden id=""></span>
                   }
                 }
 
               </td>
               <td>
                 @Model.Items[i].Manifests[j].Manifested
+              </td>
+              <td style="display:none">
+                <input id="@("carton"+Model.Items[i].Manifests[j].ItemNumber)" value="@Model.Items[i].Manifests[j].Carton" asp-for="Items[i].Manifests[j].Carton" class=" uk-input" />
+              </td>
+              <td style="display:none">
+                <input id="@("cube"+Model.Items[i].Manifests[j].ItemNumber)" value="@Model.Items[i].Manifests[j].Cube" asp-for="Items[i].Manifests[j].Cube" class=" uk-input" />
+              </td>
+              <td style="display:none">
+                <input id="@("kgs"+Model.Items[i].Manifests[j].ItemNumber)" value="@Model.Items[i].Manifests[j].Carton" asp-for="Items[i].Manifests[j].KGS" class=" uk-input" />
               </td>
             </tr>
           }
@@ -234,7 +255,6 @@ else
           <li><a value="@(ViewBag.pageIndex + 1)" class="filterItem page-link"><span uk-pagination-next></span></a></li>
         }
       }
-
     </ul>
   </div>
 }

@@ -1,16 +1,23 @@
 ﻿
+@model ADJ.BusinessService.Dtos.VesselDepartureDtos
+
+
 <div class="vessel-right">
 
-	@*header*@
-	<div class="uk-grid uk-width-1-1 vessel-header">
-		<div class="uk-width-2-5">
-			<form class="uk-form-horizontal uk-margin-large">
+	@*filter form*@
+
+	<form asp-action="Filter"
+				asp-controller="VesselDeparture" method="post">
+		@*header*@
+		<div class="uk-grid uk-width-1-1 vessel-header">
+			<div class="uk-width-2-5">
+
 				<div class="uk-margin">
 					<label class="uk-form-label vessel-header-label" for="form-horizontal-select">Origin</label>
-					<div class="uk-form-controls vassell-header-formSelect">
+					<div class="uk-form-controls vassell-header-formSelect" id="origin">
 
-						@*@Html.DropDownList("Origins", new SelectList(ViewBag.Origins), "Any", new { @id = "Origins", @class = "uk-select" })*@
-						<select class="uk-select" id="form-horizontal-select">
+						<select asp-for="filterDto.origin" class="uk-select" id="form-horizontal-select">
+							<option></option>
 							<option>VietNam</option>
 							<option>HongKong</option>
 						</select>
@@ -20,52 +27,36 @@
 
 				<div class="uk-margin">
 					<label class="uk-form-label vessel-header-label" for="form-horizontal-select">Origin Port</label>
-					<div class="uk-form-controls vassell-header-formSelect">
-
-						@Html.DropDownList("OriginPorts", new SelectList(ViewBag.OriginPorts), "Any", new { @id = "OriginPorts", @class = "uk-select" })
-
-					</div>
-				</div>
-
-				<div class="uk-margin">
-					<label class="uk-form-label vessel-header-label" for="form-horizontal-select">Loading</label>
-					<div class="uk-form-controls vassell-header-formSelect">
-						<select class="uk-select" id="form-horizontal-select">
-							<option>Option 01</option>
-							<option>Option 02</option>
+					<div class="uk-form-controls vassell-header-formSelect" id="originPort">
+						<select asp-for="filterDto.originPort" class="uk-select" id="form-horizontal-select">
+							<option></option>
+							@foreach (var i in ViewBag.OriginPort)
+							{
+								<option>@i</option>
+							}
 						</select>
+
 					</div>
 				</div>
 
 				<div class="uk-margin">
-					<label class="uk-form-label vessel-header-label" for="form-horizontal-text">Warehouse</label>
+					<label class="uk-form-label vessel-header-label" for="form-horizontal-text">Container</label>
 					<div class="uk-form-controls vassell-header-formSelect">
-						<input class="uk-input" id="form-horizontal-text" type="text" placeholder="Some text...">
+						<input asp-for="filterDto.container" class="uk-input" id="form-horizontal-text" type="text" placeholder="Some text...">
 					</div>
 				</div>
+
+			</div>
+
+			<div class="uk-width-2-5">
 
 				<div class="uk-margin">
 					<label class="uk-form-label vessel-header-label" for="form-horizontal-select">Status</label>
-					<div class="uk-form-controls vassell-header-formSelect">
-						<select class="uk-select" id="form-horizontal-select">
+					<div class="uk-form-controls vassell-header-formSelect" id="status">
+						<select asp-for="filterDto.status" class="uk-select" id="form-horizontal-select">
+							<option></option>
 							<option>Pending</option>
-							<option>Despatched</option>
-						</select>
-					</div>
-				</div>
-
-			</form>
-		</div>
-
-		<div class="uk-width-2-5">
-			<form class="uk-form-horizontal uk-margin-large">
-				<div class="uk-margin">
-					<label class="uk-form-label vessel-header-label" for="form-horizontal-select">Vendor</label>
-					<div class="uk-form-controls vassell-header-formSelect">
-						<select class="uk-select" id="form-horizontal-select">
-							@*@Html.DropDownList("Vendor", new SelectList(ViewBag.Vendors), "Any", new { @id = "Vendors", @class = "uk-select" })*@
-							<option>Option 1</option>
-							<option>Option 2</option>
+							<option>Despatch</option>
 						</select>
 					</div>
 				</div>
@@ -73,147 +64,324 @@
 				<div class="uk-margin">
 					<label class="uk-form-label vessel-header-label" for="form-horizontal-select">ETD From</label>
 					<div class="uk-form-controls vassell-header-formSelect">
-						<select class="uk-select" id="form-horizontal-select">
-							<option>Option 01</option>
-							<option>Option 02</option>
-						</select>
+						<input asp-for="filterDto.etdFrom" type="date" class="uk-input">
 					</div>
 				</div>
 
 				<div class="uk-margin">
 					<label class="uk-form-label vessel-header-label" for="form-horizontal-select">ETD To</label>
 					<div class="uk-form-controls vassell-header-formSelect">
-						<select class="uk-select" id="form-horizontal-select">
-							<option>Option 01</option>
-							<option>Option 02</option>
-						</select>
+						<input asp-for="filterDto.etdTo" id="etdTo" type="date" class="uk-input">
 					</div>
 				</div>
 
-				<div class="uk-margin">
-					<label class="uk-form-label vessel-header-label" for="form-horizontal-text">PO Number</label>
-					<div class="uk-form-controls vassell-header-formSelect">
-						<input class="uk-input" id="form-horizontal-text" type="text" placeholder="Some text...">
+
+			</div>
+			<div class="uk-width-1-5">
+				<p uk-margin>
+					<input type="submit" id="vesselSubmit" value="Search" />
+
+				</p>
+
+				<button type="button" class="uk-button uk-button-danger" id="achivebtn">Achive</button>
+			</div>
+		</div> @*end header*@
+	</form>
+
+	@if (Model.lstContainerDto.Count == 0)
+	{
+		<h4 style="padding-left:30px">No match result. Please try again !</h4>
+	}
+	else
+	{
+
+
+
+		<form id="achiveForm" asp-action="Achive"
+					asp-controller="VesselDeparture" method="post">
+
+			@{int start = 0;
+			}
+
+			@for (int x = start; x < Model.lstContainerDto.Count; x++)
+			{
+				if (x == Model.lstContainerDto.Count - 1)
+				{
+					<input type="hidden" asp-for="lstContainerDto[x].Id" value="@Model.lstContainerDto[x].Id" />
+					<input type="hidden" asp-for="lstContainerDto[x].RowVersion" value="@Model.lstContainerDto[x].RowVersion" />
+					<input type="hidden" asp-for="lstContainerDto[x].Name" value="@Model.lstContainerDto[x].Name" />
+					<input type="hidden" asp-for="lstContainerDto[x].Size" value="@Model.lstContainerDto[x].Size" />
+					<input type="hidden" asp-for="lstContainerDto[x].Loading" value="@Model.lstContainerDto[x].Loading" />
+					<input type="hidden" asp-for="lstContainerDto[x].Status" value="@Model.lstContainerDto[x].Status" />
+					<input type="hidden" asp-for="lstContainerDto[x].OriginPort" value="@Model.lstContainerDto[x].OriginPort" />
+					<input type="hidden" asp-for="lstContainerDto[x].DestPort" value="@Model.lstContainerDto[x].DestPort" />
+					<input type="hidden" asp-for="lstContainerDto[x].ETD" value="@Model.lstContainerDto[x].ETD" />
+					<input type="hidden" asp-for="lstContainerDto[x].ETA" value="@Model.lstContainerDto[x].ETA" />
+					<input type="hidden" asp-for="lstContainerDto[x].Carrier" value="@Model.lstContainerDto[x].Carrier" />
+
+					<div class="uk-grid uk-width-1-1 table-vessel">
+						<table class="uk-table vessel-table">
+							<thead>
+								<tr>
+									<th>Origin Port</th>
+									<th>Dest Port</th>
+									<th>Mode</th>
+									<th>Carrier</th>
+									<th>ETD</th>
+									<th>ETA</th>
+								</tr>
+							</thead>
+
+							<tbody>
+								<tr>
+									<td>
+										<div class="uk-form-controls">
+											<div class="uk-form-controls vassell-header-formSelect" id="originPortChange">
+												<select asp-for="lstContainerDto[x].originPortChange" class="uk-select" id="form-horizontal-select">
+													<option>@Model.lstContainerDto[x].OriginPort</option>
+													@foreach (var i in ViewBag.OriginPort)
+													{
+														if (i != Model.lstContainerDto[x].OriginPort)
+														{
+															<option>@i</option>
+														}
+													}
+												</select>
+											</div>
+										</div>
+									</td>
+									<td>
+										<div class="uk-form-controls">
+											<div class="uk-form-controls vassell-header-formSelect" id="destChange">
+												<select asp-for="lstContainerDto[x].destPortChange" class="uk-select" id="form-horizontal-select">
+													<option>@Model.lstContainerDto[x].DestPort</option>
+													@foreach (var i in ViewBag.Dest)
+													{
+														if (i != Model.lstContainerDto[x].DestPort)
+														{
+															<option>@i</option>
+														}
+													}
+												</select>
+											</div>
+										</div>
+									</td>
+									<td>
+										<div class="uk-form-controls">
+											<div class="uk-form-controls vassell-header-formSelect" id="modeChange">
+												<select asp-for="lstContainerDto[x].modeChange" class="uk-select" id="form-horizontal-select">
+													<option>@Model.lstContainerDto[x].Loading</option>
+													@foreach (var i in ViewBag.Mode)
+													{
+														if (i != Model.lstContainerDto[x].Loading)
+														{
+															<option>@i</option>
+														}
+													}
+												</select>
+											</div>
+										</div>
+									</td>
+									<td>
+										<div class="uk-form-controls">
+											<div class="uk-form-controls vassell-header-formSelect" id="carrierChange">
+												<select asp-for="lstContainerDto[x].carrierChange" class="uk-select" id="form-horizontal-select">
+													<option>@Model.lstContainerDto[x].Carrier</option>
+													@foreach (var i in ViewBag.Carrier)
+													{
+														if (i != Model.lstContainerDto[x].Carrier)
+														{
+															<option>@i</option>
+														}
+													}
+												</select>
+											</div>
+										</div>
+									</td>
+									<td>@Model.lstContainerDto[x].ETD.ToString("dd MMM yyyy")</td>
+									<td>@Model.lstContainerDto[x].ETA.ToString("dd MMM yyyy")</td>
+								</tr>
+							</tbody>
+						</table>
 					</div>
-				</div>
 
-				<div class="uk-margin">
-					<label class="uk-form-label vessel-header-label" for="form-horizontal-text">Item</label>
-					<div class="uk-form-controls vassell-header-formSelect">
-						<input class="uk-input" id="form-horizontal-text" type="text" placeholder="Some text...">
+					@*table2*@
+					<div class="uk-grid uk-width-1-2 ">
+						<table class="uk-table vessel-table">
+							<thead>
+								<tr>
+									<th></th>
+									<th>Container</th>
+									<th>Size</th>
+									<th>Status</th>
+								</tr>
+							</thead>
+							<tbody>
+
+								<tr>
+									<td>
+										<input type="checkbox" asp-for="lstContainerDto[x].checkClick" />
+									</td>
+									<td>@Model.lstContainerDto[x].Name</td>
+									<td>@Model.lstContainerDto[x].Size</td>
+									<td>@Model.lstContainerDto[x].Status</td>
+								</tr>
+
+
+							</tbody>
+						</table>
 					</div>
-				</div>
+				}
+				else
+				{
+					if (Model.lstContainerDto[x].OriginPort != Model.lstContainerDto[x + 1].OriginPort || Model.lstContainerDto[x].DestPort != Model.lstContainerDto[x + 1].DestPort || Model.lstContainerDto[x].Loading != Model.lstContainerDto[x + 1].Loading || Model.lstContainerDto[x].Carrier != Model.lstContainerDto[x + 1].Carrier)
+					{
+						int end = x;
 
-			</form>
-		</div>
-		<div class="uk-width-1-5">
-			<p uk-margin>
-				<button class="uk-button uk-button-primary">
-					Search<span uk-icon="search"></span>
-				</button>
-			</p>
-			<p uk-margin>
-				<button class="uk-button uk-button-danger">
-					Achieve<span uk-icon="check"></span>
-				</button>
-			</p>
-		</div>
-	</div> @*end header*@
+						@for (int a = start; a <= end; a++)
+						{
+							<input type="hidden" asp-for="lstContainerDto[a].Id" value="@Model.lstContainerDto[a].Id" />
+							<input type="hidden" asp-for="lstContainerDto[a].RowVersion" value="@Model.lstContainerDto[a].RowVersion" />
+							<input type="hidden" asp-for="lstContainerDto[a].Name" value="@Model.lstContainerDto[a].Name" />
+							<input type="hidden" asp-for="lstContainerDto[a].Size" value="@Model.lstContainerDto[a].Size" />
+							<input type="hidden" asp-for="lstContainerDto[a].Loading" value="@Model.lstContainerDto[a].Loading" />
+							<input type="hidden" asp-for="lstContainerDto[a].Status" value="@Model.lstContainerDto[a].Status" />
+							<input type="hidden" asp-for="lstContainerDto[a].OriginPort" value="@Model.lstContainerDto[a].OriginPort" />
+							<input type="hidden" asp-for="lstContainerDto[a].DestPort" value="@Model.lstContainerDto[a].DestPort" />
+							<input type="hidden" asp-for="lstContainerDto[a].ETD" value="@Model.lstContainerDto[a].ETD" />
+							<input type="hidden" asp-for="lstContainerDto[a].ETA" value="@Model.lstContainerDto[a].ETA" />
+							<input type="hidden" asp-for="lstContainerDto[a].Carrier" value="@Model.lstContainerDto[a].Carrier" />
+						}
 
-	@*table 1*@
-	<div class="uk-grid uk-width-1-1">
-		<table class="uk-table table1">
-			<thead>
-				<tr>
-					<th>Origin Port</th>
-					<th>Dest Port</th>
-					<th>Mode</th>
-					<th>Carrier</th>
-					<th>Voyage</th>
-					<th>ETD</th>
-					<th>ETA</th>
-					<th>Transhipment</th>
-				</tr>
-			</thead>
+						<div class="uk-grid uk-width-1-1 table-vessel">
+							<table class="uk-table vessel-table">
+								<thead>
+									<tr>
+										<th>Origin Port</th>
+										<th>Dest Port</th>
+										<th>Mode</th>
+										<th>Carrier</th>
+										<th>ETD</th>
+										<th>ETA</th>
+									</tr>
+								</thead>
 
-			<tbody>
-				<tr>
-					<td>
-						<div class="uk-form-controls">
-							@Html.DropDownList("OriginPorts", new SelectList(ViewBag.OriginPorts), "Any", new { @id = "OriginPorts", @class = "uk-select" })
-							@*<select class="uk-select" id="form-horizontal-select">
-									<option>HCM</option>
-									<option>Option 02</option>
-								</select>*@
+								<tbody>
+									<tr>
+										<td>
+											<div class="uk-form-controls">
+												<div class="uk-form-controls vassell-header-formSelect" id="originPortChange">
+													<select asp-for="lstContainerDto[start].originPortChange" class="uk-select" id="form-horizontal-select">
+														<option>@Model.lstContainerDto[start].OriginPort</option>
+														@foreach (var i in ViewBag.OriginPort)
+														{
+															if (i != Model.lstContainerDto[start].OriginPort)
+															{
+																<option>@i</option>
+															}
+														}
+													</select>
+												</div>
+											</div>
+										</td>
+										<td>
+											<div class="uk-form-controls">
+												<div class="uk-form-controls vassell-header-formSelect" id="destChange">
+													<select asp-for="lstContainerDto[start].destPortChange" class="uk-select" id="form-horizontal-select">
+														<option>@Model.lstContainerDto[start].DestPort</option>
+														@foreach (var i in ViewBag.Dest)
+														{
+															if (i != Model.lstContainerDto[start].DestPort)
+															{
+																<option>@i</option>
+															}
+														}
+													</select>
+												</div>
+											</div>
+										</td>
+										<td>
+											<div class="uk-form-controls">
+												<div class="uk-form-controls vassell-header-formSelect" id="modeChange">
+													<select asp-for="lstContainerDto[start].modeChange" class="uk-select" id="form-horizontal-select">
+														<option>@Model.lstContainerDto[start].Loading</option>
+														@foreach (var i in ViewBag.Mode)
+														{
+															if (i != Model.lstContainerDto[start].Loading)
+															{
+																<option>@i</option>
+															}
+														}
+													</select>
+												</div>
+											</div>
+										</td>
+										<td>
+											<div class="uk-form-controls">
+												<div class="uk-form-controls vassell-header-formSelect" id="carrierChange">
+													<select asp-for="lstContainerDto[start].carrierChange" class="uk-select" id="form-horizontal-select">
+														<option>@Model.lstContainerDto[start].Carrier</option>
+														@foreach (var i in ViewBag.Carrier)
+														{
+															if (i != Model.lstContainerDto[start].Carrier)
+															{
+																<option>@i</option>
+															}
+														}
+													</select>
+												</div>
+											</div>
+										</td>
+										<td>@Model.lstContainerDto[start].ETD.ToString("dd MMM yyyy")</td>
+										<td>@Model.lstContainerDto[start].ETA.ToString("dd MMM yyyy")</td>
+									</tr>
+								</tbody>
+							</table>
 						</div>
-					</td>
-					<td>
-						<div class="uk-form-controls">
-							@Html.DropDownList("DestPorts", new SelectList(ViewBag.DestPorts), "Any", new { @id = "DestPorts", @class = "uk-select" })
-							@*<select class="uk-select" id="form-horizontal-select">
-									<option>HONGKONG1</option>
-									<option>Option 02</option>
-								</select>*@
-						</div>
-					</td>
-					<td>
-						<div class="uk-form-controls">
-							@Html.DropDownList("Modes", new SelectList(ViewBag.Modes), "Any", new { @id = "Modes", @class = "uk-select" })
-							@*<select class="uk-select" id="form-horizontal-select">
-			<option>ROAD</option>
-			<option>Option 02</option>
-		</select>*@
-						</div>
-					</td>
-					<td>
-						<div class="uk-form-controls">
-							<select class="uk-select" id="form-horizontal-select">
-								<option>XEKO</option>
-								<option>Option 02</option>
-							</select>
-						</div>
-					</td>
-					<td>test</td>
-					<td>test</td>
-					<td>test</td>
-					<td>
-						<div class="uk-form-controls">
-							<select class="uk-select" id="form-horizontal-select">
-								<option>Confirmed</option>
-								<option>Option 02</option>
-							</select>
-						</div>
-					</td>
-				</tr>
-			</tbody>
-		</table>
-	</div>
+						@*table2*@
 
-	@*table2*@
-	<div class="uk-grid uk-width-1-2">
-		<table class="uk-table">
-			<thead>
-				<tr>
-					<th></th>
-					<th>Container</th>
-					<th>Size</th>
-					<th>Status</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr>
-					<td>
-						<div class="uk-margin uk-grid-small uk-child-width-auto uk-grid">
-							<label><input class="uk-checkbox" type="checkbox"></label>
+						<div class="uk-grid uk-width-1-2">
+							<table class="uk-table vessel-table">
+								<thead>
+									<tr>
+										<th></th>
+										<th>Container</th>
+										<th>Size</th>
+										<th>Status</th>
+									</tr>
+								</thead>
+								<tbody>
+									@for (int a = start; a <= end; a++)
+									{
+										<tr>
+											<td>
+												<input type="checkbox" asp-for="lstContainerDto[a].checkClick" />
+											</td>
+											<td>@Model.lstContainerDto[a].Name</td>
+											<td>@Model.lstContainerDto[a].Size</td>
+											<td>@Model.lstContainerDto[a].Status</td>
+										</tr>
+									}
+								</tbody>
+							</table>
 						</div>
-					</td>
-					<td>test</td>
-					<td>test</td>
-					<td>test</td>
-				</tr>
-			</tbody>
-		</table>
-	</div>
-
+						start = x + 1;
+					}
+				}
+			}
+		</form>
+	}
 
 </div>
+
+<script src="~/js/jquery-3.3.1.min.js"></script>
+<script>
+	$("#achivebtn").click(function (event) {
+		alert("Your container details are successfully updated");
+		event.preventDefault();
+	});
+
+	$("#achivebtn").click(function () {
+		$("#achiveForm").submit();
+	});
+</script>

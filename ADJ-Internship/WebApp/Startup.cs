@@ -119,6 +119,10 @@ namespace ADJ.WebApp
           name: "ProgressCheck",
           template: "{controller=ProgressCheck}/{action=Index}/{pageIndex?}"
           );
+        routes.MapRoute(
+         name: "Manifest",
+         template: "{controller=Manifest}/{action=Index}/{pageIndex?}"
+         );
       });
     }
   }
