@@ -1,4 +1,4 @@
-﻿$(document.body).on('click', '.checkAll', function () {
+﻿$(document.body).on('click', '#checkAll', function () {
   var checkBoxes = document.getElementsByClassName("checkBox");
   var current = $(this)[0].checked;
   for (i = 0; i < checkBoxes.length; i++) {
