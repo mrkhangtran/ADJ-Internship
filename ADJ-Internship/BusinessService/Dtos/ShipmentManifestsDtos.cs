@@ -62,14 +62,13 @@ namespace ADJ.BusinessService.Dtos
 
 		public decimal BookingCube { get; set; } //= Booking Qty * Cube(of 1 item)
 
-		public decimal ShipCube { get; set; } //=Ship Qty*Cube(of 1 item)
-
-		public decimal NetWeight { get; set; } //= Ship Qty*KGS(of 1 item)
+    public decimal ShipCube { get; set; } //=Ship Qty*Cube(of 1 item)
+    //[QuantityValidation("GrossWeight")]
+    public decimal NetWeight { get; set; } //= Ship Qty*KGS(of 1 item)
 
 		public DateTime ETDDate { get; set; } //value taken from shipment booking
 
-		[QuantityValidation("NetWeight")]
-		public decimal GrossWeight { get; set; }
+    public decimal GrossWeight { get; set; }
 
 		public string Manifested { get; set; }
 

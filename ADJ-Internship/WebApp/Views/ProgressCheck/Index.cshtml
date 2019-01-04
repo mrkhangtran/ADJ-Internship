@@ -98,83 +98,83 @@
 					</tbody>
 				</table>
 
-			</div>
-		</div>
-	</div>
-	<br />
-	<br />
-	<div id="renderSearching">
-		@for (int i = 0; i < Model.Items.Count(); i++)
-		{
-			<div class="uk-grid uk-margin-small">
-				@Html.HiddenFor(model => model.Items[i].OrderId, new { Value = Model.Items[i].OrderId })
-				@Html.HiddenFor(model => model.Items[i].Id, new { Value = Model.Items[i].Id })
-				<table class="uk-table uk-table-small">
-					<thead>
-						<tr>
-							<td>
-								Supplier
-							</td>
-							<td>
-								Factory
-							</td>
-						</tr>
-					</thead>
-					<tbody>
-						<tr>
-							<td>@Model.Items[i].Supplier</td>
-							@Html.HiddenFor(model => model.Items[i].Supplier)
-							<td>@Model.Items[i].Factory</td>
-							@Html.HiddenFor(model => model.Items[i].Factory)
-						</tr>
-					</tbody>
-				</table>
-				<table class="uk-table uk-table-small">
-					<thead>
-						<tr>
-							<td></td>
-							<td>
-								PO Number
-							</td>
-							<td>
-								PO Quantity
-							</td>
-							<td>
-								PO Check Quantity
-							</td>
-							<td>
-								PO Ship Date
-							</td>
-							<td>
-								Inspection Date
-							</td>
-							<td>
-								Int Ship Date
-							</td>
-							<td>
-								PO Quantity Complete
-							</td>
-						</tr>
-					</thead>
-					<tbody>
-						<tr>
-							<td>
-								@Html.CheckBoxFor(model => model.Items[i].selected)
-							</td>
-							<td>@Model.Items[i].PONumber</td>
-							@Html.HiddenFor(model => model.Items[i].PONumber)
-							<td>@Model.Items[i].POQuantity</td>
-							@Html.HiddenFor(model => model.Items[i].POQuantity)
-							<td>@Model.Items[i].EstQtyToShip</td>
-							@Html.HiddenFor(model => model.Items[i].EstQtyToShip)
-							<td>@Model.Items[i].ShipDate</td>
-							<td>
-								@Html.TextBoxFor(model => model.Items[i].InspectionDate, Model.Items[i].InspectionDate.ToString("yyyy-MM-dd"), new { type = "date", @class = "uk-input" })
-								@Html.ValidationMessageFor(model => model.Items[i].InspectionDate, "", new { @class = "uk-text-danger" })
-							</td>
-							<td>
-								@Html.TextBoxFor(model => model.Items[i].IntendedShipDate, Model.Items[i].IntendedShipDate.ToString("yyyy-MM-dd"), new { type = "date", @class = "uk-input" })
-								@Html.ValidationMessageFor(model => model.Items[i].IntendedShipDate, "", new { @class = "uk-text-danger" })
+      </div>
+    </div>
+  </div>
+  <br />
+  <br />
+  <div id="renderSearching">
+    @for (int i = 0; i < Model.Items.Count(); i++)
+    {
+      <div class="uk-grid uk-margin-small uk-width-1-2">
+        @Html.HiddenFor(model => model.Items[i].OrderId, new { Value = Model.Items[i].OrderId })
+        @Html.HiddenFor(model => model.Items[i].Id, new { Value = Model.Items[i].Id })
+        <table class="uk-table uk-table-small">
+          <thead>
+            <tr>
+              <td>
+                Supplier
+              </td>
+              <td>
+                Factory
+              </td>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>@Model.Items[i].Supplier</td>
+              @Html.HiddenFor(model => model.Items[i].Supplier)
+              <td>@Model.Items[i].Factory</td>
+              @Html.HiddenFor(model => model.Items[i].Factory)
+            </tr>
+          </tbody>
+        </table>
+        <table class="uk-table uk-table-small uk-width-3-4">
+          <thead>
+            <tr>
+              <td></td>
+              <td>
+                PO Number
+              </td>
+              <td>
+                PO Quantity
+              </td>
+              <td>
+                PO Check Quantity
+              </td>
+              <td>
+                PO Ship Date
+              </td>
+              <td>
+                Inspection Date
+              </td>
+              <td>
+                Int Ship Date
+              </td>
+              <td>
+                PO Quantity Complete
+              </td>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                @Html.CheckBoxFor(model => model.Items[i].selected)
+              </td>
+              <td>@Model.Items[i].PONumber</td>
+              @Html.HiddenFor(model => model.Items[i].PONumber)
+              <td>@Model.Items[i].POQuantity</td>
+              @Html.HiddenFor(model => model.Items[i].POQuantity)
+              <td>@Model.Items[i].EstQtyToShip</td>
+              @Html.HiddenFor(model => model.Items[i].EstQtyToShip)
+              <td>@Model.Items[i].ShipDate</td>
+              <td>
+                @Html.TextBoxFor(model => model.Items[i].InspectionDate, Model.Items[i].InspectionDate.ToString("yyyy-MM-dd"), new { type = "date", @class = "uk-input" })
+                @Html.ValidationMessageFor(model => model.Items[i].InspectionDate, "", new { @class = "uk-text-danger" })
+              </td>
+              <td>
+                @Html.TextBoxFor(model => model.Items[i].IntendedShipDate, Model.Items[i].IntendedShipDate.ToString("yyyy-MM-dd"), new { type = "date", @class = "uk-input" })
+                @Html.ValidationMessageFor(model => model.Items[i].IntendedShipDate, "", new { @class = "uk-text-danger" })
 
 							</td>
 							<td>
@@ -342,4 +342,12 @@
       }
     }
   };
+  $("#modal-center").on({
+    'hide.uk.modal': function () {
+      window.location.href = "/ProgressCheck";
+    }
+  });
 </script>
+
+
+
