@@ -11,23 +11,11 @@ using System.Text;
 
 namespace ADJ.BusinessService.Dtos
 {
-  public class DCReceivedDtos : EntityDtoBase, ICreateMapping
+  public class DCReceivedDtos
   {
-    public void CreateMapping(Profile profile)
-    {
-      profile.CreateMap<DCConfirmation, DCReceivedDtos>().IncludeBase<EntityBase, EntityDtoBase>();
-      profile.CreateMap<DCReceivedDtos, DCConfirmation>().IncludeBase<EntityDtoBase, EntityBase>();
-    }
-
-    public int ContainerId { get; set; }
-
-    [Display(Name = "Delivery Date")]
-    public DateTime DeliveryDate { get; set; }
-
-    [Display(Name = "Delivery Time")]
-    public string DeliveryTime { get; set; }
-
-    DCReceivedFilterDtos FilterDtos { get; set; }
+    public DCReceivedFilterDtos FilterDtos { get; set; }
+    
+    public PagedListResult<DCReceivedResultDtos> ResultDtos { get; set; }
   }
 
   public class DCReceivedFilterDtos
@@ -59,7 +47,7 @@ namespace ADJ.BusinessService.Dtos
     public DateTime? DeliveryDateTo { get; set; }
 
     //Droplist of [DC Booking Received] and [ Delivered]
-    public ContainerStatus Status { get; set; }
+    public string Status { get; set; }
 
     [StringLength(10)]
     [Display(Name = "Item Number")]
@@ -67,8 +55,18 @@ namespace ADJ.BusinessService.Dtos
     public string ItemNumber { get; set; }
   }
 
-  public class DCReceivedResultDtos
+  public class DCReceivedResultDtos : EntityDtoBase, ICreateMapping
   {
+    public void CreateMapping(Profile profile)
+    {
+      profile.CreateMap<DCConfirmation, DCReceivedResultDtos>().IncludeBase<EntityBase, EntityDtoBase>();
+      profile.CreateMap<DCReceivedResultDtos, DCConfirmation>().IncludeBase<EntityDtoBase, EntityBase>();
+    }
+
+    public int ContainerId { get; set; }
+
+    public bool Selected { get; set; }
+
     public string Container { get; set; }
     
     public string DC { get; set; }
@@ -81,8 +79,12 @@ namespace ADJ.BusinessService.Dtos
 
     public string BookingRef { get; set; }
 
+    //Default = today's date
+    [Display(Name = "Delivery Date")]
     public DateTime DeliverDate { get; set; }
 
+    //Format: hh:mm
+    [Display(Name = "Delivery Time")]
     public string DeliverTime { get; set; }
 
     public ContainerStatus Status { get; set; }
