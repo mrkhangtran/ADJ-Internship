@@ -19,6 +19,8 @@ namespace ADJ.DataModel.ShipmentTrack
 
     public ContainerStatus Status { get; set; }
 
+    public virtual CA CA { get; set; }
+
     public virtual DCBooking DCBooking { get; set; }
 
     public virtual DCConfirmation DCConfirmation { get; set; }

@@ -1,0 +1,37 @@
+﻿@model ADJ.BusinessService.Dtos.DCReceivedDtos
+
+<h3>DC Received</h3>
+
+<form asp-action="Search" asp-controller="DCReceived" id="searchForm"
+      data-ajax-success="showResult"
+      data-ajax="true"
+      data-ajax-method="POST"
+      data-ajax-mode="replace"
+      data-ajax-update="#resultPartial">
+
+  <div class="uk-card uk-card-default uk-card-body">
+    <partial name="_Search" model="Model" />
+  </div>
+
+</form>
+
+<hr class="uk-divider-icon" />
+
+<form asp-action="Achieve" asp-controller="DCReceived" id="achieveForm"
+      data-ajax-complete="showResult"
+      data-ajax="true"
+      data-ajax-method="POST"
+      data-ajax-mode="replace"
+      data-ajax-update="#resultPartial">
+
+  <div id="resultPartial">
+    <partial name="_Result" model="Model" />
+  </div>
+</form>
+
+@section Scripts
+  {
+  <script type="text/javascript" src="@Url.Content("~/js/DCReceived.js")"></script>
+}
+
+

@@ -1,6 +1,15 @@
-﻿
+﻿@using ADJ.Common
 @model ADJ.BusinessService.Dtos.VesselDepartureDtos
-
+@{
+	int countOfDespatch = 0;
+	for (int i = 0; i < Model.lstContainerDto.Count; i++)
+	{
+		if (Model.lstContainerDto[i].Status == ContainerStatus.Despatch)
+		{
+			countOfDespatch += 1;
+		}
+	}
+}
 
 <div class="vessel-right">
 
@@ -42,7 +51,7 @@
 				<div class="uk-margin">
 					<label class="uk-form-label vessel-header-label" for="form-horizontal-text">Container</label>
 					<div class="uk-form-controls vassell-header-formSelect">
-						<input asp-for="filterDto.container" class="uk-input" id="form-horizontal-text" type="text" placeholder="Some text...">
+						<input asp-for="filterDto.containerId" class="uk-input" id="form-horizontal-text" type="text" placeholder="Some text...">
 					</div>
 				</div>
 
@@ -119,6 +128,16 @@
 					<input type="hidden" asp-for="lstContainerDto[x].ETA" value="@Model.lstContainerDto[x].ETA" />
 					<input type="hidden" asp-for="lstContainerDto[x].Carrier" value="@Model.lstContainerDto[x].Carrier" />
 
+					if (Model.lstContainerDto[x].Status == ContainerStatus.Despatch)
+					{
+						<input type="hidden" asp-for="lstArriveOfDespatchDto[countOfDespatch-1].ContainerId" value="@Model.lstContainerDto[x].Id" />
+						<input type="hidden" asp-for="lstArriveOfDespatchDto[countOfDespatch-1].Carrier" value="@Model.lstContainerDto[x].Carrier" />
+						<input type="hidden" asp-for="lstArriveOfDespatchDto[countOfDespatch-1].ETD" value="@Model.lstContainerDto[x].ETD" />
+						<input type="hidden" asp-for="lstArriveOfDespatchDto[countOfDespatch-1].ETA" value="@Model.lstContainerDto[x].ETA" />
+						<input type="hidden" asp-for="lstArriveOfDespatchDto[countOfDespatch-1].OriginPort" value="@Model.lstContainerDto[x].OriginPort" />
+						<input type="hidden" asp-for="lstArriveOfDespatchDto[countOfDespatch-1].DestinationPort" value="@Model.lstContainerDto[x].DestPort" />
+						<input type="hidden" asp-for="lstArriveOfDespatchDto[countOfDespatch-1].Mode" value="@Model.lstContainerDto[x].Loading" />
+					}
 					<div class="uk-grid uk-width-1-1 table-vessel">
 						<table class="uk-table vessel-table">
 							<thead>
@@ -240,17 +259,31 @@
 
 						@for (int a = start; a <= end; a++)
 						{
-							<input type="hidden" asp-for="lstContainerDto[a].Id" value="@Model.lstContainerDto[a].Id" />
-							<input type="hidden" asp-for="lstContainerDto[a].RowVersion" value="@Model.lstContainerDto[a].RowVersion" />
-							<input type="hidden" asp-for="lstContainerDto[a].Name" value="@Model.lstContainerDto[a].Name" />
-							<input type="hidden" asp-for="lstContainerDto[a].Size" value="@Model.lstContainerDto[a].Size" />
-							<input type="hidden" asp-for="lstContainerDto[a].Loading" value="@Model.lstContainerDto[a].Loading" />
-							<input type="hidden" asp-for="lstContainerDto[a].Status" value="@Model.lstContainerDto[a].Status" />
-							<input type="hidden" asp-for="lstContainerDto[a].OriginPort" value="@Model.lstContainerDto[a].OriginPort" />
-							<input type="hidden" asp-for="lstContainerDto[a].DestPort" value="@Model.lstContainerDto[a].DestPort" />
-							<input type="hidden" asp-for="lstContainerDto[a].ETD" value="@Model.lstContainerDto[a].ETD" />
-							<input type="hidden" asp-for="lstContainerDto[a].ETA" value="@Model.lstContainerDto[a].ETA" />
-							<input type="hidden" asp-for="lstContainerDto[a].Carrier" value="@Model.lstContainerDto[a].Carrier" />
+								<input type="hidden" asp-for="lstContainerDto[a].Id" value="@Model.lstContainerDto[a].Id" />
+								<input type="hidden" asp-for="lstContainerDto[a].RowVersion" value="@Model.lstContainerDto[a].RowVersion" />
+								<input type="hidden" asp-for="lstContainerDto[a].Name" value="@Model.lstContainerDto[a].Name" />
+								<input type="hidden" asp-for="lstContainerDto[a].Size" value="@Model.lstContainerDto[a].Size" />
+								<input type="hidden" asp-for="lstContainerDto[a].Loading" value="@Model.lstContainerDto[a].Loading" />
+								<input type="hidden" asp-for="lstContainerDto[a].Status" value="@Model.lstContainerDto[a].Status" />
+								<input type="hidden" asp-for="lstContainerDto[a].OriginPort" value="@Model.lstContainerDto[a].OriginPort" />
+								<input type="hidden" asp-for="lstContainerDto[a].DestPort" value="@Model.lstContainerDto[a].DestPort" />
+								<input type="hidden" asp-for="lstContainerDto[a].ETD" value="@Model.lstContainerDto[a].ETD" />
+								<input type="hidden" asp-for="lstContainerDto[a].ETA" value="@Model.lstContainerDto[a].ETA" />
+								<input type="hidden" asp-for="lstContainerDto[a].Carrier" value="@Model.lstContainerDto[a].Carrier" />
+
+							if (Model.lstContainerDto[a].Status == ContainerStatus.Despatch)
+							{
+								for (int k = 0; k < countOfDespatch; k++)
+								{
+									<input type="hidden" asp-for="lstArriveOfDespatchDto[k].ContainerId" value="@Model.lstContainerDto[a].Id" />
+									<input type="hidden" asp-for="lstArriveOfDespatchDto[k].Carrier" value="@Model.lstContainerDto[a].Carrier" />
+									<input type="hidden" asp-for="lstArriveOfDespatchDto[k].ETD" value="@Model.lstContainerDto[a].ETD" />
+									<input type="hidden" asp-for="lstArriveOfDespatchDto[k].ETA" value="@Model.lstContainerDto[a].ETA" />
+									<input type="hidden" asp-for="lstArriveOfDespatchDto[k].OriginPort" value="@Model.lstContainerDto[a].OriginPort" />
+									<input type="hidden" asp-for="lstArriveOfDespatchDto[k].DestinationPort" value="@Model.lstContainerDto[a].DestPort" />
+									<input type="hidden" asp-for="lstArriveOfDespatchDto[k].Mode" value="@Model.lstContainerDto[a].Loading" />
+								}
+							}
 						}
 
 						<div class="uk-grid uk-width-1-1 table-vessel">

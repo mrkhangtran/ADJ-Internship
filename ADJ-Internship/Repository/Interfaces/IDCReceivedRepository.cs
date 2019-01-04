@@ -6,7 +6,7 @@ using System.Text;
 
 namespace ADJ.Repository.Interfaces
 {
-  public interface IDCBookingRepository : IRepository<DCBooking>
+  public interface IDCReceivedRepository : IRepository<DCConfirmation>
   {
   }
 }

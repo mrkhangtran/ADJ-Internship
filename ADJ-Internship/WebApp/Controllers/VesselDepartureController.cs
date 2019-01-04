@@ -35,7 +35,7 @@ namespace WebApp.Controllers
 		{
 			await SetDropDownListAsync();
 
-			VesselDepartureDtos result = await _vesselDepartureService.ListContainerDtoAsync(pageIndex, pageSize, filter.filterDto.origin, filter.filterDto.originPort, filter.filterDto.container, filter.filterDto.status, filter.filterDto.etdFrom, filter.filterDto.etdTo);
+			VesselDepartureDtos result = await _vesselDepartureService.ListContainerDtoAsync(filter.filterDto.containerId, filter.filterDto.origin, filter.filterDto.originPort, filter.filterDto.status, pageIndex, pageSize, filter.filterDto.etdFrom, filter.filterDto.etdTo);
 
 			return View("Index", result);
 		}

@@ -14,6 +14,7 @@ namespace ADJ.Repository.Implementations
     public DCBookingRepository(ApplicationDbContext dbContext) : base(dbContext)
     {
     }
-    protected override Func<IQueryable<DCBooking>, IQueryable<DCBooking>> IncludeDependents => throw new NotImplementedException();
+
+    protected override Func<IQueryable<DCBooking>, IQueryable<DCBooking>> IncludeDependents => null;
   }
 }
