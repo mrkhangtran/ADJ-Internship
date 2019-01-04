@@ -24,12 +24,13 @@ namespace ADJ.BusinessService.Implementations
 
     private readonly IContainerRepository _containerRepository;
     private readonly IConfirmArrivalRepository _confirmArrivalRepository;
+    private readonly IArriveOfDespatchRepository _arriveOfDespatchRepository;
 
     private readonly int pageSize;
 
     public ConfirmArrivalService(IUnitOfWork unitOfWork, IMapper mapper, ApplicationContext appContext, 
       IDataProvider<Container> containerDataProvider, IDataProvider<Booking> bookingDataProvider, IDataProvider<Order> orderDataProvider,
-    IContainerRepository containerRepository, IConfirmArrivalRepository confirmArrivalRepository) : base(unitOfWork, mapper, appContext)
+    IContainerRepository containerRepository, IConfirmArrivalRepository confirmArrivalRepository, IArriveOfDespatchRepository arriveOfDespatchRepository) : base(unitOfWork, mapper, appContext)
     {
       _containerDataProvider = containerDataProvider;
       _bookingDataProvider = bookingDataProvider;
@@ -37,6 +38,7 @@ namespace ADJ.BusinessService.Implementations
 
       _containerRepository = containerRepository;
       _confirmArrivalRepository = confirmArrivalRepository;
+      _arriveOfDespatchRepository = arriveOfDespatchRepository;
 
       pageSize = 6;
     }
@@ -50,7 +52,7 @@ namespace ADJ.BusinessService.Implementations
 
       if (origin != null)
       {
-        //Expression<Func<Container, bool>> filter = x => x.Manifests.Where(p => p.Booking.Order.Origin == origin).Count() > 0;
+        Expression<Func<Container, bool>> filter = x => x.Manifests.Where(p => p.Booking.Order.Origin == origin).Count() > 0;
         All = All.And(filter);
       }
 
@@ -125,11 +127,14 @@ namespace ADJ.BusinessService.Implementations
         Booking booking = await _bookingDataProvider.GetByIdAsync((item.Manifests.ToList())[0].BookingId);
         Order order = await _orderDataProvider.GetByIdAsync(booking.OrderId);
         List<CA> confirmArrival = await _confirmArrivalRepository.Query(x => x.ContainerId == item.Id, false).SelectAsync();
+        List<ArriveOfDespatch> arriveOfDespatch = await _arriveOfDespatchRepository.Query(x => x.ContainerId == item.Id, false).SelectAsync();
 
-        output.DestinationPort = booking.PortOfDelivery;
+        //output.DestinationPort = booking.PortOfDelivery;
+        output.DestinationPort = arriveOfDespatch[0].DestinationPort;
         output.Origin = order.Origin;
         output.Mode = item.Loading;
-        output.Carrier = booking.Carrier;
+        //output.Carrier = booking.Carrier;
+        output.Carrier = arriveOfDespatch[0].Carrier;
 
         output.Vendor = order.Vendor;
         output.Container = item.Name;
