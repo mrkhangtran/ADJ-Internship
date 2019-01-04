@@ -43,6 +43,9 @@ else
             Booking Date
           </td>
           <td>
+            Booking Time
+          </td>
+          <td>
             Booking Ref
           </td>
           <td>
@@ -56,99 +59,141 @@ else
           {
             for (int i = 0; i < Model.Items.Count(); i++)
             {
-              <tr>
-                <td>
-                  <input asp-for="Items[i].selected" class="uk-checkbox" />
-                </td>
-                <td>
-                  @Model.Items[i].Name
-                </td>
-                <td>
-                  @Model.Items[i].DestPort
-                </td>
-                <td>
-                  @Model.Items[i].ArrivalDate
-                </td>
-                <td>
-                  @Model.Items[i].ShipCarton
-                </td>
-                <td>
-                  @Model.Items[i].ShipCube
-                </td>
-                <td>
-                  @Model.Items[i].ShipQuantity
-                </td>
-                <td>
-                  @{
-                    if (Model.Items[i].Id > 0)
-                    {
-                      @Model.Items[i].DistributionCenter
-                    }
-                    else
-                    {
-                      <select asp-for="Items[i].DistributionCenter" asp-items="new SelectList(ViewBag.DC)" class="uk-input"></select>
-                    }
-                  }
-                </td>
-                <td>
-                  @{
-                    if (Model.Items[i].Id > 0)
-                    {
-                      @Model.Items[i].Haulier
-                    }
-                    else
-                    {
-                      <select asp-for="Items[i].Haulier" asp-items="new SelectList(ViewBag.Haulier)" class="uk-input"></select>
-                    }
-                  }
-                </td>
-                <td>
-                  @{
-                    if (Model.Items[i].Id > 0)
-                    {
-                      @Model.Items[i].Client
-                    }
-                    else
-                    {
-                      <input asp-for="Items[i].Client" class="uk-input" />
-                    }
-                  }
+        <tr>
+          <td>
+            <input asp-for="Items[i].selected" class="uk-checkbox" />
+          </td>
+          <td>
+            @Model.Items[i].Name
+          </td>
+          <td>
+            @Model.Items[i].DestPort
+          </td>
+          <td>
+            @Model.Items[i].ArrivalDate
+          </td>
+          <td>
+            @Model.Items[i].ShipCarton
+          </td>
+          <td>
+            @Model.Items[i].ShipCube
+          </td>
+          <td>
+            @Model.Items[i].ShipQuantity
+          </td>
+          <td>
+            @{
+              if (Model.Items[i].Id > 0)
+              {
+                @Model.Items[i].DistributionCenter
+              }
+              else
+              {
+                <select asp-for="Items[i].DistributionCenter" asp-items="new SelectList(ViewBag.DC)" class="uk-input"></select>
+              }
+            }
+          </td>
+          <td>
+            @{
+              if (Model.Items[i].Id > 0)
+              {
+                @Model.Items[i].Haulier
+              }
+              else
+              {
+                <select asp-for="Items[i].Haulier" asp-items="new SelectList(ViewBag.Haulier)" class="uk-input"></select>
+              }
+            }
+          </td>
+          <td>
+            @{
+              if (Model.Items[i].Id > 0)
+              {
+                @Model.Items[i].Client
+              }
+              else
+              {
+                <input asp-for="Items[i].Client" class="uk-input" />
+              }
+            }
 
-                </td>
-                <td>
-                  @{
-                    if (Model.Items[i].Id > 0)
-                    {
-                      @Model.Items[i].BookingDate
-                    }
-                    else
-                    {
-                      <input asp-for="Items[i].BookingDate" class="uk-input" type="date" />
-                    }
-                  }
+          </td>
+          <td>
+            @{
+              if (Model.Items[i].Id > 0)
+              {
+                @Model.Items[i].BookingTime
+              }
+              else
+              {
+                <input asp-for="Items[i].BookingTime" class="uk-input" />
+              }
+            }
 
-                </td>
-                <td>
-                  @{
-                    if (Model.Items[i].Id > 0)
-                    {
-                      @Model.Items[i].BookingRef
-                    }
-                    else
-                    {
-                      <input asp-for="Items[i].BookingRef" class="uk-input" />
-                    }
-                  }
+          </td>
+          <td>
+            @{
+              if (Model.Items[i].Id > 0)
+              {
+                @Model.Items[i].BookingDate
+              }
+              else
+              {
+                <input asp-for="Items[i].BookingDate" class="uk-input" type="date" />
+              }
+            }
 
-                </td>
-                <td>
-                  @Model.Items[i].Status
-                </td>
-              </tr>
+          </td>
+          <td>
+            @{
+              if (Model.Items[i].Id > 0)
+              {
+                @Model.Items[i].BookingRef
+              }
+              else
+              {
+                <input asp-for="Items[i].BookingRef" class="uk-input" />
+              }
+            }
+
+          </td>
+          <td>
+            @Model.Items[i].Status
+          </td>
+        </tr>
             }
           }
         }
       </tbody>
     </table>
+  </div>
+  <div class="uk-align-right">
+    <ul class="uk-pagination">
+      @{
+        if (ViewBag.pageIndex > 1)
+        {
+          <li><a value="@(ViewBag.pageIndex - 1)" class="filterItem page-link"><span uk-pagination-previous></span></a></li>
+        }
+        for (var i = 1; i <= Model.PageCount; i++)
+        {
+          if (i == ViewBag.pageIndex)
+          {
+            <li class="uk-disabled">
+              <a value="@i" class="page-link"><u>@i</u></a>
+            </li>
+          }
+          else
+          {
+            <li class="uk-active">
+              <a value="@i" class="filterItem page-link">@i</a>
+            </li>
+          }
+        }
+        if (ViewBag.pageIndex < Model.PageCount)
+        {
+          <li><a value="@(ViewBag.pageIndex + 1)" class="filterItem page-link"><span uk-pagination-next></span></a></li>
+        }
+      }
+    </ul>
   </div>
 }

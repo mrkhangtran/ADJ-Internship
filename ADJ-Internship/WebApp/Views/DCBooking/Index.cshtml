@@ -1,5 +1,5 @@
 ﻿@model ADJ.Common.PagedListResult<ADJ.BusinessService.Dtos.DCBookingDtos>
-<form id="manifest" asp-action="CreateOrUpdate" asp-controller="Manifest">
+<form id="dcbooking" asp-action="CreateOrUpdate" asp-controller="DCBooking">
   <div class="uk-container">
     <div class="uk-grid">
       <div class="uk-width-1-3">
@@ -9,7 +9,7 @@
               <td><label>Destination Port</label></td>
               <td>
                 <div class="uk-form-select" data-uk-form-select>
-                  @Html.DropDownList("DestinationPort", new SelectList("ViewBag.Dest"), new { @id = "DestinationPort", @class = "uk-select" })
+                  @Html.DropDownList("DestinationPort", new SelectList(ViewBag.DestPort),"Any", new { @id = "DestinationPort", @class = "uk-select" })
                 </div>
               </td>
             </tr>
@@ -35,7 +35,7 @@
               <td><label>Status</label></td>
               <td>
                 <div class="uk-form-select" data-uk-form-select>
-                  @Html.DropDownList("Status", new SelectList("ViewBag.Dest"), new { @id = "Status", @class = "uk-select" })
+                  @Html.DropDownList("Status", new SelectList(ViewBag.Status),"Any", new { @id = "Status", @class = "uk-select" })
                 </div>
               </td>
             </tr>
@@ -49,7 +49,7 @@
               <td><label>DC</label></td>
               <td>
                 <div class="uk-form-select" data-uk-form-select>
-                  @Html.DropDownList("DC", new SelectList("DC"), new { @id = "DC", @class = "uk-select" })
+                  @Html.DropDownList("DC", new SelectList(ViewBag.DC),"Any", new { @id = "DC", @class = "uk-select" })
                 </div>
               </td>
             </tr>
@@ -133,6 +133,9 @@
                 Booking Date
               </td>
               <td>
+                Booking Time
+              </td>
+              <td>
                 Booking Ref
               </td>
               <td>
@@ -146,6 +149,8 @@
               {
                 for (int i = 0; i < Model.Items.Count(); i++)
                 {
+                  @Html.HiddenFor(model => model.Items[i].Id, new { Value = Model.Items[i].Id })
+                  @Html.HiddenFor(model => model.Items[i].ContainerId, new { Value = Model.Items[i].ContainerId })
                   <tr>
                     <td>
                       <input asp-for="Items[i].selected" class="uk-checkbox" />
@@ -176,7 +181,7 @@
                         }
                         else
                         {
-                          <select asp-for="Items[i].DistributionCenter" asp-items="new SelectList(ViewBag.DC)" class="uk-input"></select>
+                          <select style="width:150px" asp-for="Items[i].DistributionCenter" asp-items="new SelectList(ViewBag.DC)" class="uk-input"></select>
                         }
                       }
                     </td>
@@ -222,6 +227,19 @@
                       @{
                         if (Model.Items[i].Id > 0)
                         {
+                          @Model.Items[i].BookingTime
+                        }
+                        else
+                        {
+                          <input asp-for="Items[i].BookingTime" class="uk-input" />
+                        }
+                      }
+
+                    </td>
+                    <td>
+                      @{
+                        if (Model.Items[i].Id > 0)
+                        {
                           @Model.Items[i].BookingRef
                         }
                         else
@@ -240,6 +258,35 @@
             }
           </tbody>
         </table>
+      </div>
+      <div class="uk-align-right">
+        <ul class="uk-pagination">
+          @{
+            if (ViewBag.pageIndex > 1)
+            {
+              <li><a value="@(ViewBag.pageIndex - 1)" class="filterItem page-link"><span uk-pagination-previous></span></a></li>
+            }
+            for (var i = 1; i <= Model.PageCount; i++)
+            {
+              if (i == ViewBag.pageIndex)
+              {
+                <li class="uk-disabled">
+                  <a value="@i" class="page-link"><u>@i</u></a>
+                </li>
+              }
+              else
+              {
+                <li class="uk-active">
+                  <a value="@i" class="filterItem page-link">@i</a>
+                </li>
+              }
+            }
+            if (ViewBag.pageIndex < Model.PageCount)
+            {
+              <li><a value="@(ViewBag.pageIndex + 1)" class="filterItem page-link"><span uk-pagination-next></span></a></li>
+            }
+          }
+        </ul>
       </div>
     </div>
   </div>

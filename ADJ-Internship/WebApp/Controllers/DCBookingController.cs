@@ -22,13 +22,34 @@ namespace WebApp.Controllers
     {
       ViewBag.DC = new List<string> { "Market Hong Kong", "Gas Customer Center","JSI Logistics" };
       ViewBag.Haulier = new List<string> {"123 Cargo","Cargo Core" };
+      SearchingDCBooking searchingDCBooking = await _dCBookingService.getItem();
+      ViewBag.DestPort = searchingDCBooking.DestinationPort;
+      ViewBag.Status = searchingDCBooking.Status;
       int current = pageIndex ?? 1;
+      ViewBag.pageIndex = current;
       PagedListResult<DCBookingDtos> pagedListResult = await _dCBookingService.ListDCBookingDtosAsync(current,10,DestinationPort,bookingref,bookingdatefrom,bookingdateto,DC,arrivaldatefrom,arrivaldateto,Status,Container);
       if (checkClick == true)
       {
         return PartialView("_SearchingDCBookingPartial", pagedListResult);
       }
       return View(pagedListResult);
+    }
+    public async Task<ActionResult> CreateOrUpdate(PagedListResult<DCBookingDtos> pagedListResult)
+    {
+      if (ModelState.IsValid)
+      {
+        foreach(var item in pagedListResult.Items)
+        {
+          await _dCBookingService.CreateOrUpdate(item);
+        }
+      }
+      ViewBag.DC = new List<string> { "Market Hong Kong", "Gas Customer Center", "JSI Logistics" };
+      ViewBag.Haulier = new List<string> { "123 Cargo", "Cargo Core" };
+      SearchingDCBooking searchingDCBooking = await _dCBookingService.getItem();
+      ViewBag.DestPort = searchingDCBooking.DestinationPort;
+      ViewBag.Status = searchingDCBooking.Status;
+      PagedListResult<DCBookingDtos> paged = await _dCBookingService.ListDCBookingDtosAsync();
+      return View("Index",paged);
     }
   }
 }

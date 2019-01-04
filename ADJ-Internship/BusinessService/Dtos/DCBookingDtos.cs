@@ -5,6 +5,7 @@ using AutoMapper;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Text;
 
 namespace ADJ.BusinessService.Dtos
@@ -28,6 +29,7 @@ namespace ADJ.BusinessService.Dtos
 
     public DateTime BookingDate { get; set; }
 
+    [RegularExpression("^(?:0?[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$", ErrorMessage = "Time is invalid")]
     public string BookingTime { get; set; }
 
     public string Haulier { get; set; }
@@ -55,5 +57,10 @@ namespace ADJ.BusinessService.Dtos
       profile.CreateMap<DCBooking, DCBookingDtos>().IncludeBase<EntityBase, EntityDtoBase>();
       profile.CreateMap<DCBookingDtos, DCBooking>().IncludeBase<EntityDtoBase, EntityBase>();
     }
+  }
+  public class SearchingDCBooking
+  {
+    public IEnumerable<string> DestinationPort { get; set; }
+    public IEnumerable<string> Status { get; set; }
   }
 }

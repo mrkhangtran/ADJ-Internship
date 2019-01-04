@@ -47,13 +47,18 @@ namespace ADJ.BusinessService.Implementations
       this._dcBookingRepository = dcBookingRepository;
       this._dcBookingDataProvider = dcBookingDataProvider;
     }
-    public async Task<PagedListResult<DCBookingDtos>> ListDCBookingDtosAsync(int pageIndex=1,int pageSize=10, string DestinationPort = null, string bookingref = null, DateTime? bookingdatefrom = null, DateTime? bookingdateto = null, string DC = null, DateTime? arrivaldatefrom = null, DateTime? arrivaldateto = null, string Status = null, string Container = null)
+    public async Task<PagedListResult<DCBookingDtos>> ListDCBookingDtosAsync(int pageIndex = 1, int pageSize = 10, string DestinationPort = null, string bookingref = null, DateTime? bookingdatefrom = null, DateTime? bookingdateto = null, string DC = null, DateTime? arrivaldatefrom = null, DateTime? arrivaldateto = null, string Status = null, string Container = null)
     {
       PagedListResult<DCBookingDtos> pagedListResult = new PagedListResult<DCBookingDtos>();
       Expression<Func<Container, bool>> All = c => c.Id > 0;
       if (DestinationPort != null)
       {
         Expression<Func<Container, bool>> filter = x => x.ArriveOfDespatch.DestinationPort == DestinationPort;
+        All = All.And(filter);
+      }
+      if (DC != null)
+      {
+        Expression<Func<Container, bool>> filter = x => x.DCBooking.DistributionCenter == DC;
         All = All.And(filter);
       }
       if (bookingref != null)
@@ -63,7 +68,7 @@ namespace ADJ.BusinessService.Implementations
       }
       if (bookingdatefrom != null)
       {
-        Expression<Func<Container, bool>> filter = x => x.DCBooking.BookingDate.CompareTo(bookingdatefrom)>0;
+        Expression<Func<Container, bool>> filter = x => x.DCBooking.BookingDate.CompareTo(bookingdatefrom) > 0;
         All = All.And(filter);
       }
       if (bookingdateto != null)
@@ -71,7 +76,17 @@ namespace ADJ.BusinessService.Implementations
         Expression<Func<Container, bool>> filter = x => x.DCBooking.BookingDate.CompareTo(bookingdateto) < 0;
         All = All.And(filter);
       }
-      if(Status != null)
+      if (arrivaldatefrom != null)
+      {
+        Expression<Func<Container, bool>> filter = x => x.CA.ArrivalDate.CompareTo(arrivaldatefrom) > 0;
+        All = All.And(filter);
+      }
+      if (arrivaldateto != null)
+      {
+        Expression<Func<Container, bool>> filter = x => x.CA.ArrivalDate.CompareTo(arrivaldateto) < 0;
+        All = All.And(filter);
+      }
+      if (Status != null)
       {
         Expression<Func<Container, bool>> filter = x => x.Status.ToString() == Status;
         All = All.And(filter);
@@ -80,8 +95,8 @@ namespace ADJ.BusinessService.Implementations
       {
         Expression<Func<Container, bool>> filter = x => x.Name == Container;
         All = All.And(filter);
-      }    
-      var listContainer = await _containerDataProvider.ListAsync(All, null, true,pageIndex,pageSize);
+      }
+      var listContainer = await _containerDataProvider.ListAsync(All, null, true, pageIndex, pageSize);
       List<Container> containers = listContainer.Items;
       List<DCBookingDtos> dCBookingDtos = new List<DCBookingDtos>();
       foreach (var container in containers)
@@ -96,7 +111,7 @@ namespace ADJ.BusinessService.Implementations
           DestPort = arriveOfDispatch[0].DestinationPort,
           ArrivalDate = confirmArrival[0].ArrivalDate.ToString("MM/dd/yyyy"),
           Status = container.Status.ToString(),
-          BookingDate=DateTime.Now.Date
+          BookingDate = DateTime.Now.Date
         };
         foreach (var manifest in container.Manifests)
         {
@@ -112,6 +127,7 @@ namespace ADJ.BusinessService.Implementations
           dCBookingDto.Client = dcBooking[0].Client;
           dCBookingDto.BookingDate = dcBooking[0].BookingDate;
           dCBookingDto.BookingRef = dcBooking[0].BookingRef;
+          dCBookingDto.BookingTime = dcBooking[0].BookingTime;
         }
         dCBookingDtos.Add(dCBookingDto);
       }
@@ -119,6 +135,32 @@ namespace ADJ.BusinessService.Implementations
       pagedListResult.TotalCount = listContainer.TotalCount;
       pagedListResult.PageCount = listContainer.PageCount;
       return pagedListResult;
+    }
+    public async Task<SearchingDCBooking> getItem()
+    {
+      var list = await _containerDataProvider.ListAsync();
+      List<Container> containers = list.Items;
+      var DesPort = containers.Select(p => p.ArriveOfDespatch.DestinationPort).Distinct();
+      List<string> status = Enum.GetNames(typeof(ContainerStatus)).ToList();
+      SearchingDCBooking searchingDCBooking = new SearchingDCBooking()
+      {
+        DestinationPort = DesPort,
+        Status = status
+      };
+      return searchingDCBooking;
+    }
+    public async Task<DCBookingDtos> CreateOrUpdate(DCBookingDtos rq)
+    {
+      DCBooking entity;
+      entity = Mapper.Map<DCBooking>(rq);
+      _dcBookingRepository.Insert(entity);
+      var containers = await _containerRepository.Query(x => x.Id == rq.ContainerId,false).SelectAsync();
+      Container container = containers[0];
+      container.Status = ContainerStatus.DCBookingReceived;
+      _containerRepository.Update(container);
+      await UnitOfWork.SaveChangesAsync();
+      var rs = Mapper.Map<DCBookingDtos>(entity);
+      return rs;
     }
   }
 }
