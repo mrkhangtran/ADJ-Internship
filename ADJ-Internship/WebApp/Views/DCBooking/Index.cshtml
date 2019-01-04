@@ -1,4 +1,4 @@
-﻿
+﻿@model ADJ.Common.PagedListResult<ADJ.BusinessService.Dtos.DCBookingDtos>
 @{
   ViewData["Title"] = "Index";
   Layout = "~/Views/Shared/_Layout.cshtml";
@@ -139,84 +139,103 @@
               <td>
                 Booking Ref
               </td>
-             
+
               <td>
                 Arrivale
               </td>
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>
-                <input class="uk-checkbox" />
-              </td>
-              <td>
-                Container
-              </td>
-              <td>
-                Dest Port
-              </td>
-              <td>
-                Arrival Date
-              </td>
-              <td>
-                Ship Carton
-              </td>
-              <td>
-                Ship Cube
-              </td>
-              <td>
-                Ship Quantity
-              </td>
-              <td>
-                <select class="uk-input"></select>
-              </td>
-              <td>
-                <select class="uk-input"></select>
-              </td>
-              <td>
-                <input class="uk-input" />
-              </td>
-              <td>
-                <input class="uk-input" type="date" />
-              </td>
-              <td>
-                <input class="uk-input" />
-              </td>
-              <td>
-                Status
-              </td>
-            </tr>
-            @for (int i = 0; i < 10; i++)
+            @for (int i = 0; i < Model.Items.Count(); i++)
             {
               <tr>
                 <td>
-                  <input class="uk-checkbox" />
+                  <input asp-for="Items[i].selected" class="uk-checkbox" />
                 </td>
                 <td>
-                  ...
+                  @Model.Items[i].Name
                 </td>
                 <td>
-                  ...
+                  @Model.Items[i].DestPort
                 </td>
                 <td>
-                  ...
+                  @Model.Items[i].ArrivalDate
                 </td>
                 <td>
-                  ...
+                  @Model.Items[i].ShipCarton
                 </td>
                 <td>
-                  ...
+                  @Model.Items[i].ShipCube
                 </td>
                 <td>
-                  ...
+                  @Model.Items[i].ShipQuantity
                 </td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
+                <td>
+                  @{
+                    if (Model.Items[i].Id > 0)
+                    {
+                      @Model.Items[i].DistributionCenter
+                    }
+                    else
+                    {
+                      <select asp-for="Items[i].DistributionCenter"></select>
+                    }
+                  }
+                </td>
+                <td>
+                  @{
+                    if (Model.Items[i].Id > 0)
+                    {
+                      @Model.Items[i].Haulier
+                    }
+                    else
+                    {
+                      <select asp-for="Items[i].Haulier"></select>
+                    }
+                  }
+                </td>
+                <td>
+                  @{
+                    if (Model.Items[i].Id > 0)
+                    {
+                      @Model.Items[i].Client
+                    }
+                    else
+                    {
+                      <input asp-for="Items[i].Client" class="uk-input" />
+                    }
+                  }
+
+                </td>
+                <td>
+                  @{
+                    if (Model.Items[i].Id > 0)
+                    {
+                      @Model.Items[i].BookingDate
+                    }
+                    else
+                    {
+                      <input asp-for="Items[i].BookingDate" class="uk-input" type="date" />
+                    }
+                  }
+
+                </td>
+                <td>
+                  @{
+                    if (Model.Items[i].Id > 0)
+                    {
+                      @Model.Items[i].BookingRef
+                    }
+                    else
+                    {
+                      <input asp-for="Items[i].BookingRef" class="uk-input" />
+                    }
+                  }
+
+                </td>
+                <td>
+                  Status
+                </td>
               </tr>
             }
           </tbody>

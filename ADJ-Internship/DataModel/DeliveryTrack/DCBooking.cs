@@ -11,7 +11,7 @@ namespace ADJ.DataModel.DeliveryTrack
 	{
 		public int ContainerId { get; set; }
 
-		public string DítributionCenter { get; set; }
+		public string DistributionCenter { get; set; }
 
 		public string WareHouse { get; set; }
 
