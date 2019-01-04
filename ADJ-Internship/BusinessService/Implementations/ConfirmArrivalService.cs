@@ -23,22 +23,22 @@ namespace ADJ.BusinessService.Implementations
     private readonly IDataProvider<Order> _orderDataProvider;
 
     private readonly IContainerRepository _containerRepository;
-    private readonly IShipmentBookingRepository _bookingRepository;
     private readonly IConfirmArrivalRepository _confirmArrivalRepository;
+    private readonly IArriveOfDespatchRepository _arriveOfDespatchRepository;
 
     private readonly int pageSize;
 
-    public ConfirmArrivalService(IUnitOfWork unitOfWork, IMapper mapper, ApplicationContext appContext,
+    public ConfirmArrivalService(IUnitOfWork unitOfWork, IMapper mapper, ApplicationContext appContext, 
       IDataProvider<Container> containerDataProvider, IDataProvider<Booking> bookingDataProvider, IDataProvider<Order> orderDataProvider,
-    IContainerRepository containerRepository, IShipmentBookingRepository bookingRepository, IConfirmArrivalRepository confirmArrivalRepository) : base(unitOfWork, mapper, appContext)
+    IContainerRepository containerRepository, IConfirmArrivalRepository confirmArrivalRepository, IArriveOfDespatchRepository arriveOfDespatchRepository) : base(unitOfWork, mapper, appContext)
     {
       _containerDataProvider = containerDataProvider;
       _bookingDataProvider = bookingDataProvider;
       _orderDataProvider = orderDataProvider;
 
       _containerRepository = containerRepository;
-      _bookingRepository = bookingRepository;
       _confirmArrivalRepository = confirmArrivalRepository;
+      _arriveOfDespatchRepository = arriveOfDespatchRepository;
 
       pageSize = 6;
     }
@@ -126,16 +126,28 @@ namespace ADJ.BusinessService.Implementations
         ConfirmArrivalResultDtos output = new ConfirmArrivalResultDtos();
         Booking booking = await _bookingDataProvider.GetByIdAsync((item.Manifests.ToList())[0].BookingId);
         Order order = await _orderDataProvider.GetByIdAsync(booking.OrderId);
+        List<CA> confirmArrival = await _confirmArrivalRepository.Query(x => x.ContainerId == item.Id, false).SelectAsync();
+        List<ArriveOfDespatch> arriveOfDespatch = await _arriveOfDespatchRepository.Query(x => x.ContainerId == item.Id, false).SelectAsync();
 
-        output.DestinationPort = booking.PortOfDelivery;
+        //output.DestinationPort = booking.PortOfDelivery;
+        output.DestinationPort = arriveOfDespatch[0].DestinationPort;
         output.Origin = order.Origin;
         output.Mode = item.Loading;
-        output.Carrier = booking.Carrier;
-        output.ArrivalDate = booking.ETA;
+        //output.Carrier = booking.Carrier;
+        output.Carrier = arriveOfDespatch[0].Carrier;
 
         output.Vendor = order.Vendor;
         output.Container = item.Name;
         output.Status = item.Status;
+
+        if (output.Status == ContainerStatus.Despatch)
+        {
+          output.ArrivalDate = booking.ETA;
+        }
+        else
+        {
+          output.ArrivalDate = confirmArrival[0].ArrivalDate;
+        }
 
         output.Id = item.Id;
 
@@ -292,10 +304,6 @@ namespace ADJ.BusinessService.Implementations
     private async Task<Container> UpdateContainer(int containerId, DateTime arrivalDate)
     {
       Container container = await _containerDataProvider.GetByIdAsync(containerId);
-      Booking booking = await _bookingDataProvider.GetByIdAsync((container.Manifests.ToList())[0].BookingId);
-
-      booking.ETA = arrivalDate;
-      _bookingRepository.Update(booking);
 
       container.Status = ContainerStatus.Arrived;
       _containerRepository.Update(container);

@@ -112,8 +112,8 @@
 
         <input asp-for="SingleOrderDetail.ItemNumber" class="uk-input newItem" />
         <span asp-validation-for="SingleOrderDetail.ItemNumber" class="uk-alert-danger"></span>
-        @ViewBag.ItemNumberError
-      </td>
+        <span class="uk-alert-danger">@ViewBag.ItemNumberError</span>
+</td>
       <td>
         <input asp-for="SingleOrderDetail.Description" class="uk-input newItem" />
         <span asp-validation-for="SingleOrderDetail.Description" class="uk-alert-danger"></span>
@@ -274,7 +274,7 @@
 
                   <input asp-for="SingleOrderDetail.ItemNumber" class="uk-input newItem" />
                   <span asp-validation-for="SingleOrderDetail.ItemNumber" class="uk-alert-danger"></span>
-                  @ViewBag.ItemNumberError
+                  <span class="uk-alert-danger">@ViewBag.ItemNumberError</span>
                 </td>
                 <td>
                   <input asp-for="SingleOrderDetail.Description" class="uk-input newItem" />

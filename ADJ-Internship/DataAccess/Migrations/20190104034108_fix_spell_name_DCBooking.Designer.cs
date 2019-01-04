@@ -4,14 +4,16 @@ using ADJ.DataAccess;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace ADJ.DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190104034108_fix_spell_name_DCBooking")]
+    partial class fix_spell_name_DCBooking
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -58,8 +60,7 @@ namespace ADJ.DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ContainerId")
-                        .IsUnique();
+                    b.HasIndex("ContainerId");
 
                     b.ToTable("DCBookings");
                 });
@@ -142,8 +143,7 @@ namespace ADJ.DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ContainerId")
-                        .IsUnique();
+                    b.HasIndex("ContainerId");
 
                     b.ToTable("DCConfirmations");
                 });
@@ -683,8 +683,8 @@ namespace ADJ.DataAccess.Migrations
             modelBuilder.Entity("ADJ.DataModel.DeliveryTrack.DCBooking", b =>
                 {
                     b.HasOne("ADJ.DataModel.ShipmentTrack.Container", "Container")
-                        .WithOne("DCBooking")
-                        .HasForeignKey("ADJ.DataModel.DeliveryTrack.DCBooking", "ContainerId")
+                        .WithMany()
+                        .HasForeignKey("ContainerId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
@@ -708,8 +708,8 @@ namespace ADJ.DataAccess.Migrations
             modelBuilder.Entity("ADJ.DataModel.DeliveryTrack.DCConfirmation", b =>
                 {
                     b.HasOne("ADJ.DataModel.ShipmentTrack.Container", "Container")
-                        .WithOne("DCConfirmation")
-                        .HasForeignKey("ADJ.DataModel.DeliveryTrack.DCConfirmation", "ContainerId")
+                        .WithMany()
+                        .HasForeignKey("ContainerId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
