@@ -4,14 +4,16 @@ using ADJ.DataAccess;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace ADJ.DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190104024608_addContainerid")]
+    partial class addContainerid
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -27,13 +29,11 @@ namespace ADJ.DataAccess.Migrations
 
                     b.Property<DateTime>("BookingDate");
 
-                    b.Property<string>("BookingRef");
+                    b.Property<string>("BookingRef")
+                        .HasMaxLength(12);
 
-                    b.Property<string>("BookingTime");
-
-                    b.Property<string>("Client");
-
-                    b.Property<int>("ContainerId");
+                    b.Property<string>("BookingTime")
+                        .HasMaxLength(12);
 
                     b.Property<DateTime>("Created");
 
@@ -42,9 +42,11 @@ namespace ADJ.DataAccess.Migrations
 
                     b.Property<DateTime>("CreatedDateUtc");
 
-                    b.Property<string>("DítributionCenter");
+                    b.Property<string>("DeliveryMethod")
+                        .HasMaxLength(20);
 
-                    b.Property<string>("Haulier");
+                    b.Property<string>("Haulier")
+                        .HasMaxLength(30);
 
                     b.Property<string>("ModifiedBy");
 
@@ -54,11 +56,10 @@ namespace ADJ.DataAccess.Migrations
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate();
 
-                    b.Property<string>("WareHouse");
+                    b.Property<string>("WareHouse")
+                        .HasMaxLength(50);
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ContainerId");
 
                     b.ToTable("DCBookings");
                 });
@@ -120,8 +121,6 @@ namespace ADJ.DataAccess.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("ContainerId");
-
                     b.Property<string>("CreatedBy")
                         .IsRequired();
 
@@ -129,7 +128,8 @@ namespace ADJ.DataAccess.Migrations
 
                     b.Property<DateTime>("DeliveryDate");
 
-                    b.Property<string>("DeliveryTime");
+                    b.Property<string>("DeliveryTime")
+                        .HasMaxLength(12);
 
                     b.Property<string>("ModifiedBy");
 
@@ -140,8 +140,6 @@ namespace ADJ.DataAccess.Migrations
                         .ValueGeneratedOnAddOrUpdate();
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ContainerId");
 
                     b.ToTable("DCConfirmations");
                 });
@@ -678,14 +676,6 @@ namespace ADJ.DataAccess.Migrations
                     b.ToTable("Manifests");
                 });
 
-            modelBuilder.Entity("ADJ.DataModel.DeliveryTrack.DCBooking", b =>
-                {
-                    b.HasOne("ADJ.DataModel.ShipmentTrack.Container", "Container")
-                        .WithMany()
-                        .HasForeignKey("ContainerId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
             modelBuilder.Entity("ADJ.DataModel.DeliveryTrack.DCBookingDetail", b =>
                 {
                     b.HasOne("ADJ.DataModel.DeliveryTrack.DCBooking", "DCBooking")
@@ -700,14 +690,6 @@ namespace ADJ.DataAccess.Migrations
                     b.HasOne("ADJ.DataModel.OrderTrack.Order", "Order")
                         .WithMany()
                         .HasForeignKey("OrderId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("ADJ.DataModel.DeliveryTrack.DCConfirmation", b =>
-                {
-                    b.HasOne("ADJ.DataModel.ShipmentTrack.Container", "Container")
-                        .WithMany()
-                        .HasForeignKey("ContainerId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

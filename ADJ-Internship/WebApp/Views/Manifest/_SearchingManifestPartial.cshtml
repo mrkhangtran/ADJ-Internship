@@ -1,7 +1,7 @@
 ﻿@model ADJ.Common.PagedListResult<ADJ.BusinessService.Dtos.ShipmentManifestsDtos>
 @if (Model.Items.Count() == 0)
 {
-  <p class="uk-text-meta uk-text-large">No matching results were found. Please try again</p>
+	<p class="uk-text-meta uk-text-large">No matching results were found. Please try again</p>
 }
 else
 {
@@ -49,7 +49,7 @@ else
                   <input readonly id="validationName" asp-for="Items[i].Name" class="validationName uk-input" />
                 }
 
-              }
+							}
 
             </td>
             @{
