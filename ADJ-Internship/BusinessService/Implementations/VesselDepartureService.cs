@@ -55,22 +55,22 @@ namespace ADJ.BusinessService.Implementations
 					if (model.lstContainerDto[i].originPortChange != model.lstContainerDto[i].OriginPort)
 					{
 						model.lstContainerDto[i].OriginPort = model.lstContainerDto[i].originPortChange;
-						model.lstContainerDto[i].Status = ContainerStatus.Despatch;
+						model.lstContainerDto[i].Status = ContainerStatus.Pending;
 					}
 					if (model.lstContainerDto[i].destPortChange != model.lstContainerDto[i].DestPort)
 					{
 						model.lstContainerDto[i].DestPort = model.lstContainerDto[i].destPortChange;
-						model.lstContainerDto[i].Status = ContainerStatus.Despatch;
+						model.lstContainerDto[i].Status = ContainerStatus.Pending;
 					}
 					if (model.lstContainerDto[i].modeChange != model.lstContainerDto[i].Loading)
 					{
 						model.lstContainerDto[i].Loading = model.lstContainerDto[i].modeChange;
-						model.lstContainerDto[i].Status = ContainerStatus.Despatch;
+						model.lstContainerDto[i].Status = ContainerStatus.Pending;
 					}
 					if (model.lstContainerDto[i].carrierChange != model.lstContainerDto[i].Carrier)
 					{
 						model.lstContainerDto[i].Carrier = model.lstContainerDto[i].carrierChange;
-						model.lstContainerDto[i].Status = ContainerStatus.Despatch;
+						model.lstContainerDto[i].Status = ContainerStatus.Pending;
 					}
 				}
 
