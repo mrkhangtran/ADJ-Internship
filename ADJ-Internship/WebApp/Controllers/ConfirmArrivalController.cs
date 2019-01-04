@@ -32,6 +32,17 @@ namespace WebApp.Controllers
         ViewBag.ShowModal = "NoResult";
       }
 
+      PagedListResult<ConfirmArrivalResultDtos> nextPage = new PagedListResult<ConfirmArrivalResultDtos>();
+      nextPage = await _CAService.ListContainerFilterAsync(2, null, null, "HongKong", null, null, null, null);
+
+      if ((model.Containers.Items.Count > 0) && (nextPage.Items.Count > 0))
+      {
+        if (SameGroup(model.Containers.Items[model.Containers.Items.Count - 1], nextPage.Items[0]))
+        {
+          ViewBag.ToBeContinued = true;
+        }
+      }
+
       return View(model);
     }
 
@@ -51,6 +62,33 @@ namespace WebApp.Controllers
       if (model.Containers.Items.Count == 0)
       {
         ViewBag.ShowModal = "NoResult";
+      }
+
+      PagedListResult<ConfirmArrivalResultDtos> nextPage = new PagedListResult<ConfirmArrivalResultDtos>();
+      PagedListResult<ConfirmArrivalResultDtos> previousPage = new PagedListResult<ConfirmArrivalResultDtos>();
+
+      if (pageIndex - 1 > 0)
+      {
+        previousPage = await _CAService.ListContainerFilterAsync(pageIndex - 1, model.FilterDtos.ETAFrom, model.FilterDtos.ETATo, model.FilterDtos.Origin,
+        model.FilterDtos.Mode, model.FilterDtos.Vendor, model.FilterDtos.Container, model.FilterDtos.Status);
+      }
+      nextPage = await _CAService.ListContainerFilterAsync(pageIndex + 1, model.FilterDtos.ETAFrom, model.FilterDtos.ETATo, model.FilterDtos.Origin,
+        model.FilterDtos.Mode, model.FilterDtos.Vendor, model.FilterDtos.Container, model.FilterDtos.Status);
+
+      if ((model.Containers.Items.Count > 0) && (nextPage.Items.Count > 0))
+      {
+        if (SameGroup(model.Containers.Items[model.Containers.Items.Count - 1], nextPage.Items[0]))
+        {
+          ViewBag.ToBeContinued = true;
+        }
+      }
+
+      if ((model.Containers.Items.Count > 0) && (previousPage.Items.Count > 0))
+      {
+        if (SameGroup(model.Containers.Items[0], previousPage.Items[previousPage.Items.Count - 1]))
+        {
+          ViewBag.ContinuedFromPrevious = true;
+        }
       }
 
       return PartialView("_Result", model);
@@ -88,6 +126,23 @@ namespace WebApp.Controllers
       }
 
       return PartialView("_Result", model);
+    }
+
+    public bool SameGroup(ConfirmArrivalResultDtos first, ConfirmArrivalResultDtos second)
+    {
+      for (int property = 0; property < 5; property++)
+      {
+        var currentProperty = typeof(ConfirmArrivalResultDtos).GetProperties()[property];
+        string firstValue = currentProperty.GetValue(first).ToString();
+        string secondValue = currentProperty.GetValue(second).ToString();
+
+        if (firstValue.CompareTo(secondValue) != 0)
+        {
+          return false;
+        }
+      }
+
+      return true;
     }
 
     public bool SelectAtLeastOne(List<ConfirmArrivalResultDtos> input)

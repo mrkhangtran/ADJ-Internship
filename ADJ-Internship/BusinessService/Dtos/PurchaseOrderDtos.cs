@@ -54,7 +54,7 @@ namespace ADJ.BusinessService.Dtos
     [NotInThePast(ErrorMessage = "Cannot be set in the past")]
     public DateTime OrderDate { get; set; } = DateTime.Now;
 
-    [StringLength(30, ErrorMessage = "Cannot be longer than 30 character")]
+    [StringLength(30, ErrorMessage = "Cannot be longer than 30 characters")]
     [RegularExpression("^[a-zA-Z0-9 ]+$", ErrorMessage = "Letters and numbers only")]
     public string Buyer { get; set; }
 

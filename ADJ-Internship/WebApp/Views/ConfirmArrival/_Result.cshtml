@@ -38,6 +38,10 @@
     int groupId = 0;
     Model.ListArrivalDate = new List<DateTime>();
 
+    if (ViewBag.ContinuedFromPrevious)
+    {
+      <p>Group continued from previous page</p>
+    }
 
     for (int i = 0; i < Model.Containers.Items.Count; i++)
     {
@@ -152,6 +156,11 @@
           start = i + 1;
         }
       }
+    }
+
+    if (ViewBag.ToBeContinued)
+    {
+      <p>Group continues on the next page...</p>
     }
   }
 }
