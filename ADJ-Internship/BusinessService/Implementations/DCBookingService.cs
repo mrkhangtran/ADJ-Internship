@@ -7,8 +7,10 @@ using ADJ.DataModel.ShipmentTrack;
 using ADJ.Repository.Core;
 using ADJ.Repository.Interfaces;
 using AutoMapper;
+using LinqKit;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
@@ -45,26 +47,56 @@ namespace ADJ.BusinessService.Implementations
       this._dcBookingRepository = dcBookingRepository;
       this._dcBookingDataProvider = dcBookingDataProvider;
     }
-    public async Task<PagedListResult<DCBookingDtos>> ListDCBookingDtosAsync()
+    public async Task<PagedListResult<DCBookingDtos>> ListDCBookingDtosAsync(int pageIndex=1,int pageSize=10, string DestinationPort = null, string bookingref = null, DateTime? bookingdatefrom = null, DateTime? bookingdateto = null, string DC = null, DateTime? arrivaldatefrom = null, DateTime? arrivaldateto = null, string Status = null, string Container = null)
     {
       PagedListResult<DCBookingDtos> pagedListResult = new PagedListResult<DCBookingDtos>();
       Expression<Func<Container, bool>> All = c => c.Id > 0;
-      var listContainer = await _containerDataProvider.ListAsync(All, null, true);
+      if (DestinationPort != null)
+      {
+        Expression<Func<Container, bool>> filter = x => x.ArriveOfDespatch.DestinationPort == DestinationPort;
+        All = All.And(filter);
+      }
+      if (bookingref != null)
+      {
+        Expression<Func<Container, bool>> filter = x => x.DCBooking.BookingRef == bookingref;
+        All = All.And(filter);
+      }
+      if (bookingdatefrom != null)
+      {
+        Expression<Func<Container, bool>> filter = x => x.DCBooking.BookingDate.CompareTo(bookingdatefrom)>0;
+        All = All.And(filter);
+      }
+      if (bookingdateto != null)
+      {
+        Expression<Func<Container, bool>> filter = x => x.DCBooking.BookingDate.CompareTo(bookingdateto) < 0;
+        All = All.And(filter);
+      }
+      if(Status != null)
+      {
+        Expression<Func<Container, bool>> filter = x => x.Status.ToString() == Status;
+        All = All.And(filter);
+      }
+      if (Container != null)
+      {
+        Expression<Func<Container, bool>> filter = x => x.Name == Container;
+        All = All.And(filter);
+      }    
+      var listContainer = await _containerDataProvider.ListAsync(All, null, true,pageIndex,pageSize);
       List<Container> containers = listContainer.Items;
       List<DCBookingDtos> dCBookingDtos = new List<DCBookingDtos>();
       foreach (var container in containers)
       {
-        var confirmArrival = await _confirmArrivalRepository.Query(x => x.ContainerId == container.Id, true).SelectAsync();
-        var arriveOfDispatch = await _arriveOfDespatchRepository.Query(x => x.ContainerId == container.Id, true).SelectAsync();
-        var dcBooking = await _dcBookingRepository.Query(x => x.ContainerId == container.Id, true).SelectAsync();
+        var confirmArrival = await _confirmArrivalRepository.Query(x => x.ContainerId == container.Id, false).SelectAsync();
+        var arriveOfDispatch = await _arriveOfDespatchRepository.Query(x => x.ContainerId == container.Id, false).SelectAsync();
+        var dcBooking = await _dcBookingRepository.Query(x => x.ContainerId == container.Id, false).SelectAsync();
         DCBookingDtos dCBookingDto = new DCBookingDtos()
         {
-          Id = dcBooking[0].Id,
           ContainerId = container.Id,
           Name = container.Name,
           DestPort = arriveOfDispatch[0].DestinationPort,
-          ArrivalDate = confirmArrival[0].ArrivalDate,
+          ArrivalDate = confirmArrival[0].ArrivalDate.ToString("MM/dd/yyyy"),
           Status = container.Status.ToString(),
+          BookingDate=DateTime.Now.Date
         };
         foreach (var manifest in container.Manifests)
         {
@@ -72,8 +104,9 @@ namespace ADJ.BusinessService.Implementations
           dCBookingDto.ShipCube += manifest.Quantity * (decimal)manifest.Cube;
           dCBookingDto.ShipQuantity += manifest.Quantity;
         }
-        if (dcBooking[0] != null)
+        if (dcBooking.Count > 0)
         {
+          dCBookingDto.Id = dcBooking[0].Id;
           dCBookingDto.DistributionCenter = dcBooking[0].DistributionCenter;
           dCBookingDto.Haulier = dcBooking[0].Haulier;
           dCBookingDto.Client = dcBooking[0].Client;
@@ -83,6 +116,8 @@ namespace ADJ.BusinessService.Implementations
         dCBookingDtos.Add(dCBookingDto);
       }
       pagedListResult.Items = dCBookingDtos;
+      pagedListResult.TotalCount = listContainer.TotalCount;
+      pagedListResult.PageCount = listContainer.PageCount;
       return pagedListResult;
     }
   }

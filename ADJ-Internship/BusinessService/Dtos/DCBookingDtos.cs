@@ -18,7 +18,7 @@ namespace ADJ.BusinessService.Dtos
     [DisplayName("Dest Port")]
     public string DestPort {get;set;}
 
-    public DateTime ArrivalDate { get; set; }
+    public string ArrivalDate { get; set; }
 
     public string DistributionCenter { get; set; }
 

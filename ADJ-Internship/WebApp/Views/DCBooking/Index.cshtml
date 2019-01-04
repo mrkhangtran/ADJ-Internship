@@ -1,8 +1,4 @@
 ﻿@model ADJ.Common.PagedListResult<ADJ.BusinessService.Dtos.DCBookingDtos>
-@{
-  ViewData["Title"] = "Index";
-  Layout = "~/Views/Shared/_Layout.cshtml";
-}
 <form id="manifest" asp-action="CreateOrUpdate" asp-controller="Manifest">
   <div class="uk-container">
     <div class="uk-grid">
@@ -139,104 +135,108 @@
               <td>
                 Booking Ref
               </td>
-
               <td>
-                Arrivale
+                Status
               </td>
             </tr>
           </thead>
           <tbody>
-            @for (int i = 0; i < Model.Items.Count(); i++)
-            {
-              <tr>
-                <td>
-                  <input asp-for="Items[i].selected" class="uk-checkbox" />
-                </td>
-                <td>
-                  @Model.Items[i].Name
-                </td>
-                <td>
-                  @Model.Items[i].DestPort
-                </td>
-                <td>
-                  @Model.Items[i].ArrivalDate
-                </td>
-                <td>
-                  @Model.Items[i].ShipCarton
-                </td>
-                <td>
-                  @Model.Items[i].ShipCube
-                </td>
-                <td>
-                  @Model.Items[i].ShipQuantity
-                </td>
-                <td>
-                  @{
-                    if (Model.Items[i].Id > 0)
-                    {
-                      @Model.Items[i].DistributionCenter
-                    }
-                    else
-                    {
-                      <select asp-for="Items[i].DistributionCenter"></select>
-                    }
-                  }
-                </td>
-                <td>
-                  @{
-                    if (Model.Items[i].Id > 0)
-                    {
-                      @Model.Items[i].Haulier
-                    }
-                    else
-                    {
-                      <select asp-for="Items[i].Haulier"></select>
-                    }
-                  }
-                </td>
-                <td>
-                  @{
-                    if (Model.Items[i].Id > 0)
-                    {
-                      @Model.Items[i].Client
-                    }
-                    else
-                    {
-                      <input asp-for="Items[i].Client" class="uk-input" />
-                    }
-                  }
+            @{
+              if (Model.Items.Count() > 0)
+              {
+                for (int i = 0; i < Model.Items.Count(); i++)
+                {
+                  <tr>
+                    <td>
+                      <input asp-for="Items[i].selected" class="uk-checkbox" />
+                    </td>
+                    <td>
+                      @Model.Items[i].Name
+                    </td>
+                    <td>
+                      @Model.Items[i].DestPort
+                    </td>
+                    <td>
+                      @Model.Items[i].ArrivalDate
+                    </td>
+                    <td>
+                      @Model.Items[i].ShipCarton
+                    </td>
+                    <td>
+                      @Model.Items[i].ShipCube
+                    </td>
+                    <td>
+                      @Model.Items[i].ShipQuantity
+                    </td>
+                    <td>
+                      @{
+                        if (Model.Items[i].Id > 0)
+                        {
+                          @Model.Items[i].DistributionCenter
+                        }
+                        else
+                        {
+                          <select asp-for="Items[i].DistributionCenter" asp-items="new SelectList(ViewBag.DC)" class="uk-input"></select>
+                        }
+                      }
+                    </td>
+                    <td>
+                      @{
+                        if (Model.Items[i].Id > 0)
+                        {
+                          @Model.Items[i].Haulier
+                        }
+                        else
+                        {
+                          <select asp-for="Items[i].Haulier" asp-items="new SelectList(ViewBag.Haulier)" class="uk-input"></select>
+                        }
+                      }
+                    </td>
+                    <td>
+                      @{
+                        if (Model.Items[i].Id > 0)
+                        {
+                          @Model.Items[i].Client
+                        }
+                        else
+                        {
+                          <input asp-for="Items[i].Client" class="uk-input" />
+                        }
+                      }
 
-                </td>
-                <td>
-                  @{
-                    if (Model.Items[i].Id > 0)
-                    {
-                      @Model.Items[i].BookingDate
-                    }
-                    else
-                    {
-                      <input asp-for="Items[i].BookingDate" class="uk-input" type="date" />
-                    }
-                  }
+                    </td>
+                    <td>
+                      @{
+                        if (Model.Items[i].Id > 0)
+                        {
+                          @Model.Items[i].BookingDate
+                        }
+                        else
+                        {
+                          <input asp-for="Items[i].BookingDate" class="uk-input" type="date" />
+                        }
+                      }
 
-                </td>
-                <td>
-                  @{
-                    if (Model.Items[i].Id > 0)
-                    {
-                      @Model.Items[i].BookingRef
-                    }
-                    else
-                    {
-                      <input asp-for="Items[i].BookingRef" class="uk-input" />
-                    }
-                  }
+                    </td>
+                    <td>
+                      @{
+                        if (Model.Items[i].Id > 0)
+                        {
+                          @Model.Items[i].BookingRef
+                        }
+                        else
+                        {
+                          <input asp-for="Items[i].BookingRef" class="uk-input" />
+                        }
+                      }
 
-                </td>
-                <td>
-                  Status
-                </td>
-              </tr>
+                    </td>
+                    <td>
+                      @Model.Items[i].Status
+                    </td>
+                  </tr>
+                }
+              }
             }
           </tbody>
         </table>
@@ -246,4 +246,31 @@
   <br />
   <br />
 </form>
+<script src="~/js/jquery-3.3.1.min.js"></script>
+<script type="text/javascript">
+   $(document.body).on('click', '.filterItem', function () {
+    var pageIndex = $(this).attr("value");
+        $.ajax({
+            type: "GET",
+            dataType:"html",
+            url: "@Url.Action("Index", "DCBooking")",
+            data: {
+              pageIndex: pageIndex,
+              DestinationPort: $('#DestinationPort').val(),
+              bookingref: $('#bookingref').val(),
+              bookingdatefrom: $('#bookingdatefrom').val(),
+              bookingdateto: $('#bookingdateto').val(),
+              DC: $('#DC').val(),
+              arrivaldatefrom: $('#arrivaldatefrom').val(),
+              arrivaldateto: $('#arrivaldateto').val(),
+              Status: $('#Status').val(),
+              Container: $('#Container').val(),
+              checkClick: true,
+            },
+            success: function (data) {
+                $('#renderSearching').html(data);
+            }
+        });
+  });
+</script>
 
