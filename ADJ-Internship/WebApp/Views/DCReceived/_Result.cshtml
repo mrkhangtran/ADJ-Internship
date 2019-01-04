@@ -1,0 +1,153 @@
+﻿@model ADJ.BusinessService.Dtos.DCReceivedDtos;
+<!--Result Popup-->
+@if (ViewBag.ShowModal != null)
+{
+  string modal = ViewBag.ShowModal;
+  <button type="button" uk-toggle="target: #resultModal" id="openmodal" hidden="hidden">Open</button>
+
+  <div id="resultModal" uk-modal>
+    <div class="uk-modal-dialog uk-modal-body">
+      @switch (modal)
+      {
+        case "Updated":
+          <p>Delivery event is achieve successfully. Thank you.</p>
+          break;
+        case "NoResult":
+          <p>No match results were found. Please try again.</p>
+          break;
+        case "NoItem":
+          <p>Please select at least 1 item.</p>
+          break;
+      }
+
+      <p class="uk-text-right">
+        <button class="uk-button uk-button-default uk-modal-close" type="button">Close</button>
+      </p>
+
+    </div>
+  </div>
+}
+
+@if (Model.ResultDtos != null)
+{
+  if (Model.ResultDtos.Items != null)
+  {
+    if (Model.ResultDtos.Items.Count > 0)
+    {
+      <div class="uk-grid">
+        <table class="uk-table uk-table-small uk-table-middle uk-table-striped">
+          <thead>
+            <tr>
+              <td>
+                <input type="checkbox" id="checkAll" class="uk-checkbox" />
+              </td>
+              <td>
+                <label asp-for="ResultDtos.Items[0].Container"></label>
+              </td>
+              <td>
+                <label asp-for="ResultDtos.Items[0].DC"></label>
+              </td>
+              <td>
+                <label asp-for="ResultDtos.Items[0].Haulier"></label>
+              </td>
+              <td>
+                <label asp-for="ResultDtos.Items[0].BookingDate"></label>
+              </td>
+              <td>
+                <label asp-for="ResultDtos.Items[0].BookingTime"></label>
+              </td>
+              <td>
+                <label asp-for="ResultDtos.Items[0].BookingRef"></label>
+              </td>
+              <td>
+                <label asp-for="ResultDtos.Items[0].DeliverDate"></label>
+              </td>
+              <td>
+                <label asp-for="ResultDtos.Items[0].DeliverTime"></label>
+              </td>
+              <td>
+                <label asp-for="ResultDtos.Items[0].Status"></label>
+              </td>
+            </tr>
+          </thead>
+
+          @for (int i = 0; i < Model.ResultDtos.Items.Count; i++)
+          {
+            <tr>
+              <td style="display: none">
+                <input type="hidden" asp-for="ResultDtos.Items[i].ContainerId" value=@Model.ResultDtos.Items[i].ContainerId />
+                <input type="hidden" asp-for="ResultDtos.Items[i].Container" value=@Model.ResultDtos.Items[i].Container />
+                <input type="hidden" asp-for="ResultDtos.Items[i].DC" value=@Model.ResultDtos.Items[i].DC />
+                <input type="hidden" asp-for="ResultDtos.Items[i].Haulier" value=@Model.ResultDtos.Items[i].Haulier />
+                <input type="hidden" asp-for="ResultDtos.Items[i].BookingDate" value=@Model.ResultDtos.Items[i].BookingDate />
+                <input type="hidden" asp-for="ResultDtos.Items[i].BookingTime" value=@Model.ResultDtos.Items[i].BookingTime />
+                <input type="hidden" asp-for="ResultDtos.Items[i].BookingRef" value=@Model.ResultDtos.Items[i].BookingRef />
+                <input type="hidden" asp-for="ResultDtos.Items[i].Status" value=@Model.ResultDtos.Items[i].Status />
+              </td>
+              <td>
+                <input type="checkbox" asp-for="ResultDtos.Items[i].Selected" class="uk-checkbox checkBox" />
+              </td>
+              <td>@Model.ResultDtos.Items[i].Container</td>
+              <td>@Model.ResultDtos.Items[i].DC</td>
+              <td>@Model.ResultDtos.Items[i].Haulier</td>
+              <td>@Model.ResultDtos.Items[i].BookingDate.ToString("MM/dd/yyyy")</td>
+              <td>@Model.ResultDtos.Items[i].BookingTime</td>
+              <td>@Model.ResultDtos.Items[i].BookingRef</td>
+              @if (Model.ResultDtos.Items[i].Status == ADJ.Common.ContainerStatus.DCBookingReceived)
+              {
+                <td>
+                  <input asp-for="ResultDtos.Items[i].DeliverDate" type="date" class="uk-input filters" />
+                  <span asp-validation-for="ResultDtos.Items[i].DeliverDate" class="uk-alert-danger"></span>
+                </td>
+                <td>
+                  <input asp-for="ResultDtos.Items[i].DeliverTime" class="uk-input filters" />
+                  <span asp-validation-for="ResultDtos.Items[i].DeliverTime" class="uk-alert-danger"></span>
+                </td>
+              }
+              else
+              {
+                <td style="display: none">
+                  <input type="hidden" asp-for="ResultDtos.Items[i].DeliverDate" value=@Model.ResultDtos.Items[i].DeliverDate />
+                  <input type="hidden" asp-for="ResultDtos.Items[i].DeliverTime" value=@Model.ResultDtos.Items[i].DeliverTime />
+                </td>
+                <td>@Model.ResultDtos.Items[i].DeliverDate</td>
+                <td>@Model.ResultDtos.Items[i].DeliverTime</td>
+              }
+              <td>@Model.ResultDtos.Items[i].Status</td>
+            </tr>
+          }
+        </table>
+      </div>
+    }
+  }
+}
+
+<!--Paging-->
+@{
+  int currentPage = ViewBag.Page;
+  int totalPage = Model.ResultDtos.PageCount;
+
+  <ul class="uk-pagination uk-flex-center">
+    @if (currentPage > 1)
+    {
+      <li><a value="@(currentPage - 1)" name="page" class="paging"><span uk-pagination-previous></span></a></li>
+    }
+
+    @for (int i = 1; i <= totalPage; i++)
+    {
+      if (i == currentPage)
+      {
+        <li class="uk-disabled"><a value="@i" name="page" class="paging">@i</a></li>
+      }
+      else
+      {
+        <li><a value="@i" name="page" class="paging">@i</a></li>
+      }
+    }
+
+    @if (currentPage < totalPage)
+    {
+      <li><a value="@(currentPage + 1)" name="page" class="paging"><span uk-pagination-next></span></a></li>
+    }
+  </ul>
+}
