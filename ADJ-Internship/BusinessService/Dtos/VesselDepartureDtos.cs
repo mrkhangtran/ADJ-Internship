@@ -15,16 +15,13 @@ namespace ADJ.BusinessService.Dtos
 
 		public List<ContainerDto> lstContainerDto { get; set; }
 
+		public ArriveOfDespatchDto ArriveOfDespatchDto { get; set; }
+
 		public void CreateMapping(Profile profile)
 		{
 			profile.CreateMap<Container, ContainerDto>().IncludeBase<EntityBase, EntityDtoBase>();
 			profile.CreateMap<ContainerDto, Container>().IncludeBase<EntityDtoBase, EntityBase>();
 		}
-	}
-
-	public class ListContainerReslutDto
-	{
-		public List<ContainerDto> listContainerResult { get; set; }
 	}
 
 	public class FilterDto
