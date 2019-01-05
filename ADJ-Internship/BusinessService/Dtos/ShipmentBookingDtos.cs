@@ -20,6 +20,8 @@ namespace ADJ.BusinessService.Dtos
       profile.CreateMap<ShipmentBookingDtos, Booking>().IncludeBase<EntityDtoBase, EntityBase>();
     }
 
+    static DateTime defaultDate = DateTime.Now;
+
     //Droplist of Ports, alphabetical ascending order
     [Required]
     [Display(Name = "Origin Port")]
@@ -43,13 +45,13 @@ namespace ADJ.BusinessService.Dtos
     [Required]
     [NotInThePast(ErrorMessage = "Cannot be set in the past")]
     //[LaterThanOtherDate("POShipDate")]
-    public DateTime ETD { get; set; }
+    public DateTime ETD { get; set; } = defaultDate;
 
     [Required]
     [NotInThePast(ErrorMessage = "Cannot be set in the past")]
     [LaterThanOtherDate("ETD")]
     [Not30DaysApart("ETD")]
-    public DateTime ETA { get; set; }
+    public DateTime ETA { get; set; } = defaultDate;
 
     public int OrderId { get; set; }
 

@@ -86,7 +86,7 @@
     </td>
     <td>
       <div class="col-md-10">
-        <input asp-for="OrderDate" class="uk-input" type="date" value=@DateTime.Now.ToString("yyyy-MM-dd") />
+        <input asp-for="OrderDate" class="uk-input" type="date" value=@Model.OrderDate.ToString("yyyy-MM-dd") />
         <span asp-validation-for="OrderDate" class="uk-alert-danger"></span>
       </div>
     </td>
@@ -104,7 +104,7 @@
     </td>
     <td>
       <div class="col-md-10">
-        <input asp-for="ShipDate" class="uk-input" type="date" value=@DateTime.Now.ToString("yyyy-MM-dd") />
+        <input asp-for="ShipDate" class="uk-input" type="date" value=@Model.ShipDate.ToString("yyyy-MM-dd") />
         <span asp-validation-for="ShipDate" class="uk-alert-danger"></span>
       </div>
     </td>
@@ -133,7 +133,7 @@
     </td>
     <td>
       <div class="col-md-10">
-        <input asp-for="LatestShipDate" class="uk-input" type="date" value=@DateTime.Now.ToString("yyyy-MM-dd") />
+        <input asp-for="LatestShipDate" class="uk-input" type="date" value=@Model.LatestShipDate.ToString("yyyy-MM-dd") />
         <span asp-validation-for="LatestShipDate" class="uk-alert-danger"></span>
       </div>
     </td>
@@ -162,7 +162,7 @@
     </td>
     <td>
       <div class="col-md-10">
-        <input asp-for="DeliveryDate" class="uk-input" type="date" value=@DateTime.Now.ToString("yyyy-MM-dd") />
+        <input asp-for="DeliveryDate" class="uk-input" type="date" value=@Model.DeliveryDate.ToString("yyyy-MM-dd") />
         <span asp-validation-for="DeliveryDate" class="uk-alert-danger"></span>
       </div>
     </td>

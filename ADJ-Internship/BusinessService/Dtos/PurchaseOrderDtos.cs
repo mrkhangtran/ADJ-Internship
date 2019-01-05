@@ -41,6 +41,9 @@ namespace ADJ.BusinessService.Dtos
       profile.CreateMap<OrderDTO, Order>().IncludeBase<EntityDtoBase, EntityBase>();
     }
 
+    //Default Date = Today's Date
+    static DateTime DefaultDate = DateTime.Now;
+
     [Required]
     [Display(Name = "PO Number")]
     [StringLength(10, ErrorMessage = "Cannot be longer than 10 characters")]
@@ -52,7 +55,7 @@ namespace ADJ.BusinessService.Dtos
     [Display(Name = "Order Date")]
     [DisplayFormat(DataFormatString = "{0:mm/dd/yyyy}", ApplyFormatInEditMode = true)]
     [NotInThePast(ErrorMessage = "Cannot be set in the past")]
-    public DateTime OrderDate { get; set; } = DateTime.Now;
+    public DateTime OrderDate { get; set; } = DefaultDate;
 
     [StringLength(30, ErrorMessage = "Cannot be longer than 30 characters")]
     [RegularExpression("^[a-zA-Z0-9 ]+$", ErrorMessage = "Letters and numbers only")]
@@ -106,19 +109,19 @@ namespace ADJ.BusinessService.Dtos
 
     [Display(Name = "Ship Date")]
     [NotInThePast(ErrorMessage = "Cannot be set in the past")]
-    public DateTime ShipDate { get; set; }
+    public DateTime ShipDate { get; set; } = DefaultDate;
 
     [Display(Name = "Latest Ship Date")]
     [SimilarOrLaterThanOtherDate("ShipDate")]
     [Not30DaysApart("ShipDate")]
     [NotInThePast(ErrorMessage = "Cannot be set in the past")]
-    public DateTime LatestShipDate { get; set; }
+    public DateTime LatestShipDate { get; set; } = DefaultDate;
 
     [Display(Name = "Delivery Date")]
     [LaterThanOtherDate("ShipDate")]
     [Not30DaysApart("ShipDate")]
     [NotInThePast(ErrorMessage = "Cannot be set in the past")]
-    public DateTime DeliveryDate { get; set; }
+    public DateTime DeliveryDate { get; set; } = DefaultDate;
 
     //sum of all PODetails Quantity 
     public float POQuantity { get; set; }

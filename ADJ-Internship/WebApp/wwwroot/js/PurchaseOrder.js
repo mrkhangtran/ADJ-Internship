@@ -1,6 +1,4 @@
-﻿
-
-$("#to").keyup(function () { $("#from").val($("#to").val()); });
+﻿$("#to").keyup(function () { $("#from").val($("#to").val()); });
 $("#from").keyup(function () { $("#to").val($("#from").val()); });
 
 function getTotalUnit() {
@@ -79,7 +77,8 @@ function changePorts() {
     if (ports[i].attributes.value != null) {
       var currentValue = ports[i].attributes.value.nodeValue;
     }
-    if (currentValue != null) {
+    if ((currentValue != null) && (isExist(currentValue, options)))
+    {
       ports[i].options[ports[i].options.length] = new Option(currentValue, currentValue);
     }
     for (j = 0; j < options.length; j++) {
@@ -88,7 +87,18 @@ function changePorts() {
       }
     }
   }
+};
 
+function isExist(value, arr) {
+  var exist = false;
+  for (k = 0; k < arr.length; k++) {
+    if (arr[k] == value) {
+      exist = true;
+      break;
+    }
+  }
+
+  return exist;
 };
 
 $("#resultModal").on({

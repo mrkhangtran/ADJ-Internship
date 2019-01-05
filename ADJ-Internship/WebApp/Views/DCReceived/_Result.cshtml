@@ -99,11 +99,11 @@
               @if (Model.ResultDtos.Items[i].Status == ADJ.Common.ContainerStatus.DCBookingReceived)
               {
                 <td>
-                  <input asp-for="ResultDtos.Items[i].DeliveryDate" type="date" class="uk-input filters" value=@DateTime.Now.ToString("yyyy-MM-dd") />
+                  <input asp-for="ResultDtos.Items[i].DeliveryDate" type="date" class="uk-input filters" value=@Model.ResultDtos.Items[i].DeliveryDate.ToString("yyyy-MM-dd") />
                   <span asp-validation-for="ResultDtos.Items[i].DeliveryDate" class="uk-alert-danger"></span>
                 </td>
                 <td>
-                  <input asp-for="ResultDtos.Items[i].DeliveryTime" class="uk-input filters" value=@DateTime.Now.ToString("hh:mm") />
+                  <input asp-for="ResultDtos.Items[i].DeliveryTime" class="uk-input filters" value=@Model.ResultDtos.Items[i].DeliveryTime />
                   <span asp-validation-for="ResultDtos.Items[i].DeliveryTime" class="uk-alert-danger"></span>
                 </td>
               }
