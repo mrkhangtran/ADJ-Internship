@@ -172,16 +172,19 @@ namespace ADJ.BusinessService.Dtos
     [Required]
     [Display(Name = "Item Quantity")]
     [Range(0, double.MaxValue, ErrorMessage = "Value should not be negative")]
-    public decimal Quantity { get; set; }
+    [RegularExpression(@"^\d+$", ErrorMessage = "Must be an integer")]
+    public float Quantity { get; set; }
 
     public decimal ReviseQuantity { get; set; }
 
     [Required]
     [Range(0, float.MaxValue, ErrorMessage = "Value should not be negative")]
+    [RegularExpression(@"^\d+$", ErrorMessage = "Must be an integer")]
     public float Cartons { get; set; }
 
     [Required]
     [Range(0, float.MaxValue, ErrorMessage = "Value should not be negative")]
+    [RegularExpression(@"^\d+$", ErrorMessage = "Must be an integer")]
     public float Cube { get; set; }
 
     [Required]

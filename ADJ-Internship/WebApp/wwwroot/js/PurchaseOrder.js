@@ -2,10 +2,10 @@
 $("#from").keyup(function () { $("#to").val($("#from").val()); });
 
 function getTotalUnit() {
-  document.getElementById("TotalUnit").innerHTML = document.getElementById("Quantity").value * document.getElementById("UnitPrice").value;
+  document.getElementById("TotalUnit").innerHTML = (document.getElementById("Quantity").value * document.getElementById("UnitPrice").value).toFixed(2);
 };
 function getTotalRetail() {
-  document.getElementById("TotalRetail").innerHTML = document.getElementById("Quantity").value * document.getElementById("RetailPrice").value;
+  document.getElementById("TotalRetail").innerHTML = (document.getElementById("Quantity").value * document.getElementById("RetailPrice").value).toFixed(2);
 };
 
 $(document.body).on('click', '.itemButton', function () {

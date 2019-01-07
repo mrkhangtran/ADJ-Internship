@@ -32,7 +32,7 @@
     </td>
     <td>
       <div class="col-md-10">
-        <select disabled asp-for="Mode" asp-items="new SelectList(ViewBag.Modes)" class="uk-input"></select>
+        <input disabled asp-for="Mode" value=@Model.Mode class="uk-input" />
       </div>
     </td>
   </tr>
@@ -76,7 +76,7 @@
     </td>
     <td>
       <div class="col-md-10">
-        <select disabled asp-for="Origin" asp-items="new SelectList(ViewBag.Origins)" class="uk-input"></select>
+        <input disabled asp-for="Origin" value=@Model.Origin class="uk-input" />
       </div>
     </td>
     <td>
@@ -94,7 +94,7 @@
     </td>
     <td>
       <div class="col-md-10">
-        <select disabled asp-for="Currency" asp-items="new SelectList(ViewBag.Currencies)" class="uk-input"></select>
+        <input disabled asp-for="Currency" value=@Model.Currency class="uk-input" />
       </div>
     </td>
     <td>
@@ -102,7 +102,7 @@
     </td>
     <td>
       <div class="col-md-10">
-        <select disabled asp-for="PortOfLoading" asp-items="new SelectList(ViewBag.Ports)" class="uk-input"></select>
+        <input disabled asp-for="PortOfLoading" value=@Model.PortOfLoading class="uk-input" />
       </div>
     </td>
     <td>
@@ -120,7 +120,7 @@
     </td>
     <td>
       <div class="col-md-10">
-        <select disabled asp-for="Season" asp-items="new SelectList(ViewBag.Seasons)" class="uk-input"></select>
+        <input disabled asp-for="Season" value=@Model.Season class="uk-input">
       </div>
     </td>
     <td>
@@ -128,7 +128,7 @@
     </td>
     <td>
       <div class="col-md-10">
-        <select disabled asp-for="PortOfDelivery" asp-items="new SelectList(ViewBag.Ports)" class="uk-input"></select>
+        <input disabled asp-for="PortOfDelivery" value=@Model.PortOfDelivery class="uk-input" />
       </div>
     </td>
     <td>
@@ -162,7 +162,7 @@
     </td>
     <td>
       <div class="col-md-10">
-        <select disabled asp-for="Status" asp-items="new SelectList(ViewBag.Statuses)" class="uk-input"></select>
+        <input disabled asp-for="Status" value=@Model.Status class="uk-input" />
       </div>
     </td>
   </tr>
