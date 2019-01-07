@@ -109,7 +109,7 @@ namespace ADJ.BusinessService.Implementations
           ContainerId = container.Id,
           Name = container.Name,
           DestPort = arriveOfDispatch[0].DestinationPort,
-          ArrivalDate = confirmArrival[0].ArrivalDate.ToString("MM/dd/yyyy"),
+          ArrivalDate = confirmArrival[0].ArrivalDate,
           Status = container.Status.ToString(),
           BookingDate = DateTime.Now.Date
         };
@@ -138,13 +138,11 @@ namespace ADJ.BusinessService.Implementations
     }
     public async Task<SearchingDCBooking> getItem()
     {
-      var list = await _containerDataProvider.ListAsync();
-      List<Container> containers = list.Items;
-      var DesPort = containers.Select(p => p.ArriveOfDespatch.DestinationPort).Distinct();
+      var list =  _containerRepository.Query(true).SelectAsync(x => x.ArriveOfDespatch.DestinationPort).Result.Distinct();
       List<string> status = Enum.GetNames(typeof(ContainerStatus)).ToList();
       SearchingDCBooking searchingDCBooking = new SearchingDCBooking()
       {
-        DestinationPort = DesPort,
+        DestinationPort = list,
         Status = status
       };
       return searchingDCBooking;
@@ -154,12 +152,25 @@ namespace ADJ.BusinessService.Implementations
       DCBooking entity;
       entity = Mapper.Map<DCBooking>(rq);
       _dcBookingRepository.Insert(entity);
-      var containers = await _containerRepository.Query(x => x.Id == rq.ContainerId,false).SelectAsync();
+      var containers = await _containerRepository.Query(x => x.Id == rq.ContainerId, true).SelectAsync();
+      var CA = await _confirmArrivalRepository.Query(x => x.ContainerId == rq.ContainerId, false).SelectAsync();
+      var Arrive = await _arriveOfDespatchRepository.Query(x => x.ContainerId == rq.ContainerId, false).SelectAsync();
+
       Container container = containers[0];
       container.Status = ContainerStatus.DCBookingReceived;
       _containerRepository.Update(container);
       await UnitOfWork.SaveChangesAsync();
       var rs = Mapper.Map<DCBookingDtos>(entity);
+      rs.Name = container.Name;
+      rs.DestPort = Arrive[0].DestinationPort;
+      rs.ArrivalDate = CA[0].ArrivalDate;
+      foreach (var manifest in container.Manifests)
+      {
+        rs.ShipCarton += manifest.Quantity * (decimal)manifest.Cartons;
+        rs.ShipCube += manifest.Quantity * (decimal)manifest.Cube;
+        rs.ShipQuantity += manifest.Quantity;
+      }
+      rs.Status = container.Status.ToString();
       return rs;
     }
   }

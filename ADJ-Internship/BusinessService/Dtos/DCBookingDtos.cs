@@ -1,4 +1,5 @@
 ﻿using ADJ.BusinessService.Core;
+using ADJ.BusinessService.Validators;
 using ADJ.DataModel.Core;
 using ADJ.DataModel.DeliveryTrack;
 using AutoMapper;
@@ -19,21 +20,24 @@ namespace ADJ.BusinessService.Dtos
     [DisplayName("Dest Port")]
     public string DestPort {get;set;}
 
-    public string ArrivalDate { get; set; }
+    public DateTime ArrivalDate { get; set; }
 
     public string DistributionCenter { get; set; }
 
     public string WareHouse { get; set; }
-
+    [Required]
     public string BookingRef { get; set; }
-
+    [DCBookingDtoValidators("ArrivalDate")]
+    [Required]
     public DateTime BookingDate { get; set; }
 
     [RegularExpression("^(?:0?[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$", ErrorMessage = "Time is invalid")]
+    [Required]
     public string BookingTime { get; set; }
 
     public string Haulier { get; set; }
-
+    [Required]
+    [StringLength(20)]
     public string Client { get; set; }
 
     public DateTime Created { get; set; }
