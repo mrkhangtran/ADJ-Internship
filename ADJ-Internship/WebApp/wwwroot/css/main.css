@@ -2666,7 +2666,7 @@ select.uk-form-width-xsmall {
   border-bottom: 1.2px solid #333;
 }
 .uk-grid .welcome p span {
-  padding: 15px 25% 15px 15px;
+  padding: 15px 8% 15px 8%;
 }
 .uk-grid .content-right {
   padding: 0;
@@ -3512,12 +3512,6 @@ select.uk-form-width-xsmall {
 /*
  * Remove the inner padding and cancel buttons in Chrome on OS X and Safari on OS X.
  */
-input[type=date]::-webkit-inner-spin-button,
-input[type=date]::-webkit-outer-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}
-
 .uk-search-input::-webkit-search-cancel-button,
 .uk-search-input::-webkit-search-decoration {
   -webkit-appearance: none;
@@ -12002,6 +11996,11 @@ iframe.uk-cover {
   h3 {
     page-break-after: avoid;
   }
+}
+input[type=date]::-webkit-inner-spin-button,
+input[type=date]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }
 .menu-left {
   border: 1.2px solid #808080;

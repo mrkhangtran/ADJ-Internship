@@ -17,32 +17,30 @@
 <body>
   <div uk-grid class="divtong" id="background">
     <!-- start menu-left -->
-    <div class="uk-background-secondary uk-text-muted uk-width-1-4 menu-left">
+    <div class="uk-background-secondary uk-text-muted uk-width-1-5 menu-left">
       <div class="uk-grid menu-left-header">
         <div>
-          <span class="fa fa-home "><span class="text"><a asp-route="">Adjuno Internship</a></span></span>
+          <a href="~/Home" class="uk-link-heading uk-link-reset"><span class="fa fa-home">  Adjuno Internship</span></a>
           <!-- end menu-left-header -->
         </div>
       </div>
       @*welcome text*@
-      <div class="uk-grid  welcomeToGroove">
-        <div class="uk-width-1-4">
-          <span class="fa fa-bus"></span>
-        </div>
-        <div class="uk-width-3-4">
-          <p style="font-size:20px;">Welcome to Groove</p>
+      <div class="uk-grid welcome uk-accordion-title">
+        <div>
+          
+          <p style="font-size:20px;"><span uk-icon="user"></span>Welcome to Groove</p>
         </div>
       </div>	<!-- end welcome -->
 
       <ul uk-accordion>
         <li class="item">
-          <div class="uk-grid  welcome uk-accordion-title">
+          <div class="uk-grid welcome uk-accordion-title">
             <div class="uk-width-4-4">
               <p><span class="fa fa-phone"></span>Order</p>
             </div>
           </div>
           <div class="uk-accordion-content">
-            <p>@Html.ActionLink("PO Manager", "Display", "Order")</p>
+            <p><a href="~/Order/Display">PO Manager</a></p>
             <p><a href="/ProgressCheck/Index">PO Progress</a></p>
           </div>
         </li>
@@ -56,8 +54,8 @@
           <div class="uk-accordion-content">
             <p><a href="/ShipmentBooking/Index">Shipment Booking</a></p>
             <p><a href="/Manifest/Index">Manifest</a></p>
-            <p>@Html.ActionLink("Vessel Departure", "Index", "VesselDeparture")</p>
-            <p>PO Progress</p>
+            <p><a href="/VesselDeparture">Vessel Departure</a></p>
+            <p><a href="~/ConfirmArrival">Confirm Arrival</a></p>
           </div>
         </li>
         <li class="item">
@@ -68,8 +66,8 @@
             </div>
           </div>	<!-- end welcome -->
           <div class="uk-accordion-content">
-            <p>PO Manager</p>
-            <p>PO Progress</p>
+            <p><a href="~/DCBooking">DC Booking</a></p>
+            <p><a href="~/DCReceived">DC Received</a></p>
           </div>
         </li>
         <li class="item">
@@ -80,8 +78,8 @@
             </div>
           </div>	<!-- end welcome -->
           <div class="uk-accordion-content">
-            <p>PO Manager</p>
-            <p>PO Progress</p>
+            <p>No Link</p>
+            <p>No Link</p>
           </div>
         </li>
       </ul>
@@ -89,7 +87,7 @@
     </div>
 
 
-    <div class="uk-width-3-4 content-right">
+    <div class="uk-width-4-5 content-right">
       <partial name="_LoginPartial" />
 
       @RenderBody()
@@ -105,6 +103,7 @@
     <script src="~/lib/jquery-ajax-unobtrusive/jquery.unobtrusive-ajax.js"></script>
     <script src="~/lib/uikit/uikit.min.js"></script>
     <script src="~/lib/uikit/uikit-icons.min.js"></script>
+    <script src="~/js/Index.js"></script>
   </environment>
   <environment exclude="Development">
     <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-3.3.1.min.js"
@@ -133,8 +132,8 @@
             asp-fallback-src="~/lib/uikit/uikit-icons.min.js"
             asp-fallback-test="window.jQuery">
     </script>
+
     <script src="~/js/site.min.js" asp-append-version="true"></script>
-    <script src="~/js/Index.js"></script>
   </environment>
 
   @RenderSection("Scripts", required: false)
