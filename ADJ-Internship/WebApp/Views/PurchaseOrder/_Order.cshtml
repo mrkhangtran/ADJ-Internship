@@ -58,7 +58,7 @@
       <div class="col-md-10">
         <input asp-for="PONumber" class="uk-input" id="to" onkeyup="copy2()" />
         <span asp-validation-for="PONumber" class="uk-alert-danger"></span>
-        @ViewBag.ErrorMessage
+        <span class="uk-alert-danger">@ViewBag.PONumberError</span>
       </div>
     </td>
     <td>
