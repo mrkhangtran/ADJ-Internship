@@ -40,7 +40,7 @@ namespace ADJ.BusinessService.Implementations
       _confirmArrivalRepository = confirmArrivalRepository;
       _arriveOfDespatchRepository = arriveOfDespatchRepository;
 
-      pageSize = 6;
+      pageSize = 50;
     }
 
     public async Task<PagedListResult<ConfirmArrivalResultDtos>> ListContainerFilterAsync(int? page, DateTime? ETAFrom, DateTime? ETATo, string origin = null, string mode = null,
@@ -109,6 +109,7 @@ namespace ADJ.BusinessService.Implementations
       Expression<Func<Container, bool>> test = x => x.Id > 0;
 
       PagedListResult<Container> result = await _containerDataProvider.ListAsync(All, null, true, page, pageSize);
+
       PagedListResult<ConfirmArrivalResultDtos> rs = new PagedListResult<ConfirmArrivalResultDtos>();
       rs.Items = await ConvertToResultAsync(result.Items);
       rs.PageCount = result.PageCount;

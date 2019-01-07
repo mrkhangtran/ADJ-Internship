@@ -90,14 +90,14 @@
             <label asp-for="ETD"></label>
           </td>
           <td>
-            <input asp-for="ETD" type="date" value=@DateTime.Now.ToString("yyyy-MM-dd") class="uk-input booking" />
+            <input asp-for="ETD" type="date" value=@Model.ETD.ToString("yyyy-MM-dd") class="uk-input booking" />
             <span asp-validation-for="ETD" class="uk-alert-danger"></span>
           </td>
           <td>
             <label asp-for="ETA"></label>
           </td>
           <td>
-            <input asp-for="ETA" type="date" value=@DateTime.Now.ToString("yyyy-MM-dd") class="uk-input booking" />
+            <input asp-for="ETA" type="date" value=@Model.ETA.ToString("yyyy-MM-dd") class="uk-input booking" />
             <span asp-validation-for="ETA" class="uk-alert-danger"></span>
           </td>
         </tr>

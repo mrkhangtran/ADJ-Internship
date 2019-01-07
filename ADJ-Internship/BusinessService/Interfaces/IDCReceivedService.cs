@@ -11,6 +11,6 @@ namespace ADJ.BusinessService.Interfaces
   {
     Task<PagedListResult<DCReceivedResultDtos>> ListContainerFilterAsync(int? page, string container, string DC, DateTime? bookingDateFrom, DateTime? bookingDateTo,
       DateTime? deliveryDateFrom, DateTime? deliveryDateTo, string bookingRef, string status);
-    Task<DCReceivedDtos> CreateOrUpdateCAAsync(DCReceivedResultDtos input);
+    Task<DCReceivedResultDtos> CreateOrUpdateCAAsync(DCReceivedResultDtos input);
   }
 }

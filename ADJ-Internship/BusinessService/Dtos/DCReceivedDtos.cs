@@ -63,12 +63,25 @@ namespace ADJ.BusinessService.Dtos
       profile.CreateMap<DCReceivedResultDtos, DCConfirmation>().IncludeBase<EntityDtoBase, EntityBase>();
     }
 
+    static DateTime defaultDate = DateTime.Now;
+
     public int ContainerId { get; set; }
+
+    //Default = today's date
+    [Required]
+    [Display(Name = "Delivery Date")]
+    public DateTime DeliveryDate { get; set; } = defaultDate;
+
+    //Format: hh:mm
+    [Required]
+    [Display(Name = "Delivery Time")]
+    [RegularExpression("^(?:0?[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$", ErrorMessage = "Time is invalid")]
+    public string DeliveryTime { get; set; } = defaultDate.ToString("hh:mm");
 
     public bool Selected { get; set; }
 
-    public string Container { get; set; }
-    
+    public string ContainerName { get; set; }
+
     public string DC { get; set; }
 
     public string Haulier { get; set; }
@@ -78,14 +91,6 @@ namespace ADJ.BusinessService.Dtos
     public string BookingTime { get; set; }
 
     public string BookingRef { get; set; }
-
-    //Default = today's date
-    [Display(Name = "Delivery Date")]
-    public DateTime DeliverDate { get; set; }
-
-    //Format: hh:mm
-    [Display(Name = "Delivery Time")]
-    public string DeliverTime { get; set; }
 
     public ContainerStatus Status { get; set; }
   }

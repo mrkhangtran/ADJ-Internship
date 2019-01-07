@@ -124,7 +124,7 @@ namespace ADJ.BusinessService.Implementations
         List<DCConfirmation> confirmation = await _dcRecievedRepository.Query(x => x.ContainerId == item.Id, false).SelectAsync();
 
         output.ContainerId = item.Id;
-        output.Container = item.Name;
+        output.ContainerName = item.Name;
 
         output.DC = booking[0].DistributionCenter;
         output.Haulier = booking[0].Haulier;
@@ -132,10 +132,10 @@ namespace ADJ.BusinessService.Implementations
         output.BookingTime = booking[0].BookingTime;
         output.BookingRef = booking[0].BookingRef;
 
-        if (item.Status == ContainerStatus.Arrived)
+        if (item.Status == ContainerStatus.Delivered)
         {
-          output.DeliverDate = confirmation[0].DeliveryDate;
-          output.DeliverTime = confirmation[0].DeliveryTime;
+          output.DeliveryDate = confirmation[0].DeliveryDate;
+          output.DeliveryTime = confirmation[0].DeliveryTime;
         }
 
         output.Status = item.Status;
@@ -146,14 +146,14 @@ namespace ADJ.BusinessService.Implementations
       return result;
     }
 
-    public async Task<DCReceivedDtos> CreateOrUpdateCAAsync(DCReceivedResultDtos input)
+    public async Task<DCReceivedResultDtos> CreateOrUpdateCAAsync(DCReceivedResultDtos input)
     {
       DCConfirmation entity = await GetDCConfirmationbyContainerId(input.ContainerId);
 
       if (entity != null)
       {
-        entity.DeliveryDate = input.DeliverDate;
-        entity.DeliveryTime = input.DeliverTime;
+        entity.DeliveryDate = input.DeliveryDate;
+        entity.DeliveryTime = input.DeliveryTime;
 
         _dcRecievedRepository.Update(entity);
       }
@@ -168,7 +168,7 @@ namespace ADJ.BusinessService.Implementations
 
       await UnitOfWork.SaveChangesAsync();
 
-      return Mapper.Map<DCReceivedDtos>(entity);
+      return Mapper.Map<DCReceivedResultDtos>(entity);
     }
 
     public async Task<DCConfirmation> GetDCConfirmationbyContainerId(int containerId)
