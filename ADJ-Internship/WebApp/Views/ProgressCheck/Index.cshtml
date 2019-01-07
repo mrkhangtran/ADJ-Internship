@@ -158,9 +158,16 @@
           </thead>
           <tbody>
             <tr>
-              <td>
-                <input class="uk-checkbox" type="checkbox" asp-for="Items[i].selected" />
-              </td>
+              @if (Model.Items[i].Complete == false)
+              {
+                <td>
+                  <input class="uk-checkbox" type="checkbox" asp-for="Items[i].selected" />
+                </td>
+              }
+              else
+              {
+                <td></td>
+              }
               <td>@Model.Items[i].PONumber</td>
               @Html.HiddenFor(model => model.Items[i].PONumber)
               <td>@Model.Items[i].POQuantity</td>
@@ -168,14 +175,29 @@
               <td>@Model.Items[i].EstQtyToShip</td>
               @Html.HiddenFor(model => model.Items[i].EstQtyToShip)
               <td>@Model.Items[i].ShipDate</td>
-              <td>
-                <input type="date" asp-for="Items[i].InspectionDate" class=" uk-input" />
-                <span class=" uk-text-danger" asp-validation-for="Items[i].InspectionDate"></span>
-              </td>
-              <td>
-                <input type="date" asp-for="Items[i].IntendedShipDate" class=" uk-input" />
-                <span class=" uk-text-danger" asp-validation-for="Items[i].IntendedShipDate"></span>
-              </td>
+              @{
+                if (Model.Items[i].Complete == true)
+                {
+                  <td>
+                    <input readonly type="date" asp-for="Items[i].InspectionDate" class=" uk-input" />
+                  </td>
+                  <td>
+                    <input readonly type="date" asp-for="Items[i].IntendedShipDate" class=" uk-input" />
+                  </td>
+                }
+                else
+                {
+                  <td>
+                    <input type="date" asp-for="Items[i].InspectionDate" class=" uk-input" />
+                    <span class=" uk-text-danger" asp-validation-for="Items[i].InspectionDate"></span>
+                  </td>
+                  <td>
+                    <input type="date" asp-for="Items[i].IntendedShipDate" class=" uk-input" />
+                    <span class=" uk-text-danger" asp-validation-for="Items[i].IntendedShipDate"></span>
+                  </td>
+                }
+              }
+
               <td>
                 @if (@Model.Items[i].Complete == true)
                 {
@@ -209,17 +231,36 @@
             @for (int j = 0; j < Model.Items[i].ListOrderDetailDto.Count(); j++)
             {
               <tr>
-                <td>
-                  <input class="uk-checkbox" type="checkbox" asp-for="Items[i].ListOrderDetailDto[j].selected" />
-                </td>
+                @if (Model.Items[i].Complete == false)
+                {
+                  <td>
+                    <input class="uk-checkbox" type="checkbox" asp-for="Items[i].ListOrderDetailDto[j].selected" />
+                  </td>
+                }
+                else
+                {
+                  <td></td>
+                }
                 @Html.HiddenFor(model => model.Items[i].ListOrderDetailDto[j].Id)
                 <td>@Model.Items[i].ListOrderDetailDto[j].ItemNumber</td>
                 <td>@Model.Items[i].ListOrderDetailDto[j].Quantity</td>
                 @Html.HiddenFor(model => model.Items[i].ListOrderDetailDto[j].Quantity)
-                <td>
-                  <input type="number" asp-for="Items[i].ListOrderDetailDto[j].ReviseQuantity" class=" uk-input" />
-                  <span class=" uk-text-danger" asp-validation-for="Items[i].ListOrderDetailDto[j].ReviseQuantity"></span>
-                </td>
+                @{
+                  if (Model.Items[i].Complete == true)
+                  {
+                    <td>
+                      <input readonly type="number" asp-for="Items[i].ListOrderDetailDto[j].ReviseQuantity" class=" uk-input" />
+                    </td>
+                  }
+                  else
+                  {
+                    <td>
+                      <input type="number" asp-for="Items[i].ListOrderDetailDto[j].ReviseQuantity" class=" uk-input" />
+                      <span class=" uk-text-danger" asp-validation-for="Items[i].ListOrderDetailDto[j].ReviseQuantity"></span>
+                    </td>
+                  }
+                }
+
               </tr>
             }
           </tbody>
@@ -282,7 +323,6 @@
 {
   <p class="hkPorts" hidden="hidden">@item</p>
 }
-
 <script src="~/js/jquery-3.3.1.min.js"></script>
 <script type="text/javascript">
   $(document.body).on('click', '.filterItem', function () {
