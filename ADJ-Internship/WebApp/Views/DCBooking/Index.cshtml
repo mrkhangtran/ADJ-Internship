@@ -1,0 +1,353 @@
+﻿@model ADJ.Common.PagedListResult<ADJ.BusinessService.Dtos.DCBookingDtos>
+<form id="dcbooking" asp-action="CreateOrUpdate" asp-controller="DCBooking" data-ajax-complete="showup" data-ajax="true"
+      data-ajax-method="POST"
+      data-ajax-mode="replace"
+      data-ajax-update="#renderSearching">
+  <div class="uk-container">
+    <div class="uk-grid">
+      <div class="uk-width-1-3">
+        <table class="uk-table">
+          <tbody>
+            <tr>
+              <td><label>Destination Port</label></td>
+              <td>
+                <div class="uk-form-select" data-uk-form-select>
+                  @Html.DropDownList("DestinationPort", new SelectList(ViewBag.DestPort), "Any", new { @id = "DestinationPort", @class = "uk-select" })
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td><label>Booking Ref</label></td>
+              <td>
+                <input id="bookingref" class="uk-input" type="number" />
+              </td>
+            </tr>
+            <tr>
+              <td><label>Booking Date From</label></td>
+              <td>
+                <input id="bookingdatefrom" type="date" class="uk-input">
+              </td>
+            </tr>
+            <tr>
+              <td><label>Booking Date to</label></td>
+              <td>
+                <input id="bookingdateto" type="date" class="uk-input">
+              </td>
+            </tr>
+            <tr>
+              <td><label>Status</label></td>
+              <td>
+                <div class="uk-form-select" data-uk-form-select>
+                  @Html.DropDownList("Status", new SelectList(ViewBag.Status), "Any", new { @id = "Status", @class = "uk-select" })
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="uk-width-1-3">
+        <table class="uk-table">
+          <tbody>
+            <tr>
+              <td><label>DC</label></td>
+              <td>
+                <div class="uk-form-select" data-uk-form-select>
+                  @Html.DropDownList("DC", new SelectList(ViewBag.DC), "Any", new { @id = "DC", @class = "uk-select" })
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td><label>Arrival Date From</label></td>
+              <td>
+                <input id="arrivaldatefrom" type="date" class="uk-input">
+              </td>
+            </tr>
+            <tr>
+              <td><label>Arrival Date To</label></td>
+              <td>
+                <input id="arrivaldateto" type="date" class="uk-input">
+              </td>
+            </tr>
+            <tr>
+              <td><label>Container</label></td>
+              <td>
+                <input id="Container" class="uk-input" />
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="uk-width-1-3">
+        <table class="uk-table">
+          <tbody>
+            <tr>
+              <td>
+                <button type="button" class="filterItem uk-button uk-button-primary" value=1>Search</button>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <button id="achieve" type="submit" class="uk-button uk-button-danger">Achieve</button>
+              </td>
+            </tr>
+
+          </tbody>
+        </table>
+
+      </div>
+
+    </div>
+    <div id="renderSearching">
+      <br />
+      <br />
+      <div class="uk-grid">
+        <table class="uk-table uk-table-small">
+          <thead>
+            <tr>
+              <td></td>
+              <td>
+                Container
+              </td>
+              <td>
+                Dest Port
+              </td>
+              <td>
+                Arrival Date
+              </td>
+              <td>
+                Ship Carton
+              </td>
+              <td>
+                Ship Cube
+              </td>
+              <td>
+                Ship Quantity
+              </td>
+              <td>
+                DC
+              </td>
+              <td>
+                Haulier
+              </td>
+              <td>
+                Client
+              </td>
+              <td>
+                Booking Date
+              </td>
+              <td>
+                Booking Time
+              </td>
+              <td>
+                Booking Ref
+              </td>
+              <td>
+                Status
+              </td>
+            </tr>
+          </thead>
+          <tbody>
+            @{
+              if (Model.Items.Count() > 0)
+              {
+                for (int i = 0; i < Model.Items.Count(); i++)
+                {
+                  @Html.HiddenFor(model => model.Items[i].Id, new { Value = Model.Items[i].Id })
+                  @Html.HiddenFor(model => model.Items[i].ContainerId, new { Value = Model.Items[i].ContainerId })
+                  <tr>
+                    <td>
+                      @if (Model.Items[i].Id == 0)
+                      {
+                        <input asp-for="Items[i].selected" class="uk-checkbox" />
+                      }
+                    </td>
+                    <td>
+                      @Model.Items[i].Name
+                      @Html.HiddenFor(model => model.Items[i].Name)
+                    </td>
+                    <td>
+                      @Model.Items[i].DestPort
+                      @Html.HiddenFor(model => model.Items[i].DestPort)
+                    </td>
+                    <td>
+                      @Model.Items[i].ArrivalDate.ToString("dd/MM/yyyy")
+                      @Html.HiddenFor(model => model.Items[i].ArrivalDate)
+
+                    </td>
+                    <td>
+                      @Model.Items[i].ShipCarton
+                      @Html.HiddenFor(model => model.Items[i].ShipCarton)
+                    </td>
+                    <td>
+                      @Model.Items[i].ShipCube
+                      @Html.HiddenFor(model => model.Items[i].ShipCube)
+                    </td>
+                    <td>
+                      @Model.Items[i].ShipQuantity
+                      @Html.HiddenFor(model => model.Items[i].ShipQuantity)
+                    </td>
+                    <td>
+                      @{
+                        if (Model.Items[i].Id > 0)
+                        {
+                          @Model.Items[i].DistributionCenter
+                          @Html.HiddenFor(model => model.Items[i].DistributionCenter)
+                        }
+                        else
+                        {
+                          <select style="width:150px" asp-for="Items[i].DistributionCenter" asp-items="new SelectList(ViewBag.DC)" class="uk-input"></select>
+                        }
+                      }
+                    </td>
+                    <td>
+                      @{
+                        if (Model.Items[i].Id > 0)
+                        {
+                          @Model.Items[i].Haulier
+                          @Html.HiddenFor(model => model.Items[i].Haulier)
+
+                        }
+                        else
+                        {
+                          <select asp-for="Items[i].Haulier" asp-items="new SelectList(ViewBag.Haulier)" class="uk-input"></select>
+                        }
+                      }
+                    </td>
+                    <td>
+                      @{
+                        if (Model.Items[i].Id > 0)
+                        {
+                          @Model.Items[i].Client
+                          @Html.HiddenFor(model => model.Items[i].Client)
+                        }
+                        else
+                        {
+                          <input asp-for="Items[i].Client" class="uk-input" />
+                          <span class="uk-text-danger" asp-validation-for="Items[i].Client"></span>
+                        }
+                      }
+
+                    </td>
+                    <td>
+                      @{
+                        if (Model.Items[i].Id > 0)
+                        {
+                          @Model.Items[i].BookingDate.ToString("dd/MM/yyyy")
+                          @Html.HiddenFor(model => model.Items[i].BookingDate)
+                        }
+                        else
+                        {
+                          <input asp-for="Items[i].BookingDate" class="uk-input" type="date" />
+                          <span class="uk-text-danger" asp-validation-for="Items[i].BookingDate"></span>
+                        }
+                      }
+
+                    </td>
+                    <td>
+                      @{
+                        if (Model.Items[i].Id > 0)
+                        {
+                          @Model.Items[i].BookingTime
+                          @Html.HiddenFor(model => model.Items[i].BookingTime)
+                        }
+                        else
+                        {
+                          <input asp-for="Items[i].BookingTime" class="uk-input" placeholder="ex: 10:45" />
+                          <span class="uk-text-danger" asp-validation-for="Items[i].BookingTime"></span>
+                        }
+                      }
+
+                    </td>
+                    <td>
+                      @{
+                        if (Model.Items[i].Id > 0)
+                        {
+                          @Model.Items[i].BookingRef
+                          @Html.HiddenFor(model => model.Items[i].BookingRef)
+
+                        }
+                        else
+                        {
+                          <input asp-for="Items[i].BookingRef" class="uk-input" />
+                          <span class="uk-text-danger" asp-validation-for="Items[i].BookingRef"></span>
+                        }
+                      }
+                    </td>
+                    <td style="color:darkorange">
+                      @Html.HiddenFor(model => model.Items[i].Status)
+                      @Model.Items[i].Status
+                    </td>
+                  </tr>
+                }
+              }
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</form>
+<div class="uk-align-right">
+  <ul class="uk-pagination">
+    @{
+      if (ViewBag.pageIndex > 1)
+      {
+        <li><a value="@(ViewBag.pageIndex - 1)" class="filterItem page-link"><span uk-pagination-previous></span></a></li>
+      }
+      for (var i = 1; i <= Model.PageCount; i++)
+      {
+        if (i == ViewBag.pageIndex)
+        {
+          <li class="uk-disabled">
+            <a value="@i" class="page-link"><u>@i</u></a>
+          </li>
+        }
+        else
+        {
+          <li class="uk-active">
+            <a value="@i" class="filterItem page-link">@i</a>
+          </li>
+        }
+      }
+      if (ViewBag.pageIndex < Model.PageCount)
+      {
+        <li><a value="@(ViewBag.pageIndex + 1)" class="filterItem page-link"><span uk-pagination-next></span></a></li>
+      }
+    }
+  </ul>
+</div>
+<br />
+<br />
+<script src="~/js/jquery-3.3.1.min.js"></script>
+<script type="text/javascript">
+   $(document.body).on('click', '.filterItem', function () {
+    var pageIndex = $(this).attr("value");
+        $.ajax({
+            type: "GET",
+            dataType:"html",
+            url: "@Url.Action("Index", "DCBooking")",
+            data: {
+              pageIndex: pageIndex,
+              DestinationPort: $('#DestinationPort').val(),
+              bookingref: $('#bookingref').val(),
+              bookingdatefrom: $('#bookingdatefrom').val(),
+              bookingdateto: $('#bookingdateto').val(),
+              DC: $('#DC').val(),
+              arrivaldatefrom: $('#arrivaldatefrom').val(),
+              arrivaldateto: $('#arrivaldateto').val(),
+              Status: $('#Status').val(),
+              Container: $('#Container').val(),
+              checkClick: true,
+            },
+            success: function (data) {
+                $('#renderSearching').html(data);
+            }
+        });
+  });
+  showup = function showup() {
+    $(document).ready(function () {
+      $('#successmodal').trigger('click');
+    });
+  }
+</script>
+

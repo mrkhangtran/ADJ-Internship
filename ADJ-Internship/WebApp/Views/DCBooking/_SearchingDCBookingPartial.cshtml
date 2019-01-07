@@ -1,0 +1,219 @@
+﻿@model ADJ.Common.PagedListResult<ADJ.BusinessService.Dtos.DCBookingDtos>
+@if (Model.Items.Count() == 0)
+{
+  <p class="uk-text-meta uk-text-large">No matching results were found. Please try again</p>
+}
+else
+{
+  <br />
+  <br />
+  <div class="uk-grid">
+    <table class="uk-table uk-table-small">
+      <thead>
+        <tr>
+          <td></td>
+          <td>
+            Container
+          </td>
+          <td>
+            Dest Port
+          </td>
+          <td>
+            Arrival Date
+          </td>
+          <td>
+            Ship Carton
+          </td>
+          <td>
+            Ship Cube
+          </td>
+          <td>
+            Ship Quantity
+          </td>
+          <td>
+            DC
+          </td>
+          <td>
+            Haulier
+          </td>
+          <td>
+            Client
+          </td>
+          <td>
+            Booking Date
+          </td>
+          <td>
+            Booking Time
+          </td>
+          <td>
+            Booking Ref
+          </td>
+          <td>
+            Status
+          </td>
+        </tr>
+      </thead>
+      <tbody>
+        @{
+          if (Model.Items.Count() > 0)
+          {
+            for (int i = 0; i < Model.Items.Count(); i++)
+            {
+              @Html.HiddenFor(model => model.Items[i].Id, new { Value = Model.Items[i].Id })
+              @Html.HiddenFor(model => model.Items[i].ContainerId, new { Value = Model.Items[i].ContainerId })
+              <tr>
+                <td>
+                  @if (Model.Items[i].Id == 0)
+                  {
+                    <input asp-for="Items[i].selected" class="uk-checkbox" />
+                  }
+                </td>
+                <td>
+                  @Model.Items[i].Name
+                  @Html.HiddenFor(model => model.Items[i].Name)
+                </td>
+                <td>
+                  @Model.Items[i].DestPort
+                  @Html.HiddenFor(model => model.Items[i].DestPort)
+                </td>
+                <td>
+                  @Model.Items[i].ArrivalDate
+                  @Html.HiddenFor(model => model.Items[i].ArrivalDate)
+
+                </td>
+                <td>
+                  @Model.Items[i].ShipCarton
+                  @Html.HiddenFor(model => model.Items[i].ShipCarton)
+                </td>
+                <td>
+                  @Model.Items[i].ShipCube
+                  @Html.HiddenFor(model => model.Items[i].ShipCube)
+                </td>
+                <td>
+                  @Model.Items[i].ShipQuantity
+                  @Html.HiddenFor(model => model.Items[i].ShipQuantity)
+                </td>
+                <td>
+                  @{
+                    if (Model.Items[i].Id > 0)
+                    {
+                      @Model.Items[i].DistributionCenter
+                      @Html.HiddenFor(model => model.Items[i].DistributionCenter)
+                    }
+                    else
+                    {
+                      <select style="width:150px" asp-for="Items[i].DistributionCenter" asp-items="new SelectList(ViewBag.DC)" class="uk-input"></select>
+                    }
+                  }
+                </td>
+                <td>
+                  @{
+                    if (Model.Items[i].Id > 0)
+                    {
+                      @Model.Items[i].Haulier
+                      @Html.HiddenFor(model => model.Items[i].Haulier)
+
+                    }
+                    else
+                    {
+                      <select asp-for="Items[i].Haulier" asp-items="new SelectList(ViewBag.Haulier)" class="uk-input"></select>
+                    }
+                  }
+                </td>
+                <td>
+                  @{
+                    if (Model.Items[i].Id > 0)
+                    {
+                      @Model.Items[i].Client
+                      @Html.HiddenFor(model => model.Items[i].Client)
+                    }
+                    else
+                    {
+                      <input asp-for="Items[i].Client" class="uk-input" />
+                    }
+                  }
+
+                </td>
+                <td>
+                  @{
+                    if (Model.Items[i].Id > 0)
+                    {
+                      @Model.Items[i].BookingDate
+                      @Html.HiddenFor(model => model.Items[i].BookingDate)
+                    }
+                    else
+                    {
+                      <input asp-for="Items[i].BookingDate" class="uk-input" type="date" />
+                    }
+                  }
+
+                </td>
+                <td>
+                  @{
+                    if (Model.Items[i].Id > 0)
+                    {
+                      @Model.Items[i].BookingTime
+                      @Html.HiddenFor(model => model.Items[i].BookingTime)
+                    }
+                    else
+                    {
+                      <input asp-for="Items[i].BookingTime" class="uk-input" />
+                    }
+                  }
+
+                </td>
+                <td>
+                  @{
+                    if (Model.Items[i].Id > 0)
+                    {
+                      @Model.Items[i].BookingRef
+                      @Html.HiddenFor(model => model.Items[i].BookingRef)
+
+                    }
+                    else
+                    {
+                      <input asp-for="Items[i].BookingRef" class="uk-input" />
+                    }
+                  }
+                </td>
+                <td style="color:darkorange">
+                  @Html.HiddenFor(model => model.Items[i].Status)
+                  @Model.Items[i].Status
+                </td>
+              </tr>
+            }
+          }
+        }
+      </tbody>
+    </table>
+  </div>
+  @*<div class="uk-align-right">
+    <ul class="uk-pagination">
+      @{
+        if (ViewBag.pageIndex > 1)
+        {
+          <li><a value="@(ViewBag.pageIndex - 1)" class="filterItem page-link"><span uk-pagination-previous></span></a></li>
+        }
+        for (var i = 1; i <= Model.PageCount; i++)
+        {
+          if (i == ViewBag.pageIndex)
+          {
+            <li class="uk-disabled">
+              <a value="@i" class="page-link"><u>@i</u></a>
+            </li>
+          }
+          else
+          {
+            <li class="uk-active">
+              <a value="@i" class="filterItem page-link">@i</a>
+            </li>
+          }
+        }
+        if (ViewBag.pageIndex < Model.PageCount)
+        {
+          <li><a value="@(ViewBag.pageIndex + 1)" class="filterItem page-link"><span uk-pagination-next></span></a></li>
+        }
+      }
+    </ul>
+  </div>*@
+}
