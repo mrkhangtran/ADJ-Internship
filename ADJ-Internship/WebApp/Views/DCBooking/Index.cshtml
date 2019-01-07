@@ -222,8 +222,7 @@
                         }
                         else
                         {
-                          <input asp-for="Items[i].Client" class="uk-input" />
-                          <span class="uk-text-danger" asp-validation-for="Items[i].Client"></span>
+                          <input asp-for="Items[i].Client" class="client uk-input" />
                         }
                       }
 
@@ -252,8 +251,8 @@
                         }
                         else
                         {
-                          <input asp-for="Items[i].BookingTime" class="uk-input" placeholder="ex: 10:45" />
-                          <span class="uk-text-danger" asp-validation-for="Items[i].BookingTime"></span>
+                          <input asp-for="Items[i].BookingTime" class="bookingtime uk-input" placeholder="ex: 10:45" />
+                          <span hidden class="bookingtimeinvalid uk-text-danger" asp-validation-for="Items[i].BookingTime"></span>
                         }
                       }
 
@@ -269,7 +268,6 @@
                         else
                         {
                           <input asp-for="Items[i].BookingRef" class="uk-input" />
-                          <span class="uk-text-danger" asp-validation-for="Items[i].BookingRef"></span>
                         }
                       }
                     </td>
@@ -349,5 +347,36 @@
       $('#successmodal').trigger('click');
     });
   }
+  $('#dcbooking').submit(function () {
+    var check = 0;
+    var blank = document.getElementsByClassName("client");
+    for (i = 0; i < blank.length; i++) {
+      if (blank[i].value == "") {
+        check++;
+        break;
+      }
+    }
+    var blank = document.getElementsByClassName("bookingtime");
+    for (i = 0; i < blank.length; i++) {
+      if (blank[i].value == "") {
+        check++;
+        break;
+      }
+    }
+    var blank = document.getElementsByClassName("bookingref");
+    for (i = 0; i < blank.length; i++) {
+      if (blank[i].value == "") {
+        check++;
+        break;
+      }
+    }
+    if (check > 0) {
+      alert("Some fields are empty or contain an improper value. Please try again.");
+    }
+    var invalid = document.getElementsByClassName("bookingtimeinvalid");
+    if (invalid != "" && check==0) {
+      alert("Booking time is invalid value. Please try again.");
+    }
+  });
 </script>
 
