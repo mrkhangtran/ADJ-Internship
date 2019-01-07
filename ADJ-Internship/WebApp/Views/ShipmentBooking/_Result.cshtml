@@ -58,14 +58,14 @@
             <label asp-for="PortOfLoading"></label>
           </td>
           <td>
-            <select asp-for="PortOfLoading" class="uk-input booking ports"></select>
+            <select asp-for="PortOfLoading" value=@Model.PortOfLoading class="uk-input booking ports"></select>
             <span asp-validation-for="PortOfLoading" class="uk-alert-danger"></span>
           </td>
           <td>
             <label asp-for="PortOfDelivery"></label>
           </td>
           <td>
-            <select asp-for="PortOfDelivery" class="uk-input booking ports"></select>
+            <select asp-for="PortOfDelivery" value=@Model.PortOfDelivery class="uk-input booking ports"></select>
             <span asp-validation-for="PortOfDelivery" class="uk-alert-danger"></span>
           </td>
         </tr>
