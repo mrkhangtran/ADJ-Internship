@@ -108,8 +108,28 @@ function changePorts() {
 
   for (i = 0; i < ports.length; i++) {
     ports[i].options.length = 0;
+    if (ports[i].attributes.value != null) {
+      var currentValue = ports[i].attributes.value.nodeValue;
+    }
+    if ((currentValue != null) && (isExist(currentValue, options))) {
+      ports[i].options[ports[i].options.length] = new Option(currentValue, currentValue);
+    }
     for (j = 0; j < options.length; j++) {
-      ports[i].options[ports[i].options.length] = new Option(options[j], options[j]);
+      if ((currentValue == null) || (currentValue != options[j])) {
+        ports[i].options[ports[i].options.length] = new Option(options[j], options[j]);
+      }
     }
   }
+};
+
+function isExist(value, arr) {
+  var exist = false;
+  for (k = 0; k < arr.length; k++) {
+    if (arr[k] == value) {
+      exist = true;
+      break;
+    }
+  }
+
+  return exist;
 };

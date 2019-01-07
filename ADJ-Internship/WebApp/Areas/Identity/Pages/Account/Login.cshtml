@@ -1,0 +1,55 @@
+﻿@page
+@model LoginModel
+
+@{
+  ViewData["Title"] = "Log in";
+}
+
+<div class="uk-grid uk-flex-center">
+  <div class="uk-card uk-card-default uk-card-body uk-width-1-2">
+    <h2>@ViewData["Title"]</h2>
+
+    <form method="post">
+      <div asp-validation-summary="All" class="uk-text-danger"></div>
+      <h4>User account log in.</h4>
+      <hr />
+      <table class="uk-table uk-table-middle">
+        <tr>
+          <td>
+            <label asp-for="Input.Email"></label>
+          </td>
+          <td>
+            <input asp-for="Input.Email" class="uk-input" />
+            <span asp-validation-for="Input.Email" class="uk-text-danger"></span>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <label asp-for="Input.Password"></label>
+          </td>
+          <td>
+            <input asp-for="Input.Password" class="uk-input" />
+            <span asp-validation-for="Input.Password" class="uk-text-danger"></span>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <button type="submit" class="uk-button uk-button-primary">Log in</button>
+          </td>
+          <td>
+            <label asp-for="Input.RememberMe">
+              <input asp-for="Input.RememberMe" class="uk-checkbox" />
+              @Html.DisplayNameFor(m => m.Input.RememberMe)
+            </label>
+          </td>
+        </tr>
+      </table>
+      <p><a asp-page="./ForgotPassword" class="uk-link">Forgot your password?</a></p>
+      <p><a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl" class="uk-link">Register as a new user</a></p>
+    </form>
+  </div>
+</div>
+
+@section Scripts {
+  <partial name="_ValidationScriptsPartial" />
+}
