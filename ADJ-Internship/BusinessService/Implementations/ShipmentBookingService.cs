@@ -57,18 +57,6 @@ namespace ADJ.BusinessService.Implementations
         All = All.And(filter);
       }
 
-      if (originPort != null)
-      {
-        Expression<Func<OrderDetail, bool>> filter = x => x.Order.PortOfLoading == originPort;
-        All = All.And(filter);
-      }
-
-      if (mode != null)
-      {
-        Expression<Func<OrderDetail, bool>> filter = x => x.Order.Mode == mode;
-        All = All.And(filter);
-      }
-
       if (vendor != null)
       {
         Expression<Func<OrderDetail, bool>> filter = x => x.Order.Vendor == vendor;
@@ -93,19 +81,36 @@ namespace ADJ.BusinessService.Implementations
         All = All.And(filter);
       }
 
-      if (status != null)
+      Expression<Func<OrderDetail, bool>> All1 = x => x.Status == OrderStatus.AwaitingBooking;
+      Expression<Func<OrderDetail, bool>> All2 = x => x.Status == OrderStatus.BookingMade;
+
+      if (originPort != null)
       {
-        Expression<Func<OrderDetail, bool>> filter = x => x.Status.ToString() == status;
-        All = All.And(filter);
+        Expression<Func<OrderDetail, bool>> filter1 = x => x.Order.PortOfLoading == originPort;
+        All1 = All1.And(filter1);
+        Expression<Func<OrderDetail, bool>> filter2 = x => x.Order.Bookings.Where(p => p.PortOfLoading == originPort).Count() > 0;
+        All2 = All2.And(filter2);
+      }
+
+      if (mode != null)
+      {
+        Expression<Func<OrderDetail, bool>> filter = x => x.Order.Mode == mode;
+        All1 = All1.And(filter);
+        Expression<Func<OrderDetail, bool>> filter2 = x => x.Order.Bookings.Where(p => p.Mode == mode).Count() > 0;
+        All2 = All2.And(filter2);
+      }
+
+      if (status == OrderStatus.AwaitingBooking.ToString())
+      {
+        All = All.And(All1);
+      }
+      else if (status == OrderStatus.BookingMade.ToString())
+      {
+        All = All.And(All2);
       }
       else
       {
-        Expression<Func<OrderDetail, bool>> All1 = x => x.Status == OrderStatus.AwaitingBooking;
-        All1 = All.And(All1);
-        Expression<Func<OrderDetail, bool>> All2 = x => x.Status == OrderStatus.BookingMade;
-        All2 = All.And(All2);
-
-        All = All1.Or(All2);
+        All = All.And(All1.Or(All2));
       }
 
       PagedListResult<OrderDetail> result = await _orderDetailDataProvider.ListAsync(All, null, true);
@@ -262,14 +267,14 @@ namespace ADJ.BusinessService.Implementations
               throw new AppException("Order not found.");
             }
 
-            if ((order[0].PortOfLoading != input.PortOfLoading) || (order[0].PortOfDelivery != input.PortOfDelivery) || (order[0].Mode != input.Mode))
-            {
-              order[0].PortOfLoading = input.PortOfLoading;
-              order[0].PortOfDelivery = input.PortOfDelivery;
-              order[0].Mode = input.Mode;
+            //if ((order[0].PortOfLoading != input.PortOfLoading) || (order[0].PortOfDelivery != input.PortOfDelivery) || (order[0].Mode != input.Mode))
+            //{
+            //  order[0].PortOfLoading = input.PortOfLoading;
+            //  order[0].PortOfDelivery = input.PortOfDelivery;
+            //  order[0].Mode = input.Mode;
 
-              _orderRepository.Update(order[0]);
-            }
+            //  _orderRepository.Update(order[0]);
+            //}
           }
         }
 
