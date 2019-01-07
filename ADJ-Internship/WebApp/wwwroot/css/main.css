@@ -3509,6 +3509,12 @@ select.uk-form-width-xsmall {
 }
 /* Input
  ========================================================================== */
+input[type=date]::-webkit-inner-spin-button,
+input[type=date]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
 /*
  * Remove the inner padding and cancel buttons in Chrome on OS X and Safari on OS X.
  */
