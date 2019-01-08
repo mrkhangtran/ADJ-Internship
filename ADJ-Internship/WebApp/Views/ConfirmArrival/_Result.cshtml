@@ -125,7 +125,7 @@
               {
                 <tr>
                   <td style="display: none">
-                    <input asp-for="Containers.Items[j].Id" type="hidden" />
+                    <input asp-for="Containers.Items[j].Id" value=@Model.Containers.Items[j].Id type="hidden" />
                     <input asp-for="Containers.Items[j].GroupId" value=@groupId type="hidden" />
 
                     <input asp-for="Containers.Items[j].DestinationPort" value=@Model.Containers.Items[j].DestinationPort type="hidden" />

@@ -1,161 +1,102 @@
 ﻿using ADJ.BusinessService.Core;
+using ADJ.BusinessService.Validators;
 using ADJ.Common;
 using ADJ.DataModel.Core;
 using ADJ.DataModel.ShipmentTrack;
 using AutoMapper;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Text;
 
 namespace ADJ.BusinessService.Dtos
 {
-	public class VesselDepartureDtos : EntityDtoBase, ICreateMapping
-	{
-		public FilterDto filterDto { get; set; }
+  public class VesselDepartureDtos
+  {
+    public FilterDto FilterDto { get; set; }
 
-		public List<ContainerDto> lstContainerDto { get; set; }
+    public List<ContainerInfoDto> ContainerInfoDtos { get; set; }
 
-		public List<ArriveOfDespatchDto> lstArriveOfDespatchDto { get; set; }
+    public PagedListResult<ContainerDto> ResultDtos { get; set; }
+  }
 
-		public void CreateMapping(Profile profile)
-		{
-			profile.CreateMap<Container, ContainerDto>().IncludeBase<EntityBase, EntityDtoBase>();
-			profile.CreateMap<ContainerDto, Container>().IncludeBase<EntityDtoBase, EntityBase>();
-		}
-	}
+  public class FilterDto
+  {
+    //Droplist Vietnam-HongKong
+    public string Origin { get; set; }
 
-	public class FilterDto
-	{
-		public string origin { get; set; }
-		public string originPort { get; set; }
-		public int containerId { get; set; }
-		public string status { get; set; }
-		public DateTime? etdFrom { get; set; }
-		public DateTime? etdTo { get; set; }
-	}
+    //Droplist of Ports
+    [Display(Name = "Origin Port")]
+    public string OriginPort { get; set; }
 
+    [StringLength(10)]
+    [RegularExpression("^[a-zA-Z0-9 ]+$", ErrorMessage = "Letters and numbers only")]
+    public string Container { get; set; }
 
+    //Droplist of Pending-Despatched
+    public string Status { get; set; }
 
-	public class ContainerDto : EntityDtoBase, ICreateMapping
-	{
+    [Display(Name = "ETD From")]
+    public DateTime? ETDFrom { get; set; }
 
-		public string Name { get; set; }
+    [Display(Name = "ETD To")]
+    [SimilarOrLaterThanOtherDate("etdFrom")]
+    public DateTime? ETDTo { get; set; }
+  }
 
-		public string Size { get; set; }
+  public class ContainerInfoDto
+  {
+    //Droplist of Ports
+    [Display(Name = "Origin Port")]
+    public string OriginPort { get; set; }
 
-		public string Loading { get; set; }
+    //Droplist of Ports
+    [Display(Name = "Destination Port")]
+    [PortIsDifferent("OriginPort")]
+    public string DestinationPort { get; set; }
 
-		public string PackType { get; set; }
+    //DropList of Road-Sea-Air
+    public string Mode { get; set; }
 
-		public ContainerStatus Status { get; set; }
+    //Droplist of Carrier
+    public string Carrier { get; set; }
+  }
 
-		public string OriginPort { get; set; }
+  public class ContainerDto : EntityDtoBase, ICreateMapping
+  {
+    public string OriginPort { get; set; }
 
-		public string DestPort { get; set; }
+    public string DestinationPort { get; set; }
 
-		public string Carrier { get; set; }
+    public string Mode { get; set; }
 
-		public string Voyage { get; set; }
+    public string Carrier { get; set; }
+    
+    public DateTime ETD { get; set; }
 
-		public DateTime ETD { get; set; }
+    public DateTime ETA { get; set; }
 
-		public DateTime ETA { get; set; }
+    public int ContainerId { get; set; }
 
-		public string originPortChange { get; set; }
+    public bool Selected { get; set; }
 
-		public string destPortChange { get; set; }
+    [Display(Name = "Container")]
+    public string Name { get; set; }
 
-		public string modeChange { get; set; }
+    public string Size { get; set; }
 
-		public string carrierChange { get; set; }
+    public int GroupId { get; set; }
 
-		public bool checkClick { get; set; }
+    public ContainerStatus Status { get; set; }
 
-		public void CreateMapping(Profile profile)
-		{
-			profile.CreateMap<Container, ContainerDto>().IncludeBase<EntityBase, EntityDtoBase>();
-			profile.CreateMap<ContainerDto, Container>().IncludeBase<EntityDtoBase, EntityBase>();
-		}
-	}
+    public void CreateMapping(Profile profile)
+    {
+      profile.CreateMap<Booking, ContainerDto>().IncludeBase<EntityBase, EntityDtoBase>();
 
-	public class BookingDto : EntityDtoBase, ICreateMapping
-	{
+      profile.CreateMap<ArriveOfDespatch, ContainerDto>().IncludeBase<EntityBase, EntityDtoBase>();
+      profile.CreateMap<ContainerDto, ArriveOfDespatch>().IncludeBase<EntityDtoBase, EntityBase>();
 
-		public DateTime ETD { get; set; }
-
-		public DateTime ETA { get; set; }
-
-		public string PortOfLoading { get; set; }
-
-		public string PortOfDelivery { get; set; }
-
-		public string Carrier { get; set; }
-
-		public string Mode { get; set; }
-
-		public void CreateMapping(Profile profile)
-		{
-			profile.CreateMap<Booking, BookingDto>().IncludeBase<EntityBase, EntityDtoBase>();
-			profile.CreateMap<BookingDto, Booking>().IncludeBase<EntityDtoBase, EntityBase>();
-		}
-	}
-
-	public class ManifestDto : EntityDtoBase, ICreateMapping
-	{
-
-		public int ContainerId { get; set; }
-
-		public int BookingId { get; set; }
-
-		public void CreateMapping(Profile profile)
-		{
-			profile.CreateMap<Manifest, ManifestDto>().IncludeBase<EntityBase, EntityDtoBase>();
-			profile.CreateMap<ManifestDto, Manifest>().IncludeBase<EntityDtoBase, EntityBase>();
-		}
-	}
-
-	public class ArriveOfDespatchDto : EntityDtoBase, ICreateMapping
-	{
-		public int BookingId { get; set; }
-
-		public int ContainerId { get; set; }
-
-		public string Carrier { get; set; }
-
-		public string Vessel { get; set; }
-
-		public string Voyage { get; set; }
-
-		public DateTime ETD { get; set; }
-
-		public DateTime ETA { get; set; }
-
-		public string OriginPort { get; set; }
-
-		public string DestinationPort { get; set; }
-
-		public string Mode { get; set; }
-
-		public string Confirmed { get; set; }
-
-		public void CreateMapping(Profile profile)
-		{
-			profile.CreateMap<ArriveOfDespatch, ArriveOfDespatchDto>().IncludeBase<EntityBase, EntityDtoBase>();
-			profile.CreateMap<ArriveOfDespatchDto, ArriveOfDespatch>().IncludeBase<EntityDtoBase, EntityBase>();
-		}
-	}
-
-	public class SearchItem
-	{
-		public IEnumerable<string> Origins { get; set; }
-		public IEnumerable<string> OriginPorts { get; set; }
-		public IEnumerable<string> Dest { get; set; }
-		public IEnumerable<ContainerStatus> Status { get; set; }
-		public IEnumerable<String> DestPorts { get; set; }
-		public IEnumerable<String> Modes { get; set; }
-		public IEnumerable<String> Voyages { get; set; }
-		public IEnumerable<String> Carriers { get; set; }
-		public IEnumerable<String> Loadings { get; set; }
-		public IEnumerable<String> Vendors { get; set; }
-	}
+      profile.CreateMap<Container, ContainerDto>().IncludeBase<EntityBase, EntityDtoBase>();
+    }
+  }
 }

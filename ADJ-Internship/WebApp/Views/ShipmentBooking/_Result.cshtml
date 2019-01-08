@@ -155,7 +155,7 @@
         <div class="uk-grid-divider" uk-grid></div>
 
         <!--Item Detail-->
-        <table class="uk-table uk-table-small uk-table-middle uk-table-striped uk-table-hover">
+        <table class="uk-table uk-table-striped uk-table-small uk-table-middle  uk-table-hover">
           <!--header-->
           <thead>
             <tr>
@@ -195,27 +195,26 @@
             </tr>
           </thead>
 
-          <!--filter result-->
-          @for (int i = 0; i < Model.OrderDetails.Count(); i++)
-          {
-            <tr style="display: none">
-              <td>
-                <input type="hidden" asp-for="OrderDetails[i].OrderId" />
-                <input type="hidden" asp-for="OrderDetails[i].PONumber" />
-                <input type="hidden" asp-for="OrderDetails[i].ItemNumber" />
-                <input type="hidden" asp-for="OrderDetails[i].Vendor" />
-                <input type="hidden" asp-for="OrderDetails[i].Quantity" />
-                <input type="hidden" asp-for="OrderDetails[i].BookingQuantity" />
-                <input type="hidden" asp-for="OrderDetails[i].Cartons" />
-                <input type="hidden" asp-for="OrderDetails[i].Cube" />
-                <input type="hidden" asp-for="OrderDetails[i].POShipDate" />
-                <input type="hidden" asp-for="OrderDetails[i].Status" />
-              </td>
-            </tr>
-
-            if ((i >= start) && (i < end))
+          <tbody>
+            <!--filter result-->
+            @for (int i = 0; i < Model.OrderDetails.Count(); i++)
             {
               <tr>
+                <td style="display: none">
+                  <input type="hidden" asp-for="OrderDetails[i].OrderId" />
+                  <input type="hidden" asp-for="OrderDetails[i].PONumber" />
+                  <input type="hidden" asp-for="OrderDetails[i].ItemNumber" />
+                  <input type="hidden" asp-for="OrderDetails[i].Vendor" />
+                  <input type="hidden" asp-for="OrderDetails[i].Quantity" />
+                  <input type="hidden" asp-for="OrderDetails[i].BookingQuantity" />
+                  <input type="hidden" asp-for="OrderDetails[i].Cartons" />
+                  <input type="hidden" asp-for="OrderDetails[i].Cube" />
+                  <input type="hidden" asp-for="OrderDetails[i].POShipDate" />
+                  <input type="hidden" asp-for="OrderDetails[i].Status" />
+                </td>
+
+                @if ((i >= start) && (i < end))
+                {
                 <td>
                   <input type="checkbox" asp-for="OrderDetails[i].Selected" class="uk-checkbox booking checkBoxes" />
                 </td>
@@ -245,23 +244,22 @@
                   <span asp-validation-for="OrderDetails[i].PackType" class="uk-alert-danger"></span>
                 </td>
                 <td>
-                  @Model.OrderDetails[i].POShipDate.ToString("MM-dd-yyyy")
+                  @Model.OrderDetails[i].POShipDate.ToString("MM/dd/yyyy")
                 </td>
                 <td>
                   @Model.OrderDetails[i].Status
                 </td>
-              </tr>
-            }
-            else
-            {
-              <tr style="display: none">
-                <td>
+                }
+                else
+                {
+                <td style="display: none">
                   <input type="checkbox" asp-for="OrderDetails[i].Selected" hidden="hidden" />
                   <input type="hidden" asp-for="OrderDetails[i].PackType" />
                 </td>
+                }
               </tr>
             }
-          }
+          </tbody>
         </table>
       }
     </div>
