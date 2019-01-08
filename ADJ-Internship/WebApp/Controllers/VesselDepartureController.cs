@@ -10,60 +10,118 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace WebApp.Controllers
 {
-	public class VesselDepartureController : Controller
-	{
-		private readonly IVesselDepartureService _vesselDepartureService;
-		private readonly int pageSize;
+  public class VesselDepartureController : Controller
+  {
+    private readonly IVesselDepartureService _vesselDepartureService;
+    private readonly int pageSize;
 
-		public VesselDepartureController(IVesselDepartureService vesselDepartureService)
-		{
-			_vesselDepartureService = vesselDepartureService;
-			pageSize = 3;
-		}
+    public VesselDepartureController(IVesselDepartureService vesselDepartureService)
+    {
+      _vesselDepartureService = vesselDepartureService;
+      pageSize = 3;
+    }
 
-		public async Task<ActionResult> Index()
-		{
-			await SetDropDownListAsync();
+    public async Task<ActionResult> Index()
+    {
+      SetDropDownList();
+      VesselDepartureDtos model = new VesselDepartureDtos();
+      model.FilterDto = new FilterDto();
+      model.ResultDtos = new PagedListResult<ContainerDto>();
 
-			VesselDepartureDtos result = await _vesselDepartureService.ListContainerDtoAsync(null, null, null, null, null, null, null, null);
+      model.ResultDtos = await _vesselDepartureService.ListContainerDtoAsync(null, null, null, null, null, null, null);
 
-			return View("Index", result);
-		}
+      if (model.ResultDtos.Items.Count == 0)
+      {
+        ViewBag.ShowModal = "NoResult";
+      }
 
-		[HttpPost]
-		public async Task<ActionResult> Filter(VesselDepartureDtos filter, int? pageIndex)
-		{
-			await SetDropDownListAsync();
+      PagedListResult<ContainerDto> nextPage = new PagedListResult<ContainerDto>();
+      nextPage = await _vesselDepartureService.ListContainerDtoAsync(2, null, null, null, null, null, null);
 
-			VesselDepartureDtos result = await _vesselDepartureService.ListContainerDtoAsync(filter.filterDto.containerId, filter.filterDto.origin, filter.filterDto.originPort, filter.filterDto.status, pageIndex, pageSize, filter.filterDto.etdFrom, filter.filterDto.etdTo);
+      if ((model.ResultDtos.Items.Count > 0) && (nextPage.Items.Count > 0))
+      {
+        if (SameGroup(model.ResultDtos.Items[model.ResultDtos.Items.Count - 1], nextPage.Items[0]))
+        {
+          ViewBag.ToBeContinued = true;
+        }
+      }
 
-			return View("Index", result);
-		}
-		
-		public async Task SetDropDownListAsync()
-		{
-			ViewBag.Origin = new List<string> { "VietNam", "HongKong" }.OrderBy(x => x).ToList();
-			ViewBag.Mode = new List<string> { "Road", "Sea","Air" }.OrderBy(x => x).ToList();
-			ViewBag.Status = new List<string> { "Pending", "Despatch" }.OrderBy(x => x).ToList();
+      return View("Index", model);
+    }
 
-			SearchItem searchItem = await _vesselDepartureService.SearchItem();
-			ViewBag.OriginPort = searchItem.OriginPorts.OrderBy(x => x).ToList();
-			ViewBag.Carrier = searchItem.Carriers.OrderBy(x => x).ToList();
-			ViewBag.Dest = searchItem.DestPorts.OrderBy(x => x).ToList();
+    [HttpPost]
+    public async Task<ActionResult> Search(VesselDepartureDtos model, string page = null)
+    {
+      SetDropDownList();
+      if (page == null) { page = "1"; }
+      int pageIndex = int.Parse(page);
+      ViewBag.Page = pageIndex;
 
+      model.ResultDtos = new PagedListResult<ContainerDto>();
 
-			ViewBag.PageSize = pageSize;
-			ViewBag.PageIndex = 1;
-		}
+      model.ResultDtos = await _vesselDepartureService.ListContainerDtoAsync(pageIndex, model.FilterDto.Origin, model.FilterDto.OriginPort, model.FilterDto.Container, 
+        model.FilterDto.Status, model.FilterDto.ETDFrom, model.FilterDto.ETDTo);
 
-		[HttpPost]
-		public async Task<ActionResult> Achive(VesselDepartureDtos model)
-		{
-			await SetDropDownListAsync();
+      if (model.ResultDtos.Items.Count == 0)
+      {
+        ViewBag.ShowModal = "NoResult";
+      }
 
-			VesselDepartureDtos result =  _vesselDepartureService.Achive(model);
+      PagedListResult<ContainerDto> nextPage = new PagedListResult<ContainerDto>();
+      PagedListResult<ContainerDto> previousPage = new PagedListResult<ContainerDto>();
 
-			return View("Index",result);
-		}
-	}
+      if (pageIndex - 1 > 0)
+      {
+        previousPage = await _vesselDepartureService.ListContainerDtoAsync(pageIndex - 1, model.FilterDto.Origin, model.FilterDto.OriginPort, model.FilterDto.Container,
+        model.FilterDto.Status, model.FilterDto.ETDFrom, model.FilterDto.ETDTo);
+      }
+      nextPage = await _vesselDepartureService.ListContainerDtoAsync(pageIndex + 1, model.FilterDto.Origin, model.FilterDto.OriginPort, model.FilterDto.Container,
+        model.FilterDto.Status, model.FilterDto.ETDFrom, model.FilterDto.ETDTo);
+
+      if ((model.ResultDtos.Items.Count > 0) && (nextPage.Items.Count > 0))
+      {
+        if (SameGroup(model.ResultDtos.Items[model.ResultDtos.Items.Count - 1], nextPage.Items[0]))
+        {
+          ViewBag.ToBeContinued = true;
+        }
+      }
+
+      if ((model.ResultDtos.Items.Count > 0) && (previousPage.Items.Count > 0))
+      {
+        if (SameGroup(model.ResultDtos.Items[0], previousPage.Items[previousPage.Items.Count - 1]))
+        {
+          ViewBag.ContinuedFromPrevious = true;
+        }
+      }
+
+      return PartialView("_Result", model);
+    }
+
+    public bool SameGroup(ContainerDto first, ContainerDto second)
+    {
+      for (int property = 0; property < 6; property++)
+      {
+        var currentProperty = typeof(ContainerDto).GetProperties()[property];
+        string firstValue = currentProperty.GetValue(first).ToString();
+        string secondValue = currentProperty.GetValue(second).ToString();
+
+        if (firstValue.CompareTo(secondValue) != 0)
+        {
+          return false;
+        }
+      }
+
+      return true;
+    }
+
+    public void SetDropDownList()
+    {
+      ViewBag.Origins = new List<string> { "HongKong", "Vietnam" };
+      ViewBag.Modes = new List<string> { "Road", "Sea", "Air" };
+      ViewBag.Statuses = new List<string> { ContainerStatus.Despatch.ToString(), ContainerStatus.Pending.ToString() };
+
+      ViewBag.Page = 1;
+    }
+
+  }
 }

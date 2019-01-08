@@ -1,0 +1,213 @@
+﻿@model ADJ.BusinessService.Dtos.VesselDepartureDtos;
+<!--Result Popup-->
+@if (ViewBag.ShowModal != null)
+{
+  string modal = ViewBag.ShowModal;
+  <button type="button" uk-toggle="target: #resultModal" id="openmodal" hidden="hidden">Open</button>
+
+  <div id="resultModal" uk-modal>
+    <div class="uk-modal-dialog uk-modal-body">
+      @switch (modal)
+      {
+        case "Updated":
+          <p>Your container details are successfully updated.</p>
+          break;
+        case "NoResult":
+          <p>No match results were found. Please try again.</p>
+          break;
+        case "NoItem":
+          <p>Please select at least 1 item.</p>
+          break;
+      }
+
+      <p class="uk-text-right">
+        <button class="uk-button uk-button-default uk-modal-close" type="button">Close</button>
+      </p>
+
+    </div>
+  </div>
+}
+
+<input asp-for="FilterDto.Status" value=@Model.FilterDto.Status type="hidden" />
+
+@if (Model.ResultDtos != null)
+{
+  if (Model.ResultDtos.Items != null)
+  {
+    int start = 0;
+    int groupId = 0;
+    Model.ContainerInfoDtos = new List<ADJ.BusinessService.Dtos.ContainerInfoDto>();
+
+    if (ViewBag.ContinuedFromPrevious)
+    {
+      <p>Group continued from previous page</p>
+    }
+
+    for (int i = 0; i < Model.ResultDtos.Items.Count; i++)
+    {
+      if ((i + 1 < Model.ResultDtos.Items.Count) || (i == (Model.ResultDtos.Items.Count - 1)))
+      {
+
+        if ((i == (Model.ResultDtos.Items.Count - 1)) || (Model.ResultDtos.Items[i].OriginPort.CompareTo(Model.ResultDtos.Items[i + 1].OriginPort) != 0)
+          || (Model.ResultDtos.Items[i].DestinationPort.CompareTo(Model.ResultDtos.Items[i + 1].DestinationPort) != 0)
+          || (Model.ResultDtos.Items[i].Mode.CompareTo(Model.ResultDtos.Items[i + 1].Mode) != 0)
+          || (Model.ResultDtos.Items[i].Carrier.CompareTo(Model.ResultDtos.Items[i + 1].Carrier) != 0)
+          || (Model.ResultDtos.Items[i].ETD.CompareTo(Model.ResultDtos.Items[i + 1].ETD) != 0)
+          || (Model.ResultDtos.Items[i].ETA.CompareTo(Model.ResultDtos.Items[i + 1].ETA) != 0))
+        {
+          <div class="uk-grid">
+            <table class="uk-table uk-table-small uk-table-middle uk-table-striped uk-width-3-4">
+              <thead>
+                <tr>
+                  <td>
+                    <label asp-for="ResultDtos.Items[start].OriginPort"></label>
+                  </td>
+                  <td>
+                    <label asp-for="ResultDtos.Items[start].DestinationPort"></label>
+                  </td>
+                  <td>
+                    <label asp-for="ResultDtos.Items[start].Mode"></label>
+                  </td>
+                  <td>
+                    <label asp-for="ResultDtos.Items[start].Carrier"></label>
+                  </td>
+                  <td>
+                    <label asp-for="ResultDtos.Items[start].ETD"></label>
+                  </td>
+                  <td>
+                    <label asp-for="ResultDtos.Items[start].ETA"></label>
+                  </td>
+                </tr>
+              </thead>
+              <tr>
+                @if (Model.FilterDto.Status == ADJ.Common.ContainerStatus.Despatch.ToString())
+                {
+                  <td>
+                    <select asp-for="ContainerInfoDtos[groupId].OriginPort" value=@Model.ResultDtos.Items[start].OriginPort class="uk-select" disabled />
+                  </td>
+                  <td>
+                    <select asp-for="ContainerInfoDtos[groupId].DestinationPort" value=@Model.ResultDtos.Items[start].DestinationPort class="uk-select" disabled />
+                  </td>
+                  <td>
+                    <select asp-for="ContainerInfoDtos[groupId].Mode" value=@Model.ResultDtos.Items[start].OriginPort class="uk-select" disabled />
+                  </td>
+                  <td>
+                    <select asp-for="ContainerInfoDtos[groupId].Carrier" value=@Model.ResultDtos.Items[start].OriginPort class="uk-select" disabled />
+                  </td>
+                }
+                else
+                {
+                  <td>
+                    <select asp-for="ContainerInfoDtos[groupId].OriginPort" value=@Model.ResultDtos.Items[start].OriginPort class="uk-select" />
+                  </td>
+                  <td>
+                    <select asp-for="ContainerInfoDtos[groupId].DestinationPort" value=@Model.ResultDtos.Items[start].DestinationPort class="uk-select" />
+                  </td>
+                  <td>
+                    <select asp-for="ContainerInfoDtos[groupId].Mode" value=@Model.ResultDtos.Items[start].OriginPort class="uk-select" />
+                  </td>
+                  <td>
+                    <select asp-for="ContainerInfoDtos[groupId].Carrier" value=@Model.ResultDtos.Items[start].OriginPort class="uk-select" />
+                  </td>
+                }
+                <td>
+                  @Model.ResultDtos.Items[start].ETD
+                </td>
+                <td>
+                  @Model.ResultDtos.Items[start].ETD
+                </td>
+              </tr>
+            </table>
+
+            <table class="uk-table uk-table-small uk-table-middle uk-table-striped uk-width-1-2">
+              <thead>
+                <tr>
+                  <td>
+                    <input type="checkbox" class="uk-checkbox checkAll" id="checkAll_@i" />
+                  </td>
+                  <td>
+                    <label asp-for="ResultDtos.Items[start].Name"></label>
+                  </td>
+                  <td>
+                    <label asp-for="ResultDtos.Items[start].Size"></label>
+                  </td>
+                  <td>
+                    <label asp-for="ResultDtos.Items[start].Status"></label>
+                  </td>
+                </tr>
+              </thead>
+              @for (int j = start; j < i + 1; j++)
+              {
+                <tr>
+                  <td style="display: none">
+                    <input asp-for="ResultDtos.Items[j].Id" value=@Model.ResultDtos.Items[j].Id type="hidden" />
+                    <input asp-for="ResultDtos.Items[j].GroupId" value=@groupId type="hidden" />
+                    <input asp-for="ResultDtos.Items[j].ContainerId" value=@Model.ResultDtos.Items[j].ContainerId type="hidden" />
+
+                    <input asp-for="ResultDtos.Items[j].OriginPort" value=@Model.ResultDtos.Items[j].OriginPort type="hidden" />
+                    <input asp-for="ResultDtos.Items[j].DestinationPort" value=@Model.ResultDtos.Items[j].DestinationPort type="hidden" />
+                    <input asp-for="ResultDtos.Items[j].Mode" value=@Model.ResultDtos.Items[j].Mode type="hidden" />
+                    <input asp-for="ResultDtos.Items[j].Carrier" value=@Model.ResultDtos.Items[j].Carrier type="hidden" />
+                    <input asp-for="ResultDtos.Items[j].ETD" value=@Model.ResultDtos.Items[j].ETD type="hidden" />
+                    <input asp-for="ResultDtos.Items[j].ETA" value=@Model.ResultDtos.Items[j].ETA type="hidden" />
+
+                    <input asp-for="ResultDtos.Items[j].Name" value=@Model.ResultDtos.Items[j].Name type="hidden" />
+                    <input asp-for="ResultDtos.Items[j].Size" value=@Model.ResultDtos.Items[j].Size type="hidden" />
+                    <input asp-for="ResultDtos.Items[j].Status" value=@Model.ResultDtos.Items[j].Status type="hidden" />
+                  </td>
+                  <td>
+                    @if (Model.ResultDtos.Items[j].Status == ADJ.Common.ContainerStatus.Pending)
+                    {
+                      <input asp-for="ResultDtos.Items[j].Selected" type="checkbox" class="uk-checkbox checkBox_@i" />
+                    }
+                  </td>
+                  <td>@Model.ResultDtos.Items[j].Name</td>
+                  <td>@Model.ResultDtos.Items[j].Size</td>
+                  <td>@Model.ResultDtos.Items[j].Status</td>
+                </tr>
+              }
+            </table>
+          </div>
+
+          groupId++;
+          start = i + 1;
+        }
+      }
+    }
+
+    if (ViewBag.ToBeContinued)
+    {
+      <p>Group continues on the next page...</p>
+    }
+  }
+}
+
+<!--Paging-->
+@{
+  int currentPage = ViewBag.Page;
+  int totalPage = Model.ResultDtos.PageCount;
+
+  <ul class="uk-pagination uk-flex-center">
+    @if (currentPage > 1)
+    {
+      <li><a value="@(currentPage - 1)" name="page" class="paging"><span uk-pagination-previous></span></a></li>
+    }
+
+    @for (int i = 1; i <= totalPage; i++)
+    {
+      if (i == currentPage)
+      {
+        <li class="uk-disabled"><a value="@i" name="page" class="paging">@i</a></li>
+      }
+      else
+      {
+        <li><a value="@i" name="page" class="paging">@i</a></li>
+      }
+    }
+
+    @if (currentPage < totalPage)
+    {
+      <li><a value="@(currentPage + 1)" name="page" class="paging"><span uk-pagination-next></span></a></li>
+    }
+  </ul>
+}

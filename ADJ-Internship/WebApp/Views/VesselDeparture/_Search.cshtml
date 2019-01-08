@@ -1,0 +1,75 @@
+﻿@model ADJ.BusinessService.Dtos.VesselDepartureDtos;
+
+<div class="uk-grid">
+  <div class="uk-width-3-4">
+    <table class="uk-table uk-table-small uk-table-middle">
+      <tr>
+        <td>
+          <label asp-for="FilterDto.Origin"></label>
+        </td>
+        <td>
+          <select asp-for="FilterDto.Origin" asp-items="new SelectList(ViewBag.Origins)" class="uk-select filters" id="origin"></select>
+          <span asp-validation-for="FilterDto.Origin" class="uk-alert-danger"></span>
+        </td>
+        <td>
+          <label asp-for="FilterDto.Container"></label>
+        </td>
+        <td>
+          <input asp-for="FilterDto.Container" class="uk-input filters" />
+          <span asp-validation-for="FilterDto.Container" class="uk-alert-danger"></span>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <label asp-for="FilterDto.OriginPort"></label>
+        </td>
+        <td>
+          <select asp-for="FilterDto.OriginPort" class="uk-select filters ports"></select>
+          <span asp-validation-for="FilterDto.OriginPort" class="uk-alert-danger"></span>
+        </td>
+        <td>
+          <label asp-for="FilterDto.ETDFrom"></label>
+        </td>
+        <td>
+          <input asp-for="FilterDto.ETDFrom" type="date" class="uk-input filters" />
+          <span asp-validation-for="FilterDto.ETDFrom" class="uk-alert-danger"></span>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <label asp-for="FilterDto.Status"></label>
+        </td>
+        <td>
+          <select asp-for="FilterDto.Status" asp-items="new SelectList(ViewBag.Statuses)" class="uk-select filters">
+            <option selected value="">Any</option>
+          </select>
+          <span asp-validation-for="FilterDto.Status" class="uk-alert-danger"></span>
+        </td>
+        <td>
+          <label asp-for="FilterDto.ETDTo"></label>
+        </td>
+        <td>
+          <input asp-for="FilterDto.ETDTo" type="date" class="uk-input filters" />
+          <span asp-validation-for="FilterDto.ETDTo" class="uk-alert-danger"></span>
+        </td>
+      </tr>
+    </table>
+  </div>
+  <div class="uk-width-1-4">
+    <table class="uk-table-middle uk-height-1-1 uk-width-1-1" style="text-align: center">
+      <tr>
+        <td>
+          <button class="uk-button uk-button-primary">Search</button>
+        </td>
+      </tr>
+      <tr>
+        <td></td>
+      </tr>
+      <tr>
+        <td>
+          <button type="button" value="Achieve" class="uk-button uk-button-danger" id="achieveButton">Achieve</button>
+        </td>
+      </tr>
+    </table>
+  </div>
+</div>

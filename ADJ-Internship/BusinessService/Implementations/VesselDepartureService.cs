@@ -17,380 +17,261 @@ using System.Threading.Tasks;
 
 namespace ADJ.BusinessService.Implementations
 {
-	public class VesselDepartureService : ServiceBase, IVesselDepartureService
-	{
+  public class VesselDepartureService : ServiceBase, IVesselDepartureService
+  {
 
-		private readonly IManifestRepository _manifestRepository;
-		private readonly IDataProvider<Manifest> _manifestDataProvider;
+    private readonly IManifestRepository _manifestRepository;
+    private readonly IDataProvider<Manifest> _manifestDataProvider;
 
-		private readonly IShipmentBookingRepository _shipmentBookingRepository;
-		private readonly IDataProvider<Booking> _shipmentBookingDataProvider;
+    private readonly IShipmentBookingRepository _shipmentBookingRepository;
+    private readonly IDataProvider<Booking> _shipmentBookingDataProvider;
 
-		private readonly IContainerRepository _containerRepository;
-		private readonly IDataProvider<Container> _containerDataProvider;
+    private readonly IContainerRepository _containerRepository;
+    private readonly IDataProvider<Container> _containerDataProvider;
 
-		private readonly IArriveOfDespatchRepository _arriveOfDespatchRepository;
-		private readonly IDataProvider<ArriveOfDespatch> _arriveOfDespatchDataProvider;
+    private readonly IArriveOfDespatchRepository _arriveOfDespatchRepository;
+    private readonly IDataProvider<ArriveOfDespatch> _arriveOfDespatchDataProvider;
 
-
-		public VesselDepartureService(IUnitOfWork unitOfWork, IMapper mapper, ApplicationContext appContext,
-			IDataProvider<Manifest> manifestDataProvider, IManifestRepository manifestRepository,
-			IDataProvider<ArriveOfDespatch> arriveOfDespatchDataProvider, IArriveOfDespatchRepository arriveOfDespatchRepository,
-			IDataProvider<Booking> bookingDataProvider, IShipmentBookingRepository shipmentBookingRepository, IContainerRepository containerRepository,
-			IDataProvider<Container> containerDataProvider) : base(unitOfWork, mapper, appContext)
-		{
-			this._manifestDataProvider = manifestDataProvider;
-			this._manifestRepository = manifestRepository;
-
-			this._shipmentBookingDataProvider = bookingDataProvider;
-			this._shipmentBookingRepository = shipmentBookingRepository;
-
-			this._containerRepository = containerRepository;
-			this._containerDataProvider = containerDataProvider;
-
-			this._arriveOfDespatchDataProvider = arriveOfDespatchDataProvider;
-			this._arriveOfDespatchRepository = arriveOfDespatchRepository;
-
-		}
-
-		public VesselDepartureDtos Achive(VesselDepartureDtos model)
-		{
-			for (int i = 0; i < model.lstContainerDto.Count; i++)
-			{
-				if (model.lstContainerDto[i].checkClick == true)
-				{
-					if (model.lstContainerDto[i].originPortChange != model.lstContainerDto[i].OriginPort)
-					{
-						foreach(var n in model.lstArriveOfDespatchDto)
-						{
-							if (n.ContainerId == model.lstContainerDto[i].Id)
-							{
-								model.lstArriveOfDespatchDto[i].OriginPort = model.lstContainerDto[i].originPortChange;
-							}
-						}
-						model.lstContainerDto[i].Status = ContainerStatus.Despatch;
-					}
-					if (model.lstContainerDto[i].destPortChange != model.lstContainerDto[i].DestPort)
-					{
-						foreach (var n in model.lstArriveOfDespatchDto)
-						{
-							if (n.ContainerId == model.lstContainerDto[i].Id)
-							{
-								model.lstArriveOfDespatchDto[i].DestinationPort = model.lstContainerDto[i].destPortChange;
-							}
-						}
-						model.lstContainerDto[i].Status = ContainerStatus.Despatch;
-					}
-					if (model.lstContainerDto[i].modeChange != model.lstContainerDto[i].Loading)
-					{
-						foreach (var n in model.lstArriveOfDespatchDto)
-						{
-							if (n.ContainerId == model.lstContainerDto[i].Id)
-							{
-								model.lstArriveOfDespatchDto[i].Mode = model.lstContainerDto[i].modeChange;
-							}
-						}
-						model.lstContainerDto[i].Loading = model.lstContainerDto[i].modeChange;
-						model.lstContainerDto[i].Status = ContainerStatus.Despatch;
-					}
-					if (model.lstContainerDto[i].carrierChange != model.lstContainerDto[i].Carrier)
-					{
-						foreach (var n in model.lstArriveOfDespatchDto)
-						{
-							if (n.ContainerId == model.lstContainerDto[i].Id)
-							{
-								model.lstArriveOfDespatchDto[i].Carrier = model.lstContainerDto[i].carrierChange;
-							}
-						}		
-						model.lstContainerDto[i].Status = ContainerStatus.Despatch;
-					}
-				}
-			}
-
-			//Group by service
-			model.lstContainerDto = model.lstContainerDto.OrderBy(p => p.OriginPort).OrderBy(m => m.DestPort).OrderBy(m => m.Loading).OrderBy(m => m.Carrier).ToList();
+    private readonly int pageSize;
 
 
-			return model;
-		}
+    public VesselDepartureService(IUnitOfWork unitOfWork, IMapper mapper, ApplicationContext appContext,
+        IDataProvider<Manifest> manifestDataProvider, IManifestRepository manifestRepository,
+        IDataProvider<ArriveOfDespatch> arriveOfDespatchDataProvider, IArriveOfDespatchRepository arriveOfDespatchRepository,
+        IDataProvider<Booking> bookingDataProvider, IShipmentBookingRepository shipmentBookingRepository, IContainerRepository containerRepository,
+        IDataProvider<Container> containerDataProvider) : base(unitOfWork, mapper, appContext)
+    {
+      this._manifestDataProvider = manifestDataProvider;
+      this._manifestRepository = manifestRepository;
 
-		public async Task<VesselDepartureDtos> ListContainerDtoAsync(int? containerId, string origin = null, string originPort = null, string status = null, int? pageIndex = null, int? pageSize = null, DateTime? etdFrom = null, DateTime? etdTo = null)
-		{
-			//sort string
-			string sortStr = "Status ASC";
-			VesselDepartureDtos filterResult = new VesselDepartureDtos();
-			var manifests = await _manifestDataProvider.ListAsync();
-			var bookings = await _shipmentBookingDataProvider.ListAsync();
-			var arriveOfDespatchs = await _arriveOfDespatchDataProvider.ListAsync();
+      this._shipmentBookingDataProvider = bookingDataProvider;
+      this._shipmentBookingRepository = shipmentBookingRepository;
 
-			List<ManifestDto> lstManifestDto = Mapper.Map<List<ManifestDto>>(manifests.Items);
-			List<BookingDto> lstBookingDto = Mapper.Map<List<BookingDto>>(bookings.Items);
-			List<ArriveOfDespatchDto> lstArriveOfDespatchDto = Mapper.Map<List<ArriveOfDespatchDto>>(arriveOfDespatchs.Items);
+      this._containerRepository = containerRepository;
+      this._containerDataProvider = containerDataProvider;
 
-			//if status = null, filter both Pendding and Despatch and list result is from 2 list
-			if (status == null)
-			{
-				Expression<Func<Container, bool>> filterPending = x => x.Id > 0;
-				//status= Pending
-				{
-					Expression<Func<Container, bool>> filterStatus = x => x.Status.ToString() == ContainerStatus.Pending.ToString();
-					filterPending = filterPending.And(filterStatus);
+      this._arriveOfDespatchDataProvider = arriveOfDespatchDataProvider;
+      this._arriveOfDespatchRepository = arriveOfDespatchRepository;
 
-					if (origin != null)
-					{
-						Expression<Func<Container, bool>> filterOrigin = x => x.Manifests.Where(p => p.Booking.Order.Origin == origin).Count() > 0;
-						filterPending = filterPending.And(filterOrigin);
-					}
-					if (originPort != null)
-					{
-						Expression<Func<Container, bool>> filterOriginPort = x => x.Manifests.Where(p => p.Booking.PortOfLoading == originPort).Count() > 0;
-						filterPending = filterPending.And(filterOriginPort);
-					}
-					if (containerId != null)
-					{
-						Expression<Func<Container, bool>> filterContainerId = x => x.Id == containerId;
-						filterPending = filterPending.And(filterContainerId);
-					}
-					if (etdFrom != null)
-					{
-						Expression<Func<Container, bool>> filterETDFrom = x => x.Manifests.Where(p => p.Booking.ETD >= etdFrom).Count() > 0;
-						filterPending = filterPending.And(filterETDFrom);
-					}
-					if (etdTo != null)
-					{
-						Expression<Func<Container, bool>> filterETDTo = x => x.Manifests.Where(p => p.Booking.ETD <= etdTo).Count() > 0;
-						filterPending = filterPending.And(filterETDTo);
-					}
-				}
-				//get list result 
-				var lstPending = await _containerDataProvider.ListAsync(filterPending, sortStr, true, pageIndex, pageSize);
+      pageSize = 50;
+    }
 
-				//status = Despatch
-				Expression<Func<Container, bool>> filterDespatch = x => x.Id > 0;
+    public async Task<PagedListResult<ContainerDto>> ListContainerDtoAsync(int? page, string origin, string originPort, string container, string status, DateTime? etdFrom, DateTime? etdTo)
+    {
+      if (page == null) { page = 1; }
 
-				{
-					Expression<Func<Container, bool>> filterStatus = x => x.Status.ToString() == ContainerStatus.Despatch.ToString();
-					filterDespatch = filterDespatch.And(filterStatus);
+      Expression<Func<Container, bool>> All = x => x.Id > 0;
 
-					if (origin != null)
-					{
-						Expression<Func<Container, bool>> filterOrigin = x => x.Manifests.Where(p => p.Booking.Order.Origin == origin).Count() > 0;
-						filterDespatch = filterDespatch.And(filterOrigin);
-					}
-					if (originPort != null)
-					{
-						Expression<Func<Container, bool>> filterOriginPort = x => x.ArriveOfDespatch.OriginPort == originPort;
-						filterDespatch = filterDespatch.And(filterOriginPort);
-					}
-					if (containerId != null)
-					{
-						Expression<Func<Container, bool>> filterContainerId = x => x.Id == containerId;
-						filterDespatch = filterDespatch.And(filterContainerId);
-					}
-					if (etdFrom != null)
-					{
-						Expression<Func<Container, bool>> filterETDFrom = x => x.ArriveOfDespatch.ETD >= etdFrom;
-						filterDespatch = filterDespatch.And(filterETDFrom);
-					}
-					if (etdTo != null)
-					{
-						Expression<Func<Container, bool>> filterETDTo = x => x.ArriveOfDespatch.ETD <= etdTo;
-						filterDespatch = filterDespatch.And(filterETDTo);
-					}
-				}
+      if (origin != null)
+      {
+        Expression<Func<Container, bool>> filter = x => x.Manifests.Where(p => p.Booking.Order.Origin == origin).Count() > 0;
+        All = All.And(filter);
+      }
 
-				var lstDespatch = await _containerDataProvider.ListAsync(filterDespatch, sortStr, true, pageIndex, pageSize);
+      if (container != null)
+      {
+        Expression<Func<Container, bool>> filter = x => x.Name == container;
+        All = All.And(filter);
+      }
 
-				for (int item = 0; item < lstDespatch.Items.Count; item++)
-				{
-					lstPending.Items.Add(lstDespatch.Items[item]);
-				}
-				//get list result when  status = null
-				filterResult.lstContainerDto = Mapper.Map<List<ContainerDto>>(lstPending.Items);
+      Expression<Func<Container, bool>> All1 = x => x.Status == ContainerStatus.Pending;
+      Expression<Func<Container, bool>> All2 = x => x.Status == ContainerStatus.Despatch;
 
-				for (int containerIndex = 0; containerIndex < filterResult.lstContainerDto.Count; containerIndex++)
-				{
-					if (filterResult.lstContainerDto[containerIndex].Status == ContainerStatus.Pending)
-					{
-						foreach (var booking in lstBookingDto)
-						{
-							foreach (var manifest in lstManifestDto)
-							{
-								if (manifest.ContainerId == filterResult.lstContainerDto[containerIndex].Id && booking.Id == manifest.BookingId)
-								{
-									filterResult.lstContainerDto[containerIndex].OriginPort = booking.PortOfLoading;
-									filterResult.lstContainerDto[containerIndex].DestPort = booking.PortOfDelivery;
-									filterResult.lstContainerDto[containerIndex].Loading = booking.Mode;
-									filterResult.lstContainerDto[containerIndex].Carrier = booking.Carrier;
-									filterResult.lstContainerDto[containerIndex].ETD = booking.ETD;
-									filterResult.lstContainerDto[containerIndex].ETA = booking.ETA;
-								}
-							}
-						}
-					} //end pending
-					else if (filterResult.lstContainerDto[containerIndex].Status == ContainerStatus.Despatch)
-					{
+      if (originPort != null)
+      {
+        Expression<Func<Container, bool>> filter1 = x => x.Manifests.Where(p => p.Booking.PortOfLoading == originPort).Count() > 0;
+        All1 = All1.And(filter1);
+        Expression<Func<Container, bool>> filter2 = x => x.ArriveOfDespatch.OriginPort == originPort;
+        All2 = All2.And(filter2);
+      }
 
-						foreach (var arriveOfDespatch in lstArriveOfDespatchDto)
-						{
-							if (arriveOfDespatch.ContainerId == filterResult.lstContainerDto[containerIndex].Id)
-							{
-								filterResult.lstContainerDto[containerIndex].OriginPort = arriveOfDespatch.OriginPort;
-								filterResult.lstContainerDto[containerIndex].DestPort = arriveOfDespatch.DestinationPort;
-								filterResult.lstContainerDto[containerIndex].Loading = arriveOfDespatch.Mode;
-								filterResult.lstContainerDto[containerIndex].Carrier = arriveOfDespatch.Carrier;
-								filterResult.lstContainerDto[containerIndex].ETD = arriveOfDespatch.ETD;
-								filterResult.lstContainerDto[containerIndex].ETA = arriveOfDespatch.ETA;
-							}
-						}
+      if (etdFrom != null)
+      {
+        Expression<Func<Container, bool>> filter1 = x => x.Manifests.Where(p => p.Booking.ETD >= etdFrom).Count() > 0;
+        All1 = All1.And(filter1);
+        Expression<Func<Container, bool>> filter2 = x => x.ArriveOfDespatch.ETD >= etdFrom;
+        All2 = All2.And(filter2);
+      }
 
-					}
-				}
-				//Group by service
-				filterResult.lstContainerDto = filterResult.lstContainerDto.OrderBy(p => p.OriginPort).OrderBy(m => m.DestPort).OrderBy(m => m.Loading).OrderBy(m => m.Carrier).ToList();
-				return filterResult;
-			} //end if(status == null)
+      if (etdTo != null)
+      {
+        Expression<Func<Container, bool>> filter1 = x => x.Manifests.Where(p => p.Booking.ETD <= etdTo).Count() > 0;
+        All1 = All1.And(filter1);
+        Expression<Func<Container, bool>> filter2 = x => x.ArriveOfDespatch.ETD <= etdFrom;
+        All2 = All2.And(filter2);
+      }
 
-			else
-			{
-				if (status == ContainerStatus.Pending.ToString())           //status= Pending
-				{
-					Expression<Func<Container, bool>> filterPending = x => x.Id > 0;
+      if (status == ContainerStatus.Pending.ToString())
+      {
+        All = All.And(All1);
+      }
+      else if (status == ContainerStatus.Despatch.ToString())
+      {
+        All = All.And(All2);
+      }
+      else
+      {
+        All = All.And(All1.Or(All2));
+      }
 
-					Expression<Func<Container, bool>> filterStatus = x => x.Status.ToString() == ContainerStatus.Pending.ToString();
-					filterPending = filterPending.And(filterStatus);
+      PagedListResult<Container> result = await _containerDataProvider.ListAsync(All, null, true);
 
-					if (origin != null)
-					{
-						Expression<Func<Container, bool>> filterOrigin = x => x.Manifests.Where(p => p.Booking.Order.Origin == origin).Count() > 0;
-						filterPending = filterPending.And(filterOrigin);
-					}
-					if (originPort != null)
-					{
-						Expression<Func<Container, bool>> filterOriginPort = x => x.Manifests.Where(p => p.Booking.PortOfLoading == originPort).Count() > 0;
-						filterPending = filterPending.And(filterOriginPort);
-					}
-					if (containerId != null)
-					{
-						Expression<Func<Container, bool>> filterContainerId = x => x.Id == containerId;
-						filterPending = filterPending.And(filterContainerId);
-					}
-					if (etdFrom != null)
-					{
-						Expression<Func<Container, bool>> filterETDFrom = x => x.Manifests.Where(p => p.Booking.ETD >= etdFrom).Count() > 0;
-						filterPending = filterPending.And(filterETDFrom);
-					}
-					if (etdTo != null)
-					{
-						Expression<Func<Container, bool>> filterETDTo = x => x.Manifests.Where(p => p.Booking.ETD <= etdTo).Count() > 0;
-						filterPending = filterPending.And(filterETDTo);
-					}
+      PagedListResult<ContainerDto> rs = new PagedListResult<ContainerDto>();
+      rs.Items = await ConvertToResultAsync(result.Items);
+      rs.PageCount = result.PageCount;
+      rs.TotalCount = result.TotalCount;
 
-					//get list result 
-					var lstPending = await _containerDataProvider.ListAsync(filterPending, sortStr, true, pageIndex, pageSize);
+      return rs;
+    }
 
-					filterResult.lstContainerDto = Mapper.Map<List<ContainerDto>>(lstPending.Items);
+    private async Task<List<ContainerDto>> ConvertToResultAsync(List<Container> input)
+    {
+      List<ContainerDto> result = new List<ContainerDto>();
 
-					for (int containerIndex = 0; containerIndex < filterResult.lstContainerDto.Count; containerIndex++)
-					{
-						foreach (var booking in lstBookingDto)
-						{
-							foreach (var manifest in lstManifestDto)
-							{
-								if (manifest.ContainerId == filterResult.lstContainerDto[containerIndex].Id && booking.Id == manifest.BookingId)
-								{
-									filterResult.lstContainerDto[containerIndex].OriginPort = booking.PortOfLoading;
-									filterResult.lstContainerDto[containerIndex].DestPort = booking.PortOfDelivery;
-									filterResult.lstContainerDto[containerIndex].Loading = booking.Mode;
-									filterResult.lstContainerDto[containerIndex].Carrier = booking.Carrier;
-									filterResult.lstContainerDto[containerIndex].ETD = booking.ETD;
-									filterResult.lstContainerDto[containerIndex].ETA = booking.ETA;
-								}
-							}
-						}
-						//end pending
-					}
+      foreach (var item in input)
+      {
+        ContainerDto output = new ContainerDto();
+        Booking booking = await _shipmentBookingDataProvider.GetByIdAsync((item.Manifests.ToList())[0].BookingId);
+        List<ArriveOfDespatch> arriveOfDespatch = await _arriveOfDespatchRepository.Query(x => x.ContainerId == item.Id, false).SelectAsync();
 
-				}
+        if (item.Status == ContainerStatus.Pending)
+        {
+          output = Mapper.Map<ContainerDto>(booking);
+        }
+        else if (item.Status == ContainerStatus.Despatch)
+        {
+          output = Mapper.Map<ContainerDto>(arriveOfDespatch[0]);
+        }
 
-				if (status == ContainerStatus.Despatch.ToString()) //status = Despatch
-				{
-					Expression<Func<Container, bool>> filterDespatch = x => x.Id > 0;
+        output = Mapper.Map<ContainerDto>(item);
+        output.ContainerId = item.Id;
 
-					Expression<Func<Container, bool>> filterStatus = x => x.Status.ToString() == ContainerStatus.Despatch.ToString();
-					filterDespatch = filterDespatch.And(filterStatus);
+        //output.Name = item.Name;
+        //output.Size = item.Size;
+        //output.Statuts = item.Status;
 
-					if (origin != null)
-					{
-						Expression<Func<Container, bool>> filterOrigin = x => x.Manifests.Where(p => p.Booking.Order.Origin == origin).Count() > 0;
-						filterDespatch = filterDespatch.And(filterOrigin);
-					}
-					if (originPort != null)
-					{
-						Expression<Func<Container, bool>> filterOriginPort = x => x.ArriveOfDespatch.OriginPort == originPort;
-						filterDespatch = filterDespatch.And(filterOriginPort);
-					}
-					if (containerId != null)
-					{
-						Expression<Func<Container, bool>> filterContainerId = x => x.Id == containerId;
-						filterDespatch = filterDespatch.And(filterContainerId);
-					}
-					if (etdFrom != null)
-					{
-						Expression<Func<Container, bool>> filterETDFrom = x => x.ArriveOfDespatch.ETD >= etdFrom;
-						filterDespatch = filterDespatch.And(filterETDFrom);
-					}
-					if (etdTo != null)
-					{
-						Expression<Func<Container, bool>> filterETDTo = x => x.ArriveOfDespatch.ETD <= etdTo;
-						filterDespatch = filterDespatch.And(filterETDTo);
-					}
+        result.Add(output);
+      }
 
-					//get list result with status = Despatch
-					var lstDespatch = await _containerDataProvider.ListAsync(filterDespatch, sortStr, true, pageIndex, pageSize);
+      return Sort(result);
+    }
 
-					filterResult.lstContainerDto = Mapper.Map<List<ContainerDto>>(lstDespatch.Items);
+    private List<ContainerDto> Sort(List<ContainerDto> input)
+    {
+      //Order by Origin Port (property number = 0)
+      quickSort(input, 0, input.Count - 1, 0);
 
-					for (int containerIndex = 0; containerIndex < filterResult.lstContainerDto.Count; containerIndex++)
-					{
-						foreach (var arriveOfDespatch in lstArriveOfDespatchDto)
-						{
-							if (arriveOfDespatch.ContainerId == filterResult.lstContainerDto[containerIndex].Id)
-							{
-								filterResult.lstContainerDto[containerIndex].OriginPort = arriveOfDespatch.OriginPort;
-								filterResult.lstContainerDto[containerIndex].DestPort = arriveOfDespatch.DestinationPort;
-								filterResult.lstContainerDto[containerIndex].Loading = arriveOfDespatch.Mode;
-								filterResult.lstContainerDto[containerIndex].Carrier = arriveOfDespatch.Carrier;
-								filterResult.lstContainerDto[containerIndex].ETD = arriveOfDespatch.ETD;
-								filterResult.lstContainerDto[containerIndex].ETA = arriveOfDespatch.ETA;
-							}
-						}
-					}
-				}
+      //Order by Destination (property number = 1)
+      //Order by Mode (property number = 2)
+      //Order by Carrier (property number = 3)
+      //Order by ETD (property number = 4)
+      //Order by ETA (property number = 5)
+      for (int property = 1; property < 6; property++)
+      {
+        int start = 0;
+        for (int i = 0; i < input.Count; i++)
+        {
+          if ((i + 1 < input.Count) || (i == input.Count - 1))
+          {
+            bool different = false;
+            if (i != input.Count - 1)
+            {
+              for (int j = property - 1; j >= 0; j--)
+              {
+                var currentProperty = typeof(ContainerDto).GetProperties()[j];
+                if (currentProperty.GetValue(input[i]).ToString().CompareTo(currentProperty.GetValue(input[i + 1]).ToString()) != 0)
+                {
+                  different = true;
+                  break;
+                }
+              }
+            }
 
-				//Group by service
-				filterResult.lstContainerDto = filterResult.lstContainerDto.OrderBy(p => p.OriginPort).OrderBy(m => m.DestPort).OrderBy(m => m.Loading).OrderBy(m => m.Carrier).ToList();
+            if ((i == input.Count - 1) || (different))
+            {
+              quickSort(input, start, i, property);
+              start = i + 1;
+            }
+          }
+        }
+      }
 
-				return filterResult;
+      return input;
+    }
 
-			}
-		}
+    public static void quickSort(List<ContainerDto> A, int left, int right, int property)
+    {
+      if (left > right || left < 0 || right < 0) return;
 
-		public async Task<SearchItem> SearchItem()
-		{
-			var lst = await _shipmentBookingDataProvider.ListAsync();
-			List<Booking> bookingModels = lst.Items;
-			var DestinationPort = bookingModels.Select(x => x.PortOfDelivery).Distinct();
-			var OriginPorts = bookingModels.Select(x => x.PortOfLoading).Distinct();
-			var Carriers = bookingModels.Select(x => x.Carrier).Distinct();
-			SearchItem getSearchItemDTO = new SearchItem()
-			{
-				DestPorts = DestinationPort,
-				OriginPorts = OriginPorts,
-				Carriers = Carriers,
-			};
-			return getSearchItemDTO;
-		}
+      int index = partition(A, left, right, property);
 
-	}
+      if (index != -1)
+      {
+        quickSort(A, left, index - 1, property);
+        quickSort(A, index + 1, right, property);
+      }
+    }
+
+    private static int partition(List<ContainerDto> A, int left, int right, int property)
+    {
+      if (left > right) return -1;
+
+      int end = left;
+
+      switch (property)
+      {
+        case 4:
+          {
+            DateTime pivot = A[right].ETD;    // choose last one to pivot, easy to code
+            for (int i = left; i < right; i++)
+            {
+              if (A[i].ETD.CompareTo(pivot) < 0)
+              {
+                swap(A, i, end);
+                end++;
+              }
+            }
+            break;
+          }
+        case 5:
+          {
+            DateTime pivot = A[right].ETA;    // choose last one to pivot, easy to code
+            for (int i = left; i < right; i++)
+            {
+              if (A[i].ETA.CompareTo(pivot) < 0)
+              {
+                swap(A, i, end);
+                end++;
+              }
+            }
+            break;
+          }
+        default:
+          {
+            var currentProperty = typeof(ContainerDto).GetProperties()[property];
+            string pivot = currentProperty.GetValue(A[right]).ToString();    // choose last one to pivot, easy to code
+            for (int i = left; i < right; i++)
+            {
+              if (currentProperty.GetValue(A[i]).ToString().CompareTo(pivot) < 0)
+              {
+                swap(A, i, end);
+                end++;
+              }
+            }
+          }
+          break;
+      }
+
+      swap(A, end, right);
+
+      return end;
+    }
+
+    private static void swap(List<ContainerDto> A, int left, int right)
+    {
+      var tmp = A[left];
+      A[left] = A[right];
+      A[right] = tmp;
+    }
+  }
 }
