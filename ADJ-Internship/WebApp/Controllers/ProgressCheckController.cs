@@ -18,9 +18,9 @@ namespace WebApp.Controllers
       _prcService = prcService;
     }
     // GET: ProgressCheckDto
-    public async Task<ActionResult> Index(int? pageIndex, string PONumberSearch = null, string ItemSearch = null, string Suppliers = null, string Factories = null, string Origins = null, string OriginPorts = null, string Depts = null, string Status = null, bool? checkClick = null)
+    public async Task<ActionResult> Index(int? pageIndex, string PONumberSearch = null, string ItemSearch = null, string Vendor = null, string Factories = null, string Origins = null, string OriginPorts = null, string Depts = null, string Status = null, bool? checkClick = null)
     {
-      string check = PONumberSearch + ItemSearch + Suppliers + Factories + Origins + OriginPorts + Depts + Status;
+      string check = PONumberSearch + ItemSearch + Vendor + Factories + Origins + OriginPorts + Depts + Status;
       GetItemSearchDto getSearchItem = await _prcService.SearchItem();
       ViewBag.Suppliers = getSearchItem.Suppliers;
       ViewBag.VNPorts = new List<string> { "Cẩm Phả", "Cửa Lò", "Hải Phòng", "Hòn Gai", "Nghi Sơn" };
@@ -31,7 +31,7 @@ namespace WebApp.Controllers
       ViewBag.Status = getSearchItem.Status;
       int current = pageIndex ?? 1;
       ViewBag.pageIndex = current;
-      PagedListResult<ProgressCheckDto> lstPrc = await _prcService.ListProgressCheckDtoAsync(current, 2, PONumberSearch, ItemSearch, Suppliers, Factories, Origins, OriginPorts, Depts, Status);
+      PagedListResult<ProgressCheckDto> lstPrc = await _prcService.ListProgressCheckDtoAsync(current, 2, PONumberSearch, ItemSearch, Vendor, Factories, Origins, OriginPorts, Depts, Status);
       if (checkClick == true)
       {
         return PartialView("_SearchingPartial", lstPrc);
@@ -59,10 +59,10 @@ namespace WebApp.Controllers
       {
         for (int j = 0; j < progressCheckDTOs.Items[i].ListOrderDetailDto.Count(); j++)
         {
-          if (progressCheckDTOs.Items[i].selected==false && progressCheckDTOs.Items[i].Id>0)
+          if (progressCheckDTOs.Items[i].selected == false && progressCheckDTOs.Items[i].Id > 0)
           {
             string inspectionDate = "Items[" + i + "].InspectionDate";
-            string intDate = "Items[" + i + "].IntendedShipDate";       
+            string intDate = "Items[" + i + "].IntendedShipDate";
             string id = "Items[" + i + "].Id";
             ModelState[inspectionDate].ValidationState = ModelState[id].ValidationState;
             ModelState[intDate].ValidationState = ModelState[id].ValidationState;
@@ -79,7 +79,7 @@ namespace WebApp.Controllers
       {
         foreach (var item in progressCheckDTOs.Items)
         {
-          if(item.Id==0 && item.selected==false&& item.ListOrderDetailDto.Where(x => x.selected == true).ToList().Count > 0)
+          if (item.Id == 0 && item.selected == false && item.ListOrderDetailDto.Where(x => x.selected == true).ToList().Count > 0)
           {
             item.selected = true;
           }

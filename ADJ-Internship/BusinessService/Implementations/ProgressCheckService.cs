@@ -42,7 +42,7 @@ namespace ADJ.BusinessService.Implementations
       _progresscheckDataProvider = progresscheckDataProvider;
     }
     public async Task<PagedListResult<ProgressCheckDto>> ListProgressCheckDtoAsync(int pageIndex = 1, int pageSize = 2, string PONumberSearch = null, string ItemSearch = null,
-      string Suppliers = null, string Factories = null, string Origins = null, string OriginPorts = null, string Depts = null, string Status = null)
+      string Vendor = null, string Factories = null, string Origins = null, string OriginPorts = null, string Depts = null, string Status = null)
     {
       List<ProgressCheckDto> progressCheckDTOs = new List<ProgressCheckDto>();
       Expression<Func<Order, bool>> All = x => x.Id > 0;
@@ -71,9 +71,9 @@ namespace ADJ.BusinessService.Implementations
         All = All.And(filterFactories);
         //add condition x.fac == fac
       }
-      if (Suppliers != null)
+      if (Vendor != null)
       {
-        Expression<Func<Order, bool>> filterSuppliers = x => x.Supplier == Suppliers;
+        Expression<Func<Order, bool>> filterSuppliers = x => x.Vendor == Vendor;
         All = All.And(filterSuppliers);
         //add condition x.supli==supli
       }
@@ -132,7 +132,7 @@ namespace ADJ.BusinessService.Implementations
           Complete = progressCheck.Complete,
           POQuantity = POQuantity,
           EstQtyToShip = progressCheck.EstQtyToShip,
-          Supplier = order.Supplier,
+          Supplier = order.Vendor,
           ListOrderDetailDto = Mapper.Map<List<OrderDetailDto>>(order.OrderDetails),
           OrderId = order.Id,
           Origin = order.Origin,
@@ -241,7 +241,7 @@ namespace ADJ.BusinessService.Implementations
     {
       var lst = await _orderDataProvider.ListAsync();
       List<Order> orderModels = lst.Items;
-      var suppliers = orderModels.Select(x => x.Supplier).Distinct();
+      var suppliers = orderModels.Select(x => x.Vendor).Distinct();
       var origins = orderModels.Select(x => x.Origin).Distinct();
       var originports = orderModels.Select(x => x.PortOfLoading).Distinct();
       var factories = orderModels.Select(x => x.Factory).Distinct();
