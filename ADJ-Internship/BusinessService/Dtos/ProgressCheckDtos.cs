@@ -55,7 +55,7 @@ namespace ADJ.BusinessService.Dtos
     public IEnumerable<string> Suppliers { get; set; }
     public IEnumerable<string> Status { get; set; }
     public IEnumerable<string> Depts { get; set; }
-	}
+  }
   public class OrderDetailDto : EntityDtoBase, ICreateMapping
   {
     public string ItemNumber { get; set; }

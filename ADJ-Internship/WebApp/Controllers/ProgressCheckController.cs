@@ -59,10 +59,10 @@ namespace WebApp.Controllers
       {
         for (int j = 0; j < progressCheckDTOs.Items[i].ListOrderDetailDto.Count(); j++)
         {
-          if (progressCheckDTOs.Items[i].selected==false && progressCheckDTOs.Items[i].Id>0)
+          if (progressCheckDTOs.Items[i].selected == false && progressCheckDTOs.Items[i].Id > 0)
           {
             string inspectionDate = "Items[" + i + "].InspectionDate";
-            string intDate = "Items[" + i + "].IntendedShipDate";       
+            string intDate = "Items[" + i + "].IntendedShipDate";
             string id = "Items[" + i + "].Id";
             ModelState[inspectionDate].ValidationState = ModelState[id].ValidationState;
             ModelState[intDate].ValidationState = ModelState[id].ValidationState;
@@ -79,7 +79,7 @@ namespace WebApp.Controllers
       {
         foreach (var item in progressCheckDTOs.Items)
         {
-          if(item.Id==0 && item.selected==false&& item.ListOrderDetailDto.Where(x => x.selected == true).ToList().Count > 0)
+          if (item.Id == 0 && item.selected == false && item.ListOrderDetailDto.Where(x => x.selected == true).ToList().Count > 0)
           {
             item.selected = true;
           }

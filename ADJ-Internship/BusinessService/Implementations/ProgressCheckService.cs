@@ -73,7 +73,7 @@ namespace ADJ.BusinessService.Implementations
       }
       if (Suppliers != null)
       {
-        Expression<Func<Order, bool>> filterSuppliers = x => x.Supplier == Suppliers;
+        Expression<Func<Order, bool>> filterSuppliers = x => x.Vendor == Suppliers;
         All = All.And(filterSuppliers);
         //add condition x.supli==supli
       }
@@ -132,7 +132,7 @@ namespace ADJ.BusinessService.Implementations
           Complete = progressCheck.Complete,
           POQuantity = POQuantity,
           EstQtyToShip = progressCheck.EstQtyToShip,
-          Supplier = order.Supplier,
+          Supplier = order.Vendor,
           ListOrderDetailDto = Mapper.Map<List<OrderDetailDto>>(order.OrderDetails),
           OrderId = order.Id,
           Origin = order.Origin,
@@ -241,7 +241,7 @@ namespace ADJ.BusinessService.Implementations
     {
       var lst = await _orderDataProvider.ListAsync();
       List<Order> orderModels = lst.Items;
-      var suppliers = orderModels.Select(x => x.Supplier).Distinct();
+      var suppliers = orderModels.Select(x => x.Vendor).Distinct();
       var origins = orderModels.Select(x => x.Origin).Distinct();
       var originports = orderModels.Select(x => x.PortOfLoading).Distinct();
       var factories = orderModels.Select(x => x.Factory).Distinct();
