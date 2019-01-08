@@ -5,21 +5,38 @@
 
 @if (SignInManager.IsSignedIn(User))
 {
-    <form asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })" method="post" id="logoutForm" class="navbar-right">
-        <ul class="nav navbar-nav navbar-right">
-            <li>
-                <a asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @UserManager.GetUserName(User)!</a>
-            </li>
-            <li>
-                <button type="submit" class="btn btn-link navbar-btn navbar-link">Logout</button>
-            </li>
+  <nav class="uk-navbar-container" uk-navbar>
+    <div class="uk-navbar-right">
+      <form asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })" method="post" id="logoutForm" style="padding: 0px">
+        <ul class="uk-navbar-nav" style="align-items: center">
+          <li>
+            <a asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @UserManager.GetUserName(User)!</a>
+          </li>
+          <li>
+            <div class="uk-inline">
+              <button type="button" class="uk-button uk-button-small"><span uk-icon="icon: menu"></span></button>
+              <div uk-dropdown="mode:click">
+                <ul class="uk-nav uk-dropdown-nav uk-position-center">
+                  <li>
+                    <button type="submit" class="uk-button uk-button-small uk-button-default">Logout</button>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </li>
         </ul>
-    </form>
+      </form>
+    </div>
+  </nav>
 }
 else
 {
-    <ul class="nav navbar-nav navbar-right">
+  <nav class="uk-navbar-container" uk-navbar>
+    <div class="uk-navbar-right">
+      <ul class="uk-navbar-nav">
         <li><a asp-area="Identity" asp-page="/Account/Register">Register</a></li>
         <li><a asp-area="Identity" asp-page="/Account/Login">Login</a></li>
-    </ul>
+      </ul>
+    </div>
+  </nav>
 }
