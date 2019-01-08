@@ -1,7 +1,9 @@
 ﻿@model ADJ.Common.PagedListResult<ADJ.BusinessService.Dtos.ShipmentManifestsDtos>
 @if (Model.Items.Count() == 0)
 {
-  <p class="uk-text-meta uk-text-large">No matching results were found. Please try again</p>
+  <div class="uk-grid uk-card uk-card-default uk-card-body">
+    <p class="uk-text-meta uk-text-large">No matching results were found. Please try again</p>
+  </div>
 }
 else
 {
