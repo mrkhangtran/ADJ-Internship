@@ -56,22 +56,11 @@ namespace WebApp.Controllers
           if (shipmentManifestDtos.Items[i].Manifests[j].selectedItem == false && shipmentManifestDtos.Items[i].selectedContainer==true)
           {
             string shipQuantity = "Items[" + i + "].Manifests[" + j + "].ShipQuantity";
-            //string netWeight = "Items[" + i + "].Manifests[" + j + "].NetWeight";
             string id = "Items[" + i + "].Manifests[" + j + "].Id";
-            ModelState[shipQuantity].ValidationState = ModelState[id].ValidationState;
-            //ModelState[netWeight].ValidationState = ModelState[id].ValidationState;
-
-          }
-
-          //if (shipmentManifestDtos.Items[i].Manifests[j].selectedItem == false && shipmentManifestDtos.Items[i].selectedContainer == false)
-          //{
-          //  string text = "Items[" + i + "].Manifests[" + j + "].NetWeight";
-          //  string id = "Items[" + i + "].Manifests[" + j + "].Id";
-          //  ModelState[text].ValidationState = ModelState[id].ValidationState;
-          //}
+            ModelState[shipQuantity].ValidationState = ModelState[id].ValidationState;           
+          }       
         }
-      }
-   
+      }   
       if (ModelState.IsValid)
       {
         foreach (var manifest in shipmentManifestDtos.Items)
@@ -84,13 +73,7 @@ namespace WebApp.Controllers
         }
       }
       else
-      {
-      //  if (shipmentManifestDtos.Items.Where(p => p.Manifests.Where(x => x.GrossWeight < x.NetWeight).Count() > 0).Count() > 0 && shipmentManifestDtos.Items.Where(p=>p.Manifests.Where(x=>x.ShipQuantity<x.OpenQuantity).Count()>0).Count()>0)
-      //  {
-      //    ViewBag.modalResult = "grossWeightInvalid";
-
-      //  }
-      //  else
+      {   
           ViewBag.modalResult = "invalid";
       }
       ViewBag.Size = new List<string> { "20GP", "40HC" };

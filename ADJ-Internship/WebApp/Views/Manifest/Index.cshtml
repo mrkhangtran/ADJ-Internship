@@ -293,17 +293,6 @@
                 </td>
                 <td>
                   @Model.Items[i].Manifests[j].GrossWeight
-                  @*@{
-                      if (Model.Items[i].Id > 0)
-                      {
-                        @Model.Items[i].Manifests[j].GrossWeight
-                      }
-                      else
-                      {
-                        <input readonly value="" id="@("shipGrossWeight"+Model.Items[i].Manifests[j].ItemNumber)" asp-for="Items[i].Manifests[j].GrossWeight" class="shipGrossWeight uk-input" />
-                        <span class=" uk-text-danger" asp-validation-for="Items[i].Manifests[j].GrossWeight" hidden id=""></span>
-                      }
-                    }*@
                 </td>
                 <td>
                   @Model.Items[i].Manifests[j].Manifested
@@ -356,23 +345,14 @@
   <br />
   <br />
 </form>
-@if (ViewBag.modalResult != null)
+@if (ViewBag.modalResult == "invalid")
 {
   string result = ViewBag.modalResult;
   <button type="button" uk-toggle="target: #modal-center" id="openmodal" hidden="hidden">Open</button>
   <div id="modal-center" class="uk-flex-top" uk-modal>
     <div class="uk-modal-dialog uk-modal-body uk-margin-auto-vertical">
-      <button class="uk-modal-close-default" type="button" uk-close></button>
-      @{
-        if (result == "invalid")
-        {
+      <button class="uk-modal-close-default" type="button" uk-close></button>  
           <p class="uk-text-danger">Ship Quantity is invalid, please try again</p>
-        }
-        else if (result == "grossWeightInvalid")
-        {
-          <p class="uk-text-danger">Gross Weight is invalid, please try again</p>
-        }
-      }
     </div>
   </div>
 }
