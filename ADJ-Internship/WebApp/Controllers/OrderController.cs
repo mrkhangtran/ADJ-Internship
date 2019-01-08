@@ -21,16 +21,13 @@ namespace WebApp.Controllers
 			_orderService = orderService;
 		}
 
-
 		public async Task<IActionResult> Display(string poNumberFilter, int? pageIndex)
 		{
 			int current = pageIndex ?? 1;
 			int pageSize = 20;
-			PagedListResult<OrderDto> pagedlistResult = await _orderService.DisplaysAsync(poNumberFilter, current, pageSize);
+			PagedListResult<OrderDTO> pagedlistResult = await _orderService.DisplaysAsync(poNumberFilter, current, pageSize);
 
 			return View(pagedlistResult);
 		}
-
-
 	}
 }

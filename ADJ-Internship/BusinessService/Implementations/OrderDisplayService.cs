@@ -16,46 +16,58 @@ using FluentValidation;
 
 namespace ADJ.BusinessService.Implementations
 {
-	public class OrderDisplayService : ServiceBase, IOrderDisplayService
-	{
-		private readonly IDataProvider<Order> _orderDataProvider;
-		private readonly IOrderRepository _orderRepository;
+  public class OrderDisplayService : ServiceBase, IOrderDisplayService
+  {
+    private readonly IDataProvider<Order> _orderDataProvider;
+    private readonly IOrderRepository _orderRepository;
 
 
-		public OrderDisplayService(IUnitOfWork unitOfWork, IMapper mapper, ApplicationContext appContext, IDataProvider<Order> orderDataProvider, IOrderRepository orderRepository) : base(unitOfWork, mapper, appContext)
-		{
-			this._orderDataProvider = orderDataProvider;
-			this._orderRepository = orderRepository;
-		}
+    public OrderDisplayService(IUnitOfWork unitOfWork, IMapper mapper, ApplicationContext appContext, IDataProvider<Order> orderDataProvider, IOrderRepository orderRepository) : base(unitOfWork, mapper, appContext)
+    {
+      this._orderDataProvider = orderDataProvider;
+      this._orderRepository = orderRepository;
+    }
 
-		public async Task<PagedListResult<OrderDto>> DisplaysAsync(string poNumber, int? pageIndex, int? pageSize)
-		{
-			
-			Expression<Func<Order, bool>> query;
-			if (poNumber == null)
-			{
-				query = null;
-			}
-			else
-			{
-				query = (p => p.PONumber == poNumber);
-			}
-			string sortStr = "OrderDate DESC";
-			var poResult = await _orderDataProvider.ListAsync(query, sortStr, true, pageIndex, pageSize);
+    public async Task<PagedListResult<OrderDTO>> DisplaysAsync(string poNumber, int? pageIndex, int? pageSize)
+    {
 
-			var pagedResult = new PagedListResult<OrderDto>
-			{
-				TotalCount = poResult.TotalCount,
-				PageCount = poResult.PageCount,
-				CurrentFilter = poNumber,
-				Items = Mapper.Map<List<OrderDto>>(poResult.Items)
-			};
+      Expression<Func<Order, bool>> query = (p => p.Id > 0);
+      if (poNumber != null)
+      {
+        query = (p => p.PONumber.Contains(poNumber));
+      }
+      string sortStr = "OrderDate DESC";
+      var poResult = await _orderDataProvider.ListAsync(query, sortStr, true, pageIndex, pageSize);
 
+      var pagedResult = new PagedListResult<OrderDTO>
+      {
+        TotalCount = poResult.TotalCount,
+        PageCount = poResult.PageCount,
+        CurrentFilter = poNumber,
+        Items = Mapper.Map<List<OrderDTO>>(poResult.Items)
+      };
 
-			return pagedResult;
+      foreach (var item in pagedResult.Items)
+      {
+        item.POQuantity = TotalQuantity(item);
+      }
 
 
-		}
+      return pagedResult;
 
-	}
+    }
+
+    public float TotalQuantity(OrderDTO order)
+    {
+      float total = 0;
+
+      foreach (var item in order.orderDetails)
+      {
+        total += item.Quantity;
+      }
+
+      return total;
+    }
+
+  }
 }

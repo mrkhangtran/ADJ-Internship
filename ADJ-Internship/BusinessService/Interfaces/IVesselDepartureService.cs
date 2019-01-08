@@ -6,13 +6,10 @@ using System.Threading.Tasks;
 
 namespace ADJ.BusinessService.Interfaces
 {
-	public interface IVesselDepartureService
-	{
-		Task<VesselDepartureDtos> ListContainerDtoAsync(int? containerId, string origin = null, string originPort = null, string status = null, int? pageIndex = null, int? pageSize = null, DateTime? etdFrom = null, DateTime? etdTo = null);
-		Task<SearchItem> SearchItem();
-		VesselDepartureDtos Achive(VesselDepartureDtos model);
-
-	}
+  public interface IVesselDepartureService
+  {
+    Task<PagedListResult<ContainerDto>> ListContainerDtoAsync(int? page, string origin, string originPort, string container, string status, DateTime? etdFrom, DateTime? etdTo);
+  }
 }
 
 
