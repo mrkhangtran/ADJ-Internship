@@ -1,182 +1,81 @@
 ﻿@using ADJ.Common;
-@model PagedListResult<ADJ.BusinessService.Dtos.OrderDto>
-<!-- star header -->
-<div class="content-header">
-	<span class="fa fa-bars"></span>
-	<div class="dropdown-username">
-		<button class="uk-button uk-button-default btnUserName" type="button" style="color:white;">User Name</button>
-		<div uk-dropdown="pos: bottom-right">
-			<ul class="uk-nav uk-dropdown-nav">
-				<li><a href="#">Active</a></li>
-				<li><a href="#">Item</a></li>
-				<li>Header</li>
-				<li><a href="#">Item</a></li>
-				<li><a href="#">Item</a></li>
-				<li></li>
-				<li><a href="#">Item</a></li>
-			</ul>
-		</div>
-	</div><!-- end dropdown username -->
+@model PagedListResult<ADJ.BusinessService.Dtos.OrderDTO>
 
-</div> <!-- end content-header -->
 <!-- start content -->
 <div class="content">
-	@*Text box filter*@
-	<div id="filter-createnew">
-		<form asp-action="Display"
-					asp-controller="Order" method="get">
-			<input type="text" name="poNumberFilter" value="@Model.CurrentFilter" placeholder="Enter PO Number" />
-			<input type="submit" value="Search" class="btnFilter" />
-			<button class="uk-button uk-button-primary btnNew"><p>@Html.ActionLink("New Order", "Create", "PurchaseOrder")</p></button>
-		</form>
-	</div>
+  @*Text box filter*@
+  <form asp-action="Display"
+        asp-controller="Order" method="post">
+    <input class="uk-input uk-width-1-2" type="text" name="poNumberFilter" value="@Model.CurrentFilter" placeholder="Enter PO Number" />
+    <input type="submit" value="Search" class="uk-button uk-button-primary" />
+    <button type="submit" class="uk-button uk-button-primary uk-align-right" asp-action="Create" asp-controller="PurchaseOrder">New Order</button>
+  </form>
 </div>
 
-@if (Model.CurrentFilter == null)
+@if (Model.Items.Count == 0)
 {
-	if (Model.Items.Count == 0)
-	{
-		<h4 style="margin:20px 0 0 20px;">There is no available PO</h4>
-	}
-	else
-	{
-		<!-- start table -->
-		<table class="uk-table uk-table-striped display-table">
-			<thead>
-				<tr class="uk-text-center">
-					<th>PO Number</th>
-					<th>PO Date</th>
-					<th>Origin</th>
-					<th>Port Of Loading</th>
-					<th>Port Of Delivery</th>
-					<th>Suppier</th>
-					<th>PO Ship Date</th>
-					<th>PO Qty</th>
-					<th>Status</th>
-					<th>PO Delivery Date</th>
-					<th></th>
-				</tr>
-			</thead>
-			<tbody style="text-align:center">
-				@foreach (var i in Model.Items)
-				{
-					<tr>
-						<td>
-							<a asp-controller="PurchaseOrder"
-								 asp-action="Detail"
-								 asp-route-poNumber="@i.PONumber">
-								@i.PONumber
-							</a>
-						</td>
-						<td>@i.OrderDate.ToString("dd MMM yyyy")</td>
-						<td>@i.Origin</td>
-						<td>@i.PortOfLoading</td>
-						<td>@i.PortOfDelivery</td>
-						<td>@i.Supplier</td>
-						<td>@i.ShipDate.ToString("dd MMM yyyy")</td>
-						<td>@i.Quantity</td>
-						<td>@i.Status</td>
-						<td>@i.DeliveryDate.ToString("dd MMM yyyy")</td>
-						<td>
-							<a asp-controller="PurchaseOrder"
-								 asp-action="Edit"
-								 asp-route-poNumber="@i.PONumber">
-								Edit
-							</a>
-							<a asp-controller="PurchaseOrder"
-								 asp-action="Copy"
-								 asp-route-poNumber="@i.PONumber">
-								Copy
-							</a>
-						</td>
-					</tr>
-				}
-			</tbody>
-		</table> <!-- end content-table -->
-		<div class="pageNumber">
-			<ul class="pagination" style="list-style:none;float:right;">
-				@for (var i = 1; i <= Model.PageCount; i++)
-				{
-					<li class="page-item @(i == 1? " active":"")" style="display :inline;padding:0 15px">
-						<a asp-page="/Display" asp-route-pageIndex="@i" asp-route-poNumberFilter="@Model.CurrentFilter" class="page-link">@i</a>
-					</li>
-				}
-
-			</ul>
-		</div>
-	}
+  <h4 style="margin:20px 0 0 20px;">No match result, please try again</h4>
 }
 else
 {
-	@if (Model.Items.Count == 0)
-	{
-		<h4 style="margin:20px 0 0 20px;">No match result, please try again</h4>
-	}
-	else
-	{
-		<!-- start table -->
-		<table class="uk-table uk-table-striped display-table">
-			<thead>
-				<tr class="uk-text-center">
-					<th>PO Number</th>
-					<th>PO Date</th>
-					<th>Origin</th>
-					<th>Port Of Loading</th>
-					<th>Port Of Delivery</th>
-					<th>Suppier</th>
-					<th>PO Ship Date</th>
-					<th>PO Qty</th>
-					<th>Status</th>
-					<th>PO Delivery Date</th>
-					<th></th>
-				</tr>
-			</thead>
-			<tbody style="text-align:center">
-				@foreach (var i in Model.Items)
-				{
-					<tr>
-						<td>@i.PONumber</td>
-						<td>@i.OrderDate.ToString("dd MMM yyyy")</td>
-						<td>@i.Origin</td>
-						<td>@i.PortOfLoading</td>
-						<td>@i.PortOfDelivery</td>
-						<td>@i.Supplier</td>
-						<td>@i.ShipDate.ToString("dd MMM yyyy")</td>
-						<td>@i.Quantity</td>
-						<td>@i.Status</td>
-						<td>@i.DeliveryDate.ToString("dd MMM yyyy")</td>
-						<td>
-							<a asp-controller="PurchaseOrder"
-								 asp-action="Edit"
-								 asp-route-poNumber="@i.PONumber">
-								Edit
-							</a>
-							<a asp-controller="PurchaseOrder"
-								 asp-action="Copy"
-								 asp-route-poNumber="@i.PONumber">
-								Copy
-							</a>
-						</td>
-					</tr>
-				}
-			</tbody>
-		</table> <!-- end content-table -->
-		<div class="pageNumber">
-			<ul class="pagination" style="list-style:none;float:right;">
-				@for (var i = 1; i <= Model.PageCount; i++)
-				{
-					<li class="page-item @(i == 1? " active":"")" style="display :inline;padding:0 15px">
-						<a asp-page="/Display" asp-route-pageIndex="@i" asp-route-poNumberFilter="@Model.CurrentFilter" class="page-link">@i</a>
-					</li>
-				}
+  <!-- start table -->
+  <table class="uk-table uk-table-striped display-table">
+    <thead>
+      <tr class="uk-text-center">
+        <th>PO Number</th>
+        <th>PO Date</th>
+        <th>Origin</th>
+        <th>Port Of Loading</th>
+        <th>Port Of Delivery</th>
+        <th>Suppier</th>
+        <th>PO Ship Date</th>
+        <th>PO Qty</th>
+        <th>Status</th>
+        <th>PO Delivery Date</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody style="text-align:center">
+      @foreach (var i in Model.Items)
+      {
+        <tr>
+          <td>
+            <a href="/PurchaseOrder/Detail?ponumber=@i.PONumber">@i.PONumber</a>
+          </td>
+          <td>@i.OrderDate.ToString("MM/dd/yyyy")</td>
+          <td>@i.Origin</td>
+          <td>@i.PortOfLoading</td>
+          <td>@i.PortOfDelivery</td>
+          <td>@i.Vendor</td>
+          <td>@i.ShipDate.ToString("MM/dd/yyyy")</td>
+          <td>@i.POQuantity</td>
+          <td>@i.Status</td>
+          <td>@i.DeliveryDate.ToString("MM/dd/yyyy")</td>
+          <td>
+            <a asp-controller="PurchaseOrder"
+               asp-action="Edit"
+               asp-route-poNumber="@i.PONumber">
+              Edit
+            </a>
+            <a asp-controller="PurchaseOrder"
+               asp-action="Copy"
+               asp-route-poNumber="@i.PONumber">
+              Copy
+            </a>
+          </td>
+        </tr>
+      }
+    </tbody>
+  </table> <!-- end content-table -->
+  <div class="pageNumber">
+    <ul class="pagination" style="list-style:none;float:right;">
+      @for (var i = 1; i <= Model.PageCount; i++)
+      {
+        <li class="page-item @(i == 1? " active":"")" style="display :inline;padding:0 15px">
+          <a asp-page="/Display" asp-route-pageIndex="@i" asp-route-poNumberFilter="@Model.CurrentFilter" class="page-link">@i</a>
+        </li>
+      }
 
-			</ul>
-		</div>
-	}
+    </ul>
+  </div>
 }
-
-
-
-
-
-

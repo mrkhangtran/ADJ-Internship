@@ -9,6 +9,6 @@ namespace ADJ.BusinessService.Interfaces
 {
 	public interface IOrderDisplayService
 	{
-		Task<PagedListResult<OrderDto>> DisplaysAsync(string poNumber, int? pageIndex, int? pageSize);
+		Task<PagedListResult<OrderDTO>> DisplaysAsync(string poNumber, int? pageIndex, int? pageSize);
 	}
 }
