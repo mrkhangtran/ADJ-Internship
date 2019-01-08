@@ -104,7 +104,7 @@ namespace ADJ.BusinessService.Implementations
         var confirmArrival = await _confirmArrivalRepository.Query(x => x.ContainerId == container.Id, false).SelectAsync();
         var arriveOfDispatch = await _arriveOfDespatchRepository.Query(x => x.ContainerId == container.Id, false).SelectAsync();
         var dcBooking = await _dcBookingRepository.Query(x => x.ContainerId == container.Id, false).SelectAsync();
-        if (confirmArrival.Count() > 0 && arriveOfDispatch.Count() > 0 && dcBooking.Count() > 0)
+        if (confirmArrival.Count() > 0 && arriveOfDispatch.Count() > 0)
         {
           DCBookingDtos dCBookingDto = new DCBookingDtos()
           {

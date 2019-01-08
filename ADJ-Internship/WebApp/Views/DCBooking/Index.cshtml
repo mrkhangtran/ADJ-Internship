@@ -252,7 +252,7 @@
                         else
                         {
                           <input asp-for="Items[i].BookingTime" class="bookingtime uk-input" placeholder="ex: 10:45" />
-                          <span hidden class="bookingtimeinvalid uk-text-danger" asp-validation-for="Items[i].BookingTime"></span>
+                          <span class="bookingtimeinvalid uk-text-danger" asp-validation-for="Items[i].BookingTime"></span>
                         }
                       }
 
@@ -372,10 +372,6 @@
     }
     if (check > 0) {
       alert("Some fields are empty or contain an improper value. Please try again.");
-    }
-    var invalid = document.getElementsByClassName("bookingtimeinvalid");
-    if (invalid != "" && check==0) {
-      alert("Booking time is invalid value. Please try again.");
     }
   });
 </script>
