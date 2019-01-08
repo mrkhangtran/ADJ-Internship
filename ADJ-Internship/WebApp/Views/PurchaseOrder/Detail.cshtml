@@ -1,9 +1,5 @@
 ﻿@model ADJ.BusinessService.Dtos.OrderDTO;
 
-<h2>PO Manager</h2>
-
-<h3>@Model.Method</h3>
-
 <span class="uk-alert-danger">@ViewBag.OrderDetailError</span>
 
 <form asp-action="Create" asp-controller="PurchaseOrder" id="orderForm">
@@ -12,21 +8,29 @@
   <input asp-for="RowVersion" value=@Model.RowVersion type="hidden" />
   <input asp-for="SingleOrderDetail.Id" value=@Model.SingleOrderDetail.Id type="hidden" />
 
+  <div class="uk-grid uk-card uk-card-default uk-card-body">
+    <h4>Dashboard > @Model.Method</h4>
+  </div>
+
+  <br />
+
   <div class="uk-card uk-card-default uk-card-body">
     <partial name="_Order_ReadOnly" model="Model" />
   </div>
 
-  <hr class="uk-divider-icon">
+  <br />
 
   <div class="uk-card uk-card-default uk-card-body" id="orderDetailPartial">
     <partial name="_OrderDetail_ReadOnly" model="Model" />
   </div>
 
-</form>
+  <br />
 
-<div class="uk-card uk-card-default uk-card-body">
-  <a class="uk-link-text" asp-controller="Order" asp-action="Display">Back to List</a>
-</div>
+  <div class="uk-card uk-card-default uk-card-body">
+    <a class="uk-link-text" asp-controller="Order" asp-action="Display">Back to List</a>
+  </div>
+
+</form>
 
 @section Scripts
   {

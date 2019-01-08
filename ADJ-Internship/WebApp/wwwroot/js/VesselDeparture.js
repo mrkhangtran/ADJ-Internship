@@ -27,18 +27,62 @@ showResult = function showResult() {
   $(document).ready(function () {
     $('#openmodal').trigger('click');
     $('#pageValue').remove();
-    changePorts();
+    changePortsResult();
   });
 };
 
 $(document).ready(function showResult() {
   $('#openmodal').trigger('click');
   changePorts();
+  changePortsResult();
 });
 
 $("#origin").change(function () {
   changePorts();
 });
+
+function changePortsResult() {
+  var vnPorts = document.getElementsByClassName("vnPorts");
+  var hkPorts = document.getElementsByClassName("hkPorts");
+
+  var ports = document.getElementsByClassName("ports");
+
+  var optionsVN = [];
+  var optionsHK = [];
+
+  $.each(vnPorts, function () {
+    optionsVN.push($(this).text());
+  });
+
+  $.each(hkPorts, function () {
+    optionsHK.push($(this).text());
+  });
+
+  for (i = 0; i < ports.length; i++) {
+    ports[i].options.length = 0;
+    if (ports[i].attributes.value != null) {
+      var currentValue = ports[i].attributes.value.nodeValue;
+    }
+    if (currentValue != null) {
+      ports[i].options[ports[i].options.length] = new Option(currentValue, currentValue);
+
+      if (isExist(currentValue, optionsVN)) {
+        for (j = 0; j < optionsVN.length; j++) {
+          if ((currentValue == null) || (currentValue != optionsVN[j])) {
+            ports[i].options[ports[i].options.length] = new Option(optionsVN[j], optionsVN[j]);
+          }
+        }
+      }
+      else if (isExist(currentValue, optionsHK)) {
+        for (j = 0; j < optionsHK.length; j++) {
+          if ((currentValue == null) || (currentValue != optionsHK[j])) {
+            ports[i].options[ports[i].options.length] = new Option(optionsHK[j], optionsHK[j]);
+          }
+        }
+      }
+    }
+  }
+};
 
 function changePorts() {
   var origin = $("#origin").val();
@@ -46,7 +90,7 @@ function changePorts() {
   var vnPorts = document.getElementsByClassName("vnPorts");
   var hkPorts = document.getElementsByClassName("hkPorts");
 
-  var ports = document.getElementsByClassName("ports");
+  var ports = document.getElementsByClassName("portsSearch");
 
   var options = [];
 
@@ -60,9 +104,19 @@ function changePorts() {
       options.push($(this).text());
     });
   }
+  else {
+    $.each(vnPorts, function () {
+      options.push($(this).text());
+    });
+    $.each(hkPorts, function () {
+      options.push($(this).text());
+    });
+  }
 
   for (i = 0; i < ports.length; i++) {
     ports[i].options.length = 0;
+    ports[i].options[ports[i].options.length] = new Option("Any", "");
+
     if (ports[i].attributes.value != null) {
       var currentValue = ports[i].attributes.value.nodeValue;
     }

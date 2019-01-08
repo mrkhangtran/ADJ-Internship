@@ -1,81 +1,108 @@
 ﻿@using ADJ.Common;
 @model PagedListResult<ADJ.BusinessService.Dtos.OrderDTO>
-
 <!-- start content -->
-<div class="content">
-  @*Text box filter*@
-  <form asp-action="Display"
-        asp-controller="Order" method="post">
-    <input class="uk-input uk-width-1-2" type="text" name="poNumberFilter" value="@Model.CurrentFilter" placeholder="Enter PO Number" />
-    <input type="submit" value="Search" class="uk-button uk-button-primary" />
-    <button type="submit" class="uk-button uk-button-primary uk-align-right" asp-action="Create" asp-controller="PurchaseOrder">New Order</button>
-  </form>
-</div>
-
-@if (Model.Items.Count == 0)
-{
-  <h4 style="margin:20px 0 0 20px;">No match result, please try again</h4>
-}
-else
-{
-  <!-- start table -->
-  <table class="uk-table uk-table-striped" >
-    <thead>
-      <tr>
-        <th>PO Number</th>
-        <th>PO Date</th>
-        <th>Origin</th>
-        <th>Port Of Loading</th>
-        <th>Port Of Delivery</th>
-        <th>Vendor</th>
-        <th>PO Ship Date</th>
-        <th>PO Qty</th>
-        <th>Status</th>
-        <th>PO Delivery Date</th>
-        <th></th>
-      </tr>
-    </thead>
-    <tbody>
-      @foreach (var i in Model.Items)
-      {
-        <tr>
-          <td>
-            <a href="/PurchaseOrder/Detail?ponumber=@i.PONumber">@i.PONumber</a>
-          </td>
-          <td>@i.OrderDate.ToString("MM/dd/yyyy")</td>
-          <td>@i.Origin</td>
-          <td>@i.PortOfLoading</td>
-          <td>@i.PortOfDelivery</td>
-          <td>@i.Vendor</td>
-          <td>@i.ShipDate.ToString("MM/dd/yyyy")</td>
-          <td>@i.POQuantity</td>
-          <td>@i.Status</td>
-          <td>@i.DeliveryDate.ToString("MM/dd/yyyy")</td>
-          <td>
-            <a asp-controller="PurchaseOrder"
-               asp-action="Edit"
-               asp-route-poNumber="@i.PONumber">
-              Edit
-            </a>
-            <a asp-controller="PurchaseOrder"
-               asp-action="Copy"
-               asp-route-poNumber="@i.PONumber">
-              Copy
-            </a>
-          </td>
-        </tr>
-      }
-    </tbody>
-  </table> <!-- end content-table -->
-  <div class="pageNumber">
-    <ul class="pagination" style="list-style:none;float:right;">
-      @for (var i = 1; i <= Model.PageCount; i++)
-      {
-        <li class="page-item @(i == 1? " active":"")" style="display :inline;padding:0 15px">
-          <a asp-page="/Display" asp-route-pageIndex="@i" asp-route-poNumberFilter="@Model.CurrentFilter" class="page-link">@i</a>
-        </li>
-      }
-
-    </ul>
+@*Text box filter*@
+<form asp-action="Display"
+      asp-controller="Order" method="post">
+  <div class="uk-grid uk-card uk-card-default uk-card-body">
+    <h4>Dashboard > PO Manager</h4>
   </div>
-}
+
+  <br />
+
+  <div class="uk-grid uk-card uk-card-default uk-card-body">
+    <table class="uk-width-1-1">
+      <tr class="uk-width-1-1">
+        <td class="uk-width-1-2">
+          <input class="uk-input" type="text" name="poNumberFilter" value="@Model.CurrentFilter" placeholder="Enter PO Number" />
+        </td>
+        <td>
+          <button type="submit" class="uk-button uk-button-primary">Search</button>
+        </td>
+        <td style="text-align: right">
+          <button type="submit" class="uk-button uk-button-primary" asp-action="Create" asp-controller="PurchaseOrder">New Order</button>
+        </td>
+      </tr>
+    </table>
+  </div>
+</form>
+
+<br />
+
+<form>
+  <div class="uk-card uk-card-default uk-card-body">
+
+    @if (Model.Items.Count == 0)
+    {
+      <h4>No match result, please try again</h4>
+    }
+    else
+    {
+      <!-- start table -->
+      <table class="uk-table uk-table-striped">
+        <thead>
+          <tr>
+            <th>PO Number</th>
+            <th>PO Date</th>
+            <th>Origin</th>
+            <th>Port Of Loading</th>
+            <th>Port Of Delivery</th>
+            <th>Vendor</th>
+            <th>PO Ship Date</th>
+            <th>PO Qty</th>
+            <th>Status</th>
+            <th>PO Delivery Date</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          @foreach (var i in Model.Items)
+          {
+            <tr>
+              <td>
+                <a href="/PurchaseOrder/Detail?ponumber=@i.PONumber">@i.PONumber</a>
+              </td>
+              <td>@i.OrderDate.ToString("MM/dd/yyyy")</td>
+              <td>@i.Origin</td>
+              <td>@i.PortOfLoading</td>
+              <td>@i.PortOfDelivery</td>
+              <td>@i.Vendor</td>
+              <td>@i.ShipDate.ToString("MM/dd/yyyy")</td>
+              <td>@i.POQuantity</td>
+              <td>@i.Status</td>
+              <td>@i.DeliveryDate.ToString("MM/dd/yyyy")</td>
+              <td>
+                <a asp-controller="PurchaseOrder"
+                   asp-action="Edit"
+                   asp-route-poNumber="@i.PONumber">
+                  Edit
+                </a>
+                <a asp-controller="PurchaseOrder"
+                   asp-action="Copy"
+                   asp-route-poNumber="@i.PONumber">
+                  Copy
+                </a>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table> 
+      <!-- end table -->
+
+      <ul class="uk-pagination uk-flex-right">
+        @for (var i = 1; i <= Model.PageCount; i++)
+        {
+          if (i == ViewBag.CurrentPage)
+          {
+            <li class="uk-disabled"><a asp-route-pageIndex="@i" asp-route-poNumberFilter="@Model.CurrentFilter"><u>@i</u></a></li>
+          }
+          else
+          {
+            <li><a asp-route-pageIndex="@i" asp-route-poNumberFilter="@Model.CurrentFilter">@i</a></li>
+          }
+        }
+      </ul>
+    }
+
+  </div>
+</form>

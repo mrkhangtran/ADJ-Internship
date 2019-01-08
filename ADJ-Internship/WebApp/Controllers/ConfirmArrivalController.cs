@@ -66,6 +66,7 @@ namespace WebApp.Controllers
 
       PagedListResult<ConfirmArrivalResultDtos> nextPage = new PagedListResult<ConfirmArrivalResultDtos>();
       PagedListResult<ConfirmArrivalResultDtos> previousPage = new PagedListResult<ConfirmArrivalResultDtos>();
+      previousPage.Items = new List<ConfirmArrivalResultDtos>();
 
       if (pageIndex - 1 > 0)
       {

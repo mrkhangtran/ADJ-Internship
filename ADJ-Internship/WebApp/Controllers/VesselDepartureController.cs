@@ -69,6 +69,7 @@ namespace WebApp.Controllers
 
       PagedListResult<ContainerDto> nextPage = new PagedListResult<ContainerDto>();
       PagedListResult<ContainerDto> previousPage = new PagedListResult<ContainerDto>();
+      previousPage.Items = new List<ContainerDto>();
 
       if (pageIndex - 1 > 0)
       {
@@ -108,12 +109,18 @@ namespace WebApp.Controllers
           if (SelectAtLeastOne(model.ResultDtos.Items))
           {
             {
-              for (int i = 0; i < model.ResultDtos.Items.Count; i++)
+              foreach (var item in model.ResultDtos.Items)
               {
-                if (model.ResultDtos.Items[i].Selected)
+                if (item.Selected)
                 {
-                  model.ResultDtos.Items[i] = await _vesselDepartureService.CreateOrUpdateAsync(model.ResultDtos.Items[i], model.ContainerInfoDtos[model.ResultDtos.Items[i].GroupId]);
-                  model.ResultDtos.Items[i].Status = ContainerStatus.Arrived;
+                  await _vesselDepartureService.CreateOrUpdateAsync(item, model.ContainerInfoDtos[item.GroupId]);
+
+                  item.OriginPort = model.ContainerInfoDtos[item.GroupId].OriginPort;
+                  item.DestinationPort = model.ContainerInfoDtos[item.GroupId].DestinationPort;
+                  item.Mode = model.ContainerInfoDtos[item.GroupId].Mode;
+                  item.Carrier = model.ContainerInfoDtos[item.GroupId].Carrier;
+
+                  item.Status = ContainerStatus.Despatch;
                 }
               }
               ModelState.Clear();

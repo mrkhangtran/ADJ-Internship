@@ -151,6 +151,7 @@ namespace ADJ.BusinessService.Implementations
         output.Status = item.Status;
 
         output.ContainerId = item.Id;
+        output.BookingId = booking.Id;
 
         result.Add(output);
       }
@@ -297,6 +298,8 @@ namespace ADJ.BusinessService.Implementations
         entity.DestinationPort = containerInfo.DestinationPort;
         entity.Mode = containerInfo.Mode;
         entity.Carrier = containerInfo.Carrier;
+        entity.Id = 0;
+        entity.RowVersion = null;
 
         _arriveOfDespatchRepository.Insert(entity);
       }

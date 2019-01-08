@@ -40,7 +40,7 @@ namespace ADJ.BusinessService.Dtos
     public DateTime? ETDFrom { get; set; }
 
     [Display(Name = "ETD To")]
-    [SimilarOrLaterThanOtherDate("etdFrom")]
+    [SimilarOrLaterThanOtherDate("ETDFrom")]
     public DateTime? ETDTo { get; set; }
   }
 
@@ -48,6 +48,7 @@ namespace ADJ.BusinessService.Dtos
   {
     //Droplist of Ports
     [Display(Name = "Origin Port")]
+    [PortIsDifferent("DestinationPort")]
     public string OriginPort { get; set; }
 
     //Droplist of Ports
@@ -77,6 +78,8 @@ namespace ADJ.BusinessService.Dtos
     public DateTime ETA { get; set; }
 
     public int ContainerId { get; set; }
+
+    public int BookingId { get; set; }
 
     public bool Selected { get; set; }
 
