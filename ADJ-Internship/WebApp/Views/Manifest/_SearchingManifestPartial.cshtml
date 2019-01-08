@@ -10,11 +10,11 @@ else
     @Html.HiddenFor(model => model.Items[i].Id, new { Value = Model.Items[i].Id })
     <br />
     <br />
-    <div class="uk-grid">
-      <table class="uk-table uk-table-small uk-width-1-2">
+    <div class="uk-grid uk-card uk-card-default uk-card-body">
+      <table class="uk-table uk-table-striped uk-table-small">
         <thead>
           <tr>
-            <td></td>
+            <td style="width:5%"></td>
             <td>
               Container
             </td>
@@ -31,7 +31,7 @@ else
         </thead>
         <tbody>
           <tr>
-            <td>
+            <td style="width:5%">
               @if (Model.Items[i].Id == 0)
               {
                 <input class="uk-checkbox" type="checkbox" asp-for="Items[i].selectedContainer" />
@@ -81,10 +81,10 @@ else
           </tr>
         </tbody>
       </table>
-      <table class="uk-table uk-table-small">
+      <table class="uk-table uk-table-striped uk-table-small">
         <thead>
           <tr>
-            <td></td>
+            <td style="width:5%"></td>
             <td>
               Vendor
             </td>
@@ -141,11 +141,12 @@ else
             @Html.HiddenFor(model => model.Items[i].Manifests[j].Id, new { Value = Model.Items[i].Manifests[j].Id })
             @Html.HiddenFor(model => model.Items[i].Manifests[j].OpenQuantity, new { Value = Model.Items[i].Manifests[j].OpenQuantity })
             <tr>
-              <td>
+              <td style="width:5%">
                 @if (Model.Items[i].Id == 0)
                 {
                   <input class="uk-checkbox" type="checkbox" asp-for="Items[i].Manifests[j].selectedItem" />
                 }
+
               </td>
               <td>
                 @Model.Items[i].Manifests[j].Vendor

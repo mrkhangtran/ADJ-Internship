@@ -2,8 +2,11 @@
 @using (Html.BeginForm())
 {
   <div class="uk-grid uk-card uk-card-default uk-card-body">
+    <h4>Dashboard > Progress Check</h4>
+  </div>
+  <div class="uk-grid uk-card uk-card-default uk-card-body uk-margin-auto-bottom">
     <div class="uk-width-1-3">
-      <table class="uk-table uk-table-small">
+      <table class="uk-table">
         <tbody>
           <tr>
             <td><label>Origin</label></td>
@@ -17,7 +20,7 @@
             <td><label>Origin Port</label></td>
             <td>
               <div class="col-md-10">
-                <select class="uk-input ports" id="OriginPorts"></select>
+                <select class="uk-select ports" id="OriginPorts"></select>
                 <span class="uk-alert-danger"></span>
               </div>
             </td>
@@ -81,7 +84,7 @@
     </div>
 
     <div class="uk-width-1-3">
-      <table class="uk-table uk-table-small">
+      <table class="uk-table">
         <tbody>
           <tr>
             <td>
@@ -104,30 +107,32 @@
   <div id="renderSearching">
     @for (int i = 0; i < Model.Items.Count(); i++)
     {
-      <div class="uk-grid uk-margin-small">
+      <div class="uk-grid uk-card uk-card-default uk-card-body  uk-margin-small">
         @Html.HiddenFor(model => model.Items[i].OrderId, new { Value = Model.Items[i].OrderId })
         @Html.HiddenFor(model => model.Items[i].Id, new { Value = Model.Items[i].Id })
-        <table class="uk-table uk-table-small">
+        <table class="uk-table uk-table-striped uk-table-small">
           <thead>
             <tr>
-              <td style="width:50%">
+              <td style="width:5%"></td>
+              <td>
                 Vendor
               </td>
-              <td style="width:50%">
+              <td>
                 Factory
               </td>
             </tr>
           </thead>
           <tbody>
             <tr>
-              <td style="width:50%">@Model.Items[i].Supplier</td>
+              <td style="width:5%"></td>
+              <td>@Model.Items[i].Supplier</td>
               @Html.HiddenFor(model => model.Items[i].Supplier)
-              <td style="width:50%">@Model.Items[i].Factory</td>
+              <td>@Model.Items[i].Factory</td>
               @Html.HiddenFor(model => model.Items[i].Factory)
             </tr>
           </tbody>
         </table>
-        <table class="uk-table uk-table-small">
+        <table class="uk-table uk-table-striped uk-table-small">
           <thead>
             <tr>
               <td style="width:5%"></td>
@@ -210,17 +215,17 @@
             </tr>
           </tbody>
         </table>
-        <table class="uk-table uk-table-small">
+        <table class="uk-table uk-table-striped uk-table-small">
           <thead>
             <tr>
-              <td style="width:25%"></td>
-              <td style="width:25%">
+              <td style="width:5%"></td>
+              <td>
                 Item Number
               </td>
-              <td style="width:25%">
+              <td>
                 Item Quantity
               </td>
-              <td style="width:25%">
+              <td>
                 Revise Quantity
               </td>
             </tr>

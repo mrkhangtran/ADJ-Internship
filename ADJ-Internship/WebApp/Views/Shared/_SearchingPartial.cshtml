@@ -1,18 +1,21 @@
 ﻿@model ADJ.Common.PagedListResult<ADJ.BusinessService.Dtos.ProgressCheckDto>
 @if (Model.Items.Count() == 0)
 {
-  <p class="uk-text-meta uk-text-large">No result match, please try again</p>
+  <div class="uk-grid uk-card uk-card-default uk-card-body  uk-margin-small">
+    <p class="uk-text-meta uk-text-large">No result match, please try again</p>
+  </div>
 }
 else
 {
   @for (int i = 0; i < Model.Items.Count(); i++)
   {
-    <div class="uk-grid uk-margin-small">
+    <div class="uk-grid uk-card uk-card-default uk-card-body  uk-margin-small">
       @Html.HiddenFor(model => model.Items[i].OrderId, new { Value = Model.Items[i].OrderId })
       @Html.HiddenFor(model => model.Items[i].Id, new { Value = Model.Items[i].Id })
-      <table class="uk-table uk-table-small">
+      <table class="uk-table uk-table-striped uk-table-small">
         <thead>
           <tr>
+            <td style="width:5%"></td>
             <td>
               Vendor
             </td>
@@ -23,6 +26,7 @@ else
         </thead>
         <tbody>
           <tr>
+            <td style="width:5%"></td>
             <td>@Model.Items[i].Supplier</td>
             @Html.HiddenFor(model => model.Items[i].Supplier)
             <td>@Model.Items[i].Factory</td>
@@ -30,29 +34,29 @@ else
           </tr>
         </tbody>
       </table>
-      <table class="uk-table uk-table-small">
+      <table class="uk-table uk-table-striped uk-table-small">
         <thead>
           <tr>
-            <td></td>
-            <td>
+            <td style="width:5%"></td>
+            <td style="width:15%">
               PO Number
             </td>
-            <td>
+            <td style="width:15%">
               PO Quantity
             </td>
-            <td>
+            <td style="width:15%">
               PO Check Quantity
             </td>
-            <td>
+            <td style="width:12.5%">
               PO Ship Date
             </td>
-            <td>
+            <td style="width:12.5%">
               Inspection Date
             </td>
-            <td>
+            <td style="width:12.5%">
               Int Ship Date
             </td>
-            <td>
+            <td style="width:12.5%">
               PO Quantity Complete
             </td>
           </tr>
@@ -61,45 +65,45 @@ else
           <tr>
             @if (Model.Items[i].Complete == false)
             {
-              <td>
+              <td style="width:5%">
                 <input class="uk-checkbox" type="checkbox" asp-for="Items[i].selected" />
               </td>
             }
             else
             {
-              <td></td>
+              <td style="width:5%"></td>
             }
-            <td>@Model.Items[i].PONumber</td>
+            <td style="width:15%">@Model.Items[i].PONumber</td>
             @Html.HiddenFor(model => model.Items[i].PONumber)
-            <td>@Model.Items[i].POQuantity</td>
+            <td style="width:15%">@Model.Items[i].POQuantity</td>
             @Html.HiddenFor(model => model.Items[i].POQuantity)
-            <td>@Model.Items[i].EstQtyToShip</td>
+            <td style="width:15%">@Model.Items[i].EstQtyToShip</td>
             @Html.HiddenFor(model => model.Items[i].EstQtyToShip)
-            <td>@Model.Items[i].ShipDate.ToString("dd/MM/yyyy")</td>
+            <td style="width:12.5%">@Model.Items[i].ShipDate.ToString("MM/dd/yyyy")</td>
             @{
               if (Model.Items[i].Complete == true)
               {
-                <td>
+                <td style="width:12.5%">
                   <input readonly type="date" asp-for="Items[i].InspectionDate" class=" uk-input" />
                 </td>
-                <td>
+                <td style="width:12.5%">
                   <input readonly type="date" asp-for="Items[i].IntendedShipDate" class=" uk-input" />
                 </td>
               }
               else
               {
-                <td>
+                <td style="width:12.5%">
                   <input type="date" asp-for="Items[i].InspectionDate" class=" uk-input" />
                   <span class=" uk-text-danger" asp-validation-for="Items[i].InspectionDate"></span>
                 </td>
-                <td>
+                <td style="width:12.5%">
                   <input type="date" asp-for="Items[i].IntendedShipDate" class=" uk-input" />
                   <span class=" uk-text-danger" asp-validation-for="Items[i].IntendedShipDate"></span>
                 </td>
               }
             }
 
-            <td>
+            <td style="width:12.5%">
               @if (@Model.Items[i].Complete == true)
               {
                 <p>YES</p>
@@ -113,10 +117,10 @@ else
           </tr>
         </tbody>
       </table>
-      <table class="uk-table uk-table-small">
+      <table class="uk-table uk-table-striped uk-table-small">
         <thead>
           <tr>
-            <td></td>
+            <td style="width:5%"></td>
             <td>
               Item Number
             </td>
