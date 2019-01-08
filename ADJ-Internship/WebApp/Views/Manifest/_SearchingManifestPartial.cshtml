@@ -36,6 +36,10 @@ else
               {
                 <input class="uk-checkbox" type="checkbox" asp-for="Items[i].selectedContainer" />
               }
+              else
+              {
+                <input disabled class="uk-checkbox" type="checkbox" asp-for="Items[i].selectedContainer" />
+              }
             </td>
             <td>
               @{
@@ -146,7 +150,10 @@ else
                 {
                   <input class="uk-checkbox" type="checkbox" asp-for="Items[i].Manifests[j].selectedItem" />
                 }
-
+                else
+                {
+                  <input disabled class="uk-checkbox" type="checkbox" asp-for="Items[i].Manifests[j].selectedItem" />
+                }
               </td>
               <td>
                 @Model.Items[i].Manifests[j].Vendor

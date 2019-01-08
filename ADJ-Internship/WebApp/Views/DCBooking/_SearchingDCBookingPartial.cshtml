@@ -1,17 +1,19 @@
 ﻿@model ADJ.Common.PagedListResult<ADJ.BusinessService.Dtos.DCBookingDtos>
 @if (Model.Items.Count() == 0)
 {
-  <p class="uk-text-meta uk-text-large">No matching results were found. Please try again</p>
+  <div class="uk-grid uk-card uk-card-default uk-card-body">
+    <p class="uk-text-meta uk-text-large">No matching results were found. Please try again</p>
+  </div>
 }
 else
 {
   <br />
   <br />
-  <div class="uk-grid">
-    <table class="uk-table uk-table-small">
+  <div class="uk-grid uk-card uk-card-default uk-card-body">
+    <table class="uk-table uk-table-striped uk-table-small">
       <thead>
         <tr>
-          <td></td>
+          <td style="width:5%"></td>
           <td>
             Container
           </td>
@@ -62,10 +64,14 @@ else
               @Html.HiddenFor(model => model.Items[i].Id, new { Value = Model.Items[i].Id })
               @Html.HiddenFor(model => model.Items[i].ContainerId, new { Value = Model.Items[i].ContainerId })
               <tr>
-                <td>
+                <td style="width:5%">
                   @if (Model.Items[i].Id == 0)
                   {
                     <input asp-for="Items[i].selected" class="uk-checkbox" />
+                  }
+                  else
+                  {
+                    <input disabled asp-for="Items[i].selected" class="uk-checkbox" />
                   }
                 </td>
                 <td>
@@ -129,7 +135,7 @@ else
                     }
                     else
                     {
-                      <input asp-for="Items[i].Client" class="uk-input" />
+                      <input asp-for="Items[i].Client" class="client uk-input" />
                     }
                   }
 
@@ -143,7 +149,8 @@ else
                     }
                     else
                     {
-                      <input asp-for="Items[i].BookingDate" class="uk-input" type="date" />
+                      <input asp-for="Items[i].BookingDate" value=@Model.Items[i].BookingDate.ToString("yyyy-MM-dd") class="uk-input" type="date" />
+                      <span class="uk-text-danger" asp-validation-for="Items[i].BookingDate"></span>
                     }
                   }
 
@@ -157,7 +164,8 @@ else
                     }
                     else
                     {
-                      <input asp-for="Items[i].BookingTime" class="uk-input" />
+                      <input asp-for="Items[i].BookingTime" class="bookingtime uk-input" placeholder="ex: 10:45" />
+                      <span class="bookingtimeinvalid uk-text-danger" asp-validation-for="Items[i].BookingTime"></span>
                     }
                   }
 
@@ -187,33 +195,4 @@ else
       </tbody>
     </table>
   </div>
-  @*<div class="uk-align-right">
-    <ul class="uk-pagination">
-      @{
-        if (ViewBag.pageIndex > 1)
-        {
-          <li><a value="@(ViewBag.pageIndex - 1)" class="filterItem page-link"><span uk-pagination-previous></span></a></li>
-        }
-        for (var i = 1; i <= Model.PageCount; i++)
-        {
-          if (i == ViewBag.pageIndex)
-          {
-            <li class="uk-disabled">
-              <a value="@i" class="page-link"><u>@i</u></a>
-            </li>
-          }
-          else
-          {
-            <li class="uk-active">
-              <a value="@i" class="filterItem page-link">@i</a>
-            </li>
-          }
-        }
-        if (ViewBag.pageIndex < Model.PageCount)
-        {
-          <li><a value="@(ViewBag.pageIndex + 1)" class="filterItem page-link"><span uk-pagination-next></span></a></li>
-        }
-      }
-    </ul>
-  </div>*@
 }

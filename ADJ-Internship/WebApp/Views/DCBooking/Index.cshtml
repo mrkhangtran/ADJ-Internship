@@ -162,6 +162,10 @@
                     {
                       <input asp-for="Items[i].selected" class="uk-checkbox" />
                     }
+                    else
+                    {
+                      <input disabled asp-for="Items[i].selected" class="uk-checkbox" />
+                    }
                   </td>
                   <td>
                     @Model.Items[i].Name

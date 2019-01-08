@@ -71,7 +71,9 @@ else
             }
             else
             {
-              <td style="width:5%"></td>
+              <td style="width:5%">
+                <input disabled class="uk-checkbox" type="checkbox" asp-for="Items[i].selected" />
+              </td>
             }
             <td style="width:15%">@Model.Items[i].PONumber</td>
             @Html.HiddenFor(model => model.Items[i].PONumber)
@@ -138,13 +140,15 @@ else
             <tr>
               @if (Model.Items[i].Complete == false)
               {
-                <td>
+                <td style="width:5%">
                   <input class="uk-checkbox" type="checkbox" asp-for="Items[i].ListOrderDetailDto[j].selected" />
                 </td>
               }
               else
               {
-                <td></td>
+                <td style="width:5%">
+                  <input disabled class="uk-checkbox" type="checkbox" asp-for="Items[i].ListOrderDetailDto[j].selected" />
+                </td>
               }
               @Html.HiddenFor(model => model.Items[i].ListOrderDetailDto[j].Id)
               <td>@Model.Items[i].ListOrderDetailDto[j].ItemNumber</td>
