@@ -33,10 +33,10 @@
               </td>
             </tr>
             <tr>
-              <td><label>Supplier</label></td>
+              <td><label>Vendor</label></td>
               <td>
                 <div class="uk-form-select" data-uk-form-select>
-                  @Html.DropDownList("Suppliers", new SelectList(ViewBag.Suppliers), "Any", new { @id = "Suppliers", @class = "uk-select" })
+                  @Html.DropDownList("Vendor", new SelectList(ViewBag.Suppliers), "Any", new { @id = "Vendor", @class = "uk-select" })
                 </div>
               </td>
             </tr>
@@ -113,7 +113,7 @@
           <thead>
             <tr>
               <td>
-                Supplier
+                Vendor
               </td>
               <td>
                 Factory
@@ -333,7 +333,7 @@
             url: "@Url.Action("Index", "ProgressCheck")",
             data: {
                 pageIndex:pageIndex,
-                Suppliers: $('#Suppliers').val(),
+                Vendor: $('#Vendor').val(),
                 Factories: $('#Factories').val(),
                 Origins: $('#Origins').val(),
               OriginPorts: $('#OriginPorts option:selected').val(),

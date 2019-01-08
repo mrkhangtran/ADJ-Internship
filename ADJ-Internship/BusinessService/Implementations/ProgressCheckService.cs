@@ -42,7 +42,7 @@ namespace ADJ.BusinessService.Implementations
       _progresscheckDataProvider = progresscheckDataProvider;
     }
     public async Task<PagedListResult<ProgressCheckDto>> ListProgressCheckDtoAsync(int pageIndex = 1, int pageSize = 2, string PONumberSearch = null, string ItemSearch = null,
-      string Suppliers = null, string Factories = null, string Origins = null, string OriginPorts = null, string Depts = null, string Status = null)
+      string Vendor = null, string Factories = null, string Origins = null, string OriginPorts = null, string Depts = null, string Status = null)
     {
       List<ProgressCheckDto> progressCheckDTOs = new List<ProgressCheckDto>();
       Expression<Func<Order, bool>> All = x => x.Id > 0;
@@ -71,9 +71,9 @@ namespace ADJ.BusinessService.Implementations
         All = All.And(filterFactories);
         //add condition x.fac == fac
       }
-      if (Suppliers != null)
+      if (Vendor != null)
       {
-        Expression<Func<Order, bool>> filterSuppliers = x => x.Vendor == Suppliers;
+        Expression<Func<Order, bool>> filterSuppliers = x => x.Vendor == Vendor;
         All = All.And(filterSuppliers);
         //add condition x.supli==supli
       }

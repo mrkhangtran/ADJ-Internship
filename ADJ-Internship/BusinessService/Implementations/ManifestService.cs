@@ -147,7 +147,7 @@ namespace ADJ.BusinessService.Implementations
           ItemManifest itemManifest = new ItemManifest()
           {
             Id = item.Id,
-            Supplier = orderDeatail[0].Order.Factory,
+            Vendor = orderDeatail[0].Order.Vendor,
             Carrier = item.Booking.Carrier,
             PONumber = item.Booking.PONumber,
             ItemNumber = item.Booking.ItemNumber,
@@ -195,7 +195,7 @@ namespace ADJ.BusinessService.Implementations
             ItemManifest itemManifest = new ItemManifest()
             {
               Id = 0,
-              Supplier = orderDeatail[0].Order.Factory,
+              Vendor = orderDeatail[0].Order.Vendor,
               Carrier = bookingNoContainer.Carrier,
               PONumber = bookingNoContainer.PONumber,
               ItemNumber = bookingNoContainer.ItemNumber,
@@ -217,7 +217,7 @@ namespace ADJ.BusinessService.Implementations
             ItemManifest itemManifest = new ItemManifest()
             {
               Id = 0,
-              Supplier = orderDeatail[0].Order.Factory,
+              Vendor = orderDeatail[0].Order.Vendor,
               Carrier = bookingNoContainer.Carrier,
               PONumber = bookingNoContainer.PONumber,
               ItemNumber = bookingNoContainer.ItemNumber,
@@ -257,7 +257,7 @@ namespace ADJ.BusinessService.Implementations
             ItemManifest itemManifest = new ItemManifest()
             {
               Id = item.Id,
-              Supplier = item.Booking.Factory,
+              Vendor = item.Booking.Factory,
               Carrier = item.Booking.Carrier,
               PONumber = item.Booking.PONumber,
               ItemNumber = item.Booking.ItemNumber,

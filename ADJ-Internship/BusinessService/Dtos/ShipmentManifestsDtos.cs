@@ -40,7 +40,7 @@ namespace ADJ.BusinessService.Dtos
 
 		public int BookingId { get; set; }
 
-		public string Supplier { get; set; }
+		public string Vendor { get; set; }
 
 		public string Carrier { get; set; }
 
