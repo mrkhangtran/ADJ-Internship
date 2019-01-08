@@ -156,13 +156,13 @@
                 if (Model.Items[i].Id == 0)
                 {
                   <td>
-                    <select asp-for="Items[i].Size" asp-items="new SelectList(ViewBag.Size)" class="uk-input filters" id="size"></select>
+                    <select asp-for="Items[i].Size" asp-items="new SelectList(ViewBag.Size)" class="uk-select filters" id="size"></select>
                   </td>
                   <td>
-                    <select asp-for="Items[i].Loading" asp-items="new SelectList(ViewBag.Loading)" class="uk-input filters" id="loading"></select>
+                    <select asp-for="Items[i].Loading" asp-items="new SelectList(ViewBag.Loading)" class="uk-select filters" id="loading"></select>
                   </td>
                   <td>
-                    <select asp-for="Items[i].PackType" asp-items="new SelectList(ViewBag.PackType)" class="uk-input filters" id="packtype"></select>
+                    <select asp-for="Items[i].PackType" asp-items="new SelectList(ViewBag.PackType)" class="uk-select filters" id="packtype"></select>
                   </td>
                 }
                 else
