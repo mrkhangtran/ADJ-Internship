@@ -164,6 +164,9 @@ namespace WebApp.Controllers
       ViewBag.Origins = new List<string> { "HongKong", "Vietnam" };
       ViewBag.Statuses = new List<string> { ContainerStatus.Despatch.ToString(), ContainerStatus.Arrived.ToString() };
 
+      ViewBag.ContinuedFromPrevious = false;
+      ViewBag.ToBeContinued = false;
+
       ViewBag.Page = 1;
     }
   }

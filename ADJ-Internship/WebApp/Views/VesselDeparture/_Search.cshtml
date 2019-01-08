@@ -1,5 +1,15 @@
 ﻿@model ADJ.BusinessService.Dtos.VesselDepartureDtos;
 
+@foreach (var item in ViewBag.VNPorts)
+{
+  <p class="vnPorts" hidden="hidden">@item</p>
+}
+
+@foreach (var item in ViewBag.HKPorts)
+{
+  <p class="hkPorts" hidden="hidden">@item</p>
+}
+
 <div class="uk-grid">
   <div class="uk-width-3-4">
     <table class="uk-table uk-table-small uk-table-middle">
@@ -8,7 +18,9 @@
           <label asp-for="FilterDto.Origin"></label>
         </td>
         <td>
-          <select asp-for="FilterDto.Origin" asp-items="new SelectList(ViewBag.Origins)" class="uk-select filters" id="origin"></select>
+          <select asp-for="FilterDto.Origin" asp-items="new SelectList(ViewBag.Origins)" class="uk-select filters" id="origin">
+            <option selected value="">Any</option>
+          </select>
           <span asp-validation-for="FilterDto.Origin" class="uk-alert-danger"></span>
         </td>
         <td>

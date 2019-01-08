@@ -114,7 +114,7 @@ namespace ADJ.BusinessService.Implementations
         All = All.And(All1.Or(All2));
       }
 
-      PagedListResult<Container> result = await _containerDataProvider.ListAsync(All, null, true);
+      PagedListResult<Container> result = await _containerDataProvider.ListAsync(All, null, true, page, pageSize);
 
       PagedListResult<ContainerDto> rs = new PagedListResult<ContainerDto>();
       rs.Items = await ConvertToResultAsync(result.Items);
@@ -137,18 +137,20 @@ namespace ADJ.BusinessService.Implementations
         if (item.Status == ContainerStatus.Pending)
         {
           output = Mapper.Map<ContainerDto>(booking);
+          output.OriginPort = booking.PortOfLoading;
+          output.DestinationPort = booking.PortOfDelivery;
         }
         else if (item.Status == ContainerStatus.Despatch)
         {
           output = Mapper.Map<ContainerDto>(arriveOfDespatch[0]);
         }
 
-        output = Mapper.Map<ContainerDto>(item);
-        output.ContainerId = item.Id;
+        //output = Mapper.Map<ContainerDto>(item);
+        output.Name = item.Name;
+        output.Size = item.Size;
+        output.Status = item.Status;
 
-        //output.Name = item.Name;
-        //output.Size = item.Size;
-        //output.Statuts = item.Status;
+        output.ContainerId = item.Id;
 
         result.Add(output);
       }
@@ -273,5 +275,62 @@ namespace ADJ.BusinessService.Implementations
       A[left] = A[right];
       A[right] = tmp;
     }
+
+    public async Task<ContainerDto> CreateOrUpdateAsync(ContainerDto input, ContainerInfoDto containerInfo)
+    {
+      ArriveOfDespatch entity = await GetArriveOfDespatchbyContainerId(input.ContainerId);
+
+      if (entity != null)
+      {
+        entity.OriginPort = containerInfo.OriginPort;
+        entity.DestinationPort = containerInfo.DestinationPort;
+        entity.Mode = containerInfo.Mode;
+        entity.Carrier = containerInfo.Carrier;
+
+        _arriveOfDespatchRepository.Update(entity);
+      }
+      else
+      {
+        entity = Mapper.Map<ArriveOfDespatch>(input);
+
+        entity.OriginPort = containerInfo.OriginPort;
+        entity.DestinationPort = containerInfo.DestinationPort;
+        entity.Mode = containerInfo.Mode;
+        entity.Carrier = containerInfo.Carrier;
+
+        _arriveOfDespatchRepository.Insert(entity);
+      }
+
+      await UpdateContainer(input.ContainerId);
+
+      await UnitOfWork.SaveChangesAsync();
+
+      return Mapper.Map<ContainerDto>(entity);
+    }
+
+    private async Task<ArriveOfDespatch> GetArriveOfDespatchbyContainerId(int containerId)
+    {
+      List<ArriveOfDespatch> findCA = await _arriveOfDespatchRepository.Query(x => x.ContainerId == containerId, false).SelectAsync();
+
+      if (findCA.Count != 0)
+      {
+        return findCA[0];
+      }
+      else
+      {
+        return null;
+      }
+    }
+
+    private async Task<Container> UpdateContainer(int containerId)
+    {
+      Container container = await _containerDataProvider.GetByIdAsync(containerId);
+
+      container.Status = ContainerStatus.Despatch;
+      _containerRepository.Update(container);
+
+      return container;
+    }
+
   }
 }

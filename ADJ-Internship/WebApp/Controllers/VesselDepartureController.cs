@@ -97,6 +97,52 @@ namespace WebApp.Controllers
       return PartialView("_Result", model);
     }
 
+    public async Task<ActionResult> Achieve(VesselDepartureDtos model)
+    {
+      SetDropDownList();
+
+      if (ModelState.IsValid)
+      {
+        if (model.ResultDtos != null)
+        {
+          if (SelectAtLeastOne(model.ResultDtos.Items))
+          {
+            {
+              for (int i = 0; i < model.ResultDtos.Items.Count; i++)
+              {
+                if (model.ResultDtos.Items[i].Selected)
+                {
+                  model.ResultDtos.Items[i] = await _vesselDepartureService.CreateOrUpdateAsync(model.ResultDtos.Items[i], model.ContainerInfoDtos[model.ResultDtos.Items[i].GroupId]);
+                  model.ResultDtos.Items[i].Status = ContainerStatus.Arrived;
+                }
+              }
+              ModelState.Clear();
+              ViewBag.ShowModal = "Updated";
+            }
+          }
+          else
+          {
+            ViewBag.ShowModal = "NoItem";
+          }
+        }
+      }
+
+      return PartialView("_Result", model);
+    }
+
+    public bool SelectAtLeastOne(List<ContainerDto> input)
+    {
+      foreach (var item in input)
+      {
+        if (item.Selected)
+        {
+          return true;
+        }
+      }
+
+      return false;
+    }
+
     public bool SameGroup(ContainerDto first, ContainerDto second)
     {
       for (int property = 0; property < 6; property++)
@@ -119,6 +165,12 @@ namespace WebApp.Controllers
       ViewBag.Origins = new List<string> { "HongKong", "Vietnam" };
       ViewBag.Modes = new List<string> { "Road", "Sea", "Air" };
       ViewBag.Statuses = new List<string> { ContainerStatus.Despatch.ToString(), ContainerStatus.Pending.ToString() };
+      ViewBag.Carriers = new List<string> { "DHL", "EMS", "Kerry Express", "TNT", "USPS", "ViettelPost" };
+      ViewBag.VNPorts = new List<string> { "Cẩm Phả", "Cửa Lò", "Hải Phòng", "Hòn Gai", "Nghi Sơn" };
+      ViewBag.HKPorts = new List<string> { "Aberdeen", "Crooked Harbour", "Double Haven", "Gin Drinkers Bay", "Inner Port Shelter" };
+
+      ViewBag.ContinuedFromPrevious = false;
+      ViewBag.ToBeContinued = false;
 
       ViewBag.Page = 1;
     }
