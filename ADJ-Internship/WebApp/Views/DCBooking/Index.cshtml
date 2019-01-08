@@ -170,7 +170,7 @@
                       @Html.HiddenFor(model => model.Items[i].DestPort)
                     </td>
                     <td>
-                      @Model.Items[i].ArrivalDate.ToString("dd/MM/yyyy")
+                      @Model.Items[i].ArrivalDate.ToString("MM/dd/yyyy")
                       @Html.HiddenFor(model => model.Items[i].ArrivalDate)
 
                     </td>
@@ -231,12 +231,12 @@
                       @{
                         if (Model.Items[i].Id > 0)
                         {
-                          @Model.Items[i].BookingDate.ToString("dd/MM/yyyy")
+                          @Model.Items[i].BookingDate.ToString("MM/dd/yyyy")
                           @Html.HiddenFor(model => model.Items[i].BookingDate)
                         }
                         else
                         {
-                          <input asp-for="Items[i].BookingDate" class="uk-input" type="date" />
+                          <input asp-for="Items[i].BookingDate" value=@Model.Items[i].BookingDate.ToString("yyyy-MM-dd") class="uk-input" type="date" />
                           <span class="uk-text-danger" asp-validation-for="Items[i].BookingDate"></span>
                         }
                       }

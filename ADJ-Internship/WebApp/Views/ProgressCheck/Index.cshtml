@@ -174,7 +174,7 @@
               @Html.HiddenFor(model => model.Items[i].POQuantity)
               <td>@Model.Items[i].EstQtyToShip</td>
               @Html.HiddenFor(model => model.Items[i].EstQtyToShip)
-              <td>@Model.Items[i].ShipDate.ToString("dd/MM/yyyy")</td>
+              <td>@Model.Items[i].ShipDate.ToString("MM/dd/yyyy")</td>
               @{
                 if (Model.Items[i].Complete == true)
                 {

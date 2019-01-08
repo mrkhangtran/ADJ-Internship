@@ -27,13 +27,16 @@ namespace ADJ.BusinessService.Dtos
     public string WareHouse { get; set; }
     [Required]
     public string BookingRef { get; set; }
+    static DateTime defaultDate = DateTime.Now;
     [DCBookingDtoValidators("ArrivalDate")]
     [Required]
-    public DateTime BookingDate { get; set; }
+    public DateTime BookingDate { get; set; } = defaultDate;
+
+    
 
     [RegularExpression("^(?:0?[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$", ErrorMessage = "Time is invalid")]
     [Required]
-    public string BookingTime { get; set; }
+    public string BookingTime { get; set; } = defaultDate.ToString("hh:mm");
 
     public string Haulier { get; set; }
     [Required]

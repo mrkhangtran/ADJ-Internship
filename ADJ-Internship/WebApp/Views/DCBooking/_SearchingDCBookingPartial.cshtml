@@ -77,7 +77,7 @@ else
                   @Html.HiddenFor(model => model.Items[i].DestPort)
                 </td>
                 <td>
-                  @Model.Items[i].ArrivalDate
+                  @Model.Items[i].ArrivalDate.ToString("MM/dd/yyyy")
                   @Html.HiddenFor(model => model.Items[i].ArrivalDate)
 
                 </td>
@@ -138,7 +138,7 @@ else
                   @{
                     if (Model.Items[i].Id > 0)
                     {
-                      @Model.Items[i].BookingDate
+                      @Model.Items[i].BookingDate.ToString("MM/dd/yyyy")
                       @Html.HiddenFor(model => model.Items[i].BookingDate)
                     }
                     else
