@@ -99,7 +99,7 @@
               @if (Model.ResultDtos.Items[i].Status == ADJ.Common.ContainerStatus.DCBookingReceived)
               {
                 <td>
-                  <input asp-for="ResultDtos.Items[i].DeliveryDate" type="date" class="uk-input filters" value=@Model.ResultDtos.Items[i].DeliveryDate.ToString("yyyy-MM-dd") />
+                  <input asp-for="ResultDtos.Items[i].DeliveryDate" type="date" class="uk-input filters" value=@Model.ResultDtos.Items[i].BookingDate.ToString("yyyy-MM-dd") />
                   <span asp-validation-for="ResultDtos.Items[i].DeliveryDate" class="uk-alert-danger"></span>
                 </td>
                 <td>
@@ -130,7 +130,7 @@
   int currentPage = ViewBag.Page;
   int totalPage = Model.ResultDtos.PageCount;
 
-  <ul class="uk-pagination uk-flex-center">
+  <ul class="uk-pagination uk-flex-right">
     @if (currentPage > 1)
     {
       <li><a value="@(currentPage - 1)" name="page" class="paging"><span uk-pagination-previous></span></a></li>

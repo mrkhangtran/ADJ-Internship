@@ -25,7 +25,7 @@ namespace WebApp.Controllers
       model.FilterDtos = new ConfirmArrivalFilterDtos();
       model.Containers = new PagedListResult<ConfirmArrivalResultDtos>();
 
-      model.Containers = await _CAService.ListContainerFilterAsync(null, null, null, "HongKong", null, null, null, null);
+      model.Containers = await _CAService.ListContainerFilterAsync(null, null, null, null, null, null, null, null);
 
       if (model.Containers.Items.Count == 0)
       {
@@ -33,7 +33,7 @@ namespace WebApp.Controllers
       }
 
       PagedListResult<ConfirmArrivalResultDtos> nextPage = new PagedListResult<ConfirmArrivalResultDtos>();
-      nextPage = await _CAService.ListContainerFilterAsync(2, null, null, "HongKong", null, null, null, null);
+      nextPage = await _CAService.ListContainerFilterAsync(2, null, null, null, null, null, null, null);
 
       if ((model.Containers.Items.Count > 0) && (nextPage.Items.Count > 0))
       {
@@ -115,6 +115,8 @@ namespace WebApp.Controllers
                   item.Status = ContainerStatus.Arrived;
                 }
               }
+
+              model.Containers.Items = _CAService.Sort(model.Containers.Items);
               ModelState.Clear();
               ViewBag.ShowModal = "Updated";
             }

@@ -161,7 +161,7 @@ namespace ADJ.BusinessService.Implementations
       return Sort(result);
     }
 
-    private List<ConfirmArrivalResultDtos> Sort(List<ConfirmArrivalResultDtos> input)
+    public List<ConfirmArrivalResultDtos> Sort(List<ConfirmArrivalResultDtos> input)
     {
       //Order by Destination Port (property number = 0)
       quickSort(input, 0, input.Count - 1, 0);

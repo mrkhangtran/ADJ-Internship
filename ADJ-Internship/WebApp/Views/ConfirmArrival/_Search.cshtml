@@ -8,7 +8,9 @@
           <label asp-for="FilterDtos.Origin"></label>
         </td>
         <td>
-          <select asp-for="FilterDtos.Origin" asp-items="new SelectList(ViewBag.Origins)" class="uk-select filters" id="origin"></select>
+          <select asp-for="FilterDtos.Origin" asp-items="new SelectList(ViewBag.Origins)" class="uk-select filters" id="origin">
+            <option selected value="">Any</option>
+          </select>
           <span asp-validation-for="FilterDtos.Origin" class="uk-alert-danger"></span>
         </td>
         <td>
