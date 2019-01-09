@@ -123,6 +123,8 @@ namespace WebApp.Controllers
                   item.Status = ContainerStatus.Despatch;
                 }
               }
+              model.ResultDtos.Items = _vesselDepartureService.Sort(model.ResultDtos.Items);
+
               ModelState.Clear();
               ViewBag.ShowModal = "Updated";
             }

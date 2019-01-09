@@ -94,7 +94,7 @@
                 <td>
                   @if (Model.FilterDtos.Status == ADJ.Common.ContainerStatus.Arrived.ToString())
                   {
-                    <input asp-for="ListArrivalDate[groupId]" value=@Model.Containers.Items[start].ArrivalDate.ToString("yyyy-MM-dd") class="uk-input" type="date" disabled />
+                    @Model.Containers.Items[start].ArrivalDate.ToString("dd/MM/yyyy")
                   }
                   else
                   {

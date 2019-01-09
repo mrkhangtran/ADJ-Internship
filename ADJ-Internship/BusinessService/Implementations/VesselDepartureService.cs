@@ -159,7 +159,7 @@ namespace ADJ.BusinessService.Implementations
       return Sort(result);
     }
 
-    private List<ContainerDto> Sort(List<ContainerDto> input)
+    public List<ContainerDto> Sort(List<ContainerDto> input)
     {
       //Order by Origin Port (property number = 0)
       quickSort(input, 0, input.Count - 1, 0);
