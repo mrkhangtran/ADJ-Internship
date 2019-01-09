@@ -15,5 +15,6 @@ namespace ADJ.BusinessService.Interfaces
     Task<List<ConfirmArrivalResultDtos>> ConvertToResultAsync(List<Container> containers);
 
     Task<ConfirmArrivalDtos> CreateOrUpdateCAAsync(int containerId, DateTime arrivalDate);
+    List<ConfirmArrivalResultDtos> Sort(List<ConfirmArrivalResultDtos> input);
   }
 }
