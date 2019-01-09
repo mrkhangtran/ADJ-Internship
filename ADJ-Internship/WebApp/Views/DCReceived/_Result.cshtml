@@ -130,7 +130,7 @@
   int currentPage = ViewBag.Page;
   int totalPage = Model.ResultDtos.PageCount;
 
-  <ul class="uk-pagination uk-flex-center">
+  <ul class="uk-pagination uk-flex-right">
     @if (currentPage > 1)
     {
       <li><a value="@(currentPage - 1)" name="page" class="paging"><span uk-pagination-previous></span></a></li>

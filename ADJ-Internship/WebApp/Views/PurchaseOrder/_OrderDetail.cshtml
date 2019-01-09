@@ -55,7 +55,7 @@
       <th>
         <label asp-for="SingleOrderDetail.Colour"></label>
       </th>
-      <th></th>
+      <th width="40px"></th>
     </tr>
   </thead>
 
@@ -124,7 +124,8 @@
         <span asp-validation-for="SingleOrderDetail.Colour" class="uk-alert-danger"></span>
       </td>
       <td>
-        <button type="button" value="Save" name="method" class="uk-button-secondary itemButton" style="width: 40px"><span uk-icon="icon: plus-circle; ratio: 1"></span></button>
+        <button type="button" value="Save" name="method" class="uk-button-secondary itemButton"><span uk-icon="icon: plus-circle; ratio: 1"></span></button>
+        <button type="button" value="Cancel" name="method" class="uk-button-secondary itemButton"><span uk-icon="icon: minus-circle; ratio: 1"></span></button>
       </td>
     </tr>
   }
@@ -217,8 +218,8 @@
                   @Model.PODetails.Items[i].Colour
                 </td>
                 <td>
-                  <button type="button" value="@i" name="method" class="uk-button-secondary itemButton" style="width: 40px"><span uk-icon="icon: pencil; ratio: 1"></span></button>
-                  <button type="button" value="Delete @i" name="method" class="uk-button-secondary itemButton" style="width: 40px"><span uk-icon="icon: trash; ratio: 1"></span></button>
+                  <button type="button" value="@i" name="method" class="uk-button-secondary itemButton"><span uk-icon="icon: pencil; ratio: 1"></span></button>
+                  <button type="button" value="Delete @i" name="method" class="uk-button-secondary itemButton"><span uk-icon="icon: trash; ratio: 1"></span></button>
                 </td>
               }
               else
@@ -284,7 +285,7 @@
                   <span asp-validation-for="SingleOrderDetail.Colour" class="uk-alert-danger"></span>
                 </td>
                 <td>
-                  <button type="button" value="Update @i" name="method" class="uk-button-secondary itemButton" style="width: 40px"><span uk-icon="icon: check; ratio: 1"></span></button>
+                  <button type="button" value="Update @i" name="method" class="uk-button-secondary itemButton"><span uk-icon="icon: check; ratio: 1"></span></button>
                 </td>
               }
             }

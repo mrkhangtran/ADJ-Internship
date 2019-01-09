@@ -129,6 +129,9 @@ namespace ADJ.WebApp.Controllers
 
       switch (method)
       {
+        case "Cancel":
+          ViewBag.ItemId = -2;
+          break;
         case "Save":
           if (addModel.PODetails == null) { addModel.PODetails = new PagedListResult<OrderDetailDTO>(); }
           if (addModel.PODetails.Items == null) { addModel.PODetails.Items = new List<OrderDetailDTO>(); }

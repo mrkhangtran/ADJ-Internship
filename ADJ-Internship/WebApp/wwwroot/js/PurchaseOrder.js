@@ -9,22 +9,22 @@ function getTotalRetail() {
 };
 
 $(document.body).on('click', '.itemButton', function () {
-  if ($("#orderForm").valid()) {
-    var newItem = [];
-    var items = document.getElementsByClassName("newItem");
-    $.each(items, function () {
-      newItem.push($(this).val());
-    });
+  var newItem = [];
+  var items = document.getElementsByClassName("newItem");
+  $.each(items, function () {
+    newItem.push($(this).val());
+  });
 
-    var orderDetails = [];
-    var items = document.getElementsByClassName("itemProperty");
-    $.each(items, function () {
-      orderDetails.push($(this).val());
-    });
+  var orderDetails = [];
+  var items = document.getElementsByClassName("itemProperty");
+  $.each(items, function () {
+    orderDetails.push($(this).val());
+  });
 
-    var method = $(this).attr("value");
-    var currentPage = parseInt($("#currentPage").text());
+  var method = $(this).attr("value");
+  var currentPage = parseInt($("#currentPage").text());
 
+  if (($("#orderForm").valid()) || (method == "Cancel")) {
     $.ajax({
       type: "POST",
       data: {
@@ -77,8 +77,7 @@ function changePorts() {
     if (ports[i].attributes.value != null) {
       var currentValue = ports[i].attributes.value.nodeValue;
     }
-    if ((currentValue != null) && (isExist(currentValue, options)))
-    {
+    if ((currentValue != null) && (isExist(currentValue, options))) {
       ports[i].options[ports[i].options.length] = new Option(currentValue, currentValue);
     }
     for (j = 0; j < options.length; j++) {
