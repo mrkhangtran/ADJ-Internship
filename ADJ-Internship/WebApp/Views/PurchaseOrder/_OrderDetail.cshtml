@@ -5,48 +5,7 @@
     <button type="button" value="AddItem" name="method" class="uk-button uk-button-primary itemButton">Add Item</button>
   </div>
 
-  <!--paging-->
-  <div uk-card class="uk-width-5-6" style="text-align: center">
 
-    @if (Model.PODetails != null)
-    {
-      @if (Model.PODetails.Items != null)
-      {
-        //List could be not null but does not have any item
-        @if (Model.PODetails.Items.Count > 0)
-        {
-          int pageSize = ViewBag.PageSize;
-          int currentPage = ViewBag.CurrentPage ?? 1;
-          int totalPage = Model.PODetails.Items.Count / pageSize;
-          @if (Model.PODetails.Items.Count % pageSize > 0) { totalPage++; }
-
-          <ul class="uk-pagination uk-flex-center">
-            @if (currentPage > 1)
-            {
-              <li><a value="Page @(currentPage - 1)" class="itemButton"><span uk-pagination-previous></span></a></li>
-            }
-
-            @for (int i = 1; i <= totalPage; i++)
-            {
-              if (i == currentPage)
-              {
-                <li class="uk-active"><a value="Page @i" class="itemButton"><span id="currentPage">@i</span></a></li>
-              }
-              else
-              {
-                <li><a value="Page @i" class="itemButton">@i</a></li>
-              }
-            }
-
-            @if (currentPage < totalPage)
-            {
-              <li><a value="Page @(currentPage + 1)" class="itemButton"><span uk-pagination-next></span></a></li>
-            }
-          </ul>
-        }
-      }
-    }
-  </div>
 </div>
 
 <table class="uk-table uk-table-striped uk-table-small uk-table-middle">
@@ -113,7 +72,7 @@
         <input asp-for="SingleOrderDetail.ItemNumber" class="uk-input newItem" />
         <span asp-validation-for="SingleOrderDetail.ItemNumber" class="uk-alert-danger"></span>
         <span class="uk-alert-danger">@ViewBag.ItemNumberError</span>
-</td>
+      </td>
       <td>
         <input asp-for="SingleOrderDetail.Description" class="uk-input newItem" />
         <span asp-validation-for="SingleOrderDetail.Description" class="uk-alert-danger"></span>
@@ -188,8 +147,8 @@
         @for (int i = 0; i < Model.PODetails.Items.Count(); i++)
         //for (int i = start; i < end; i++)
         {
-          <tr style="display: none">
-            <td>
+          <tr>
+            <td style="display: none">
               <input asp-for="PODetails.Items[i].Id" value=@Model.PODetails.Items[i].Id type="hidden" class="itemProperty" />
               <input asp-for="PODetails.Items[i].OrderId" value=@Model.PODetails.Items[i].OrderId type="hidden" class="itemProperty" />
               <input asp-for="PODetails.Items[i].RowVersion" value=@Model.PODetails.Items[i].RowVersion type="hidden" class="itemProperty" />
@@ -210,13 +169,11 @@
               <input asp-for="PODetails.Items[i].Size" value=@Model.PODetails.Items[i].Size type="hidden" class="itemProperty" />
               <input asp-for="PODetails.Items[i].Colour" value=@Model.PODetails.Items[i].Colour type="hidden" class="itemProperty" />
             </td>
-          </tr>
-          @if ((i >= start) && (i < end))
-          {
-            @if (i != ViewBag.ItemId)
+            @if ((i >= start) && (i < end))
             {
-              <!--show each item attribute-->
-              <tr>
+              @if (i != ViewBag.ItemId)
+              {
+                <!--show each item attribute-->
                 <td>
                   @Model.PODetails.Items[i].ItemNumber
                 </td>
@@ -263,11 +220,9 @@
                   <button type="button" value="@i" name="method" class="uk-button-secondary itemButton" style="width: 40px"><span uk-icon="icon: pencil; ratio: 1"></span></button>
                   <button type="button" value="Delete @i" name="method" class="uk-button-secondary itemButton" style="width: 40px"><span uk-icon="icon: trash; ratio: 1"></span></button>
                 </td>
-              </tr>
-            }
-            else
-            {
-              <tr>
+              }
+              else
+              {
                 <td>
                   <input asp-for="SingleOrderDetail.Id" value=@Model.PODetails.Items[i].Id type="hidden" class="newItem" />
                   <input asp-for="SingleOrderDetail.OrderId" value=@Model.PODetails.Items[i].OrderId type="hidden" class="newItem" />
@@ -331,11 +286,52 @@
                 <td>
                   <button type="button" value="Update @i" name="method" class="uk-button-secondary itemButton" style="width: 40px"><span uk-icon="icon: check; ratio: 1"></span></button>
                 </td>
-              </tr>
+              }
             }
-          }
+          </tr>
         }
       }
     }
   }
 </table>
+
+<!--paging-->
+
+@if (Model.PODetails != null)
+{
+  @if (Model.PODetails.Items != null)
+  {
+    //List could be not null but does not have any item
+    @if (Model.PODetails.Items.Count > 0)
+    {
+      int pageSize = ViewBag.PageSize;
+      int currentPage = ViewBag.CurrentPage ?? 1;
+      int totalPage = Model.PODetails.Items.Count / pageSize;
+      @if (Model.PODetails.Items.Count % pageSize > 0) { totalPage++; }
+
+      <ul class="uk-pagination uk-flex-right">
+        @if (currentPage > 1)
+        {
+          <li><a value="Page @(currentPage - 1)" class="itemButton"><span uk-pagination-previous></span></a></li>
+        }
+
+        @for (int i = 1; i <= totalPage; i++)
+        {
+          if (i == currentPage)
+          {
+            <li class="uk-disabled"><a value="Page @i" class="itemButton"><span id="currentPage"><u>@i</u></span></a></li>
+          }
+          else
+          {
+            <li><a value="Page @i" class="itemButton">@i</a></li>
+          }
+        }
+
+        @if (currentPage < totalPage)
+        {
+          <li><a value="Page @(currentPage + 1)" class="itemButton"><span uk-pagination-next></span></a></li>
+        }
+      </ul>
+    }
+  }
+}

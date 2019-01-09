@@ -67,6 +67,33 @@ namespace ADJ.BusinessService.Validators
     }
   }
 
+  public class TwoDaysLaterThanOtherDateAttribute : ValidationAttribute
+  {
+    private readonly string _otherProperty;
+
+    public TwoDaysLaterThanOtherDateAttribute(string otherProperty)
+    {
+      _otherProperty = otherProperty;
+    }
+
+    protected override ValidationResult IsValid(object value, System.ComponentModel.DataAnnotations.ValidationContext validationContext)
+    {
+      var otherValue = validationContext.ObjectType.GetProperty(_otherProperty).GetValue(validationContext.ObjectInstance, null);
+
+      if ((value != null) && (otherValue != null))
+      {
+        DateTime date1 = Convert.ToDateTime(value);
+        DateTime date2 = Convert.ToDateTime(otherValue);
+        if (date1 > date2.AddDays(1))
+        {
+          return new ValidationResult(ErrorMessage = "Must be at least 2 days after " + _otherProperty.ToString());
+        }
+      }
+
+      return ValidationResult.Success;
+    }
+  }
+
   public class Not30DaysApartAttribute : ValidationAttribute
   {
     private readonly string _otherProperty;

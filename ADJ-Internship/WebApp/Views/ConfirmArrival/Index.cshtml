@@ -1,7 +1,5 @@
 ﻿@model ADJ.BusinessService.Dtos.ConfirmArrivalDtos
 
-<h3>Confirm Arrival</h3>
-
 <form asp-action="Search" asp-controller="ConfirmArrival" id="searchForm"
       data-ajax-success="showResult"
       data-ajax="true"
@@ -9,13 +7,17 @@
       data-ajax-mode="replace"
       data-ajax-update="#resultPartial">
 
+  <div class="uk-grid uk-card uk-card-default uk-card-body">
+    <h4>Dashboard > Confirm Arrival</h4>
+  </div>
+
+  <br />
+
   <div class="uk-card uk-card-default uk-card-body">
     <partial name="_Search" model="Model" />
   </div>
 
 </form>
-
-<hr class="uk-divider-icon" />
 
 <form asp-action="Achieve" asp-controller="ConfirmArrival" id="achieveForm"
       data-ajax-complete="showResult"
@@ -24,7 +26,7 @@
       data-ajax-mode="replace"
       data-ajax-update="#resultPartial">
 
-  <div id="resultPartial">
+  <div id="resultPartial" class="uk-card uk-card-default uk-card-body">
     <partial name="_Result" model="Model" />
   </div>
 </form>

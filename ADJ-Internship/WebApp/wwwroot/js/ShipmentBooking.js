@@ -1,9 +1,83 @@
-﻿$(document.body).on('click', '#checkAll', function () {
+﻿$(document.body).on('click', '.checkBoxes', function () {
+  GetEarliestShipDate();
+  GetLatestDeliveryDate();
+});
+
+function GetLatestDeliveryDate() {
+  var checkBoxes = document.getElementsByClassName("checkBoxes");
+  var maxDate = new Date(9999, 1, 1);
+  maxDate = DatetoString(maxDate);
+  var latest = maxDate;
+
+  var shipDate = GetEarliestShipDate();
+  var shipDateMonth = (shipDate[4] + shipDate[5]) - 1;
+  shipDate = new Date(shipDate[0] + shipDate[1] + shipDate[2] + shipDate[3], shipDateMonth, shipDate[6] + shipDate[7]);
+  shipDate.setDate(shipDate.getDate() + 2);
+  shipDate = DatetoString(shipDate);
+
+  for (i = 0; i < checkBoxes.length; i++) {
+    if (checkBoxes[i].checked == true) {
+      var deliveryDate = document.getElementById("DeliveryDate_" + i).attributes.string.nodeValue;
+      if (deliveryDate >= shipDate) {
+        if (deliveryDate < latest) {
+          latest = deliveryDate;
+        }
+      }
+    }
+  }
+
+  if (latest == maxDate) {
+    latest = new Date();
+    latest.setDate(latest.getDate() + 2);
+    latest = DatetoString(latest);
+  }
+
+  document.getElementById("latestDeliveryDate").innerHTML = "Latest date can be set is " + latest[4] + latest[5] + "/" + latest[6] + latest[7] + "/" + latest[0] + latest[1] + latest[2] + latest[3];
+
+  return latest;
+};
+
+function GetEarliestShipDate() {
+  var checkBoxes = document.getElementsByClassName("checkBoxes");
+  var maxDate = new Date(9999, 1, 1);
+  maxDate = DatetoString(maxDate);
+  var earliest = maxDate;
+  for (i = 0; i < checkBoxes.length; i++) {
+    if (checkBoxes[i].checked == true) {
+      var shipDate = document.getElementById("ShipDate_" + i).attributes.string.nodeValue;
+      var today = new Date();
+      today = DatetoString(today);
+      if (shipDate >= today) {
+        if (shipDate < earliest) {
+          earliest = shipDate;
+        }
+      }
+    }
+  }
+
+  if (earliest == maxDate) {
+    earliest = new Date();
+    earliest = DatetoString(earliest);
+  }
+
+  document.getElementById("earliestShipDate").innerHTML = "Earliest date can be set is AFTER " + earliest[4] + earliest[5] + "/" + earliest[6] + earliest[7] + "/" + earliest[0] + earliest[1] + earliest[2] + earliest[3];
+
+  return earliest;
+};
+
+function DatetoString(date) {
+  return "" + date.getFullYear() + ('0' + (date.getMonth() + 1)).slice(-2) + ('0' + date.getDate()).slice(-2);
+};
+
+$(document.body).on('click', '#checkAll', function () {
   var checkBoxes = document.getElementsByClassName("checkBoxes");
   var current = $("#checkAll")[0].checked;
   for (i = 0; i < checkBoxes.length; i++) {
     checkBoxes[i].checked = current;
   };
+
+  GetEarliestShipDate();
+  GetLatestDeliveryDate();
 });
 
 $(document.body).on('click', '.paging', function () {
@@ -75,10 +149,15 @@ showResult = function showResult() {
     $('#openmodal').trigger('click');
     $('#pageValue').remove();
   });
+  GetEarliestShipDate();
+  GetLatestDeliveryDate();
 };
 
 $(document).ready(function () {
+  $('#openmodal').trigger('click');
   changePorts();
+  GetEarliestShipDate();
+  GetLatestDeliveryDate();
 });
 
 $("#origin").change(function () {

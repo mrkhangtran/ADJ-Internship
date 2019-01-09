@@ -1,13 +1,17 @@
 ﻿@model ADJ.BusinessService.Dtos.VesselDepartureDtos
 
-<h3>Vessel Departure</h3>
-
-<form asp-action="Search" asp-controller="ConfirmArrival" id="searchForm"
+<form asp-action="Search" asp-controller="VesselDeparture" id="searchForm"
       data-ajax-success="showResult"
       data-ajax="true"
       data-ajax-method="POST"
       data-ajax-mode="replace"
       data-ajax-update="#resultPartial">
+
+  <div class="uk-grid uk-card uk-card-default uk-card-body">
+    <h4><a href="/Home" class="uk-link-text">Dashboard</a> > <a href="?" class="uk-link-text">Vessel Departure</a></h4>
+  </div>
+
+  <br />
 
   <div class="uk-card uk-card-default uk-card-body">
     <partial name="_Search" model="Model" />
@@ -15,9 +19,7 @@
 
 </form>
 
-<hr class="uk-divider-icon" />
-
-<form asp-action="Achieve" asp-controller="ConfirmArrival" id="achieveForm"
+<form asp-action="Achieve" asp-controller="VesselDeparture" id="achieveForm"
       data-ajax-complete="showResult"
       data-ajax="true"
       data-ajax-method="POST"

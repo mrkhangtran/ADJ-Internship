@@ -70,6 +70,7 @@ namespace ADJ.BusinessService.Dtos
     //Default = today's date
     [Required]
     [Display(Name = "Delivery Date")]
+    [SimilarOrLaterThanOtherDate("BookingDate")]
     public DateTime DeliveryDate { get; set; } = defaultDate;
 
     //Format: hh:mm

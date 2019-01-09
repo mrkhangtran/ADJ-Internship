@@ -66,6 +66,7 @@ namespace WebApp.Controllers
 
       PagedListResult<ConfirmArrivalResultDtos> nextPage = new PagedListResult<ConfirmArrivalResultDtos>();
       PagedListResult<ConfirmArrivalResultDtos> previousPage = new PagedListResult<ConfirmArrivalResultDtos>();
+      previousPage.Items = new List<ConfirmArrivalResultDtos>();
 
       if (pageIndex - 1 > 0)
       {
@@ -163,6 +164,9 @@ namespace WebApp.Controllers
       ViewBag.Modes = new List<string> { "Road", "Sea", "Air" };
       ViewBag.Origins = new List<string> { "HongKong", "Vietnam" };
       ViewBag.Statuses = new List<string> { ContainerStatus.Despatch.ToString(), ContainerStatus.Arrived.ToString() };
+
+      ViewBag.ContinuedFromPrevious = false;
+      ViewBag.ToBeContinued = false;
 
       ViewBag.Page = 1;
     }

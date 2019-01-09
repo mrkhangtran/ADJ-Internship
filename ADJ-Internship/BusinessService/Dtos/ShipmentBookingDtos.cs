@@ -158,6 +158,8 @@ namespace ADJ.BusinessService.Dtos
     [Display(Name = "PO Ship Date")]
     public DateTime POShipDate { get; set; }
 
+    public DateTime DeliveryDate { get; set; }
+
     //Default as "Awaiting Booking"
     [Display(Name = "Booking Status")]
     public OrderStatus Status { get; set; }

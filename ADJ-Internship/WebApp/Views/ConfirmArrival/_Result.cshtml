@@ -66,7 +66,7 @@
           DateTime dateTime = new DateTime();
           Model.ListArrivalDate.Add(dateTime);
           <div class="uk-grid">
-            <table class="uk-table uk-table-small uk-table-middle uk-table-striped uk-width-3-4">
+            <table class="uk-table uk-table-small uk-table-middle uk-table-striped">
               <thead>
                 <tr>
                   <td>
@@ -104,7 +104,7 @@
               </tr>
             </table>
 
-            <table class="uk-table uk-table-small uk-table-middle uk-table-striped uk-width-1-2">
+            <table class="uk-table uk-table-small uk-table-middle uk-table-striped">
               <thead>
                 <tr>
                   <td>
@@ -152,6 +152,8 @@
             </table>
           </div>
 
+          if (i != Model.Containers.Items.Count - 1) { <hr /> }
+
           groupId++;
           start = i + 1;
         }
@@ -170,7 +172,7 @@
   int currentPage = ViewBag.Page;
   int totalPage = Model.Containers.PageCount;
 
-  <ul class="uk-pagination uk-flex-center">
+  <ul class="uk-pagination uk-flex-right">
     @if (currentPage > 1)
     {
       <li><a value="@(currentPage - 1)" name="page" class="paging"><span uk-pagination-previous></span></a></li>
@@ -180,7 +182,7 @@
     {
       if (i == currentPage)
       {
-        <li class="uk-disabled"><a value="@i" name="page" class="paging">@i</a></li>
+        <li class="uk-disabled"><a value="@i" name="page" class="paging"><u>@i</u></a></li>
       }
       else
       {

@@ -12,22 +12,24 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace WebApp.Controllers
 {
-	public class OrderController : Controller
-	{
-		private readonly IOrderDisplayService _orderService;
+  public class OrderController : Controller
+  {
+    private readonly IOrderDisplayService _orderService;
+    private readonly int pageSize;
 
-		public OrderController(IOrderDisplayService orderService)
-		{
-			_orderService = orderService;
-		}
+    public OrderController(IOrderDisplayService orderService)
+    {
+      _orderService = orderService;
+      pageSize = 20;
+    }
 
-		public async Task<IActionResult> Display(string poNumberFilter, int? pageIndex)
-		{
-			int current = pageIndex ?? 1;
-			int pageSize = 20;
-			PagedListResult<OrderDTO> pagedlistResult = await _orderService.DisplaysAsync(poNumberFilter, current, pageSize);
+    public async Task<IActionResult> Display(string poNumberFilter, int? pageIndex)
+    {
+      int current = pageIndex ?? 1;
+      PagedListResult<OrderDTO> pagedlistResult = await _orderService.DisplaysAsync(poNumberFilter, current, pageSize);
+      ViewBag.CurrentPage = current;
 
-			return View(pagedlistResult);
-		}
-	}
+      return View(pagedlistResult);
+    }
+  }
 }

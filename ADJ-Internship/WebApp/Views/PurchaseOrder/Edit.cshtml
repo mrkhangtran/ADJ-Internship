@@ -1,14 +1,16 @@
 ﻿@model ADJ.BusinessService.Dtos.OrderDTO;
 
-<h2>PO Manager</h2>
-
-<h3>@Model.Method</h3>
-
 <form asp-action="Create" asp-controller="PurchaseOrder" id="orderForm">
   <input asp-for="Method" value=@Model.Method type="hidden" />
   <input asp-for="Id" value=@Model.Id type="hidden" />
   <input asp-for="RowVersion" value=@Model.RowVersion type="hidden" />
   <input asp-for="SingleOrderDetail.Id" value=@Model.SingleOrderDetail.Id type="hidden" />
+
+  <div class="uk-grid uk-card uk-card-default uk-card-body">
+    <h4><a href="/Home" class="uk-link-text">Dashboard</a> > <a href="/Order/Display" class="uk-link-text">PO Manager</a> > <a href="./@(Model.Method.Substring(0,Model.Method.IndexOf(" ")))?ponumber=@(Model.Method.Substring(Model.Method.LastIndexOf(":")+2))" class="uk-link-text">@Model.Method</a></h4>
+  </div>
+
+  <br />
 
   <span class="uk-alert-danger">@ViewBag.OrderDetailError</span>
 
@@ -16,13 +18,13 @@
     <partial name="_Order" model="Model" />
   </div>
 
-  <hr class="uk-divider-icon">
+  <br />
 
   <div class="uk-card uk-card-default uk-card-body" id="orderDetailPartial">
     <partial name="_OrderDetail" model="Model" />
   </div>
 
-  <hr class="uk-divider-icon">
+  <br />
 
   <div class="uk-card uk-card-default uk-card-body">
     <a class="uk-link-text" asp-controller="Order" asp-action="Display">Back to List</a>

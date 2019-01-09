@@ -69,6 +69,7 @@ namespace WebApp.Controllers
 
       PagedListResult<ContainerDto> nextPage = new PagedListResult<ContainerDto>();
       PagedListResult<ContainerDto> previousPage = new PagedListResult<ContainerDto>();
+      previousPage.Items = new List<ContainerDto>();
 
       if (pageIndex - 1 > 0)
       {
@@ -97,6 +98,58 @@ namespace WebApp.Controllers
       return PartialView("_Result", model);
     }
 
+    public async Task<ActionResult> Achieve(VesselDepartureDtos model)
+    {
+      SetDropDownList();
+
+      if (ModelState.IsValid)
+      {
+        if (model.ResultDtos != null)
+        {
+          if (SelectAtLeastOne(model.ResultDtos.Items))
+          {
+            {
+              foreach (var item in model.ResultDtos.Items)
+              {
+                if (item.Selected)
+                {
+                  await _vesselDepartureService.CreateOrUpdateAsync(item, model.ContainerInfoDtos[item.GroupId]);
+
+                  item.OriginPort = model.ContainerInfoDtos[item.GroupId].OriginPort;
+                  item.DestinationPort = model.ContainerInfoDtos[item.GroupId].DestinationPort;
+                  item.Mode = model.ContainerInfoDtos[item.GroupId].Mode;
+                  item.Carrier = model.ContainerInfoDtos[item.GroupId].Carrier;
+
+                  item.Status = ContainerStatus.Despatch;
+                }
+              }
+              ModelState.Clear();
+              ViewBag.ShowModal = "Updated";
+            }
+          }
+          else
+          {
+            ViewBag.ShowModal = "NoItem";
+          }
+        }
+      }
+
+      return PartialView("_Result", model);
+    }
+
+    public bool SelectAtLeastOne(List<ContainerDto> input)
+    {
+      foreach (var item in input)
+      {
+        if (item.Selected)
+        {
+          return true;
+        }
+      }
+
+      return false;
+    }
+
     public bool SameGroup(ContainerDto first, ContainerDto second)
     {
       for (int property = 0; property < 6; property++)
@@ -119,6 +172,12 @@ namespace WebApp.Controllers
       ViewBag.Origins = new List<string> { "HongKong", "Vietnam" };
       ViewBag.Modes = new List<string> { "Road", "Sea", "Air" };
       ViewBag.Statuses = new List<string> { ContainerStatus.Despatch.ToString(), ContainerStatus.Pending.ToString() };
+      ViewBag.Carriers = new List<string> { "DHL", "EMS", "Kerry Express", "TNT", "USPS", "ViettelPost" };
+      ViewBag.VNPorts = new List<string> { "Cẩm Phả", "Cửa Lò", "Hải Phòng", "Hòn Gai", "Nghi Sơn" };
+      ViewBag.HKPorts = new List<string> { "Aberdeen", "Crooked Harbour", "Double Haven", "Gin Drinkers Bay", "Inner Port Shelter" };
+
+      ViewBag.ContinuedFromPrevious = false;
+      ViewBag.ToBeContinued = false;
 
       ViewBag.Page = 1;
     }

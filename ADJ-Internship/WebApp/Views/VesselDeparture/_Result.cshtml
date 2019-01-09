@@ -48,6 +48,7 @@
       if ((i + 1 < Model.ResultDtos.Items.Count) || (i == (Model.ResultDtos.Items.Count - 1)))
       {
 
+
         if ((i == (Model.ResultDtos.Items.Count - 1)) || (Model.ResultDtos.Items[i].OriginPort.CompareTo(Model.ResultDtos.Items[i + 1].OriginPort) != 0)
           || (Model.ResultDtos.Items[i].DestinationPort.CompareTo(Model.ResultDtos.Items[i + 1].DestinationPort) != 0)
           || (Model.ResultDtos.Items[i].Mode.CompareTo(Model.ResultDtos.Items[i + 1].Mode) != 0)
@@ -55,8 +56,10 @@
           || (Model.ResultDtos.Items[i].ETD.CompareTo(Model.ResultDtos.Items[i + 1].ETD) != 0)
           || (Model.ResultDtos.Items[i].ETA.CompareTo(Model.ResultDtos.Items[i + 1].ETA) != 0))
         {
+          ADJ.BusinessService.Dtos.ContainerInfoDto containerInfo = new ADJ.BusinessService.Dtos.ContainerInfoDto();
+          Model.ContainerInfoDtos.Add(containerInfo);
           <div class="uk-grid">
-            <table class="uk-table uk-table-small uk-table-middle uk-table-striped uk-width-3-4">
+            <table class="uk-table uk-table-small uk-table-middle uk-table-striped">
               <thead>
                 <tr>
                   <td>
@@ -83,43 +86,45 @@
                 @if (Model.FilterDto.Status == ADJ.Common.ContainerStatus.Despatch.ToString())
                 {
                   <td>
-                    <select asp-for="ContainerInfoDtos[groupId].OriginPort" value=@Model.ResultDtos.Items[start].OriginPort class="uk-select" disabled />
+                    @Model.ResultDtos.Items[start].OriginPort
                   </td>
                   <td>
-                    <select asp-for="ContainerInfoDtos[groupId].DestinationPort" value=@Model.ResultDtos.Items[start].DestinationPort class="uk-select" disabled />
+                    @Model.ResultDtos.Items[start].DestinationPort
                   </td>
                   <td>
-                    <select asp-for="ContainerInfoDtos[groupId].Mode" value=@Model.ResultDtos.Items[start].OriginPort class="uk-select" disabled />
+                    @Model.ResultDtos.Items[start].Mode
                   </td>
                   <td>
-                    <select asp-for="ContainerInfoDtos[groupId].Carrier" value=@Model.ResultDtos.Items[start].OriginPort class="uk-select" disabled />
+                    @Model.ResultDtos.Items[start].Carrier
                   </td>
                 }
                 else
                 {
                   <td>
-                    <select asp-for="ContainerInfoDtos[groupId].OriginPort" value=@Model.ResultDtos.Items[start].OriginPort class="uk-select" />
+                    <select asp-for="ContainerInfoDtos[groupId].OriginPort" value=@Model.ResultDtos.Items[start].OriginPort class="uk-select ports"></select>
+                    <span asp-validation-for="ContainerInfoDtos[groupId].OriginPort" class="uk-alert-danger"></span>
                   </td>
                   <td>
-                    <select asp-for="ContainerInfoDtos[groupId].DestinationPort" value=@Model.ResultDtos.Items[start].DestinationPort class="uk-select" />
+                    <select asp-for="ContainerInfoDtos[groupId].DestinationPort" value=@Model.ResultDtos.Items[start].DestinationPort class="uk-select ports"></select>
+                    <span asp-validation-for="ContainerInfoDtos[groupId].DestinationPort" class="uk-alert-danger"></span>
                   </td>
                   <td>
-                    <select asp-for="ContainerInfoDtos[groupId].Mode" value=@Model.ResultDtos.Items[start].OriginPort class="uk-select" />
+                    <select asp-for="ContainerInfoDtos[groupId].Mode" asp-items="new SelectList(ViewBag.Modes)" value=@Model.ResultDtos.Items[start].Mode class="uk-select" ></select>
                   </td>
                   <td>
-                    <select asp-for="ContainerInfoDtos[groupId].Carrier" value=@Model.ResultDtos.Items[start].OriginPort class="uk-select" />
+                    <select asp-for="ContainerInfoDtos[groupId].Carrier" asp-items="new SelectList(ViewBag.Carriers)" value=@Model.ResultDtos.Items[start].Carrier class="uk-select" ></select>
                   </td>
                 }
                 <td>
-                  @Model.ResultDtos.Items[start].ETD
+                  @Model.ResultDtos.Items[start].ETD.ToString("MM/dd/yyyy")
                 </td>
                 <td>
-                  @Model.ResultDtos.Items[start].ETD
+                  @Model.ResultDtos.Items[start].ETD.ToString("MM/dd/yyyy")
                 </td>
               </tr>
             </table>
 
-            <table class="uk-table uk-table-small uk-table-middle uk-table-striped uk-width-1-2">
+            <table class="uk-table uk-table-small uk-table-middle uk-table-striped">
               <thead>
                 <tr>
                   <td>
@@ -143,6 +148,7 @@
                     <input asp-for="ResultDtos.Items[j].Id" value=@Model.ResultDtos.Items[j].Id type="hidden" />
                     <input asp-for="ResultDtos.Items[j].GroupId" value=@groupId type="hidden" />
                     <input asp-for="ResultDtos.Items[j].ContainerId" value=@Model.ResultDtos.Items[j].ContainerId type="hidden" />
+                    <input asp-for="ResultDtos.Items[j].BookingId" value=@Model.ResultDtos.Items[j].BookingId type="hidden" />
 
                     <input asp-for="ResultDtos.Items[j].OriginPort" value=@Model.ResultDtos.Items[j].OriginPort type="hidden" />
                     <input asp-for="ResultDtos.Items[j].DestinationPort" value=@Model.ResultDtos.Items[j].DestinationPort type="hidden" />
@@ -169,6 +175,8 @@
             </table>
           </div>
 
+          if (i != Model.ResultDtos.Items.Count - 1) { <hr /> }
+
           groupId++;
           start = i + 1;
         }
@@ -187,7 +195,7 @@
   int currentPage = ViewBag.Page;
   int totalPage = Model.ResultDtos.PageCount;
 
-  <ul class="uk-pagination uk-flex-center">
+  <ul class="uk-pagination uk-flex-right">
     @if (currentPage > 1)
     {
       <li><a value="@(currentPage - 1)" name="page" class="paging"><span uk-pagination-previous></span></a></li>
@@ -197,7 +205,7 @@
     {
       if (i == currentPage)
       {
-        <li class="uk-disabled"><a value="@i" name="page" class="paging">@i</a></li>
+        <li class="uk-disabled"><a value="@i" name="page" class="paging"><u>@i</u></a></li>
       }
       else
       {

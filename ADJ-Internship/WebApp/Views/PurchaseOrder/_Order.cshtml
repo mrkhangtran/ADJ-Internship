@@ -75,7 +75,7 @@
     </td>
     <td>
       <div class="col-md-10">
-        <select asp-for="Mode" asp-items="new SelectList(ViewBag.Modes)" class="uk-input"></select>
+        <select asp-for="Mode" asp-items="new SelectList(ViewBag.Modes)" class="uk-select"></select>
         <span asp-validation-for="Mode" class="uk-alert-danger"></span>
       </div>
     </td>
@@ -124,7 +124,7 @@
     </td>
     <td>
       <div class="col-md-10">
-        <select asp-for="Origin" asp-items="new SelectList(ViewBag.Origins)" class="uk-input" id="origin"></select>
+        <select asp-for="Origin" asp-items="new SelectList(ViewBag.Origins)" class="uk-select" id="origin"></select>
         <span asp-validation-for="Origin" class="uk-alert-danger"></span>
       </div>
     </td>
@@ -144,7 +144,7 @@
     </td>
     <td>
       <div class="col-md-10">
-        <select asp-for="Currency" asp-items="new SelectList(ViewBag.Currencies)" class="uk-input"></select>
+        <select asp-for="Currency" asp-items="new SelectList(ViewBag.Currencies)" class="uk-select"></select>
         <span asp-validation-for="Currency" class="uk-alert-danger"></span>
       </div>
     </td>
@@ -153,7 +153,7 @@
     </td>
     <td>
       <div class="col-md-10">
-        <select asp-for="PortOfLoading" value=@Model.PortOfLoading class="uk-input ports"></select>
+        <select asp-for="PortOfLoading" value=@Model.PortOfLoading class="uk-select ports"></select>
         <span asp-validation-for="PortOfLoading" class="uk-alert-danger"></span>
       </div>
     </td>
@@ -173,7 +173,7 @@
     </td>
     <td>
       <div class="col-md-10">
-        <select asp-for="Season" asp-items="new SelectList(ViewBag.Seasons)" class="uk-input"></select>
+        <select asp-for="Season" asp-items="new SelectList(ViewBag.Seasons)" class="uk-select"></select>
         <span asp-validation-for="Season" class="uk-alert-danger"></span>
       </div>
     </td>
@@ -182,7 +182,7 @@
     </td>
     <td>
       <div class="col-md-10">
-        <select asp-for="PortOfDelivery" value=@Model.PortOfDelivery class="uk-input ports"></select>
+        <select asp-for="PortOfDelivery" value=@Model.PortOfDelivery class="uk-select ports"></select>
         <span asp-validation-for="PortOfDelivery" class="uk-alert-danger"></span>
       </div>
     </td>
