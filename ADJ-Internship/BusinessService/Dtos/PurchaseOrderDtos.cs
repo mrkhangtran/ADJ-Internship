@@ -118,7 +118,7 @@ namespace ADJ.BusinessService.Dtos
     public DateTime LatestShipDate { get; set; } = DefaultDate;
 
     [Display(Name = "Delivery Date")]
-    [LaterThanOtherDate("ShipDate")]
+    [TwoDaysLaterThanOtherDate("ShipDate")]
     [Not30DaysApart("ShipDate")]
     [NotInThePast(ErrorMessage = "Cannot be set in the past")]
     public DateTime DeliveryDate { get; set; } = DefaultDate;

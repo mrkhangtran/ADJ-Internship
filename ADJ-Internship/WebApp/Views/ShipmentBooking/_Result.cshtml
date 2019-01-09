@@ -58,14 +58,14 @@
             <label asp-for="PortOfLoading"></label>
           </td>
           <td>
-            <select asp-for="PortOfLoading" value=@Model.PortOfLoading class="uk-input booking ports"></select>
+            <select asp-for="PortOfLoading" value=@Model.PortOfLoading class="uk-select booking ports"></select>
             <span asp-validation-for="PortOfLoading" class="uk-alert-danger"></span>
           </td>
           <td>
             <label asp-for="PortOfDelivery"></label>
           </td>
           <td>
-            <select asp-for="PortOfDelivery" value=@Model.PortOfDelivery class="uk-input booking ports"></select>
+            <select asp-for="PortOfDelivery" value=@Model.PortOfDelivery class="uk-select booking ports"></select>
             <span asp-validation-for="PortOfDelivery" class="uk-alert-danger"></span>
           </td>
         </tr>
@@ -74,14 +74,14 @@
             <label asp-for="Carrier"></label>
           </td>
           <td>
-            <select asp-for="Carrier" asp-items="new SelectList(ViewBag.Carriers)" class="uk-input booking"></select>
+            <select asp-for="Carrier" asp-items="new SelectList(ViewBag.Carriers)" class="uk-select booking"></select>
             <span asp-validation-for="Carrier" class="uk-alert-danger"></span>
           </td>
           <td>
             <label asp-for="Mode"></label>
           </td>
           <td>
-            <select asp-for="Mode" asp-items="new SelectList(ViewBag.Modes)" class="uk-input booking"></select>
+            <select asp-for="Mode" asp-items="new SelectList(ViewBag.Modes)" class="uk-select booking"></select>
             <span asp-validation-for="Mode" class="uk-alert-danger"></span>
           </td>
         </tr>
@@ -92,6 +92,7 @@
           <td>
             <input asp-for="ETD" type="date" value=@Model.ETD.ToString("yyyy-MM-dd") class="uk-input booking" />
             <span asp-validation-for="ETD" class="uk-alert-danger"></span>
+            <span class="uk-alert-danger">@ViewBag.ETDError</span>
           </td>
           <td>
             <label asp-for="ETA"></label>
@@ -99,24 +100,34 @@
           <td>
             <input asp-for="ETA" type="date" value=@Model.ETA.ToString("yyyy-MM-dd") class="uk-input booking" />
             <span asp-validation-for="ETA" class="uk-alert-danger"></span>
+            <span class="uk-alert-danger">@ViewBag.ETAError</span>
+          </td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>
+            <span id="earliestShipDate"></span>
+          </td>
+          <td></td>
+          <td>
+            <span id="latestDeliveryDate"></span>
           </td>
         </tr>
       </table>
     </div>
     <div class="uk-width-1-3" style="text-align: center">
-      <button type="submit" value="Book" name="method" class="uk-button uk-button-primary bookButton">Make Booking</button>
+      <button type="submit" value="Book" name="method" class="uk-button uk-button-danger bookButton">Make Booking</button>
     </div>
   </div>
 </div>
 
-<hr class="uk-divider-icon" />
+<br />
 
 @if (Model.OrderDetails != null)
 {
   @if (Model.OrderDetails.Count > 0)
   {
     <div class="uk-card uk-card-default uk-card-body">
-      <!--Paging-->
       @{
         int pageSize = ViewBag.PageSize;
         int currentPage = ViewBag.Page;
@@ -127,32 +138,6 @@
         int start = (currentPage - 1) * pageSize;
         int end = currentPage * pageSize;
         if (end > total) { end = total; }
-
-        <ul class="uk-pagination uk-flex-center">
-          @if (currentPage > 1)
-          {
-            <li><a value="Previous @(currentPage - 1)" name="method" class="paging"><span uk-pagination-previous></span></a></li>
-          }
-
-          @for (int i = 1; i <= totalPage; i++)
-          {
-            if (i == currentPage)
-            {
-              <li class="uk-active"><a value="Page @i" name="method" class="paging">@i</a></li>
-            }
-            else
-            {
-              <li><a value="Page @i" name="method" class="paging">@i</a></li>
-            }
-          }
-
-          @if (currentPage < totalPage)
-          {
-            <li><a value="Next @(currentPage + 1)" name="method" class="paging"><span uk-pagination-next></span></a></li>
-          }
-        </ul>
-
-        <div class="uk-grid-divider" uk-grid></div>
 
         <!--Item Detail-->
         <table class="uk-table uk-table-striped uk-table-small uk-table-middle  uk-table-hover">
@@ -209,58 +194,84 @@
                   <input type="hidden" asp-for="OrderDetails[i].BookingQuantity" />
                   <input type="hidden" asp-for="OrderDetails[i].Cartons" />
                   <input type="hidden" asp-for="OrderDetails[i].Cube" />
-                  <input type="hidden" asp-for="OrderDetails[i].POShipDate" />
+                  <input type="hidden" asp-for="OrderDetails[i].POShipDate" id="ShipDate_@i" string=@Model.OrderDetails[i].POShipDate.ToString("yyyyMMdd") />
+                  <input type="hidden" asp-for="OrderDetails[i].DeliveryDate" id="DeliveryDate_@i" string=@Model.OrderDetails[i].DeliveryDate.ToString("yyyyMMdd") />
                   <input type="hidden" asp-for="OrderDetails[i].Status" />
                 </td>
 
                 @if ((i >= start) && (i < end))
                 {
-                <td>
-                  <input type="checkbox" asp-for="OrderDetails[i].Selected" class="uk-checkbox booking checkBoxes" />
-                </td>
-                <td>
-                  @Model.OrderDetails[i].PONumber
-                </td>
-                <td>
-                  @Model.OrderDetails[i].ItemNumber
-                </td>
-                <td>
-                  @Model.OrderDetails[i].Vendor
-                </td>
-                <td>
-                  @Model.OrderDetails[i].Quantity
-                </td>
-                <td>
-                  @Model.OrderDetails[i].BookingQuantity
-                </td>
-                <td>
-                  @Model.OrderDetails[i].BookingCartons
-                </td>
-                <td>
-                  @Model.OrderDetails[i].BookingCube
-                </td>
-                <td>
-                  <select asp-for="OrderDetails[i].PackType" asp-items="new SelectList(ViewBag.PackTypes)" class="uk-input booking"></select>
-                  <span asp-validation-for="OrderDetails[i].PackType" class="uk-alert-danger"></span>
-                </td>
-                <td>
-                  @Model.OrderDetails[i].POShipDate.ToString("MM/dd/yyyy")
-                </td>
-                <td>
-                  @Model.OrderDetails[i].Status
-                </td>
+                  <td>
+                    <input type="checkbox" asp-for="OrderDetails[i].Selected" class="uk-checkbox booking checkBoxes" />
+                  </td>
+                  <td>
+                    @Model.OrderDetails[i].PONumber
+                  </td>
+                  <td>
+                    @Model.OrderDetails[i].ItemNumber
+                  </td>
+                  <td>
+                    @Model.OrderDetails[i].Vendor
+                  </td>
+                  <td>
+                    @Model.OrderDetails[i].Quantity
+                  </td>
+                  <td>
+                    @Model.OrderDetails[i].BookingQuantity
+                  </td>
+                  <td>
+                    @Model.OrderDetails[i].BookingCartons
+                  </td>
+                  <td>
+                    @Model.OrderDetails[i].BookingCube
+                  </td>
+                  <td>
+                    <select asp-for="OrderDetails[i].PackType" asp-items="new SelectList(ViewBag.PackTypes)" class="uk-select booking"></select>
+                    <span asp-validation-for="OrderDetails[i].PackType" class="uk-alert-danger"></span>
+                  </td>
+                  <td>
+                    @Model.OrderDetails[i].POShipDate.ToString("MM/dd/yyyy")
+                  </td>
+                  <td>
+                    @Model.OrderDetails[i].Status
+                  </td>
                 }
                 else
                 {
-                <td style="display: none">
-                  <input type="checkbox" asp-for="OrderDetails[i].Selected" hidden="hidden" />
-                  <input type="hidden" asp-for="OrderDetails[i].PackType" />
-                </td>
+                  <td style="display: none">
+                    <input type="checkbox" asp-for="OrderDetails[i].Selected" hidden="hidden" />
+                    <input type="hidden" asp-for="OrderDetails[i].PackType" />
+                  </td>
                 }
               </tr>
             }
           </tbody>
         </table>
+
+        <!--Paging-->
+        <ul class="uk-pagination uk-flex-right">
+          @if (currentPage > 1)
+          {
+            <li><a value="Previous @(currentPage - 1)" name="method" class="paging"><span uk-pagination-previous></span></a></li>
+          }
+
+          @for (int i = 1; i <= totalPage; i++)
+          {
+            if (i == currentPage)
+            {
+              <li class="uk-disabled"><a value="Page @i" name="method" class="paging"><u>@i</u></a></li>
+            }
+            else
+            {
+              <li><a value="Page @i" name="method" class="paging">@i</a></li>
+            }
+          }
+
+          @if (currentPage < totalPage)
+          {
+            <li><a value="Next @(currentPage + 1)" name="method" class="paging"><span uk-pagination-next></span></a></li>
+          }
+        </ul>
       }
     </div>
   }

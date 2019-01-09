@@ -7,7 +7,7 @@
   <input asp-for="SingleOrderDetail.Id" value=@Model.SingleOrderDetail.Id type="hidden" />
 
   <div class="uk-grid uk-card uk-card-default uk-card-body">
-    <h4>Dashboard > @Model.Method</h4>
+    <h4><a href="/Home" class="uk-link-text">Dashboard</a> > <a href="/Order/Display" class="uk-link-text">PO Manager</a> > <a href="./@(Model.Method.Substring(0,Model.Method.IndexOf(" ")))?ponumber=@(Model.Method.Substring(Model.Method.LastIndexOf(":")+2))" class="uk-link-text">@Model.Method</a></h4>
   </div>
 
   <br />

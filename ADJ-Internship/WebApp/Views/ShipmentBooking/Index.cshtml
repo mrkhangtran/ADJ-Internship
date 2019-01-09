@@ -1,16 +1,18 @@
 ﻿@model ADJ.BusinessService.Dtos.ShipmentBookingDtos;
 
-<h3>Shipment Booking</h3>
-
 <form asp-action="Index" asp-controller="ShipmentBooking" id="filterForm">
+
+  <div class="uk-grid uk-card uk-card-default uk-card-body">
+    <h4><a href="/Home" class="uk-link-text">Dashboard</a> > <a href="?" class="uk-link-text">Shipment Booking</a></h4>
+  </div>
+
+  <br />
 
   <div class="uk-card uk-card-default uk-card-body">
     <partial name="_Filter" model="Model" />
   </div>
 
 </form>
-
-<hr class="uk-divider-icon" />
 
 <form asp-action="Booking" asp-controller="ShipmentBooking" id="bookingForm"
       data-ajax-success="showResult"

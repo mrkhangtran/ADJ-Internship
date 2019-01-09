@@ -23,6 +23,10 @@ $(document.body).on('click', '#achieveButton', function () {
   $("#achieveForm").submit();
 });
 
+$(document).ready(function showResult() {
+  $('#openmodal').trigger('click');
+});
+
 showResult = function showResult() {
   $(document).ready(function () {
     $('#openmodal').trigger('click');

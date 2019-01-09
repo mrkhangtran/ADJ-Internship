@@ -147,7 +147,8 @@ namespace ADJ.BusinessService.Implementations
         PagedListResult<Order> order = await _orderDataProvider.ListAsync(x => x.Id == OrderId, null, false);
         output.PONumber = order.Items[0].PONumber;
         output.Vendor = order.Items[0].Vendor;
-        output.POShipDate = order.Items[0].LatestShipDate;
+        output.POShipDate = order.Items[0].ShipDate;
+        output.DeliveryDate = order.Items[0].DeliveryDate;
 
         //get info from OrderDetail
         output.ItemNumber = item.ItemNumber;
