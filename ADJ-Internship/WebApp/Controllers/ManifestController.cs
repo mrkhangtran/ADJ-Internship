@@ -49,38 +49,48 @@ namespace WebApp.Controllers
     public async Task<ActionResult> CreateOrUpdate(string pageIndex, PagedListResult<ShipmentManifestsDtos> shipmentManifestDtos)
     {
       ViewBag.modalResult = null;
-      for(int i = 0; i < shipmentManifestDtos.Items.Count(); i++)
+      for (int i = 0; i < shipmentManifestDtos.Items.Count(); i++)
       {
-        for(int j = 0; j < shipmentManifestDtos.Items[i].Manifests.Count(); j++)
+        for (int j = 0; j < shipmentManifestDtos.Items[i].Manifests.Count(); j++)
         {
-          if (shipmentManifestDtos.Items[i].Manifests[j].selectedItem == false && shipmentManifestDtos.Items[i].selectedContainer==true)
+          if (shipmentManifestDtos.Items[i].Manifests[j].selectedItem == false && shipmentManifestDtos.Items[i].selectedContainer == true)
           {
             string shipQuantity = "Items[" + i + "].Manifests[" + j + "].ShipQuantity";
             string id = "Items[" + i + "].Manifests[" + j + "].Id";
-            ModelState[shipQuantity].ValidationState = ModelState[id].ValidationState;           
-          }       
-        }
-      }   
-      if (ModelState.IsValid)
-      {
-        bool check = false;
-        foreach (var manifest in shipmentManifestDtos.Items)
-        {
-          if (manifest.selectedContainer == true && manifest.Manifests.Where(p => p.selectedItem == true && p.ShipQuantity>0).Count() > 0)
-          {
-            await _manifestService.CreateOrUpdateContainerAsync(manifest);
-            ViewBag.modalResult = "success";
-            check = true;
-          }     
-        }
-        if (check==false)
-        {
-          ViewBag.modalResult = "empty";
+            ModelState[shipQuantity].ValidationState = ModelState[id].ValidationState;
+          }
         }
       }
-      else
-      {   
+      foreach (var manifest in shipmentManifestDtos.Items)
+      {
+        if (_manifestService.checkNameContainer(manifest.Name) == true && manifest.Id == 0)
+        {
+          ViewBag.nameUnique = "Container name must be unique.";
+        }
+      }
+      if (ViewBag.nameUnique == null)
+      {
+        if (ModelState.IsValid)
+        {
+          bool check = false;
+          foreach (var manifest in shipmentManifestDtos.Items)
+          {
+            if (manifest.selectedContainer == true && manifest.Manifests.Where(p => p.selectedItem == true && p.ShipQuantity > 0).Count() > 0)
+            {
+              await _manifestService.CreateOrUpdateContainerAsync(manifest);
+              ViewBag.modalResult = "success";
+              check = true;
+            }
+          }
+          if (check == false)
+          {
+            ViewBag.modalResult = "empty";
+          }
+        }
+        else
+        {
           ViewBag.modalResult = "invalid";
+        }
       }
       ViewBag.Size = new List<string> { "20GP", "40HC" };
       ViewBag.PackType = new List<string> { "Boxed", "Carton" };

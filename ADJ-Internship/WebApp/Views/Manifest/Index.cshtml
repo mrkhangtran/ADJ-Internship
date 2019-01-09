@@ -142,12 +142,16 @@
                   if (Model.Items[i].Id == 0)
                   {
                     <input id="validationName" asp-for="Items[i].Name" class="validationName uk-input" />
-                    <span class=" uk-text-danger" asp-validation-for="Items[i].Name" id="validationShipQuantity" ></span>
+                    <span class=" uk-text-danger" asp-validation-for="Items[i].Name" id="validationShipQuantity"></span>
+                    if (ViewBag.nameUnique != null)
+                    {
+                    <span class=" uk-text-danger">@ViewBag.nameUnique</span>
+                    }
                   }
                   else
                   {
                     <input readonly id="validationName" asp-for="Items[i].Name" class="validationName uk-input" />
-                    
+
                   }
 
                 }
