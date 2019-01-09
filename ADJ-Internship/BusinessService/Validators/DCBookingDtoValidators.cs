@@ -23,7 +23,11 @@ namespace ADJ.BusinessService.Validators
         DateTime arrivalDate = Convert.ToDateTime(otherValue);
         if (bookingDate < arrivalDate)
         {
-          return new ValidationResult(ErrorMessage = "Booking Date Must Be Later Than Arrival Date.");
+          return new ValidationResult(ErrorMessage = "Booking Date Must Be Equal Or Later Than Arrival Date 30 days.");
+        }
+        if ((bookingDate - arrivalDate).TotalDays > 30)
+        {
+          return new ValidationResult(ErrorMessage = "Booking Date Must Be Equal Or Later Than Arrival Date 30 days.");
         }
       }
       return ValidationResult.Success;
