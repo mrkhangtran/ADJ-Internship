@@ -57,6 +57,10 @@ namespace WebApp.Controllers
           }
         }
       }
+      else
+      {
+        ViewBag.ShowResult = "invalid";
+      }
       ViewBag.DC = new List<string> { "Market Hong Kong", "Gas Customer Center", "JSI Logistics" };
       ViewBag.Haulier = new List<string> { "123 Cargo", "Cargo Core" };
       SearchingDCBooking searchingDCBooking = await _dCBookingService.getItem();

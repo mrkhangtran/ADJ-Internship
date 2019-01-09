@@ -14,6 +14,7 @@ namespace ADJ.BusinessService.Dtos
   public class ShipmentManifestsDtos : EntityDtoBase, ICreateMapping
   {
     [Required]
+    [StringLength(10, ErrorMessage = "Cannot be longer than 10 characters")]
     public string Name { get; set; }
 
     public OrderStatus Status { get; set; }

@@ -85,12 +85,12 @@
         <tbody>
           <tr>
             <td>
-              <button type="button" class="filterItem uk-button uk-button-primary" value=1>Search</button>
+              <button style="width:116px" type="button" class="filterItem uk-button uk-button-primary" value=1>Search</button>
             </td>
           </tr>
           <tr>
             <td>
-              <button id="achieve" type="submit" class="uk-button uk-button-danger">Achieve</button>
+              <button style="width:116px" id="achieve" type="submit" class="uk-button uk-button-danger">Achieve</button>
             </td>
           </tr>
 
@@ -142,7 +142,7 @@
                   if (Model.Items[i].Id == 0)
                   {
                     <input id="validationName" asp-for="Items[i].Name" class="validationName uk-input" />
-                    <span class=" uk-text-danger" asp-validation-for="Items[i].Name" id="validationShipQuantity" hidden></span>
+                    <span class=" uk-text-danger" asp-validation-for="Items[i].Name" id="validationShipQuantity" ></span>
                   }
                   else
                   {
