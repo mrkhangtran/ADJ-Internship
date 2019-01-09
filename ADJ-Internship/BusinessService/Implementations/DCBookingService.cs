@@ -104,32 +104,35 @@ namespace ADJ.BusinessService.Implementations
         var confirmArrival = await _confirmArrivalRepository.Query(x => x.ContainerId == container.Id, false).SelectAsync();
         var arriveOfDispatch = await _arriveOfDespatchRepository.Query(x => x.ContainerId == container.Id, false).SelectAsync();
         var dcBooking = await _dcBookingRepository.Query(x => x.ContainerId == container.Id, false).SelectAsync();
-        DCBookingDtos dCBookingDto = new DCBookingDtos()
+        if (confirmArrival.Count() > 0 && arriveOfDispatch.Count() > 0)
         {
-          ContainerId = container.Id,
-          Name = container.Name,
-          DestPort = arriveOfDispatch[0].DestinationPort,
-          ArrivalDate = confirmArrival[0].ArrivalDate,
-          Status = container.Status.ToString(),
-          BookingDate = DateTime.Now.Date
-        };
-        foreach (var manifest in container.Manifests)
-        {
-          dCBookingDto.ShipCarton += manifest.Quantity * (decimal)manifest.Cartons;
-          dCBookingDto.ShipCube += manifest.Quantity * (decimal)manifest.Cube;
-          dCBookingDto.ShipQuantity += manifest.Quantity;
+          DCBookingDtos dCBookingDto = new DCBookingDtos()
+          {
+            ContainerId = container.Id,
+            Name = container.Name,
+            DestPort = arriveOfDispatch[0].DestinationPort,
+            ArrivalDate = confirmArrival[0].ArrivalDate,
+            Status = container.Status.ToString(),
+            BookingDate = DateTime.Now.Date
+          };
+          foreach (var manifest in container.Manifests)
+          {
+            dCBookingDto.ShipCarton += manifest.Quantity * (decimal)manifest.Cartons;
+            dCBookingDto.ShipCube += manifest.Quantity * (decimal)manifest.Cube;
+            dCBookingDto.ShipQuantity += manifest.Quantity;
+          }
+          if (dcBooking.Count > 0)
+          {
+            dCBookingDto.Id = dcBooking[0].Id;
+            dCBookingDto.DistributionCenter = dcBooking[0].DistributionCenter;
+            dCBookingDto.Haulier = dcBooking[0].Haulier;
+            dCBookingDto.Client = dcBooking[0].Client;
+            dCBookingDto.BookingDate = dcBooking[0].BookingDate;
+            dCBookingDto.BookingRef = dcBooking[0].BookingRef;
+            dCBookingDto.BookingTime = dcBooking[0].BookingTime;
+          }
+          dCBookingDtos.Add(dCBookingDto);
         }
-        if (dcBooking.Count > 0)
-        {
-          dCBookingDto.Id = dcBooking[0].Id;
-          dCBookingDto.DistributionCenter = dcBooking[0].DistributionCenter;
-          dCBookingDto.Haulier = dcBooking[0].Haulier;
-          dCBookingDto.Client = dcBooking[0].Client;
-          dCBookingDto.BookingDate = dcBooking[0].BookingDate;
-          dCBookingDto.BookingRef = dcBooking[0].BookingRef;
-          dCBookingDto.BookingTime = dcBooking[0].BookingTime;
-        }
-        dCBookingDtos.Add(dCBookingDto);
       }
       pagedListResult.Items = dCBookingDtos;
       pagedListResult.TotalCount = listContainer.TotalCount;
@@ -139,7 +142,7 @@ namespace ADJ.BusinessService.Implementations
     public async Task<SearchingDCBooking> getItem()
     {
       var list =  _containerRepository.Query(true).SelectAsync(x => x.ArriveOfDespatch.DestinationPort).Result.Distinct();
-      List<string> status = Enum.GetNames(typeof(ContainerStatus)).ToList();
+      List<string> status = new List<string> {ContainerStatus.Arrived.ToString(),ContainerStatus.DCBookingReceived.ToString() };   
       SearchingDCBooking searchingDCBooking = new SearchingDCBooking()
       {
         DestinationPort = list,

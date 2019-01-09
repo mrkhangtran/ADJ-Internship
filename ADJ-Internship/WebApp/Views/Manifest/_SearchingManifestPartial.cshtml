@@ -1,7 +1,9 @@
 ﻿@model ADJ.Common.PagedListResult<ADJ.BusinessService.Dtos.ShipmentManifestsDtos>
 @if (Model.Items.Count() == 0)
 {
-	<p class="uk-text-meta uk-text-large">No matching results were found. Please try again</p>
+  <div class="uk-grid uk-card uk-card-default uk-card-body">
+    <p class="uk-text-meta uk-text-large">No matching results were found. Please try again</p>
+  </div>
 }
 else
 {
@@ -10,11 +12,11 @@ else
     @Html.HiddenFor(model => model.Items[i].Id, new { Value = Model.Items[i].Id })
     <br />
     <br />
-    <div class="uk-grid">
-      <table class="uk-table uk-table-small uk-width-1-2">
+    <div class="uk-grid uk-card uk-card-default uk-card-body">
+      <table class="uk-table uk-table-striped uk-table-small">
         <thead>
           <tr>
-            <td></td>
+            <td style="width:5%"></td>
             <td>
               Container
             </td>
@@ -31,10 +33,14 @@ else
         </thead>
         <tbody>
           <tr>
-            <td>
+            <td style="width:5%">
               @if (Model.Items[i].Id == 0)
               {
                 <input class="uk-checkbox" type="checkbox" asp-for="Items[i].selectedContainer" />
+              }
+              else
+              {
+                <input disabled class="uk-checkbox" type="checkbox" asp-for="Items[i].selectedContainer" />
               }
             </td>
             <td>
@@ -49,20 +55,20 @@ else
                   <input readonly id="validationName" asp-for="Items[i].Name" class="validationName uk-input" />
                 }
 
-							}
+              }
 
             </td>
             @{
               if (Model.Items[i].Id == 0)
               {
                 <td>
-                  <select asp-for="Items[i].Size" asp-items="new SelectList(ViewBag.Size)" class="uk-input filters" id="size"></select>
+                  <select asp-for="Items[i].Size" asp-items="new SelectList(ViewBag.Size)" class="uk-select filters" id="size"></select>
                 </td>
                 <td>
-                  <select asp-for="Items[i].Loading" asp-items="new SelectList(ViewBag.Loading)" class="uk-input filters" id="loading"></select>
+                  <select asp-for="Items[i].Loading" asp-items="new SelectList(ViewBag.Loading)" class="uk-select filters" id="loading"></select>
                 </td>
                 <td>
-                  <select asp-for="Items[i].PackType" asp-items="new SelectList(ViewBag.PackType)" class="uk-input filters" id="packtype"></select>
+                  <select asp-for="Items[i].PackType" asp-items="new SelectList(ViewBag.PackType)" class="uk-select filters" id="packtype"></select>
                 </td>
               }
               else
@@ -81,12 +87,12 @@ else
           </tr>
         </tbody>
       </table>
-      <table class="uk-table uk-table-small">
+      <table class="uk-table uk-table-striped uk-table-small">
         <thead>
           <tr>
-            <td></td>
+            <td style="width:5%"></td>
             <td>
-              Supplier
+              Vendor
             </td>
             <td>
               Carrier
@@ -141,14 +147,18 @@ else
             @Html.HiddenFor(model => model.Items[i].Manifests[j].Id, new { Value = Model.Items[i].Manifests[j].Id })
             @Html.HiddenFor(model => model.Items[i].Manifests[j].OpenQuantity, new { Value = Model.Items[i].Manifests[j].OpenQuantity })
             <tr>
-              <td>
+              <td style="width:5%">
                 @if (Model.Items[i].Id == 0)
                 {
                   <input class="uk-checkbox" type="checkbox" asp-for="Items[i].Manifests[j].selectedItem" />
                 }
+                else
+                {
+                  <input disabled class="uk-checkbox" type="checkbox" asp-for="Items[i].Manifests[j].selectedItem" />
+                }
               </td>
               <td>
-                @Model.Items[i].Manifests[j].Supplier
+                @Model.Items[i].Manifests[j].Vendor
               </td>
               <td>
                 @Model.Items[i].Manifests[j].Carrier
@@ -160,7 +170,7 @@ else
                 @Model.Items[i].Manifests[j].ItemNumber
               </td>
               <td>
-                @Model.Items[i].Manifests[j].ETDDate.ToString("dd/MM/yyyy")
+                @Model.Items[i].Manifests[j].ETDDate.ToString("MM/dd/yyyy")
               </td>
               <td>
                 @Model.Items[i].Manifests[j].BookingQuantity
@@ -197,18 +207,7 @@ else
                 <input id="@("netWeight"+@Model.Items[i].Manifests[j].ItemNumber)" asp-for="Items[i].Manifests[j].NetWeight" readonly class=" uk-input" />
               </td>
               <td>
-                @{
-                  if (Model.Items[i].Id > 0)
-                  {
-                    @Model.Items[i].Manifests[j].GrossWeight
-                  }
-                  else
-                  {
-                    <input value="" id="@("shipGrossWeight"+Model.Items[i].Manifests[j].ItemNumber)" asp-for="Items[i].Manifests[j].GrossWeight" class="shipGrossWeight uk-input" />
-                    <span class=" uk-text-danger" asp-validation-for="Items[i].Manifests[j].GrossWeight" hidden id=""></span>
-                  }
-                }
-
+                @Model.Items[i].Manifests[j].GrossWeight
               </td>
               <td>
                 @Model.Items[i].Manifests[j].Manifested

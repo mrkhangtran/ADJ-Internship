@@ -1,11 +1,11 @@
 ﻿@model ADJ.Common.PagedListResult<ADJ.BusinessService.Dtos.DCBookingDtos>
 <br />
 <br />
-<div class="uk-grid">
-  <table class="uk-table uk-table-small">
+<div class="uk-grid uk-card uk-card-default uk-card-body">
+  <table class="uk-table uk-table-striped uk-table-small">
     <thead>
       <tr>
-        <td></td>
+        <td style="width:5%"></td>
         <td>
           Container
         </td>
@@ -56,10 +56,14 @@
             @Html.HiddenFor(model => model.Items[i].Id, new { Value = Model.Items[i].Id })
             @Html.HiddenFor(model => model.Items[i].ContainerId, new { Value = Model.Items[i].ContainerId })
             <tr>
-              <td>
+              <td style="width:5%">
                 @if (Model.Items[i].Id == 0)
                 {
                   <input asp-for="Items[i].selected" class="uk-checkbox" />
+                }
+                else
+                {
+                  <input disabled asp-for="Items[i].selected" class="uk-checkbox" />
                 }
               </td>
               <td>
@@ -71,7 +75,7 @@
                 @Html.HiddenFor(model => model.Items[i].DestPort)
               </td>
               <td>
-                @Model.Items[i].ArrivalDate.ToString("dd/MM/yyyy")
+                @Model.Items[i].ArrivalDate.ToString("MM/dd/yyyy")
                 @Html.HiddenFor(model => model.Items[i].ArrivalDate)
 
               </td>
@@ -123,8 +127,7 @@
                   }
                   else
                   {
-                    <input asp-for="Items[i].Client" class="uk-input" />
-                    <span class="uk-text-danger" asp-validation-for="Items[i].Client"></span>
+                    <input asp-for="Items[i].Client" class="client uk-input" />
                   }
                 }
 
@@ -133,12 +136,12 @@
                 @{
                   if (Model.Items[i].Id > 0)
                   {
-                    @Model.Items[i].BookingDate.ToString("dd/MM/yyyy")
+                    @Model.Items[i].BookingDate.ToString("MM/dd/yyyy")
                     @Html.HiddenFor(model => model.Items[i].BookingDate)
                   }
                   else
                   {
-                    <input asp-for="Items[i].BookingDate" class="uk-input" type="date" />
+                    <input asp-for="Items[i].BookingDate" value=@Model.Items[i].BookingDate.ToString("yyyy-MM-dd") class="uk-input" type="date" />
                     <span class="uk-text-danger" asp-validation-for="Items[i].BookingDate"></span>
                   }
                 }
@@ -153,8 +156,8 @@
                   }
                   else
                   {
-                    <input asp-for="Items[i].BookingTime" class="uk-input" placeholder="ex: 10:45" />
-                    <span class="uk-text-danger" asp-validation-for="Items[i].BookingTime"></span>
+                    <input asp-for="Items[i].BookingTime" class="bookingtime uk-input" placeholder="ex: 10:45" />
+                    <span class="bookingtimeinvalid uk-text-danger" asp-validation-for="Items[i].BookingTime"></span>
                   }
                 }
 
@@ -170,11 +173,10 @@
                   else
                   {
                     <input asp-for="Items[i].BookingRef" class="uk-input" />
-                    <span class="uk-text-danger" asp-validation-for="Items[i].BookingRef"></span>
                   }
                 }
               </td>
-              <td style="color:darkorange">
+              <td>
                 @Html.HiddenFor(model => model.Items[i].Status)
                 @Model.Items[i].Status
               </td>
@@ -196,32 +198,14 @@
     </div>
   </div>
 }
-@*<div class="uk-align-right">
-    <ul class="uk-pagination">
-      @{
-        if (ViewBag.pageIndex > 1)
-        {
-          <li><a value="@(ViewBag.pageIndex - 1)" class="filterItem page-link"><span uk-pagination-previous></span></a></li>
-        }
-        for (var i = 1; i <= Model.PageCount; i++)
-        {
-          if (i == ViewBag.pageIndex)
-          {
-            <li class="uk-disabled">
-              <a value="@i" class="page-link"><u>@i</u></a>
-            </li>
-          }
-          else
-          {
-            <li class="uk-active">
-              <a value="@i" class="filterItem page-link">@i</a>
-            </li>
-          }
-        }
-        if (ViewBag.pageIndex < Model.PageCount)
-        {
-          <li><a value="@(ViewBag.pageIndex + 1)" class="filterItem page-link"><span uk-pagination-next></span></a></li>
-        }
-      }
-    </ul>
-  </div>*@
+@if (ViewBag.ShowResult == "invalid")
+{
+  string result = ViewBag.modalResult;
+  <button type="button" uk-toggle="target: #modal-success" id="successmodal" hidden="hidden">Open</button>
+  <div id="modal-success" class="uk-flex-top" uk-modal>
+    <div class="uk-modal-dialog uk-modal-body uk-margin-auto-vertical">
+      <button class="uk-modal-close-default" type="button" uk-close></button>
+      <p class="uk-text-danger">Your value is invalid</p>
+    </div>
+  </div>
+}
