@@ -113,7 +113,7 @@ namespace ADJ.BusinessService.Implementations
             DestPort = arriveOfDispatch[0].DestinationPort,
             ArrivalDate = confirmArrival[0].ArrivalDate,
             Status = container.Status.ToString(),
-            BookingDate = DateTime.Now.Date
+            BookingDate = confirmArrival[0].ArrivalDate
           };
           foreach (var manifest in container.Manifests)
           {
