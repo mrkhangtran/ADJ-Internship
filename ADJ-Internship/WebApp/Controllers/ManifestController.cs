@@ -63,17 +63,19 @@ namespace WebApp.Controllers
       }   
       if (ModelState.IsValid)
       {
+        bool check = false;
         foreach (var manifest in shipmentManifestDtos.Items)
         {
           if (manifest.selectedContainer == true && manifest.Manifests.Where(p => p.selectedItem == true && p.ShipQuantity>0).Count() > 0)
           {
             await _manifestService.CreateOrUpdateContainerAsync(manifest);
             ViewBag.modalResult = "success";
-          }
-          else
-          {
-            ViewBag.modalResult = "empty";
-          }
+            check = true;
+          }     
+        }
+        if (check==false)
+        {
+          ViewBag.modalResult = "empty";
         }
       }
       else
