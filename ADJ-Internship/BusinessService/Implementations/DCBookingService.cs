@@ -142,7 +142,7 @@ namespace ADJ.BusinessService.Implementations
     public async Task<SearchingDCBooking> getItem()
     {
       var list =  _containerRepository.Query(true).SelectAsync(x => x.ArriveOfDespatch.DestinationPort).Result.Distinct();
-      List<string> status = Enum.GetNames(typeof(ContainerStatus)).ToList();
+      List<string> status = new List<string> {ContainerStatus.Arrived.ToString(),ContainerStatus.DCBookingReceived.ToString() };   
       SearchingDCBooking searchingDCBooking = new SearchingDCBooking()
       {
         DestinationPort = list,
