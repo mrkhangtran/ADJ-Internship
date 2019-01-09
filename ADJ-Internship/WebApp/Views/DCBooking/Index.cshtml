@@ -229,6 +229,7 @@
                       else
                       {
                         <input asp-for="Items[i].Client" class="client uk-input" />
+                        <span class="client uk-text-danger" asp-validation-for="Items[i].Client"></span>
                       }
                     }
 
@@ -273,7 +274,8 @@
                       }
                       else
                       {
-                        <input asp-for="Items[i].BookingRef" class="uk-input" />
+                        <input asp-for="Items[i].BookingRef" class="bookingref uk-input" />
+                        <span class="bookingref uk-text-danger" asp-validation-for="Items[i].BookingRef"></span>
                       }
                     }
                   </td>

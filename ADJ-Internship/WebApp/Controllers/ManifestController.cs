@@ -65,10 +65,14 @@ namespace WebApp.Controllers
       {
         foreach (var manifest in shipmentManifestDtos.Items)
         {
-          if (manifest.selectedContainer == true || manifest.Manifests.Where(p => p.selectedItem == true).Count() > 0)
+          if (manifest.selectedContainer == true && manifest.Manifests.Where(p => p.selectedItem == true && p.ShipQuantity>0).Count() > 0)
           {
             await _manifestService.CreateOrUpdateContainerAsync(manifest);
             ViewBag.modalResult = "success";
+          }
+          else
+          {
+            ViewBag.modalResult = "empty";
           }
         }
       }

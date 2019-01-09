@@ -280,7 +280,7 @@
                     }
                     else
                     {
-                      <input type="number" value="" id="@(Model.Items[i].Manifests[j].ItemNumber)" asp-for="Items[i].Manifests[j].ShipQuantity" class="validationShipQuantity uk-input" />
+                      <input type="number" value="0" id="@(Model.Items[i].Manifests[j].ItemNumber)" asp-for="Items[i].Manifests[j].ShipQuantity" class="validationShipQuantity uk-input" />
                       <span class=" uk-text-danger" asp-validation-for="Items[i].Manifests[j].ShipQuantity" id="validationShipQuantity" hidden></span>
                     }
                   }
@@ -362,6 +362,17 @@
     <div class="uk-modal-dialog uk-modal-body uk-margin-auto-vertical">
       <button class="uk-modal-close-default" type="button" uk-close></button>
       <p class="uk-text-danger">Ship Quantity is invalid, please try again</p>
+    </div>
+  </div>
+}
+@if (ViewBag.modalResult == "empty")
+{
+  string result = ViewBag.modalResult;
+  <button type="button" uk-toggle="target: #modal-center" id="openmodal" hidden="hidden">Open</button>
+  <div id="modal-center" class="uk-flex-top" uk-modal>
+    <div class="uk-modal-dialog uk-modal-body uk-margin-auto-vertical">
+      <button class="uk-modal-close-default" type="button" uk-close></button>
+      <p class="uk-text-danger">Please check your container and items or enter your ship quantity.</p>
     </div>
   </div>
 }
