@@ -84,7 +84,7 @@ namespace ADJ.BusinessService.Validators
       {
         DateTime date1 = Convert.ToDateTime(value);
         DateTime date2 = Convert.ToDateTime(otherValue);
-        if (date1 > date2.AddDays(1))
+        if (date1 < date2.AddDays(2))
         {
           return new ValidationResult(ErrorMessage = "Must be at least 2 days after " + _otherProperty.ToString());
         }
