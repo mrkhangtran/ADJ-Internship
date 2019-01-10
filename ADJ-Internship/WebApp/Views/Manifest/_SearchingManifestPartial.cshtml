@@ -151,6 +151,7 @@ else
             @Html.HiddenFor(model => model.Items[i].Manifests[j].Carrier, new { Value = Model.Items[i].Manifests[j].Carrier })
             @Html.HiddenFor(model => model.Items[i].Manifests[j].Vendor, new { Value = Model.Items[i].Manifests[j].Vendor })
             @Html.HiddenFor(model => model.Items[i].Manifests[j].Manifested, new { Value = Model.Items[i].Manifests[j].Manifested })
+            @Html.HiddenFor(model => model.Items[i].Manifests[j].ETDDate, new { Value = Model.Items[i].Manifests[j].ETDDate })
             <tr>
               <td style="width:5%">
                 @if (Model.Items[i].Id == 0)

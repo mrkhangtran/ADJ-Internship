@@ -177,6 +177,18 @@
     $(shipcubeID).val(shipcube);
     $(shipkgsID).val(netWeight);
   });
+  showup = function showup() {
+    $(document).ready(function () {
+      $('#openmodal').trigger('click');
+      $('#successmodal').trigger('click');
+      $("#modal-success").on({
+        'hide.uk.modal': function () {
+          window.location.href = "/Manifest/Index";
+        }
+      });
+    });
+  }
+ 
 </script>
 
 
