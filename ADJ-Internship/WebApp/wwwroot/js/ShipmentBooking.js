@@ -3,6 +3,55 @@
   GetLatestDeliveryDate();
 });
 
+$(document.body).on('click', '#makeBooking', function () {
+  var value = $(this).attr("value");
+  var name = $(this).attr("name");
+  $('<input />').attr('type', 'hidden')
+    .attr('name', name)
+    .attr('value', value)
+    .attr('id', "pageValue")
+    .appendTo('#bookingForm');
+
+  var ETDcheck = AfterShipDate();
+  var ETAcheck = NotAfterDeliveryDate();
+
+  if ((ETDcheck) && (ETAcheck)) {
+    $("#bookingForm").submit();
+  }
+  else {
+    if (!ETDcheck) {
+      document.getElementById("ETDError").innerHTML = "Please set ETD after the date below.";
+    }
+    if (!ETAcheck) {
+      document.getElementById("ETAError").innerHTML = "Please set ETA no later than the date below.";
+    }
+  }
+});
+
+function AfterShipDate() {
+  var shipDate = GetEarliestShipDate();
+  var ETD = document.getElementById("ETD").value.replace(/-/g, "");
+
+  if (shipDate < ETD) {
+    return true;
+  }
+  else {
+    return false;
+  }
+};
+
+function NotAfterDeliveryDate() {
+  var deliveryDate = GetLatestDeliveryDate();
+  var ETA = document.getElementById("ETA").value.replace(/-/g, "");
+
+  if (ETA <= deliveryDate) {
+    return true;
+  }
+  else {
+    return false;
+  }
+};
+
 function GetLatestDeliveryDate() {
   var checkBoxes = document.getElementsByClassName("checkBoxes");
   var maxDate = new Date(9999, 1, 1);

@@ -90,17 +90,17 @@
             <label asp-for="ETD"></label>
           </td>
           <td>
-            <input asp-for="ETD" type="date" value=@Model.ETD.ToString("yyyy-MM-dd") class="uk-input booking" />
+            <input asp-for="ETD" type="date" value=@Model.ETD.ToString("yyyy-MM-dd") class="uk-input booking" id="ETD"/>
             <span asp-validation-for="ETD" class="uk-alert-danger"></span>
-            <span class="uk-alert-danger">@ViewBag.ETDError</span>
+            <span class="uk-alert-danger" id="ETDError"></span>
           </td>
           <td>
             <label asp-for="ETA"></label>
           </td>
           <td>
-            <input asp-for="ETA" type="date" value=@Model.ETA.ToString("yyyy-MM-dd") class="uk-input booking" />
+            <input asp-for="ETA" type="date" value=@Model.ETA.ToString("yyyy-MM-dd") class="uk-input booking" id="ETA"/>
             <span asp-validation-for="ETA" class="uk-alert-danger"></span>
-            <span class="uk-alert-danger">@ViewBag.ETAError</span>
+            <span class="uk-alert-danger" id="ETAError"></span>
           </td>
         </tr>
         <tr>
@@ -116,7 +116,7 @@
       </table>
     </div>
     <div class="uk-width-1-3" style="text-align: center">
-      <button type="submit" value="Book" name="method" class="uk-button uk-button-danger bookButton">Make Booking</button>
+      <button type="button" value="Book" name="method" class="uk-button uk-button-danger bookButton" id="makeBooking">Make Booking</button>
     </div>
   </div>
 </div>

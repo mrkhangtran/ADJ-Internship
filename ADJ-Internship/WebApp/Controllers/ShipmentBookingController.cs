@@ -73,27 +73,10 @@ namespace WebApp.Controllers
             {
               if (SelectAtLeastOne(model.OrderDetails))
               {
-                DateTime earliestShipDate = GetEarliestShipDate(model.OrderDetails);
-                DateTime latestDeliveryDate = GetLatestDeliveryDate(model.OrderDetails, earliestShipDate);
-
-                if ((earliestShipDate < model.ETD) && (model.ETA <= latestDeliveryDate))
-                {
-                  await _bookingService.CreateOrUpdateBookingAsync(model);
-                  ModelState.Clear();
-                  model = await _bookingService.ChangeItemStatus(model);
-                  ViewBag.ShowModal = "Updated";
-                }
-                else
-                {
-                  if (earliestShipDate >= model.ETD)
-                  {
-                    ViewBag.ETDError = "Please set ETD after the date below.";
-                  }
-                  if (model.ETA > latestDeliveryDate)
-                  {
-                    ViewBag.ETAError = "Please set ETA no later than the date below.";
-                  }
-                }
+                await _bookingService.CreateOrUpdateBookingAsync(model);
+                ModelState.Clear();
+                model = await _bookingService.ChangeItemStatus(model);
+                ViewBag.ShowModal = "Updated";
               }
               else
               {
@@ -110,50 +93,6 @@ namespace WebApp.Controllers
       }
 
       return PartialView("_Result", model);
-    }
-
-    public DateTime GetEarliestShipDate(List<ShipmentResultDtos> input)
-    {
-      DateTime earliest = DateTime.MaxValue;
-      for (int i = 0; i < input.Count; i++)
-      {
-        if (input[i].POShipDate >= DateTime.Now)
-        {
-          if (input[i].POShipDate < earliest)
-          {
-            earliest = input[i].POShipDate;
-          }
-        }
-      }
-
-      if (earliest == DateTime.MaxValue)
-      {
-        earliest = DateTime.Now;
-      }
-
-      return earliest;
-    }
-
-    public DateTime GetLatestDeliveryDate(List<ShipmentResultDtos> input, DateTime shipDate)
-    {
-      DateTime latest = DateTime.MaxValue;
-      for (int i = 0; i < input.Count; i++)
-      {
-        if (input[i].DeliveryDate >= shipDate.AddDays(2))
-        {
-          if (input[i].DeliveryDate < latest)
-          {
-            latest = input[i].DeliveryDate;
-          }
-        }
-      }
-
-      if (latest == DateTime.MaxValue)
-      {
-        latest = DateTime.Now.AddDays(2);
-      }
-
-      return latest;
     }
 
     public bool SelectAtLeastOne(List<ShipmentResultDtos> input)
