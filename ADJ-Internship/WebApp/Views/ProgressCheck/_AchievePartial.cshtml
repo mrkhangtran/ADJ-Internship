@@ -1,23 +1,17 @@
 ﻿@model ADJ.Common.PagedListResult<ADJ.BusinessService.Dtos.ProgressCheckDto>
-@if (Model.Items.Count() == 0)
+@for (int i = 0; i < Model.Items.Count(); i++)
 {
-  <div class="uk-grid uk-card uk-card-default uk-card-body  uk-margin-small">
-    <p class="uk-text-meta uk-text-large">No result match, please try again</p>
-  </div>
-}
-else
-{
-  @for (int i = 0; i < Model.Items.Count(); i++)
-  {
   <div class="uk-grid uk-card uk-card-default uk-card-body  uk-margin-small">
     @Html.HiddenFor(model => model.Items[i].OrderId)
     @Html.HiddenFor(model => model.Items[i].Id)
     @Html.HiddenFor(model => model.Items[i].PONumber)
     @Html.HiddenFor(model => model.Items[i].POQuantity)
-    @*@Html.HiddenFor(model => model.Items[i].Supplier)
+    @Html.HiddenFor(model => model.PageCount)
+    @Html.HiddenFor(model => model.Items[i].ShipDate)
+    @Html.HiddenFor(model => model.Items[i].Supplier)
     @Html.HiddenFor(model => model.Items[i].Factory)
     @Html.HiddenFor(model => model.Items[i].EstQtyToShip)
-    @Html.HiddenFor(model => model.Items[i].Complete)*@
+    @Html.HiddenFor(model => model.Items[i].Complete)
     <table class="uk-table uk-table-striped uk-table-middle uk-table-small">
       <thead>
         <tr>
@@ -139,6 +133,7 @@ else
         {
           @Html.HiddenFor(model => model.Items[i].ListOrderDetailDto[j].Id)
           @Html.HiddenFor(model => model.Items[i].ListOrderDetailDto[j].Quantity)
+          @Html.HiddenFor(model => model.Items[i].ListOrderDetailDto[j].ItemNumber)
           <tr>
             @if (Model.Items[i].Complete == false)
             {
@@ -175,37 +170,61 @@ else
       </tbody>
     </table>
   </div>
-    <br />
-  }
+  <br />
+}
 
-  <div class="uk-align-right">
-    <ul class="uk-pagination">
-      @{
-        if (ViewBag.pageIndex > 1)
+<div class="uk-align-right">
+  <ul class="uk-pagination">
+    @{
+      if (ViewBag.pageIndex > 1)
+      {
+        <li><a value="@(ViewBag.pageIndex - 1)" class="filterItem page-link"><span uk-pagination-previous></span></a></li>
+      }
+      for (var i = 1; i <= Model.PageCount; i++)
+      {
+        if (i == ViewBag.pageIndex)
         {
-          <li><a value="@(ViewBag.pageIndex - 1)" class="filterItem page-link"><span uk-pagination-previous></span></a></li>
+          <li class="uk-disabled">
+            <a value="@i" class="filterItem page-link"><u>@i</u></a>
+          </li>
         }
-        for (var i = 1; i <= Model.PageCount; i++)
+        else
         {
-          if (i == ViewBag.pageIndex)
-          {
-            <li class="uk-disabled">
-              <a value="@i" class="filterItem page-link"><u>@i</u></a>
-            </li>
-          }
-          else
-          {
-            <li class="uk-active">
-              <a value="@i" class="filterItem page-link">@i</a>
-            </li>
-          }
-        }
-        if (ViewBag.pageIndex < Model.PageCount)
-        {
-          <li><a value="@(ViewBag.pageIndex + 1)" class="filterItem page-link"><span uk-pagination-next></span></a></li>
+          <li class="uk-active">
+            <a value="@i" class="filterItem page-link">@i</a>
+          </li>
         }
       }
+      if (ViewBag.pageIndex < Model.PageCount)
+      {
+        <li><a value="@(ViewBag.pageIndex + 1)" class="filterItem page-link"><span uk-pagination-next></span></a></li>
+      }
+    }
 
-    </ul>
+  </ul>
+</div>
+@if (ViewBag.check == 1)
+{
+  <button type="button" uk-toggle="target: #modal-center" id="openmodal" hidden="hidden">Open</button>
+  <div id="modal-center" class="uk-flex-top" uk-modal>
+    <div class="uk-modal-dialog uk-modal-body uk-margin-auto-vertical">
+      <button class="uk-modal-close-default" type="button" uk-close></button>
+      @foreach (var item in ViewBag.POUpdate)
+      {
+        <p class="uk-text-success uk-text-bold">Your PO @item has been successfully updated</p>
+      }
+    </div>
+  </div>
+}
+@if (ViewBag.check == 2)
+{
+  <button type="button" uk-toggle="target: #modal-center" id="openmodal" hidden="hidden">Open</button>
+  <div id="modal-center" class="uk-flex-top" uk-modal>
+    <div class="uk-modal-dialog uk-modal-body uk-margin-auto-vertical">
+      <button class="uk-modal-close-default" type="button" uk-close></button>
+
+      <p class="uk-text-danger uk-text-bold">Invalid value.Please try again</p>
+
+    </div>
   </div>
 }

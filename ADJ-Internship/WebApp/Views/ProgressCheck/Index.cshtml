@@ -1,6 +1,8 @@
 ﻿@model ADJ.Common.PagedListResult<ADJ.BusinessService.Dtos.ProgressCheckDto>
-@using (Html.BeginForm())
-{
+<form id="progresscheck" asp-action="CreateOrUpdate" asp-controller="ProgressCheck" data-ajax-complete="showup" data-ajax="true"
+      data-ajax-method="POST"
+      data-ajax-mode="replace"
+      data-ajax-update="#renderSearching">
   <div class="uk-grid uk-card uk-card-default uk-card-body">
     <h4><a class="uk-link-text" href="/Home">Dashboard</a> > <a class="uk-link-text" href="">Progress Check</a></h4>
   </div>
@@ -93,7 +95,7 @@
           </tr>
           <tr>
             <td>
-              <input id="Achieve" asp-action="CreateOrUpdate" asp-controller="ProgressCheck" class="uk-button uk-button-danger" type="submit" data-uk-button value="Achieve">
+              <input id="Achieve" class="uk-button uk-button-danger" type="submit" data-uk-button value="Achieve">
             </td>
           </tr>
 
@@ -105,22 +107,9 @@
   <br />
   <br />
   <div id="renderSearching">
-  <partial name="_SearchingPartial" model="Model" />
+    <partial name="_SearchingPartial" model="Model" />
   </div>
-}
-@if (ViewBag.check == 1)
-{
-  <button type="button" uk-toggle="target: #modal-center" id="openmodal" hidden="hidden">Open</button>
-  <div id="modal-center" class="uk-flex-top" uk-modal>
-    <div class="uk-modal-dialog uk-modal-body uk-margin-auto-vertical">
-      <button class="uk-modal-close-default" type="button" uk-close></button>
-      @foreach (var item in ViewBag.POUpdate)
-      {
-        <p class="uk-text-success uk-text-bold">Your PO @item has been successfully updated</p>
-      }
-    </div>
-  </div>
-}
+</form>
 @foreach (var item in ViewBag.VNPorts)
 {
   <p class="vnPorts" hidden="hidden">@item</p>
@@ -187,11 +176,12 @@
       }
     }
   };
-  $("#modal-center").on({
-    'hide.uk.modal': function () {
-      window.location.href = "/ProgressCheck";
-    }
-  });
+  showup = function showup() {
+    $(document).ready(function () {
+      $('#openmodal').trigger('click');
+      changePorts();
+    });
+  }
 </script>
 
 

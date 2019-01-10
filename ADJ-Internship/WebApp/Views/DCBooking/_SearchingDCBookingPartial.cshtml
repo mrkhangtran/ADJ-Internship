@@ -67,11 +67,11 @@ else
                 <td style="width:5%">
                   @if (Model.Items[i].Id == 0)
                   {
-                    <input asp-for="Items[i].selected" class="uk-checkbox" />
+                    <input type="checkbox" asp-for="Items[i].selected" class="uk-checkbox"/>
                   }
                   else
                   {
-                    <input disabled asp-for="Items[i].selected" class="uk-checkbox" />
+                    <input disabled class="uk-checkbox" />
                   }
                 </td>
                 <td>
