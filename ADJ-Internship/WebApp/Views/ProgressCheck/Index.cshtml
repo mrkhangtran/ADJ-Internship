@@ -44,14 +44,7 @@
               </div>
             </td>
           </tr>
-          <tr>
-            <td><label>Status</label></td>
-            <td>
-              <div class="uk-form-select" data-uk-form-select>
-                @Html.DropDownList("Status", new SelectList(ViewBag.Status), "Any", new { @id = "Status", @class = "uk-select" })
-              </div>
-            </td>
-          </tr>
+          
         </tbody>
       </table>
     </div>
@@ -78,6 +71,14 @@
             <td><label>Item</label></td>
             <td>
               <input id="ItemSearch" type="number" class="uk-input" />
+            </td>
+          </tr>
+          <tr>
+            <td><label>Status</label></td>
+            <td>
+              <div class="uk-form-select" data-uk-form-select>
+                @Html.DropDownList("Status", new SelectList(ViewBag.Status), "Any", new { @id = "Status", @class = "uk-select" })
+              </div>
             </td>
           </tr>
         </tbody>
