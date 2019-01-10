@@ -22,7 +22,7 @@ namespace WebApp.Controllers
     {
       ViewBag.Size = new List<string> { "20GP", "40HC" };
       ViewBag.PackType = new List<string> { "Boxed", "Carton" };
-      ViewBag.Loading = new List<string> { "ROAD" };
+      ViewBag.Loading = new List<string> { "ROAD","SEA","AIR" };
       SearchingManifestItem searchItem = await _manifestService.SearchItem();
       ViewBag.OriginPorts = searchItem.OriginPorts;
       ViewBag.Carriers = searchItem.Carriers;
@@ -51,7 +51,7 @@ namespace WebApp.Controllers
       ViewBag.modalResult = null;
       ViewBag.Size = new List<string> { "20GP", "40HC" };
       ViewBag.PackType = new List<string> { "Boxed", "Carton" };
-      ViewBag.Loading = new List<string> { "ROAD" };
+      ViewBag.Loading = new List<string> { "ROAD","SEA","AIR" };
       SearchingManifestItem searchItem = await _manifestService.SearchItem();
       ViewBag.OriginPorts = searchItem.OriginPorts;
       ViewBag.Carriers = searchItem.Carriers;
