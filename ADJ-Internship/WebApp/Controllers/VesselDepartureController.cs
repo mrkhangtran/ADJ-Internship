@@ -172,7 +172,7 @@ namespace WebApp.Controllers
     public void SetDropDownList()
     {
       ViewBag.Origins = new List<string> { "HongKong", "Vietnam" };
-      ViewBag.Modes = new List<string> { "Road", "Sea", "Air" };
+      ViewBag.Modes = new List<string> { "Air", "Road", "Sea" };
       ViewBag.Statuses = new List<string> { ContainerStatus.Despatch.ToString(), ContainerStatus.Pending.ToString() };
       ViewBag.Carriers = new List<string> { "DHL", "EMS", "Kerry Express", "TNT", "USPS", "ViettelPost" };
       ViewBag.VNPorts = new List<string> { "Cẩm Phả", "Cửa Lò", "Hải Phòng", "Hòn Gai", "Nghi Sơn" };
