@@ -1,20 +1,21 @@
 ﻿@model ADJ.BusinessService.Dtos.DCReceivedDtos;
 
 <div class="uk-grid">
-  <div class="uk-width-3-4">
-    <table class="uk-table uk-table-small uk-table-middle">
+  <div class="uk-width-4-5">
+    <table class="uk-table uk-table-small uk-table-middle" style="table-layout: fixed">
       <tr>
-        <td>
+        <td width="15%">
           <label asp-for="FilterDtos.Container"></label>
         </td>
-        <td>
+        <td width="30%">
           <input asp-for="FilterDtos.Container" class="uk-input filters" />
           <span asp-validation-for="FilterDtos.Container" class="uk-alert-danger"></span>
         </td>
-        <td>
+        <td width="10%"></td>
+        <td width="15%">
           <label asp-for="FilterDtos.DC"></label>
         </td>
-        <td>
+        <td width="30%">
           <input asp-for="FilterDtos.DC" class="uk-input filters" />
           <span asp-validation-for="FilterDtos.DC" class="uk-alert-danger"></span>
         </td>
@@ -27,6 +28,7 @@
           <input asp-for="FilterDtos.BookingDateFrom" type="date" class="uk-input filters" />
           <span asp-validation-for="FilterDtos.BookingDateFrom" class="uk-alert-danger"></span>
         </td>
+        <td></td>
         <td>
           <label asp-for="FilterDtos.DeliveryDateFrom"></label>
         </td>
@@ -43,6 +45,7 @@
           <input asp-for="FilterDtos.BookingDateTo" type="date" class="uk-input filters" />
           <span asp-validation-for="FilterDtos.BookingDateTo" class="uk-alert-danger"></span>
         </td>
+        <td></td>
         <td>
           <label asp-for="FilterDtos.DeliveryDateTo"></label>
         </td>
@@ -59,6 +62,7 @@
           <input asp-for="FilterDtos.BookingRef" class="uk-input filters" />
           <span asp-validation-for="FilterDtos.BookingRef" class="uk-alert-danger"></span>
         </td>
+        <td></td>
         <td>
           <label asp-for="FilterDtos.Status"></label>
         </td>
@@ -71,7 +75,7 @@
       </tr>
     </table>
   </div>
-  <div class="uk-width-1-4">
+  <div class="uk-width-1-5">
     <table class="uk-table-middle uk-height-1-1 uk-width-1-1" style="text-align: center">
       <tr>
         <td>

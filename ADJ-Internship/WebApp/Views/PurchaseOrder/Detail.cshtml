@@ -1,7 +1,5 @@
 ﻿@model ADJ.BusinessService.Dtos.OrderDTO;
 
-<span class="uk-alert-danger">@ViewBag.OrderDetailError</span>
-
 <form asp-action="Create" asp-controller="PurchaseOrder" id="orderForm">
   <input asp-for="Method" value=@Model.Method type="hidden" />
   <input asp-for="Id" value=@Model.Id type="hidden" />

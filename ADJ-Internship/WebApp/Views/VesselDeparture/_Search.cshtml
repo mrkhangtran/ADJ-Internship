@@ -11,22 +11,23 @@
 }
 
 <div class="uk-grid">
-  <div class="uk-width-3-4">
-    <table class="uk-table uk-table-small uk-table-middle">
+  <div class="uk-width-4-5">
+    <table class="uk-table uk-table-small uk-table-middle" style="table-layout: fixed">
       <tr>
-        <td>
+        <td width="10%">
           <label asp-for="FilterDto.Origin"></label>
         </td>
-        <td>
+        <td width="35%">
           <select asp-for="FilterDto.Origin" asp-items="new SelectList(ViewBag.Origins)" class="uk-select filters" id="origin">
             <option selected value="">Any</option>
           </select>
           <span asp-validation-for="FilterDto.Origin" class="uk-alert-danger"></span>
         </td>
-        <td>
+        <td width="10%"></td>
+        <td width="10%">
           <label asp-for="FilterDto.Container"></label>
         </td>
-        <td>
+        <td width="35%">
           <input asp-for="FilterDto.Container" class="uk-input filters" />
           <span asp-validation-for="FilterDto.Container" class="uk-alert-danger"></span>
         </td>
@@ -39,6 +40,7 @@
           <select asp-for="FilterDto.OriginPort" class="uk-select filters portsSearch"></select>
           <span asp-validation-for="FilterDto.OriginPort" class="uk-alert-danger"></span>
         </td>
+        <td></td>
         <td>
           <label asp-for="FilterDto.ETDFrom"></label>
         </td>
@@ -57,6 +59,7 @@
           </select>
           <span asp-validation-for="FilterDto.Status" class="uk-alert-danger"></span>
         </td>
+        <td></td>
         <td>
           <label asp-for="FilterDto.ETDTo"></label>
         </td>
@@ -67,7 +70,7 @@
       </tr>
     </table>
   </div>
-  <div class="uk-width-1-4">
+  <div class="uk-width-1-5">
     <table class="uk-table-middle uk-height-1-1 uk-width-1-1" style="text-align: center">
       <tr>
         <td>

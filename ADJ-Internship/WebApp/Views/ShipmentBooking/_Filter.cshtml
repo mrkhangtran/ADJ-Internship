@@ -11,20 +11,21 @@
 }
 
 <div class="uk-grid">
-  <div class="uk-width-2-3">
-    <table class="uk-table uk-table-small uk-table-middle">
+  <div class="uk-width-4-5">
+    <table class="uk-table uk-table-small uk-table-middle" style="table-layout: fixed">
       <tr>
-        <td>
+        <td width="10%">
           <label asp-for="FilterDtos.Origin"></label>
         </td>
-        <td>
+        <td width="35%">
           <select asp-for="FilterDtos.Origin" asp-items="new SelectList(ViewBag.Origins)" class="uk-select filters" id="origin"></select>
           <span asp-validation-for="FilterDtos.Origin" class="uk-alert-danger"></span>
         </td>
-        <td>
+        <td width="10%"></td>
+        <td width="10%">
           <label asp-for="FilterDtos.Vendor"></label>
         </td>
-        <td>
+        <td width="35%">
           <input asp-for="FilterDtos.Vendor" class="uk-input filters" />
           <span asp-validation-for="FilterDtos.Vendor" class="uk-alert-danger"></span>
         </td>
@@ -37,6 +38,7 @@
           <select asp-for="FilterDtos.OriginPort" class="uk-select filters ports"></select>
           <span asp-validation-for="FilterDtos.OriginPort" class="uk-alert-danger"></span>
         </td>
+        <td></td>
         <td>
           <label asp-for="FilterDtos.Warehouse"></label>
         </td>
@@ -55,6 +57,7 @@
           </select>
           <span asp-validation-for="FilterDtos.Mode" class="uk-alert-danger"></span>
         </td>
+        <td></td>
         <td>
           <label asp-for="FilterDtos.Status"></label>
         </td>
@@ -73,6 +76,7 @@
           <input asp-for="FilterDtos.PONumber" class="uk-input filters" />
           <span asp-validation-for="FilterDtos.PONumber" class="uk-alert-danger"></span>
         </td>
+        <td></td>
         <td>
           <label asp-for="FilterDtos.ItemNumber"></label>
         </td>
@@ -83,7 +87,7 @@
       </tr>
     </table>
   </div>
-  <div class="uk-width-1-3" style="text-align: center">
+  <div class="uk-width-1-5" style="text-align: center">
     <button type="button" value="Search" class="uk-button uk-button-primary searchButton">Search</button>
   </div>
 </div>

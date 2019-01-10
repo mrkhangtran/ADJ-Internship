@@ -857,6 +857,8 @@ a.uk-link-reset:hover,
   font-size: 0.875rem;
   font-weight: normal;
   color: #999;
+  color: white;
+  text-align: center;
   text-transform: uppercase;
 }
 /* Cell
@@ -1002,14 +1004,14 @@ a.uk-link-reset:hover,
     padding-right: 0;
   }
 }
+.uk-table {
+  text-align: center;
+}
 .uk-table .table1 thead tr {
   padding: 20px;
 }
 .uk-table .table1 tbody tr {
   padding: 20px;
-}
-.uk-table th {
-  color: white;
 }
 .uk-table thead tr {
   background: #333;
@@ -2998,6 +3000,9 @@ select.uk-form-width-xsmall {
 }
 /* Desktop and bigger */
 @media (min-width: 1200px) {
+  .uk-card-body {
+    padding: 10px 10px;
+  }
   .uk-card-body > .uk-nav-default {
     margin-left: -40px;
     margin-right: -40px;

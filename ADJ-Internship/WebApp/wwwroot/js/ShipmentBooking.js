@@ -18,24 +18,26 @@ $(document.body).on('click', '#makeBooking', function () {
   if ((ETDcheck) && (ETAcheck)) {
     $("#bookingForm").submit();
   }
-  else {
-    if (!ETDcheck) {
-      document.getElementById("ETDError").innerHTML = "Please set ETD after the date below.";
-    }
-    if (!ETAcheck) {
-      document.getElementById("ETAError").innerHTML = "Please set ETA no later than the date below.";
-    }
-  }
+});
+
+$("#ETD").change(function () {
+  AfterShipDate();
+});
+
+$("#ETA").change(function () {
+  NotAfterDeliveryDate();
 });
 
 function AfterShipDate() {
   var shipDate = GetEarliestShipDate();
   var ETD = document.getElementById("ETD").value.replace(/-/g, "");
 
-  if (shipDate < ETD) {
+  if (shipDate <= ETD) {
+    document.getElementById("ETDError").innerHTML = "";
     return true;
   }
   else {
+    document.getElementById("ETDError").innerHTML = "Please set ETD after the date below.";
     return false;
   }
 };
@@ -45,9 +47,11 @@ function NotAfterDeliveryDate() {
   var ETA = document.getElementById("ETA").value.replace(/-/g, "");
 
   if (ETA <= deliveryDate) {
+    document.getElementById("ETAError").innerHTML = "";
     return true;
   }
   else {
+    document.getElementById("ETAError").innerHTML = "Please set ETA no later than the date below.";
     return false;
   }
 };
@@ -109,7 +113,12 @@ function GetEarliestShipDate() {
     earliest = DatetoString(earliest);
   }
 
-  document.getElementById("earliestShipDate").innerHTML = "Earliest date can be set is AFTER " + earliest[4] + earliest[5] + "/" + earliest[6] + earliest[7] + "/" + earliest[0] + earliest[1] + earliest[2] + earliest[3];
+  var earliestMonth = (earliest[4] + earliest[5]) - 1;
+  earliest = new Date(earliest[0] + earliest[1] + earliest[2] + earliest[3], earliestMonth, earliest[6] + earliest[7]);
+  earliest.setDate(earliest.getDate() + 1);
+  earliest = DatetoString(earliest);
+
+  document.getElementById("earliestShipDate").innerHTML = "Earliest date can be set is " + earliest[4] + earliest[5] + "/" + earliest[6] + earliest[7] + "/" + earliest[0] + earliest[1] + earliest[2] + earliest[3];
 
   return earliest;
 };
@@ -118,6 +127,7 @@ function DatetoString(date) {
   return "" + date.getFullYear() + ('0' + (date.getMonth() + 1)).slice(-2) + ('0' + date.getDate()).slice(-2);
 };
 
+//checkAll checkbox
 $(document.body).on('click', '#checkAll', function () {
   var checkBoxes = document.getElementsByClassName("checkBoxes");
   var current = $("#checkAll")[0].checked;
@@ -129,6 +139,7 @@ $(document.body).on('click', '#checkAll', function () {
   GetLatestDeliveryDate();
 });
 
+//paging
 $(document.body).on('click', '.paging', function () {
   var value = $(this).attr("value");
   var name = $(this).attr("name");
@@ -141,6 +152,7 @@ $(document.body).on('click', '.paging', function () {
   $("#bookingForm").submit();
 });
 
+//Search Button
 $(document.body).on('click', '.searchButton', function () {
   if ($("#filterForm").valid()) {
     //get data from form
@@ -178,6 +190,8 @@ $(document.body).on('click', '.searchButton', function () {
         showResult();
         $("#resultPartial").html(objOperations);
         changePorts();
+        GetEarliestShipDate();
+        GetLatestDeliveryDate();
         rebindValidators();
       }
     });
