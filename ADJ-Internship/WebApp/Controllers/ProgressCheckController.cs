@@ -55,6 +55,7 @@ namespace WebApp.Controllers
       ViewBag.Depts = getSearchItem.Depts;
       ViewBag.Status = getSearchItem.Status;
       ViewBag.POUpdate = POUpdate;
+      
       for (int i = 0; i < progressCheckDTOs.Items.Count(); i++)
       {
         for (int j = 0; j < progressCheckDTOs.Items[i].ListOrderDetailDto.Count(); j++)
@@ -91,11 +92,6 @@ namespace WebApp.Controllers
             checkedItem = true;
           }
         }
-        lstPrc = progressCheckDTOs;
-      }
-      else
-      {
-        lstPrc = progressCheckDTOs;
       }
       return View("Index", lstPrc);
     }

@@ -136,6 +136,7 @@ else
                     else
                     {
                       <input asp-for="Items[i].Client" class="client uk-input" />
+                      <span class="client uk-text-danger" asp-validation-for="Items[i].Client"></span>
                     }
                   }
 
@@ -180,7 +181,8 @@ else
                     }
                     else
                     {
-                      <input asp-for="Items[i].BookingRef" class="uk-input" />
+                      <input asp-for="Items[i].BookingRef" class="bookingref uk-input" />
+                      <span class="bookingref uk-text-danger" asp-validation-for="Items[i].BookingRef"></span>
                     }
                   }
                 </td>
@@ -194,5 +196,34 @@ else
         }
       </tbody>
     </table>
+  </div>
+  <div class="uk-grid uk-align-right">
+    <ul class="uk-pagination">
+      @{
+        if (ViewBag.pageIndex > 1)
+        {
+          <li><a value="@(ViewBag.pageIndex - 1)" class="filterItem page-link"><span uk-pagination-previous></span></a></li>
+        }
+        for (var i = 1; i <= Model.PageCount; i++)
+        {
+          if (i == ViewBag.pageIndex)
+          {
+            <li class="uk-disabled">
+              <a value="@i" class="page-link"><u>@i</u></a>
+            </li>
+          }
+          else
+          {
+            <li class="uk-active">
+              <a value="@i" class="filterItem page-link">@i</a>
+            </li>
+          }
+        }
+        if (ViewBag.pageIndex < Model.PageCount)
+        {
+          <li><a value="@(ViewBag.pageIndex + 1)" class="filterItem page-link"><span uk-pagination-next></span></a></li>
+        }
+      }
+    </ul>
   </div>
 }
