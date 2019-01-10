@@ -1,5 +1,8 @@
 ﻿@model ADJ.Common.PagedListResult<ADJ.BusinessService.Dtos.ShipmentManifestsDtos>
-<form id="manifest" asp-action="CreateOrUpdate" asp-controller="Manifest">
+<form id="manifest" asp-action="CreateOrUpdate" asp-controller="Manifest" data-ajax-success="showup" data-ajax="true"
+      data-ajax-method="POST"
+      data-ajax-mode="replace"
+      data-ajax-update="#renderSearching">
   <div class="uk-grid uk-card uk-card-default uk-card-body">
     <h4><a class="uk-link-text" href="/Home">Dashboard</a> ><a href="" class="uk-link-text"> Shipment Manifest</a></h4>
   </div>
@@ -101,44 +104,11 @@
 
   </div>
   <div id="renderSearching">
-   <partial name="_SearchingManifestPartial" model="Model" />
+    <partial name="_SearchingManifestPartial" model="Model" />
   </div>
   <br />
   <br />
 </form>
-@if (ViewBag.modalResult == "invalid")
-{
-  string result = ViewBag.modalResult;
-  <button type="button" uk-toggle="target: #modal-center" id="openmodal" hidden="hidden">Open</button>
-  <div id="modal-center" class="uk-flex-top" uk-modal>
-    <div class="uk-modal-dialog uk-modal-body uk-margin-auto-vertical">
-      <button class="uk-modal-close-default" type="button" uk-close></button>
-      <p class="uk-text-danger">Ship Quantity is invalid, please try again</p>
-    </div>
-  </div>
-}
-@if (ViewBag.modalResult == "empty")
-{
-  string result = ViewBag.modalResult;
-  <button type="button" uk-toggle="target: #modal-center" id="openmodal" hidden="hidden">Open</button>
-  <div id="modal-center" class="uk-flex-top" uk-modal>
-    <div class="uk-modal-dialog uk-modal-body uk-margin-auto-vertical">
-      <button class="uk-modal-close-default" type="button" uk-close></button>
-      <p class="uk-text-danger">Please check your container and items or enter your ship quantity.</p>
-    </div>
-  </div>
-}
-@if (ViewBag.modalResult == "success")
-{
-  string result = ViewBag.modalResult;
-  <button type="button" uk-toggle="target: #modal-success" id="successmodal" hidden="hidden">Open</button>
-  <div id="modal-success" class="uk-flex-top" uk-modal>
-    <div class="uk-modal-dialog uk-modal-body uk-margin-auto-vertical">
-      <button class="uk-modal-close-default" type="button" uk-close></button>
-      <p class="uk-text-success">Your shipment is successfully manifested</p>
-    </div>
-  </div>
-}
 <script src="~/js/jquery-3.3.1.min.js"></script>
 <script type="text/javascript">
   $(document.body).on('click', '.filterItem', function () {
@@ -167,7 +137,6 @@
   });
   $(document).ready(function () {
     $('#openmodal').trigger('click');
-    $('#successmodal').trigger('click');
   });
   $('#manifest').submit(function () {
     var check = 0;
@@ -185,13 +154,6 @@
         break;
       }
     }
-    //var blank = document.getElementsByClassName("shipGrossWeight");
-    //for (i = 0; i < blank.length; i++) {
-    //  if (blank[i].value == "") {
-    //    check++;
-    //    break;
-    //  }
-    //}
     if (check > 0) {
       alert("Please fill in all Required fields.");
     }
@@ -214,14 +176,6 @@
     $(shipcartonID).val(shipcarton);
     $(shipcubeID).val(shipcube);
     $(shipkgsID).val(netWeight);
-  });
-  $('#achieve').click(function () {
-    $('#manifest').submit();
-  });
-  $("#modal-success").on({
-    'hide.uk.modal': function () {
-      window.location.href = "/Manifest";
-    }
   });
 </script>
 

@@ -4,11 +4,11 @@
   @Html.HiddenFor(model => model.Items[i].Id, new { Value = Model.Items[i].Id })
   <br />
   <br />
-  <div class="uk-grid">
-    <table class="uk-table uk-table-small">
+  <div class="uk-grid uk-card uk-card-default uk-card-body">
+    <table class="uk-table uk-table-striped uk-table-middle uk-table-small">
       <thead>
         <tr>
-          <td></td>
+          <td style="width:5%"></td>
           <td>
             Container
           </td>
@@ -25,10 +25,14 @@
       </thead>
       <tbody>
         <tr>
-          <td>
+          <td style="width:5%">
             @if (Model.Items[i].Id == 0)
             {
-              <input type="checkbox" asp-for="Items[i].selectedContainer" />
+              <input class="uk-checkbox" type="checkbox" asp-for="Items[i].selectedContainer" />
+            }
+            else
+            {
+              <input disabled class="uk-checkbox" />
             }
           </td>
           <td>
@@ -36,7 +40,8 @@
               if (Model.Items[i].Id == 0)
               {
                 <input id="validationName" asp-for="Items[i].Name" class="validationName uk-input" />
-                <span class=" uk-text-danger" asp-validation-for="Items[i].Name" id="validationShipQuantity" hidden></span>
+                <span class=" uk-text-danger" asp-validation-for="Items[i].Name" id="validationShipQuantity"></span>
+                <span class=" uk-text-danger">@ViewBag.nameUnique</span>
               }
               else
               {
@@ -50,13 +55,13 @@
             if (Model.Items[i].Id == 0)
             {
               <td>
-                <select asp-for="Items[i].Size" asp-items="new SelectList(ViewBag.Size)" class="uk-input filters" id="size"></select>
+                <select asp-for="Items[i].Size" asp-items="new SelectList(ViewBag.Size)" class="uk-select filters" id="size"></select>
               </td>
               <td>
-                <select asp-for="Items[i].Loading" asp-items="new SelectList(ViewBag.Loading)" class="uk-input filters" id="loading"></select>
+                <select asp-for="Items[i].Loading" asp-items="new SelectList(ViewBag.Loading)" class="uk-select filters" id="loading"></select>
               </td>
               <td>
-                <select asp-for="Items[i].PackType" asp-items="new SelectList(ViewBag.PackType)" class="uk-input filters" id="packtype"></select>
+                <select asp-for="Items[i].PackType" asp-items="new SelectList(ViewBag.PackType)" class="uk-select filters" id="packtype"></select>
               </td>
             }
             else
@@ -75,10 +80,10 @@
         </tr>
       </tbody>
     </table>
-    <table class="uk-table uk-table-small">
+    <table class="uk-table uk-table-striped uk-table-middle uk-table-small">
       <thead>
         <tr>
-          <td></td>
+          <td style="width:5%"></td>
           <td>
             Vendor
           </td>
@@ -130,15 +135,20 @@
         @for (var j = 0; j < Model.Items[i].Manifests.Count(); j++)
         {
           @Html.HiddenFor(model => model.Items[i].Manifests[j].BookingId, new { Value = Model.Items[i].Manifests[j].BookingId })
+          @Html.HiddenFor(model => model.Items[i].Manifests[j].PONumber, new { Value = Model.Items[i].Manifests[j].BookingId })
           @Html.HiddenFor(model => model.Items[i].Manifests[j].ItemNumber, new { Value = Model.Items[i].Manifests[j].ItemNumber })
           @Html.HiddenFor(model => model.Items[i].Manifests[j].BookingQuantity, new { Value = Model.Items[i].Manifests[j].BookingQuantity })
           @Html.HiddenFor(model => model.Items[i].Manifests[j].Id, new { Value = Model.Items[i].Manifests[j].Id })
           @Html.HiddenFor(model => model.Items[i].Manifests[j].OpenQuantity, new { Value = Model.Items[i].Manifests[j].OpenQuantity })
           <tr>
-            <td>
+            <td style="width:5%">
               @if (Model.Items[i].Id == 0)
               {
-                <input type="checkbox" asp-for="Items[i].Manifests[j].selectedItem" />
+                <input class="uk-checkbox" type="checkbox" asp-for="Items[i].Manifests[j].selectedItem" />
+              }
+              else
+              {
+                <input disabled class="uk-checkbox" />
               }
             </td>
             <td>
@@ -170,7 +180,7 @@
                 }
                 else
                 {
-                  <input type="number" value="" id="@(Model.Items[i].Manifests[j].ItemNumber)" asp-for="Items[i].Manifests[j].ShipQuantity" class="validationShipQuantity uk-input" />
+                  <input type="number" value="0" id="@(Model.Items[i].Manifests[j].ItemNumber)" asp-for="Items[i].Manifests[j].ShipQuantity" class="validationShipQuantity uk-input" />
                   <span class=" uk-text-danger" asp-validation-for="Items[i].Manifests[j].ShipQuantity" id="validationShipQuantity" hidden></span>
                 }
               }
@@ -191,18 +201,7 @@
               <input id="@("netWeight"+@Model.Items[i].Manifests[j].ItemNumber)" asp-for="Items[i].Manifests[j].NetWeight" readonly class=" uk-input" />
             </td>
             <td>
-              @{
-                if (Model.Items[i].Id > 0)
-                {
-                  @Model.Items[i].Manifests[j].GrossWeight
-                }
-                else
-                {
-                  <input value="" id="@("shipGrossWeight"+Model.Items[i].Manifests[j].ItemNumber)" asp-for="Items[i].Manifests[j].GrossWeight" class="shipGrossWeight uk-input" />
-                  <span class=" uk-text-danger" asp-validation-for="Items[i].Manifests[j].GrossWeight" hidden id=""></span>
-                }
-              }
-
+              @Model.Items[i].Manifests[j].GrossWeight
             </td>
             <td>
               @Model.Items[i].Manifests[j].Manifested
@@ -251,3 +250,23 @@
     }
   </ul>
 </div>
+@if (ViewBag.modalResult == "invalid")
+{
+  <button type="button" uk-toggle="target: #modal-center" id="openmodal" hidden="hidden">Open</button>
+  <div id="modal-center" class="uk-flex-top" uk-modal>
+    <div class="uk-modal-dialog uk-modal-body uk-margin-auto-vertical">
+      <button class="uk-modal-close-default" type="button" uk-close></button>
+      <p class="uk-text-danger">Ship Quantity is invalid, please try again</p>
+    </div>
+  </div>
+}
+@if (ViewBag.modalResult == "success")
+{
+  <button type="button" uk-toggle="target: #modal-center" id="openmodal" hidden="hidden">Open</button>
+  <div id="modal-success" class="uk-flex-top" uk-modal>
+    <div class="uk-modal-dialog uk-modal-body uk-margin-auto-vertical">
+      <button class="uk-modal-close-default" type="button" uk-close></button>
+      <p class="uk-text-success">Your shipment is successfully manifested</p>
+    </div>
+  </div>
+}
