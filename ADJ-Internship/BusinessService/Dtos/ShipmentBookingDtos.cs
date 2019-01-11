@@ -120,6 +120,7 @@ namespace ADJ.BusinessService.Dtos
     [Display(Name = "PO Number")]
     public string PONumber { get; set; }
 
+    [Display(Name = "Item Number")]
     public string ItemNumber { get; set; }
 
     public string Vendor { get; set; }
@@ -136,7 +137,8 @@ namespace ADJ.BusinessService.Dtos
     public float Cube { get; set; }
 
     [Display(Name = "Booking Cartons")]
-    public decimal BookingCartons {
+    public decimal BookingCartons
+    {
       get
       {
         return BookingQuantity * (decimal)Cartons;

@@ -32,12 +32,12 @@ function AfterShipDate() {
   var shipDate = GetEarliestShipDate();
   var ETD = document.getElementById("ETD").value.replace(/-/g, "");
 
-  if (shipDate <= ETD) {
+  if (shipDate < ETD) {
     document.getElementById("ETDError").innerHTML = "";
     return true;
   }
   else {
-    document.getElementById("ETDError").innerHTML = "Please set ETD after the date below.";
+    document.getElementById("ETDError").innerHTML = "ETD should be later than the date below.";
     return false;
   }
 };
@@ -46,12 +46,12 @@ function NotAfterDeliveryDate() {
   var deliveryDate = GetLatestDeliveryDate();
   var ETA = document.getElementById("ETA").value.replace(/-/g, "");
 
-  if (ETA <= deliveryDate) {
+  if (ETA < deliveryDate) {
     document.getElementById("ETAError").innerHTML = "";
     return true;
   }
   else {
-    document.getElementById("ETAError").innerHTML = "Please set ETA no later than the date below.";
+    document.getElementById("ETAError").innerHTML = "ETA should not be later than the date below.";
     return false;
   }
 };
@@ -85,7 +85,12 @@ function GetLatestDeliveryDate() {
     latest = DatetoString(latest);
   }
 
-  document.getElementById("latestDeliveryDate").innerHTML = "Latest date can be set is " + latest[4] + latest[5] + "/" + latest[6] + latest[7] + "/" + latest[0] + latest[1] + latest[2] + latest[3];
+  var latestMonth = (latest[4] + latest[5]) - 1;
+  latest = new Date(latest[0] + latest[1] + latest[2] + latest[3], latestMonth, latest[6] + latest[7]);
+  latest.setDate(latest.getDate() + 1);
+  latest = DatetoString(latest);
+
+  document.getElementById("latestDeliveryDate").innerHTML = "ETA should be earlier than " + latest[4] + latest[5] + "/" + latest[6] + latest[7] + "/" + latest[0] + latest[1] + latest[2] + latest[3];
 
   return latest;
 };
@@ -113,12 +118,7 @@ function GetEarliestShipDate() {
     earliest = DatetoString(earliest);
   }
 
-  var earliestMonth = (earliest[4] + earliest[5]) - 1;
-  earliest = new Date(earliest[0] + earliest[1] + earliest[2] + earliest[3], earliestMonth, earliest[6] + earliest[7]);
-  earliest.setDate(earliest.getDate() + 1);
-  earliest = DatetoString(earliest);
-
-  document.getElementById("earliestShipDate").innerHTML = "Earliest date can be set is " + earliest[4] + earliest[5] + "/" + earliest[6] + earliest[7] + "/" + earliest[0] + earliest[1] + earliest[2] + earliest[3];
+  document.getElementById("earliestShipDate").innerHTML = "ETD should be later than " + earliest[4] + earliest[5] + "/" + earliest[6] + earliest[7] + "/" + earliest[0] + earliest[1] + earliest[2] + earliest[3];
 
   return earliest;
 };

@@ -44,7 +44,12 @@
 }
 
 <!--Order Table-->
-<table class="uk-table uk-table-small uk-table-middle" style="table-layout: fixed">
+<style>
+  table#orderTable tr td:nth-child(2n+1){
+    text-align: right;
+  }
+</style>
+<table id="orderTable" class="uk-table uk-table-small uk-table-middle" style="table-layout: fixed; text-align: left;">
   <tr>
     <td width="10%">
       <span class="uk-alert-danger">@ViewBag.OrderDetailError</span>

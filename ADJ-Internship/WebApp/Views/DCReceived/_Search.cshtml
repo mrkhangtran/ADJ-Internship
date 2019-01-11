@@ -1,95 +1,80 @@
 ﻿@model ADJ.BusinessService.Dtos.DCReceivedDtos;
 
-<div class="uk-grid">
-  <div class="uk-width-4-5">
-    <table class="uk-table uk-table-small uk-table-middle" style="table-layout: fixed">
-      <tr>
-        <td width="15%">
-          <label asp-for="FilterDtos.Container"></label>
-        </td>
-        <td width="30%">
-          <input asp-for="FilterDtos.Container" class="uk-input filters" />
-          <span asp-validation-for="FilterDtos.Container" class="uk-alert-danger"></span>
-        </td>
-        <td width="10%"></td>
-        <td width="15%">
-          <label asp-for="FilterDtos.DC"></label>
-        </td>
-        <td width="30%">
-          <input asp-for="FilterDtos.DC" class="uk-input filters" />
-          <span asp-validation-for="FilterDtos.DC" class="uk-alert-danger"></span>
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <label asp-for="FilterDtos.BookingDateFrom"></label>
-        </td>
-        <td>
-          <input asp-for="FilterDtos.BookingDateFrom" type="date" class="uk-input filters" />
-          <span asp-validation-for="FilterDtos.BookingDateFrom" class="uk-alert-danger"></span>
-        </td>
-        <td></td>
-        <td>
-          <label asp-for="FilterDtos.DeliveryDateFrom"></label>
-        </td>
-        <td>
-          <input asp-for="FilterDtos.DeliveryDateFrom" type="date" class="uk-input filters" />
-          <span asp-validation-for="FilterDtos.DeliveryDateFrom" class="uk-alert-danger"></span>
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <label asp-for="FilterDtos.BookingDateTo"></label>
-        </td>
-        <td>
-          <input asp-for="FilterDtos.BookingDateTo" type="date" class="uk-input filters" />
-          <span asp-validation-for="FilterDtos.BookingDateTo" class="uk-alert-danger"></span>
-        </td>
-        <td></td>
-        <td>
-          <label asp-for="FilterDtos.DeliveryDateTo"></label>
-        </td>
-        <td>
-          <input asp-for="FilterDtos.DeliveryDateTo" type="date" class="uk-input filters" />
-          <span asp-validation-for="FilterDtos.DeliveryDateTo" class="uk-alert-danger"></span>
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <label asp-for="FilterDtos.BookingRef"></label>
-        </td>
-        <td>
-          <input asp-for="FilterDtos.BookingRef" class="uk-input filters" />
-          <span asp-validation-for="FilterDtos.BookingRef" class="uk-alert-danger"></span>
-        </td>
-        <td></td>
-        <td>
-          <label asp-for="FilterDtos.Status"></label>
-        </td>
-        <td>
-          <select asp-for="FilterDtos.Status" asp-items="new SelectList(ViewBag.Statuses)" class="uk-input filters">
-            <option selected value="">Any</option>
-          </select>
-          <span asp-validation-for="FilterDtos.Status" class="uk-alert-danger"></span>
-        </td>
-      </tr>
-    </table>
-  </div>
-  <div class="uk-width-1-5">
-    <table class="uk-table-middle uk-height-1-1 uk-width-1-1" style="text-align: center">
-      <tr>
-        <td>
-          <button class="uk-button uk-button-primary">Search</button>
-        </td>
-      </tr>
-      <tr>
-        <td></td>
-      </tr>
-      <tr>
-        <td>
-          <button type="button" value="Achieve" class="uk-button uk-button-danger" id="achieveButton">Achieve</button>
-        </td>
-      </tr>
-    </table>
-  </div>
-</div>
+<table class="uk-table uk-table-small uk-table-middle" style="table-layout: fixed; text-align: left">
+  <tr>
+    <td width="15%">
+      <label asp-for="FilterDtos.Container"></label>
+    </td>
+    <td width="25%">
+      <input asp-for="FilterDtos.Container" class="uk-input filters" />
+      <span asp-validation-for="FilterDtos.Container" class="uk-alert-danger"></span>
+    </td>
+    <td width="5%"></td>
+    <td width="15%">
+      <label asp-for="FilterDtos.DC"></label>
+    </td>
+    <td width="25%">
+      <input asp-for="FilterDtos.DC" class="uk-input filters" />
+      <span asp-validation-for="FilterDtos.DC" class="uk-alert-danger"></span>
+    </td>
+    <td width="15%" style="text-align: center">
+      <button class="uk-button uk-button-primary">Search</button>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <label asp-for="FilterDtos.BookingDateFrom"></label>
+    </td>
+    <td>
+      <input asp-for="FilterDtos.BookingDateFrom" type="date" class="uk-input filters" />
+      <span asp-validation-for="FilterDtos.BookingDateFrom" class="uk-alert-danger"></span>
+    </td>
+    <td></td>
+    <td>
+      <label asp-for="FilterDtos.DeliveryDateFrom"></label>
+    </td>
+    <td>
+      <input asp-for="FilterDtos.DeliveryDateFrom" type="date" class="uk-input filters" />
+      <span asp-validation-for="FilterDtos.DeliveryDateFrom" class="uk-alert-danger"></span>
+    </td>
+    <td style="text-align: center">
+      <button type="button" value="Achieve" class="uk-button uk-button-danger" id="achieveButton">Achieve</button>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <label asp-for="FilterDtos.BookingDateTo"></label>
+    </td>
+    <td>
+      <input asp-for="FilterDtos.BookingDateTo" type="date" class="uk-input filters" />
+      <span asp-validation-for="FilterDtos.BookingDateTo" class="uk-alert-danger"></span>
+    </td>
+    <td></td>
+    <td>
+      <label asp-for="FilterDtos.DeliveryDateTo"></label>
+    </td>
+    <td>
+      <input asp-for="FilterDtos.DeliveryDateTo" type="date" class="uk-input filters" />
+      <span asp-validation-for="FilterDtos.DeliveryDateTo" class="uk-alert-danger"></span>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <label asp-for="FilterDtos.BookingRef"></label>
+    </td>
+    <td>
+      <input asp-for="FilterDtos.BookingRef" class="uk-input filters" />
+      <span asp-validation-for="FilterDtos.BookingRef" class="uk-alert-danger"></span>
+    </td>
+    <td></td>
+    <td>
+      <label asp-for="FilterDtos.Status"></label>
+    </td>
+    <td>
+      <select asp-for="FilterDtos.Status" asp-items="new SelectList(ViewBag.Statuses)" class="uk-input filters">
+        <option selected value="">Any</option>
+      </select>
+      <span asp-validation-for="FilterDtos.Status" class="uk-alert-danger"></span>
+    </td>
+  </tr>
+</table>

@@ -49,79 +49,86 @@
 }
 
 <!--Booking-->
+<style>
+  table#bookingTable tr td:nth-child(2n+1) {
+    text-align: right;
+  }
+</style>
 <div class="uk-card uk-card-default uk-card-body">
-  <div class="uk-grid">
-    <div class="uk-width-4-5">
-      <table class="uk-table uk-table-small uk-table-middle" style="table-layout: fixed">
-        <tr>
-          <td width="10%">
-            <label asp-for="PortOfLoading"></label>
-          </td>
-          <td width="35%">
-            <select asp-for="PortOfLoading" value=@Model.PortOfLoading class="uk-select booking ports"></select>
-            <span asp-validation-for="PortOfLoading" class="uk-alert-danger"></span>
-          </td>
-          <td width="10%"></td>
-          <td width="10%">
-            <label asp-for="PortOfDelivery"></label>
-          </td>
-          <td width="35%">
-            <select asp-for="PortOfDelivery" value=@Model.PortOfDelivery class="uk-select booking ports"></select>
-            <span asp-validation-for="PortOfDelivery" class="uk-alert-danger"></span>
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <label asp-for="Carrier"></label>
-          </td>
-          <td>
-            <select asp-for="Carrier" asp-items="new SelectList(ViewBag.Carriers)" class="uk-select booking"></select>
-            <span asp-validation-for="Carrier" class="uk-alert-danger"></span>
-          </td>
-          <td></td>
-          <td>
-            <label asp-for="Mode"></label>
-          </td>
-          <td>
-            <select asp-for="Mode" asp-items="new SelectList(ViewBag.Modes)" class="uk-select booking"></select>
-            <span asp-validation-for="Mode" class="uk-alert-danger"></span>
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <label asp-for="ETD"></label>
-          </td>
-          <td>
-            <input asp-for="ETD" type="date" value=@Model.ETD.ToString("yyyy-MM-dd") class="uk-input booking" id="ETD" />
-            <span asp-validation-for="ETD" class="uk-alert-danger"></span>
-            <span class="uk-alert-danger" id="ETDError"></span>
-          </td>
-          <td></td>
-          <td>
-            <label asp-for="ETA"></label>
-          </td>
-          <td>
-            <input asp-for="ETA" type="date" value=@Model.ETA.ToString("yyyy-MM-dd") class="uk-input booking" id="ETA" />
-            <span asp-validation-for="ETA" class="uk-alert-danger"></span>
-            <span class="uk-alert-danger" id="ETAError"></span>
-          </td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>
-            <span id="earliestShipDate"></span>
-          </td>
-          <td colspan="2"></td>
-          <td>
-            <span id="latestDeliveryDate"></span>
-          </td>
-        </tr>
-      </table>
-    </div>
-    <div class="uk-width-1-5" style="text-align: center">
-      <button type="button" value="Book" name="method" class="uk-button uk-button-danger bookButton" id="makeBooking">Make Booking</button>
-    </div>
-  </div>
+  <table id="bookingTable" class="uk-table uk-table-small uk-table-middle" style="table-layout: fixed; text-align: left;">
+    <tr>
+      <td width="10%">
+        <label asp-for="PortOfLoading"></label>
+      </td>
+      <td width="30%">
+        <select asp-for="PortOfLoading" value=@Model.PortOfLoading class="uk-select booking ports"></select>
+        <span asp-validation-for="PortOfLoading" class="uk-alert-danger"></span>
+      </td>
+      <td width="5%"></td>
+      <td style="display: none"></td>
+      <td width="10%">
+        <label asp-for="PortOfDelivery"></label>
+      </td>
+      <td width="30%">
+        <select asp-for="PortOfDelivery" value=@Model.PortOfDelivery class="uk-select booking ports"></select>
+        <span asp-validation-for="PortOfDelivery" class="uk-alert-danger"></span>
+      </td>
+      <td width="15%" style="text-align: center">
+        <button type="button" value="Book" name="method" class="uk-button uk-button-danger bookButton" id="makeBooking">Make Booking</button>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <label asp-for="Carrier"></label>
+      </td>
+      <td>
+        <select asp-for="Carrier" asp-items="new SelectList(ViewBag.Carriers)" class="uk-select booking"></select>
+        <span asp-validation-for="Carrier" class="uk-alert-danger"></span>
+      </td>
+      <td></td>
+      <td style="display: none"></td>
+      <td>
+        <label asp-for="Mode"></label>
+      </td>
+      <td>
+        <select asp-for="Mode" asp-items="new SelectList(ViewBag.Modes)" class="uk-select booking"></select>
+        <span asp-validation-for="Mode" class="uk-alert-danger"></span>
+      </td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>
+        <label asp-for="ETD"></label>
+      </td>
+      <td>
+        <input asp-for="ETD" type="date" value=@Model.ETD.ToString("yyyy-MM-dd") class="uk-input booking" id="ETD" />
+        <span asp-validation-for="ETD" class="uk-alert-danger"></span>
+        <span class="uk-alert-danger" id="ETDError"></span>
+      </td>
+      <td></td>
+      <td style="display: none"></td>
+      <td>
+        <label asp-for="ETA"></label>
+      </td>
+      <td>
+        <input asp-for="ETA" type="date" value=@Model.ETA.ToString("yyyy-MM-dd") class="uk-input booking" id="ETA" />
+        <span asp-validation-for="ETA" class="uk-alert-danger"></span>
+        <span class="uk-alert-danger" id="ETAError"></span>
+      </td>
+      <td></td>
+    </tr>
+    <tr>
+      <td></td>
+      <td>
+        <span id="earliestShipDate"></span>
+      </td>
+      <td colspan="2"></td>
+      <td>
+        <span id="latestDeliveryDate"></span>
+      </td>
+      <td></td>
+    </tr>
+  </table>
 </div>
 
 <br />

@@ -109,10 +109,14 @@
                     <span asp-validation-for="ContainerInfoDtos[groupId].DestinationPort" class="uk-alert-danger"></span>
                   </td>
                   <td>
-                    <select asp-for="ContainerInfoDtos[groupId].Mode" asp-items="new SelectList(ViewBag.Modes)" value=@Model.ResultDtos.Items[start].Mode class="uk-select" ></select>
+                    <select asp-for="ContainerInfoDtos[groupId].Mode" asp-items="new SelectList(ViewBag.Modes)" value=@Model.ResultDtos.Items[start].Mode class="uk-select">
+                      <option selected>@Model.ResultDtos.Items[start].Mode</option>
+                    </select>
                   </td>
                   <td>
-                    <select asp-for="ContainerInfoDtos[groupId].Carrier" asp-items="new SelectList(ViewBag.Carriers)" value=@Model.ResultDtos.Items[start].Carrier class="uk-select" ></select>
+                    <select asp-for="ContainerInfoDtos[groupId].Carrier" asp-items="new SelectList(ViewBag.Carriers)" value=@Model.ResultDtos.Items[start].Carrier class="uk-select">
+                      <option selected>@Model.ResultDtos.Items[start].Carrier</option>
+                    </select>
                   </td>
                 }
                 <td>
@@ -175,7 +179,8 @@
             </table>
           </div>
 
-          if (i != Model.ResultDtos.Items.Count - 1) { <hr /> }
+          if (i != Model.ResultDtos.Items.Count - 1)
+          { <hr /> }
 
           groupId++;
           start = i + 1;

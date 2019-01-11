@@ -83,6 +83,34 @@ namespace ADJ.WebApp.Controllers
         return View(viewName, addModel);
       }
 
+      List<int> invalid = new List<int>();
+      for (int i = 0; i < addModel.PODetails.Items.Count; i++)
+      {
+        if ((!UniqueItemNumber(i, addModel.PODetails.Items[i].ItemNumber, addModel.PODetails.Items)) || (!(await _poService.UniqueItemNumAsync(addModel.PODetails.Items[i].ItemNumber, addModel.PODetails.Items[i].Id))))
+        {
+          invalid.Add(i);
+        }
+      }
+
+      if (invalid.Count > 0)
+      {
+        string error = "Item(s) number: ";
+        for (int i = 0; i < invalid.Count; i++)
+        {
+          if (i != invalid.Count -1) { error += i + ", "; }
+          else { error += i; }
+        }
+
+        if (invalid.Count == 1) { error += " is "; }
+        else { error += " are "; }
+
+        error += "not unique.";
+
+        ViewBag.OrderDetailError = error;
+
+        return View(viewName, addModel);
+      }
+
       //add/update model into database
       if (ModelState.IsValid)
       {

@@ -156,7 +156,10 @@ namespace ADJ.BusinessService.Implementations
         result.Add(output);
       }
 
-      return Sort(result);
+      result = result.OrderBy(p => p.OriginPort).ThenBy(p => p.DestinationPort).ThenBy(p => p.Mode).ThenBy(p => p.Carrier).ThenBy(p => p.ETD).ThenBy(p => p.ETA).ToList();
+
+      //return Sort(result);
+      return result;
     }
 
     public List<ContainerDto> Sort(List<ContainerDto> input)

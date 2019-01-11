@@ -10,84 +10,92 @@
   <p class="hkPorts" hidden="hidden">@item</p>
 }
 
-<div class="uk-grid">
-  <div class="uk-width-4-5">
-    <table class="uk-table uk-table-small uk-table-middle" style="table-layout: fixed">
-      <tr>
-        <td width="10%">
-          <label asp-for="FilterDtos.Origin"></label>
-        </td>
-        <td width="35%">
-          <select asp-for="FilterDtos.Origin" asp-items="new SelectList(ViewBag.Origins)" class="uk-select filters" id="origin"></select>
-          <span asp-validation-for="FilterDtos.Origin" class="uk-alert-danger"></span>
-        </td>
-        <td width="10%"></td>
-        <td width="10%">
-          <label asp-for="FilterDtos.Vendor"></label>
-        </td>
-        <td width="35%">
-          <input asp-for="FilterDtos.Vendor" class="uk-input filters" />
-          <span asp-validation-for="FilterDtos.Vendor" class="uk-alert-danger"></span>
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <label asp-for="FilterDtos.OriginPort"></label>
-        </td>
-        <td>
-          <select asp-for="FilterDtos.OriginPort" class="uk-select filters ports"></select>
-          <span asp-validation-for="FilterDtos.OriginPort" class="uk-alert-danger"></span>
-        </td>
-        <td></td>
-        <td>
-          <label asp-for="FilterDtos.Warehouse"></label>
-        </td>
-        <td>
-          <input asp-for="FilterDtos.Warehouse" class="uk-input filters" />
-          <span asp-validation-for="FilterDtos.Warehouse" class="uk-alert-danger"></span>
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <label asp-for="FilterDtos.Mode"></label>
-        </td>
-        <td>
-          <select asp-for="FilterDtos.Mode" asp-items="new SelectList(ViewBag.Modes)" class="uk-select filters">
-            <option selected value="">Any</option>
-          </select>
-          <span asp-validation-for="FilterDtos.Mode" class="uk-alert-danger"></span>
-        </td>
-        <td></td>
-        <td>
-          <label asp-for="FilterDtos.Status"></label>
-        </td>
-        <td>
-          <select asp-for="FilterDtos.Status" asp-items="new SelectList(ViewBag.Statuses)" class="uk-select filters">
-            <option selected value="">Any</option>
-          </select>
-          <span asp-validation-for="FilterDtos.Status" class="uk-alert-danger"></span>
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <label asp-for="FilterDtos.PONumber"></label>
-        </td>
-        <td>
-          <input asp-for="FilterDtos.PONumber" class="uk-input filters" />
-          <span asp-validation-for="FilterDtos.PONumber" class="uk-alert-danger"></span>
-        </td>
-        <td></td>
-        <td>
-          <label asp-for="FilterDtos.ItemNumber"></label>
-        </td>
-        <td>
-          <input asp-for="FilterDtos.ItemNumber" class="uk-input filters" />
-          <span asp-validation-for="FilterDtos.ItemNumber" class="uk-alert-danger"></span>
-        </td>
-      </tr>
-    </table>
-  </div>
-  <div class="uk-width-1-5" style="text-align: center">
-    <button type="button" value="Search" class="uk-button uk-button-primary searchButton">Search</button>
-  </div>
-</div>
+  <style>
+    table#searchTable tr td:nth-child(2n+1) {
+      text-align: right;
+    }
+  </style>
+<table id="searchTable" class="uk-table uk-table-small uk-table-middle" style="table-layout: fixed; text-align: left;">
+  <tr>
+    <td width="10%">
+      <label asp-for="FilterDtos.Origin"></label>
+    </td>
+    <td width="30%">
+      <select asp-for="FilterDtos.Origin" asp-items="new SelectList(ViewBag.Origins)" class="uk-select filters" id="origin"></select>
+      <span asp-validation-for="FilterDtos.Origin" class="uk-alert-danger"></span>
+    </td>
+    <td width="5%"></td>
+    <td style="display: none"></td>
+    <td width="10%">
+      <label asp-for="FilterDtos.Vendor"></label>
+    </td>
+    <td width="30%">
+      <input asp-for="FilterDtos.Vendor" class="uk-input filters" />
+      <span asp-validation-for="FilterDtos.Vendor" class="uk-alert-danger"></span>
+    </td>
+    <td width="15%" style="text-align: center">
+      <button type="button" value="Search" class="uk-button uk-button-primary searchButton">Search</button>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <label asp-for="FilterDtos.OriginPort"></label>
+    </td>
+    <td>
+      <select asp-for="FilterDtos.OriginPort" class="uk-select filters ports"></select>
+      <span asp-validation-for="FilterDtos.OriginPort" class="uk-alert-danger"></span>
+    </td>
+    <td></td>
+    <td style="display: none"></td>
+    <td>
+      <label asp-for="FilterDtos.Warehouse"></label>
+    </td>
+    <td>
+      <input asp-for="FilterDtos.Warehouse" class="uk-input filters" />
+      <span asp-validation-for="FilterDtos.Warehouse" class="uk-alert-danger"></span>
+    </td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>
+      <label asp-for="FilterDtos.Mode"></label>
+    </td>
+    <td>
+      <select asp-for="FilterDtos.Mode" asp-items="new SelectList(ViewBag.Modes)" class="uk-select filters">
+        <option selected value="">Any</option>
+      </select>
+      <span asp-validation-for="FilterDtos.Mode" class="uk-alert-danger"></span>
+    </td>
+    <td></td>
+    <td style="display: none"></td>
+    <td>
+      <label asp-for="FilterDtos.Status"></label>
+    </td>
+    <td>
+      <select asp-for="FilterDtos.Status" asp-items="new SelectList(ViewBag.Statuses)" class="uk-select filters">
+        <option selected value="">Any</option>
+      </select>
+      <span asp-validation-for="FilterDtos.Status" class="uk-alert-danger"></span>
+    </td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>
+      <label asp-for="FilterDtos.PONumber"></label>
+    </td>
+    <td>
+      <input asp-for="FilterDtos.PONumber" class="uk-input filters" />
+      <span asp-validation-for="FilterDtos.PONumber" class="uk-alert-danger"></span>
+    </td>
+    <td></td>
+    <td style="display: none"></td>
+    <td>  
+      <label asp-for="FilterDtos.ItemNumber"></label>
+    </td>
+    <td>
+      <input asp-for="FilterDtos.ItemNumber" class="uk-input filters" />
+      <span asp-validation-for="FilterDtos.ItemNumber" class="uk-alert-danger"></span>
+    </td>
+    <td></td>
+  </tr>
+</table>
