@@ -79,7 +79,7 @@ namespace ADJ.WebApp.Controllers
 
       if (!(await _poService.UniquePONumAsync(addModel.PONumber, addModel.Id)))
       {
-        ViewBag.PONumberError = "PO Number must be unique.";
+        ViewBag.PONumberError = "PO Number must be unique. Available: " + await NextAvailablePONum(addModel.PONumber, addModel.Id);
         return View(viewName, addModel);
       }
 
@@ -97,7 +97,7 @@ namespace ADJ.WebApp.Controllers
         string error = "Item(s) number: ";
         for (int i = 0; i < invalid.Count; i++)
         {
-          if (i != invalid.Count -1) { error += i + ", "; }
+          if (i != invalid.Count - 1) { error += i + ", "; }
           else { error += i; }
         }
 
@@ -174,7 +174,7 @@ namespace ADJ.WebApp.Controllers
 
           if ((!UniqueItemNumber(-1, addModel.SingleOrderDetail.ItemNumber, addModel.PODetails.Items)) || (!(await _poService.UniqueItemNumAsync(addModel.SingleOrderDetail.ItemNumber, addModel.SingleOrderDetail.Id))))
           {
-            ViewBag.ItemNumberError = "Item Number must be unique.";
+            ViewBag.ItemNumberError = "Item Number must be unique. Available: " + await NextAvailableItemNum(addModel.SingleOrderDetail.ItemNumber, -1, addModel.PODetails.Items);
             ViewBag.ItemId = -1;
             return PartialView("_OrderDetail", addModel);
           }
@@ -197,7 +197,7 @@ namespace ADJ.WebApp.Controllers
           {
             if ((!UniqueItemNumber(itemId, addModel.SingleOrderDetail.ItemNumber, addModel.PODetails.Items)) || (!(await _poService.UniqueItemNumAsync(addModel.SingleOrderDetail.ItemNumber, addModel.SingleOrderDetail.Id))))
             {
-              ViewBag.ItemNumberError = "Item Number must be unique.";
+              ViewBag.ItemNumberError = "Item Number must be unique. Available: " + await NextAvailableItemNum(addModel.SingleOrderDetail.ItemNumber, itemId, addModel.PODetails.Items);
               ViewBag.ItemId = itemId;
               return PartialView("_OrderDetail", addModel);
             }
@@ -353,6 +353,32 @@ namespace ADJ.WebApp.Controllers
       }
 
       return orderDetailDTOs;
+    }
+
+    //suggest next available PONumber
+    private async Task<string> NextAvailableItemNum(string input, int itemId, List<OrderDetailDTO> orderDetails)
+    {
+      int output = int.Parse(input) + 1;
+
+      while ((!UniqueItemNumber(itemId, output.ToString(), orderDetails)) || (!(await _poService.UniqueItemNumAsync(output.ToString(), itemId))))
+      {
+        output++;
+      }
+
+      return output.ToString();
+    }
+
+    //suggest next available PONumber
+    private async Task<string> NextAvailablePONum(string input, int id)
+    {
+      int output = int.Parse(input) + 1;
+
+      while (!(await _poService.UniquePONumAsync(output.ToString(), id)))
+      {
+        output++;
+      }
+
+      return output.ToString();
     }
 
     //check if ItemNumber is unique within list of items on view ONLY, NOT compare with database
