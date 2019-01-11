@@ -62,7 +62,7 @@ namespace WebApp.Controllers
       {
         for (int j = 0; j < progressCheckDTOs.Items[i].ListOrderDetailDto.Count(); j++)
         {
-          if (progressCheckDTOs.Items[i].selected == false && progressCheckDTOs.Items[i].Id > 0)
+          if (progressCheckDTOs.Items[i].selected == false)
           {
             string inspectionDate = "Items[" + i + "].InspectionDate";
             string intDate = "Items[" + i + "].IntendedShipDate";
@@ -95,6 +95,10 @@ namespace WebApp.Controllers
             ViewBag.Check = 1;
             checkedItem = true;
             check = true;
+          }
+          else
+          {
+            lstPrc.Items.Add(item);
           }
         }
         lstPrc.PageCount = progressCheckDTOs.PageCount;

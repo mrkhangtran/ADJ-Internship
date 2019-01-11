@@ -4,7 +4,6 @@
       data-ajax-mode="replace"
       data-ajax-update="#renderSearching">
   <style>
-
     table.manifestSearch tr td:nth-child(2n+1) {
       text-align: right;
     }
@@ -144,8 +143,26 @@
   $(document).ready(function () {
     $('#openmodal').trigger('click');
   });
-  $('#manifest').submit(function () {
-  });
+  //$('#manifest').submit(function () {
+  //  var check = 0;
+  //  var blank = document.getElementsByClassName("validationName");
+  //  for (i = 0; i < blank.length; i++) {
+  //    if (blank[i].value=="") {
+  //      check++;
+  //      break;
+  //    }
+  //  }
+  //  var blank = document.getElementsByClassName("validationShipQuantity");
+  //  for (i = 0; i < blank.length; i++) {
+  //    if (blank[i].value == "") {
+  //      check++;
+  //      break;
+  //    }
+  //  }
+  //  if (check > 0) {
+  //    alert("Please fill in all Required fields.");
+  //  }
+  //});
   $(document.body).on('keyup', '.validationShipQuantity', function () {
     var quantity = $(this).val();
     var id = $(this).attr("id");
@@ -176,7 +193,6 @@
       });
     });
   }
- 
 </script>
 
 

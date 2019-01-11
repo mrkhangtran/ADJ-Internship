@@ -124,8 +124,8 @@
             Net Weight
           </td>
           @*<td>
-            Gross Weight
-          </td>*@
+              Gross Weight
+            </td>*@
           <td>
             Manifested
           </td>
@@ -181,6 +181,7 @@
                 if (Model.Items[i].Id > 0)
                 {
                   @Model.Items[i].Manifests[j].ShipQuantity
+                  @Html.HiddenFor(model => model.Items[i].Manifests[j].ShipQuantity, new { Value = Model.Items[i].Manifests[j].ShipQuantity })
                 }
                 else
                 {
@@ -205,8 +206,8 @@
               <input id="@("netWeight"+@Model.Items[i].Manifests[j].ItemNumber)" asp-for="Items[i].Manifests[j].NetWeight" readonly class=" uk-input" />
             </td>
             @*<td>
-              @Model.Items[i].Manifests[j].GrossWeight
-            </td>*@
+                @Model.Items[i].Manifests[j].GrossWeight
+              </td>*@
             <td>
               @Model.Items[i].Manifests[j].Manifested
             </td>
@@ -254,13 +255,30 @@
     }
   </ul>
 </div>
-@if (ViewBag.modalResult == "invalid")
+@if (ViewBag.modalResult != null)
 {
   <button type="button" uk-toggle="target: #modal-center" id="openmodal" hidden="hidden">Open</button>
   <div id="modal-center" class="uk-flex-top" uk-modal>
     <div class="uk-modal-dialog uk-modal-body uk-margin-auto-vertical">
       <button class="uk-modal-close-default" type="button" uk-close></button>
-      <p class="uk-text-danger">Ship Quantity is invalid, please try again</p>
+      @{
+        if (ViewBag.modalResult == "invalid")
+        {
+          <p class="uk-text-danger">Ship Quantity is invalid, please try again</p>
+        }
+        if (ViewBag.modalResult == "empty")
+        {
+          <p class="uk-text-danger">Please check your container.</p>
+        }
+        if (ViewBag.modalResult == "zero")
+        {
+          <p class="uk-text-danger">Please enter your ship quantity.</p>
+        }
+        if (ViewBag.modalResult == "emptybooking")
+        {
+          <p class="uk-text-danger">Please check your shipment booking .</p>
+        }
+      }
     </div>
   </div>
 }
@@ -271,16 +289,6 @@
     <div class="uk-modal-dialog uk-modal-body uk-margin-auto-vertical">
       <button class="uk-modal-close-default" type="button" uk-close></button>
       <p class="uk-text-success">Your shipment is successfully manifested</p>
-    </div>
-  </div>
-}
-@if (ViewBag.modalResult == "empty")
-{
-  <button type="button" uk-toggle="target: #modal-center" id="openmodal" hidden="hidden">Open</button>
-  <div id="modal-center" class="uk-flex-top" uk-modal>
-    <div class="uk-modal-dialog uk-modal-body uk-margin-auto-vertical">
-      <button class="uk-modal-close-default" type="button" uk-close></button>
-      <p class="uk-text-danger">Please check your container.</p>
     </div>
   </div>
 }
