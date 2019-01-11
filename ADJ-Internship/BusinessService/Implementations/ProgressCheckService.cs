@@ -234,7 +234,12 @@ namespace ADJ.BusinessService.Implementations
 
       await UnitOfWork.SaveChangesAsync();
 
-      var rs = Mapper.Map<ProgressCheckDto>(entity);
+      var rs = rq;
+      rs.Complete = entity.Complete;
+      rs.EstQtyToShip = entity.EstQtyToShip;
+      rs.ShipDate = rq.ShipDate;
+      rs.Supplier = rq.Supplier;
+      rs.Factory = rq.Factory;
       return rs;
     }
     public async Task<GetItemSearchDto> SearchItem()

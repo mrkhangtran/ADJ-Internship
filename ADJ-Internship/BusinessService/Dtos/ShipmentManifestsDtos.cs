@@ -55,6 +55,7 @@ namespace ADJ.BusinessService.Dtos
 
     [Required]
     [QuantityValidation("OpenQuantity")]
+    [StringLength(10)]
     public decimal ShipQuantity { get; set; }
 
     public decimal BookingCartons { get; set; } //= Booking Qty* Carton(of 1 item)
