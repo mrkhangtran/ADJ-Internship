@@ -10,6 +10,7 @@ else
   @for (var i = 0; i < Model.Items.Count(); i++)
   {
     @Html.HiddenFor(model => model.Items[i].Id, new { Value = Model.Items[i].Id })
+    @Html.HiddenFor(model => model.PageCount, new { Value = Model.PageCount })
     <br />
     <br />
     <div class="uk-grid uk-card uk-card-default uk-card-body">
@@ -189,6 +190,7 @@ else
                   if (Model.Items[i].Id > 0)
                   {
                     @Model.Items[i].Manifests[j].ShipQuantity
+                    @Html.HiddenFor(model => model.Items[i].Manifests[j].ShipQuantity, new { Value = Model.Items[i].Manifests[j].ShipQuantity })
                   }
                   else
                   {

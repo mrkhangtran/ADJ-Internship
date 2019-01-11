@@ -139,24 +139,6 @@
     $('#openmodal').trigger('click');
   });
   $('#manifest').submit(function () {
-    var check = 0;
-    var blank = document.getElementsByClassName("validationName");
-    for (i = 0; i < blank.length; i++) {
-      if (blank[i].value=="") {
-        check++;
-        break;
-      }
-    }
-    var blank = document.getElementsByClassName("validationShipQuantity");
-    for (i = 0; i < blank.length; i++) {
-      if (blank[i].value == "") {
-        check++;
-        break;
-      }
-    }
-    if (check > 0) {
-      alert("Please fill in all Required fields.");
-    }
   });
   $(document.body).on('keyup', '.validationShipQuantity', function () {
     var quantity = $(this).val();
