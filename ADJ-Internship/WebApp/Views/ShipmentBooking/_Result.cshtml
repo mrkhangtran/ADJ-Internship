@@ -216,7 +216,14 @@
                 @Model.OrderDetails[i].ItemNumber
               </td>
               <td>
-                @Model.OrderDetails[i].Vendor
+                @if (Model.OrderDetails[i].Vendor == null)
+                {
+                  <span>N/A</span>
+                }
+                else
+                {
+                  <span>@Model.OrderDetails[i].Vendor</span>
+                }
               </td>
               <td>
                 @Model.OrderDetails[i].Quantity
