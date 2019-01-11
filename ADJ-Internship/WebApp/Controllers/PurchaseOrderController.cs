@@ -12,9 +12,9 @@ namespace ADJ.WebApp.Controllers
 {
   public class PurchaseOrderController : Controller
   {
-
     private readonly IPurchaseOrderService _poService;
     private int pageSize = 5;
+    private long maxNumber = 9999999999;
 
     public PurchaseOrderController(IPurchaseOrderService poService)
     {
@@ -345,27 +345,43 @@ namespace ADJ.WebApp.Controllers
     //suggest next available PONumber
     private async Task<string> NextAvailableItemNum(string input, int itemId, List<OrderDetailDTO> orderDetails)
     {
-      int output = int.Parse(input) + 1;
+      long output = long.Parse(input) + 1;
 
-      while ((!UniqueItemNumber(itemId, output.ToString(), orderDetails)) || (!(await _poService.UniqueItemNumAsync(output.ToString(), itemId))))
+      if (output > maxNumber)
       {
-        output++;
+        output = 0;
       }
 
-      return output.ToString();
+      string outputString = output.ToString().PadLeft(input.Length, '0');
+
+      while ((!UniqueItemNumber(itemId, outputString, orderDetails)) || (!(await _poService.UniqueItemNumAsync(outputString, itemId))))
+      {
+        output++;
+        outputString = output.ToString().PadLeft(input.Length, '0');
+      }
+
+      return outputString;
     }
 
     //suggest next available PONumber
     private async Task<string> NextAvailablePONum(string input, int id)
     {
-      int output = int.Parse(input) + 1;
+      long output = long.Parse(input) + 1;
 
-      while (!(await _poService.UniquePONumAsync(output.ToString(), id)))
+      if (output > maxNumber)
       {
-        output++;
+        output = 0;
       }
 
-      return output.ToString();
+      string outputString = output.ToString().PadLeft(input.Length, '0');
+
+      while (!(await _poService.UniquePONumAsync(outputString, id)))
+      {
+        output++;
+        outputString = output.ToString().PadLeft(input.Length, '0');
+      }
+
+      return outputString;
     }
 
     //check if ItemNumber is unique within list of items on view ONLY, NOT compare with database
