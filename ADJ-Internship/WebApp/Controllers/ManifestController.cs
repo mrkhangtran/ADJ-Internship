@@ -71,6 +71,12 @@ namespace WebApp.Controllers
             string id = "Items[" + i + "].Manifests[" + j + "].Id";
             ModelState[shipQuantity].ValidationState = ModelState[id].ValidationState;
           }
+          if (shipmentManifestDtos.Items[i].Manifests[j].selectedItem == false)
+          {
+            string shipQuantity = "Items[" + i + "].Manifests[" + j + "].ShipQuantity";
+            string id = "Items[" + i + "].Manifests[" + j + "].Id";
+            ModelState[shipQuantity].ValidationState = ModelState[id].ValidationState;
+          }
         }
       }
       foreach (var manifest in shipmentManifestDtos.Items)
@@ -81,6 +87,12 @@ namespace WebApp.Controllers
           pagedListResult = shipmentManifestDtos;
           return PartialView("_AchieveManifestPartial", pagedListResult);
         }
+      }
+      if (shipmentManifestDtos.Items.Where(p => p.selectedContainer == false).Count() ==2)
+      {
+        ViewBag.modalResult = "empty";
+        pagedListResult = shipmentManifestDtos;
+        return PartialView("_AchieveManifestPartial", pagedListResult);
       }
       if (ViewBag.nameUnique == null)
       {

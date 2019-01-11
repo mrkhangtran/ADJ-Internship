@@ -5,7 +5,7 @@
   <br />
   <br />
   <div class="uk-grid uk-card uk-card-default uk-card-body">
-    <table class="uk-table uk-table-striped uk-table-middle uk-table-small">
+    <table class="uk-table uk-table-striped uk-table-middle uk-table-small uk-width-1-2">
       <thead>
         <tr>
           <td style="width:5%"></td>
@@ -181,6 +181,7 @@
                 if (Model.Items[i].Id > 0)
                 {
                   @Model.Items[i].Manifests[j].ShipQuantity
+                  @Html.HiddenFor(model => model.Items[i].Manifests[j].ShipQuantity, new { Value = Model.Items[i].Manifests[j].ShipQuantity })
                 }
                 else
                 {
@@ -271,6 +272,16 @@
     <div class="uk-modal-dialog uk-modal-body uk-margin-auto-vertical">
       <button class="uk-modal-close-default" type="button" uk-close></button>
       <p class="uk-text-success">Your shipment is successfully manifested</p>
+    </div>
+  </div>
+}
+@if (ViewBag.modalResult == "empty")
+{
+  <button type="button" uk-toggle="target: #modal-center" id="openmodal" hidden="hidden">Open</button>
+  <div id="modal-center" class="uk-flex-top" uk-modal>
+    <div class="uk-modal-dialog uk-modal-body uk-margin-auto-vertical">
+      <button class="uk-modal-close-default" type="button" uk-close></button>
+      <p class="uk-text-danger">Please check your container.</p>
     </div>
   </div>
 }
