@@ -22,7 +22,7 @@ namespace WebApp.Controllers
     {
       ViewBag.Size = new List<string> { "20GP", "40HC" };
       ViewBag.PackType = new List<string> { "Boxed", "Carton" };
-      ViewBag.Loading = new List<string> { "ROAD","SEA","AIR" };
+      ViewBag.Loading = new List<string> { "ROAD", "SEA", "AIR" };
       SearchingManifestItem searchItem = await _manifestService.SearchItem();
       ViewBag.OriginPorts = searchItem.OriginPorts;
       ViewBag.Carriers = searchItem.Carriers;
@@ -49,7 +49,7 @@ namespace WebApp.Controllers
       ViewBag.modalResult = null;
       ViewBag.Size = new List<string> { "20GP", "40HC" };
       ViewBag.PackType = new List<string> { "Boxed", "Carton" };
-      ViewBag.Loading = new List<string> { "ROAD","SEA","AIR" };
+      ViewBag.Loading = new List<string> { "ROAD", "SEA", "AIR" };
       SearchingManifestItem searchItem = await _manifestService.SearchItem();
       ViewBag.OriginPorts = searchItem.OriginPorts;
       ViewBag.Carriers = searchItem.Carriers;
@@ -75,8 +75,18 @@ namespace WebApp.Controllers
             string id = "Items[" + i + "].Manifests[" + j + "].Id";
             ModelState[shipQuantity].ValidationState = ModelState[id].ValidationState;
           }
+          if (shipmentManifestDtos.Items[i].selectedContainer == true && shipmentManifestDtos.Items[i].Manifests[j].selectedItem == true)
+          {
+            if (shipmentManifestDtos.Items[i].Manifests[j].ShipQuantity == 0)
+            {
+              ViewBag.modalResult = "zero";
+              pagedListResult = shipmentManifestDtos;
+              return PartialView("_AchieveManifestPartial", pagedListResult);
+            }
+          }
         }
       }
+
       foreach (var manifest in shipmentManifestDtos.Items)
       {
         if (_manifestService.checkNameContainer(manifest.Name) == true && manifest.Id == 0)
@@ -85,8 +95,14 @@ namespace WebApp.Controllers
           pagedListResult = shipmentManifestDtos;
           return PartialView("_AchieveManifestPartial", pagedListResult);
         }
+        if(manifest.selectedContainer==true && manifest.Manifests.Where(p => p.selectedItem == false).Count() > 0)
+        {
+          ViewBag.modalResult = "emptybooking";
+          pagedListResult = shipmentManifestDtos;
+          return PartialView("_AchieveManifestPartial", pagedListResult);
+        }
       }
-      if (shipmentManifestDtos.Items.Where(p => p.selectedContainer == false).Count() ==2)
+      if (shipmentManifestDtos.Items.Where(p => p.selectedContainer == false).Count() == 2)
       {
         ViewBag.modalResult = "empty";
         pagedListResult = shipmentManifestDtos;
