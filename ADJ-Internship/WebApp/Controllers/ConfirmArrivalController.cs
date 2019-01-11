@@ -155,7 +155,7 @@ namespace WebApp.Controllers
     {
       ViewBag.Modes = new List<string> { "Air", "Road", "Sea" };
       ViewBag.Origins = new List<string> { "Hong Kong", "Vietnam" };
-      ViewBag.Statuses = new List<string> { ContainerStatus.Despatch.ToString(), ContainerStatus.Arrived.ToString() };
+      ViewBag.Statuses = new List<string> { ContainerStatus.Despatch.GetDescription<ContainerStatus>(), ContainerStatus.Arrived.GetDescription<ContainerStatus>() };
 
       ViewBag.ContinuedFromPrevious = false;
       ViewBag.ToBeContinued = false;

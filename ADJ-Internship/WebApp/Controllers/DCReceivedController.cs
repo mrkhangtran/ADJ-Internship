@@ -64,6 +64,7 @@ namespace WebApp.Controllers
                 {
                   await _dcReceivedService.CreateOrUpdateCAAsync(item);
                   item.Status = ContainerStatus.Delivered;
+                  item.StatusDescription = ContainerStatus.Delivered.GetDescription<ContainerStatus>();
                 }
               }
               ModelState.Clear();
@@ -95,7 +96,7 @@ namespace WebApp.Controllers
 
     public void SetDropDownList()
     {
-      ViewBag.Statuses = new List<string> { ContainerStatus.Despatch.ToString(), ContainerStatus.Arrived.ToString() };
+      ViewBag.Statuses = new List<string> { ContainerStatus.Despatch.GetDescription<ContainerStatus>(), ContainerStatus.Arrived.GetDescription<ContainerStatus>() };
 
       ViewBag.Page = 1;
     }

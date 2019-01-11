@@ -100,11 +100,11 @@ namespace ADJ.BusinessService.Implementations
         All2 = All2.And(filter2);
       }
 
-      if (status == OrderStatus.AwaitingBooking.ToString())
+      if (status == OrderStatus.AwaitingBooking.GetDescription<OrderStatus>())
       {
         All = All.And(All1);
       }
-      else if (status == OrderStatus.BookingMade.ToString())
+      else if (status == OrderStatus.BookingMade.GetDescription<OrderStatus>())
       {
         All = All.And(All2);
       }
@@ -155,6 +155,7 @@ namespace ADJ.BusinessService.Implementations
         output.Quantity = item.Quantity;
         output.BookingQuantity = item.ReviseQuantity;
         output.Status = item.Status;
+        output.StatusDescription = item.Status.GetDescription<OrderStatus>();
         output.OrderId = item.OrderId;
         output.Cartons = item.Cartons;
         output.Cube = item.Cube;
@@ -255,6 +256,7 @@ namespace ADJ.BusinessService.Implementations
         {
           {
             item.Status = OrderStatus.BookingMade;
+            item.StatusDescription = OrderStatus.BookingMade.GetDescription<OrderStatus>();
 
             List<OrderDetail> orderDetails = await _orderDetailRepository.Query(x => x.ItemNumber == item.ItemNumber, false).SelectAsync();
             orderDetails[0].Status = OrderStatus.BookingMade;

@@ -34,7 +34,9 @@
       <label asp-for="FilterDtos.Mode"></label>
     </td>
     <td>
-      <select asp-for="FilterDtos.Mode" asp-items="new SelectList(ViewBag.Modes)" class="uk-select filters ports"></select>
+      <select asp-for="FilterDtos.Mode" asp-items="new SelectList(ViewBag.Modes)" class="uk-select filters ports">
+        <option selected value="">Any</option>
+      </select>
       <span asp-validation-for="FilterDtos.Mode" class="uk-alert-danger"></span>
     </td>
     <td></td>

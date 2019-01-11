@@ -166,6 +166,8 @@ namespace ADJ.BusinessService.Dtos
     [Display(Name = "Booking Status")]
     public OrderStatus Status { get; set; }
 
+    public string StatusDescription { get; set; }
+
     public int OrderId { get; set; }
   }
 

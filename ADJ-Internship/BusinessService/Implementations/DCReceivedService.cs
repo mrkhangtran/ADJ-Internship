@@ -91,7 +91,7 @@ namespace ADJ.BusinessService.Implementations
 
       if (status != null)
       {
-        Expression<Func<Container, bool>> filter = x => x.Status.ToString() == status;
+        Expression<Func<Container, bool>> filter = x => x.Status.GetDescription<ContainerStatus>() == status;
         All = All.And(filter);
       }
       else
@@ -142,6 +142,7 @@ namespace ADJ.BusinessService.Implementations
         }
 
         output.Status = item.Status;
+        output.StatusDescription = item.Status.GetDescription<ContainerStatus>();
 
         result.Add(output);
       }

@@ -76,7 +76,7 @@ namespace ADJ.BusinessService.Implementations
 
       if ((ETAFrom != null) || (ETATo != null))
       {
-        status = ContainerStatus.Despatch.ToString();
+        status = ContainerStatus.Despatch.GetDescription<ContainerStatus>();
 
         if (ETAFrom != null)
         {
@@ -93,7 +93,7 @@ namespace ADJ.BusinessService.Implementations
 
       if (status != null)
       {
-        Expression<Func<Container, bool>> filter = x => x.Status.ToString() == status;
+        Expression<Func<Container, bool>> filter = x => x.Status.GetDescription<ContainerStatus>() == status;
         All = All.And(filter);
       }
       else

@@ -99,7 +99,7 @@ function changePorts() {
       options.push($(this).text());
     });
   }
-  else if (origin == "HongKong") {
+  else if (origin == "Hong Kong") {
     $.each(hkPorts, function () {
       options.push($(this).text());
     });

@@ -31,7 +31,9 @@ namespace ADJ.Common
     New,
     [Description("Awaiting Booking")]
     AwaitingBooking,
+    [Description("Booking Made")]
     BookingMade,
+    [Description("Partly Manifested")]
     PartlyManifested,
     Manifested,
     Pending
@@ -42,6 +44,7 @@ namespace ADJ.Common
     Pending,
     Despatch,
     Arrived,
+    [Description("DC Booking Received")]
     DCBookingReceived,
     Delivered,
   }

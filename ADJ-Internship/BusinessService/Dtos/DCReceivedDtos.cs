@@ -98,5 +98,7 @@ namespace ADJ.BusinessService.Dtos
     public string BookingRef { get; set; }
 
     public ContainerStatus Status { get; set; }
+
+    public string StatusDescription { get; set; }
   }
 }
