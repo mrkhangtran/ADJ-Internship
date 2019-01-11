@@ -3,15 +3,10 @@
       data-ajax-method="POST"
       data-ajax-mode="replace"
       data-ajax-update="#renderSearching">
-  <style>
-    table.dcbookingSearch tr td:nth-child(2n+1) {
-      text-align: right;
-    }
-  </style>
   <div class="uk-grid uk-card uk-card-default uk-card-body">
-    <h4><a class="uk-link-text" href="/Home">Dashboard</a> ><a class="uk-link-text" href=""> DC Booking </a></h4>
+    <h4><a class="uk-link-text" href="/Home">Dashboard</a> > Delivery > <a class="uk-link-text" href=""> DC Booking </a></h4>
   </div>
-  <div class="uk-grid uk-card uk-card-default uk-card-body">
+  <div class="uk-grid uk-card uk-card-default uk-table-middle uk-card-body">
     <div class="uk-width-1-3">
       <table class="dcbookingSearch uk-table">
         <tbody>
@@ -89,12 +84,12 @@
         <tbody>
           <tr>
             <td>
-              <button style="width:116px" type="button" class="filterItem uk-button uk-button-primary" value=1>Search</button>
+              <button type="button" class="filterItem uk-button uk-button-primary" value=1>Search</button>
             </td>
           </tr>
           <tr>
             <td>
-              <button style="width:116px" id="achieve" type="submit" class="uk-button uk-button-danger">Achieve</button>
+              <button id="achieve" type="submit" class="uk-button uk-button-danger">Achieve</button>
             </td>
           </tr>
 

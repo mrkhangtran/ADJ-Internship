@@ -8,7 +8,7 @@
     <table class="uk-table uk-table-striped uk-table-middle uk-table-small uk-width-1-2">
       <thead>
         <tr>
-          <td style="width:5%"></td>
+          <td style="width:69px"></td>
           <td>
             Container
           </td>
@@ -83,7 +83,7 @@
     <table class="uk-table uk-table-striped uk-table-middle uk-table-small">
       <thead>
         <tr>
-          <td style="width:5%"></td>
+          <td style="width:69px"></td>
           <td>
             Vendor
           </td>
@@ -123,9 +123,9 @@
           <td>
             Net Weight
           </td>
-          <td>
+          @*<td>
             Gross Weight
-          </td>
+          </td>*@
           <td>
             Manifested
           </td>
@@ -186,7 +186,7 @@
                 else
                 {
                   <input type="number" value="0" id="@(Model.Items[i].Manifests[j].ItemNumber)" asp-for="Items[i].Manifests[j].ShipQuantity" class="validationShipQuantity uk-input" />
-                  <span class=" uk-text-danger" asp-validation-for="Items[i].Manifests[j].ShipQuantity" id="validationShipQuantity" hidden></span>
+                  <span class=" uk-text-danger" asp-validation-for="Items[i].Manifests[j].ShipQuantity" id="validationShipQuantity"></span>
                 }
               }
             </td>
@@ -205,9 +205,9 @@
             <td>
               <input id="@("netWeight"+@Model.Items[i].Manifests[j].ItemNumber)" asp-for="Items[i].Manifests[j].NetWeight" readonly class=" uk-input" />
             </td>
-            <td>
+            @*<td>
               @Model.Items[i].Manifests[j].GrossWeight
-            </td>
+            </td>*@
             <td>
               @Model.Items[i].Manifests[j].Manifested
             </td>

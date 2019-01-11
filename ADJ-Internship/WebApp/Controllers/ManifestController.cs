@@ -36,8 +36,6 @@ namespace WebApp.Controllers
         Carrier = searchItem.Carriers.FirstOrDefault();
       }
       ViewBag.pageIndex = current;
-      PagedListResult<ShipmentManifestsDtos> pagedListResult = await _manifestService.ListManifestDtoAsync(1, 2, DestinationPort, OriginPort, Carrier);
-
       PagedListResult<ShipmentManifestsDtos> listManifest = await _manifestService.ListManifestDtoAsync(current, 2, DestinationPort, OriginPort, Carrier, ETDFrom, ETDTo, Status, Vendor, PONumber, Item);
       if (checkClick == true)
       {
