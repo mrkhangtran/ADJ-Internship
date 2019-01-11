@@ -80,6 +80,12 @@ namespace WebApp.Controllers
           return PartialView("_AchieveManifestPartial", pagedListResult);
         }
       }
+      if (shipmentManifestDtos.Items.Where(p => p.selectedContainer == true).Count() < 0)
+      {
+        ViewBag.modalResult = "empty";
+        pagedListResult = shipmentManifestDtos;
+        return PartialView("_AchieveManifestPartial", pagedListResult);
+      }
       if (ViewBag.nameUnique == null)
       {
         if (ModelState.IsValid)

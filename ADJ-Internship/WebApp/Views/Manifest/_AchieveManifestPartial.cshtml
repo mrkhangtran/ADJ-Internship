@@ -274,3 +274,13 @@
     </div>
   </div>
 }
+@if (ViewBag.modalResult == "empty")
+{
+  <button type="button" uk-toggle="target: #modal-center" id="openmodal" hidden="hidden">Open</button>
+  <div id="modal-center" class="uk-flex-top" uk-modal>
+    <div class="uk-modal-dialog uk-modal-body uk-margin-auto-vertical">
+      <button class="uk-modal-close-default" type="button" uk-close></button>
+      <p class="uk-text-danger">Please check your container.</p>
+    </div>
+  </div>
+}
