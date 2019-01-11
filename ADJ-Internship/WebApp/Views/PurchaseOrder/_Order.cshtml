@@ -44,9 +44,21 @@
 }
 
 <!--Order Table-->
-<table class="uk-table uk-table-small uk-table-middle">
+<style>
+  table#orderTable tr td:nth-child(2n+1){
+    text-align: right;
+  }
+</style>
+<table id="orderTable" class="uk-table uk-table-small uk-table-middle" style="table-layout: fixed; text-align: left;">
   <tr>
-    <td colspan="6" style="border-bottom: 0.2px solid gainsboro">
+    <td width="10%">
+      <span class="uk-alert-danger">@ViewBag.OrderDetailError</span>
+    </td>
+    <td width="20%"></td>
+    <td width="10%"></td>
+    <td width="20%"></td>
+    <td width="10%"></td>
+    <td width="20%" style="text-align: right">
       <button type="submit" asp-action="Apply" asp-controller="PurchaseOrder" value="Apply" class="uk-button uk-button-primary" id="applyButton">Apply</button>
     </td>
   </tr>
@@ -55,29 +67,23 @@
       <label asp-for="PONumber"></label>
     </td>
     <td>
-      <div class="col-md-10">
-        <input asp-for="PONumber" class="uk-input" id="to" onkeyup="copy2()" />
-        <span asp-validation-for="PONumber" class="uk-alert-danger"></span>
-        <span class="uk-alert-danger">@ViewBag.PONumberError</span>
-      </div>
+      <input asp-for="PONumber" class="uk-input" id="to" onkeyup="copy2()" />
+      <span asp-validation-for="PONumber" class="uk-alert-danger"></span>
+      <span class="uk-alert-danger">@ViewBag.PONumberError</span>
     </td>
     <td>
       <label asp-for="Vendor"></label>
     </td>
     <td>
-      <div>
-        <input asp-for="Vendor" class="uk-input" />
-        <span asp-validation-for="Vendor" class="uk-alert-danger"></span>
-      </div>
+      <input asp-for="Vendor" class="uk-input" />
+      <span asp-validation-for="Vendor" class="uk-alert-danger"></span>
     </td>
     <td>
       <label asp-for="Mode"></label>
     </td>
     <td>
-      <div class="col-md-10">
-        <select asp-for="Mode" asp-items="new SelectList(ViewBag.Modes)" class="uk-select"></select>
-        <span asp-validation-for="Mode" class="uk-alert-danger"></span>
-      </div>
+      <select asp-for="Mode" asp-items="new SelectList(ViewBag.Modes)" class="uk-select"></select>
+      <span asp-validation-for="Mode" class="uk-alert-danger"></span>
     </td>
   </tr>
   <tr>
@@ -85,28 +91,22 @@
       <label asp-for="OrderDate"></label>
     </td>
     <td>
-      <div class="col-md-10">
-        <input asp-for="OrderDate" class="uk-input" type="date" value=@Model.OrderDate.ToString("yyyy-MM-dd") />
-        <span asp-validation-for="OrderDate" class="uk-alert-danger"></span>
-      </div>
+      <input asp-for="OrderDate" class="uk-input" type="date" value=@Model.OrderDate.ToString("yyyy-MM-dd") />
+      <span asp-validation-for="OrderDate" class="uk-alert-danger"></span>
     </td>
     <td>
       <label asp-for="Company"></label>
     </td>
     <td>
-      <div class="col-md-10">
-        <input asp-for="Company" class="uk-input" />
-        <span asp-validation-for="Company" class="uk-alert-danger"></span>
-      </div>
+      <input asp-for="Company" class="uk-input" />
+      <span asp-validation-for="Company" class="uk-alert-danger"></span>
     </td>
     <td>
       <label asp-for="ShipDate"></label>
     </td>
     <td>
-      <div class="col-md-10">
-        <input asp-for="ShipDate" class="uk-input" type="date" value=@Model.ShipDate.ToString("yyyy-MM-dd") />
-        <span asp-validation-for="ShipDate" class="uk-alert-danger"></span>
-      </div>
+      <input asp-for="ShipDate" class="uk-input" type="date" value=@Model.ShipDate.ToString("yyyy-MM-dd") />
+      <span asp-validation-for="ShipDate" class="uk-alert-danger"></span>
     </td>
   </tr>
   <tr>
@@ -114,28 +114,22 @@
       <label asp-for="Buyer"></label>
     </td>
     <td>
-      <div class="col-md-10">
-        <input asp-for="Buyer" class="uk-input" />
-        <span asp-validation-for="Buyer" class="uk-alert-danger"></span>
-      </div>
+      <input asp-for="Buyer" class="uk-input" />
+      <span asp-validation-for="Buyer" class="uk-alert-danger"></span>
     </td>
     <td>
       <label asp-for="Origin"></label>
     </td>
     <td>
-      <div class="col-md-10">
-        <select asp-for="Origin" asp-items="new SelectList(ViewBag.Origins)" class="uk-select" id="origin"></select>
-        <span asp-validation-for="Origin" class="uk-alert-danger"></span>
-      </div>
+      <select asp-for="Origin" asp-items="new SelectList(ViewBag.Origins)" class="uk-select" id="origin"></select>
+      <span asp-validation-for="Origin" class="uk-alert-danger"></span>
     </td>
     <td>
       <label asp-for="LatestShipDate"></label>
     </td>
     <td>
-      <div class="col-md-10">
-        <input asp-for="LatestShipDate" class="uk-input" type="date" value=@Model.LatestShipDate.ToString("yyyy-MM-dd") />
-        <span asp-validation-for="LatestShipDate" class="uk-alert-danger"></span>
-      </div>
+      <input asp-for="LatestShipDate" class="uk-input" type="date" value=@Model.LatestShipDate.ToString("yyyy-MM-dd") />
+      <span asp-validation-for="LatestShipDate" class="uk-alert-danger"></span>
     </td>
   </tr>
   <tr>
@@ -143,28 +137,22 @@
       <label asp-for="Currency"></label>
     </td>
     <td>
-      <div class="col-md-10">
-        <select asp-for="Currency" asp-items="new SelectList(ViewBag.Currencies)" class="uk-select"></select>
-        <span asp-validation-for="Currency" class="uk-alert-danger"></span>
-      </div>
+      <select asp-for="Currency" asp-items="new SelectList(ViewBag.Currencies)" class="uk-select"></select>
+      <span asp-validation-for="Currency" class="uk-alert-danger"></span>
     </td>
     <td>
       <label asp-for="PortOfLoading"></label>
     </td>
     <td>
-      <div class="col-md-10">
-        <select asp-for="PortOfLoading" value=@Model.PortOfLoading class="uk-select ports"></select>
-        <span asp-validation-for="PortOfLoading" class="uk-alert-danger"></span>
-      </div>
+      <select asp-for="PortOfLoading" value=@Model.PortOfLoading class="uk-select ports"></select>
+      <span asp-validation-for="PortOfLoading" class="uk-alert-danger"></span>
     </td>
     <td>
       <label asp-for="DeliveryDate"></label>
     </td>
     <td>
-      <div class="col-md-10">
-        <input asp-for="DeliveryDate" class="uk-input" type="date" value=@Model.DeliveryDate.ToString("yyyy-MM-dd") />
-        <span asp-validation-for="DeliveryDate" class="uk-alert-danger"></span>
-      </div>
+      <input asp-for="DeliveryDate" class="uk-input" type="date" value=@Model.DeliveryDate.ToString("yyyy-MM-dd") />
+      <span asp-validation-for="DeliveryDate" class="uk-alert-danger"></span>
     </td>
   </tr>
   <tr>
@@ -172,28 +160,22 @@
       <label asp-for="Season"></label>
     </td>
     <td>
-      <div class="col-md-10">
-        <select asp-for="Season" asp-items="new SelectList(ViewBag.Seasons)" class="uk-select"></select>
-        <span asp-validation-for="Season" class="uk-alert-danger"></span>
-      </div>
+      <select asp-for="Season" asp-items="new SelectList(ViewBag.Seasons)" class="uk-select"></select>
+      <span asp-validation-for="Season" class="uk-alert-danger"></span>
     </td>
     <td>
       <label asp-for="PortOfDelivery"></label>
     </td>
     <td>
-      <div class="col-md-10">
-        <select asp-for="PortOfDelivery" value=@Model.PortOfDelivery class="uk-select ports"></select>
-        <span asp-validation-for="PortOfDelivery" class="uk-alert-danger"></span>
-      </div>
+      <select asp-for="PortOfDelivery" value=@Model.PortOfDelivery class="uk-select ports"></select>
+      <span asp-validation-for="PortOfDelivery" class="uk-alert-danger"></span>
     </td>
     <td>
       <label asp-for="OrderType"></label>
     </td>
     <td>
-      <div class="col-md-10">
-        <input asp-for="OrderType" class="uk-input" />
-        <span asp-validation-for="OrderType" class="uk-alert-danger"></span>
-      </div>
+      <input asp-for="OrderType" class="uk-input" />
+      <span asp-validation-for="OrderType" class="uk-alert-danger"></span>
     </td>
   </tr>
   <tr>
@@ -201,27 +183,21 @@
       <label asp-for="Department"></label>
     </td>
     <td>
-      <div class="col-md-10">
-        <input asp-for="Department" class="uk-input" />
-        <span asp-validation-for="Department" class="uk-alert-danger"></span>
-      </div>
+      <input asp-for="Department" class="uk-input" />
+      <span asp-validation-for="Department" class="uk-alert-danger"></span>
     </td>
     <td>
       <label asp-for="Factory"></label>
     </td>
     <td>
-      <div class="col-md-10">
-        <input asp-for="Factory" class="uk-input" />
-        <span asp-validation-for="Factory" class="uk-alert-danger"></span>
-      </div>
+      <input asp-for="Factory" class="uk-input" />
+      <span asp-validation-for="Factory" class="uk-alert-danger"></span>
     </td>
     <td>
       <label asp-for="Status"></label>
     </td>
     <td>
-      <div class="col-md-10">
-        <select asp-for="Status" asp-items="new SelectList(ViewBag.Statuses)" class="uk-input" disabled></select>
-      </div>
+      <select asp-for="Status" asp-items="new SelectList(ViewBag.Statuses)" class="uk-input" disabled></select>
     </td>
   </tr>
 </table>

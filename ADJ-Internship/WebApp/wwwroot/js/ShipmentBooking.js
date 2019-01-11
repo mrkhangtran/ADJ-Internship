@@ -3,6 +3,59 @@
   GetLatestDeliveryDate();
 });
 
+$(document.body).on('click', '#makeBooking', function () {
+  var value = $(this).attr("value");
+  var name = $(this).attr("name");
+  $('<input />').attr('type', 'hidden')
+    .attr('name', name)
+    .attr('value', value)
+    .attr('id', "pageValue")
+    .appendTo('#bookingForm');
+
+  var ETDcheck = AfterShipDate();
+  var ETAcheck = NotAfterDeliveryDate();
+
+  if ((ETDcheck) && (ETAcheck)) {
+    $("#bookingForm").submit();
+  }
+});
+
+$("#ETD").change(function () {
+  AfterShipDate();
+});
+
+$("#ETA").change(function () {
+  NotAfterDeliveryDate();
+});
+
+function AfterShipDate() {
+  var shipDate = GetEarliestShipDate();
+  var ETD = document.getElementById("ETD").value.replace(/-/g, "");
+
+  if (shipDate < ETD) {
+    document.getElementById("ETDError").innerHTML = "";
+    return true;
+  }
+  else {
+    document.getElementById("ETDError").innerHTML = "ETD should be later than the date below.";
+    return false;
+  }
+};
+
+function NotAfterDeliveryDate() {
+  var deliveryDate = GetLatestDeliveryDate();
+  var ETA = document.getElementById("ETA").value.replace(/-/g, "");
+
+  if (ETA < deliveryDate) {
+    document.getElementById("ETAError").innerHTML = "";
+    return true;
+  }
+  else {
+    document.getElementById("ETAError").innerHTML = "ETA should not be later than the date below.";
+    return false;
+  }
+};
+
 function GetLatestDeliveryDate() {
   var checkBoxes = document.getElementsByClassName("checkBoxes");
   var maxDate = new Date(9999, 1, 1);
@@ -32,7 +85,12 @@ function GetLatestDeliveryDate() {
     latest = DatetoString(latest);
   }
 
-  document.getElementById("latestDeliveryDate").innerHTML = "Latest date can be set is " + latest[4] + latest[5] + "/" + latest[6] + latest[7] + "/" + latest[0] + latest[1] + latest[2] + latest[3];
+  var latestMonth = (latest[4] + latest[5]) - 1;
+  latest = new Date(latest[0] + latest[1] + latest[2] + latest[3], latestMonth, latest[6] + latest[7]);
+  latest.setDate(latest.getDate() + 1);
+  latest = DatetoString(latest);
+
+  document.getElementById("latestDeliveryDate").innerHTML = "ETA should be earlier than " + latest[4] + latest[5] + "/" + latest[6] + latest[7] + "/" + latest[0] + latest[1] + latest[2] + latest[3];
 
   return latest;
 };
@@ -60,7 +118,7 @@ function GetEarliestShipDate() {
     earliest = DatetoString(earliest);
   }
 
-  document.getElementById("earliestShipDate").innerHTML = "Earliest date can be set is AFTER " + earliest[4] + earliest[5] + "/" + earliest[6] + earliest[7] + "/" + earliest[0] + earliest[1] + earliest[2] + earliest[3];
+  document.getElementById("earliestShipDate").innerHTML = "ETD should be later than " + earliest[4] + earliest[5] + "/" + earliest[6] + earliest[7] + "/" + earliest[0] + earliest[1] + earliest[2] + earliest[3];
 
   return earliest;
 };
@@ -69,6 +127,7 @@ function DatetoString(date) {
   return "" + date.getFullYear() + ('0' + (date.getMonth() + 1)).slice(-2) + ('0' + date.getDate()).slice(-2);
 };
 
+//checkAll checkbox
 $(document.body).on('click', '#checkAll', function () {
   var checkBoxes = document.getElementsByClassName("checkBoxes");
   var current = $("#checkAll")[0].checked;
@@ -80,6 +139,7 @@ $(document.body).on('click', '#checkAll', function () {
   GetLatestDeliveryDate();
 });
 
+//paging
 $(document.body).on('click', '.paging', function () {
   var value = $(this).attr("value");
   var name = $(this).attr("name");
@@ -92,6 +152,7 @@ $(document.body).on('click', '.paging', function () {
   $("#bookingForm").submit();
 });
 
+//Search Button
 $(document.body).on('click', '.searchButton', function () {
   if ($("#filterForm").valid()) {
     //get data from form
@@ -129,6 +190,8 @@ $(document.body).on('click', '.searchButton', function () {
         showResult();
         $("#resultPartial").html(objOperations);
         changePorts();
+        GetEarliestShipDate();
+        GetLatestDeliveryDate();
         rebindValidators();
       }
     });
@@ -179,7 +242,7 @@ function changePorts() {
       options.push($(this).text());
     });
   }
-  else if (origin == "HongKong") {
+  else if (origin == "Hong Kong") {
     $.each(hkPorts, function () {
       options.push($(this).text());
     });

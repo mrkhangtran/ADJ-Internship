@@ -65,8 +65,10 @@ namespace ADJ.BusinessService.Dtos
 
   public class ContainerDto : EntityDtoBase, ICreateMapping
   {
+    [Display(Name = "Origin Port")]
     public string OriginPort { get; set; }
 
+    [Display(Name = "Destination Port")]
     public string DestinationPort { get; set; }
 
     public string Mode { get; set; }

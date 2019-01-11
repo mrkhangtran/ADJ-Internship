@@ -10,6 +10,7 @@ using AutoMapper;
 using LinqKit;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
@@ -90,7 +91,7 @@ namespace ADJ.BusinessService.Implementations
 
       if (status != null)
       {
-        Expression<Func<Container, bool>> filter = x => x.Status.ToString() == status;
+        Expression<Func<Container, bool>> filter = x => x.Status.GetDescription<ContainerStatus>() == status;
         All = All.And(filter);
       }
       else
@@ -109,6 +110,8 @@ namespace ADJ.BusinessService.Implementations
       rs.Items = await ConvertToResultAsync(result.Items);
       rs.PageCount = result.PageCount;
       rs.TotalCount = result.TotalCount;
+
+      rs.Items = rs.Items.OrderBy(p => p.ContainerName).ToList();
 
       return rs;
     }
@@ -139,6 +142,7 @@ namespace ADJ.BusinessService.Implementations
         }
 
         output.Status = item.Status;
+        output.StatusDescription = item.Status.GetDescription<ContainerStatus>();
 
         result.Add(output);
       }
