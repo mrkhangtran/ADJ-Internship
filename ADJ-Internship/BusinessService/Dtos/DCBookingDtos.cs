@@ -25,7 +25,7 @@ namespace ADJ.BusinessService.Dtos
     public string DistributionCenter { get; set; }
 
     public string WareHouse { get; set; }
-    [Required]
+    //[Required]
     public string BookingRef { get; set; }
     static DateTime defaultDate = DateTime.Now;
     [DCBookingDtoValidators("ArrivalDate")]
@@ -39,7 +39,7 @@ namespace ADJ.BusinessService.Dtos
     public string BookingTime { get; set; } = defaultDate.ToString("hh:mm");
 
     public string Haulier { get; set; }
-    [Required]
+    //[Required]
     [StringLength(20)]
     public string Client { get; set; }
 

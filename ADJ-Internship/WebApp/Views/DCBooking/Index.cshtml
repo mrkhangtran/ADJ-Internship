@@ -137,32 +137,43 @@
       $('#successmodal').trigger('click');
     });
   }
-  //$('#dcbooking').submit(function () {
-  //  var check = 0;
-  //  var blank = document.getElementsByClassName("client");
-  //  for (i = 0; i < blank.length; i++) {
-  //    if (blank[i].value == "") {
-  //      check++;
-  //      break;
-  //    }
-  //  }
-  //  var blank = document.getElementsByClassName("bookingtime");
-  //  for (i = 0; i < blank.length; i++) {
-  //    if (blank[i].value == "") {
-  //      check++;
-  //      break;
-  //    }
-  //  }
-  //  var blank = document.getElementsByClassName("bookingref");
-  //  for (i = 0; i < blank.length; i++) {
-  //    if (blank[i].value == "") {
-  //      check++;
-  //      break;
-  //    }
-  //  }
-  //  if (check > 0) {
-  //    alert("Some fields are empty or contain an improper value. Please try again.");
-  //  }
-  //});
+  $(document.body).on('change', '.checkrequired', function () {
+    //var quantity = $(this).val();
+    //var id = $(this).attr("id");
+    //var cartonID = "#carton" + id;
+    //var cubeID = "#cube" + id;
+    //var kgsID = "#kgs" + id;
+    //var shipcartonID = "#shipCarton" + id;
+    //var shipcubeID = "#shipCube" + id;
+    //var shipkgsID = "#netWeight" + id;
+    //var carton = $(cartonID).val();
+    //var cube = $(cubeID).val();
+    //var kgs = $(kgsID).val();
+    //var shipcarton = quantity * carton;
+    //var shipcube = quantity * cube;
+    //var netWeight = quantity * kgs;
+    //$(shipcartonID).val(shipcarton);
+    //$(shipcubeID).val(shipcube);
+    //$(shipkgsID).val(netWeight);
+    if (this.checked) {
+      var id = $(this).attr("id");
+      var bookingref = "#bookingref" + id;
+      var client = "#client" + id;
+      $('#dcbooking').validate({ 
+        rules: {
+          bookingref: {
+            required: true,
+          },
+          client: {
+            required: true,
+          }
+        }
+      });
+      $('#bookingrefvalidate').append('<span class="uk-text-danger"> The booking ref is required</span>')
+      $('#clientvalidate').append('<span class="uk-text-danger"> The client is required</span>')
+
+
+    }
+  });
 </script>
 
