@@ -154,7 +154,7 @@ namespace WebApp.Controllers
     public void SetDropDownList()
     {
       ViewBag.Modes = new List<string> { "Air", "Road", "Sea" };
-      ViewBag.Origins = new List<string> { "HongKong", "Vietnam" };
+      ViewBag.Origins = new List<string> { "Hong Kong", "Vietnam" };
       ViewBag.Statuses = new List<string> { ContainerStatus.Despatch.ToString(), ContainerStatus.Arrived.ToString() };
 
       ViewBag.ContinuedFromPrevious = false;
