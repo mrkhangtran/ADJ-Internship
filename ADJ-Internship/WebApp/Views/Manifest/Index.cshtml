@@ -3,12 +3,17 @@
       data-ajax-method="POST"
       data-ajax-mode="replace"
       data-ajax-update="#renderSearching">
+  <style>
+    table.manifestSearch tr td:nth-child(2n+1) {
+      text-align: right;
+    }
+  </style>
   <div class="uk-grid uk-card uk-card-default uk-card-body">
     <h4><a class="uk-link-text" href="/Home">Dashboard</a> ><a href="" class="uk-link-text"> Shipment Manifest</a></h4>
   </div>
   <div class="uk-grid uk-card uk-card-default uk-card-body">
     <div class="uk-width-1-3">
-      <table class="uk-table">
+      <table class="manifestSearch uk-table">
         <tbody>
           <tr>
             <td><label>Destination Port</label></td>
@@ -47,7 +52,7 @@
       </table>
     </div>
     <div class="uk-width-1-3">
-      <table class="uk-table">
+      <table class="manifestSearch uk-table">
         <tbody>
           <tr>
             <td><label>Vendor</label></td>
