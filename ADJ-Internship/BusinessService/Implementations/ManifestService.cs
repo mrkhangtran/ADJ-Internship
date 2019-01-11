@@ -372,7 +372,12 @@ namespace ADJ.BusinessService.Implementations
       var rs = Mapper.Map<ShipmentManifestsDtos>(container);
       return rs;
     }
-
-
+    public bool checkNameContainer(string name)
+    {
+      var check = _containerRepository.Query(x => x.Name == name,false).SelectAsync().Result.Count();
+      if (check > 0)
+        return true;
+      return false;
+    }
   }
 }

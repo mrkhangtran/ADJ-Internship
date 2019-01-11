@@ -1,12 +1,20 @@
 ﻿@model ADJ.Common.PagedListResult<ADJ.BusinessService.Dtos.ProgressCheckDto>
-@using (Html.BeginForm())
-{
-  <div class="uk-grid uk-card uk-card-default uk-card-body">
-    <h4><a class="uk-link-text" href="/Home">Dashboard</a> > <a class="uk-link-text" href="">Progress Check</a></h4>
+<form id="progresscheck" asp-action="CreateOrUpdate" asp-controller="ProgressCheck" data-ajax-complete="showup" data-ajax="true"
+      data-ajax-method="POST"
+      data-ajax-mode="replace"
+      data-ajax-update="#renderSearching">
+  <style>
+
+    table.progressSearch tr td:nth-child(2n+1) {
+      text-align: right;
+    }
+  </style>
+  <div class="uk-grid uk-card uk-card-default uk-table-middle uk-card-body">
+    <h4><a class="uk-link-text" href="/Home">Dashboard</a> > Order > <a class="uk-link-text" href="">Progress Check</a></h4>
   </div>
-  <div class="uk-grid uk-card uk-card-default uk-card-body uk-margin-auto-bottom">
+  <div class="uk-grid uk-card uk-card-default uk-card-body uk-table-middle uk-margin-auto-bottom">
     <div class="uk-width-1-3">
-      <table class="uk-table">
+      <table class="progressSearch uk-table">
         <tbody>
           <tr>
             <td><label>Origin</label></td>
@@ -42,19 +50,12 @@
               </div>
             </td>
           </tr>
-          <tr>
-            <td><label>Status</label></td>
-            <td>
-              <div class="uk-form-select" data-uk-form-select>
-                @Html.DropDownList("Status", new SelectList(ViewBag.Status), "Any", new { @id = "Status", @class = "uk-select" })
-              </div>
-            </td>
-          </tr>
+
         </tbody>
       </table>
     </div>
     <div class="uk-width-1-3">
-      <table class="uk-table">
+      <table class="progressSearch uk-table">
         <tbody>
           <tr>
             <td><label>Dept</label></td>
@@ -78,6 +79,14 @@
               <input id="ItemSearch" type="number" class="uk-input" />
             </td>
           </tr>
+          <tr>
+            <td><label>Status</label></td>
+            <td>
+              <div class="uk-form-select" data-uk-form-select>
+                @Html.DropDownList("Status", new SelectList(ViewBag.Status), "Any", new { @id = "Status", @class = "uk-select" })
+              </div>
+            </td>
+          </tr>
         </tbody>
       </table>
 
@@ -93,7 +102,7 @@
           </tr>
           <tr>
             <td>
-              <input id="Achieve" asp-action="CreateOrUpdate" asp-controller="ProgressCheck" class="uk-button uk-button-danger" type="submit" data-uk-button value="Achieve">
+              <button id="Achieve" class="uk-button uk-button-danger" type="submit" data-uk-button value="Achieve">Achieve</button>
             </td>
           </tr>
 
@@ -105,222 +114,9 @@
   <br />
   <br />
   <div id="renderSearching">
-    @for (int i = 0; i < Model.Items.Count(); i++)
-    {
-      <div class="uk-grid uk-card uk-card-default uk-card-body  uk-margin-small">
-        @Html.HiddenFor(model => model.Items[i].OrderId, new { Value = Model.Items[i].OrderId })
-        @Html.HiddenFor(model => model.Items[i].Id, new { Value = Model.Items[i].Id })
-        <table class="uk-table uk-table-striped uk-table-middle uk-table-small">
-          <thead>
-            <tr>
-              <td style="width:5%"></td>
-              <td>
-                Vendor
-              </td>
-              <td>
-                Factory
-              </td>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td style="width:5%"></td>
-              <td>@Model.Items[i].Supplier</td>
-              @Html.HiddenFor(model => model.Items[i].Supplier)
-              <td>@Model.Items[i].Factory</td>
-              @Html.HiddenFor(model => model.Items[i].Factory)
-            </tr>
-          </tbody>
-        </table>
-        <table class="uk-table uk-table-striped uk-table-middle uk-table-small">
-          <thead>
-            <tr>
-              <td style="width:5%"></td>
-              <td style="width:15%">
-                PO Number
-              </td>
-              <td style="width:15%">
-                PO Quantity
-              </td>
-              <td style="width:15%">
-                PO Check Quantity
-              </td>
-              <td style="width:12.5%">
-                PO Ship Date
-              </td>
-              <td style="width:12.5%">
-                Inspection Date
-              </td>
-              <td style="width:12.5%">
-                Int Ship Date
-              </td>
-              <td style="width:12.5%">
-                PO Quantity Complete
-              </td>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              @if (Model.Items[i].Complete == false)
-              {
-                <td style="width:5%">
-                  <input class="uk-checkbox" type="checkbox" asp-for="Items[i].selected" />
-                </td>
-              }
-              else
-              {
-                <td style="width:5%">
-                  <input disabled class="uk-checkbox" type="checkbox" asp-for="Items[i].selected" />
-                </td>
-              }
-              <td style="width:15%">@Model.Items[i].PONumber</td>
-              @Html.HiddenFor(model => model.Items[i].PONumber)
-              <td style="width:15%">@Model.Items[i].POQuantity</td>
-              @Html.HiddenFor(model => model.Items[i].POQuantity)
-              <td style="width:15%">@Model.Items[i].EstQtyToShip</td>
-              @Html.HiddenFor(model => model.Items[i].EstQtyToShip)
-              <td style="width:12.5%">@Model.Items[i].ShipDate.ToString("MM/dd/yyyy")</td>
-              @{
-                if (Model.Items[i].Complete == true)
-                {
-                  <td style="width:12.5%">
-                    <input readonly type="date" asp-for="Items[i].InspectionDate" class=" uk-input" />
-                  </td>
-                  <td style="width:12.5%">
-                    <input readonly type="date" asp-for="Items[i].IntendedShipDate" class=" uk-input" />
-                  </td>
-                }
-                else
-                {
-                  <td style="width:12.5%">
-                    <input type="date" asp-for="Items[i].InspectionDate" class=" uk-input" />
-                    <span class=" uk-text-danger" asp-validation-for="Items[i].InspectionDate"></span>
-                  </td>
-                  <td style="width:12.5%">
-                    <input type="date" asp-for="Items[i].IntendedShipDate" class=" uk-input" />
-                    <span class=" uk-text-danger" asp-validation-for="Items[i].IntendedShipDate"></span>
-                  </td>
-                }
-              }
-
-              <td style="width:12.5%">
-                @if (@Model.Items[i].Complete == true)
-                {
-                  <p>YES</p>
-                }
-                else
-                {
-                  <p>NO</p>
-                }
-                @Html.HiddenFor(model => model.Items[i].Complete)
-              </td>
-            </tr>
-          </tbody>
-        </table>
-        <table class="uk-table uk-table-striped uk-table-middle uk-table-small">
-          <thead>
-            <tr>
-              <td style="width:5%"></td>
-              <td>
-                Item Number
-              </td>
-              <td>
-                Item Quantity
-              </td>
-              <td>
-                Revise Quantity
-              </td>
-            </tr>
-          </thead>
-          <tbody>
-            @for (int j = 0; j < Model.Items[i].ListOrderDetailDto.Count(); j++)
-            {
-              <tr>
-                @if (Model.Items[i].Complete == false)
-                {
-                  <td style="width:5%">
-                    <input class="uk-checkbox" type="checkbox" asp-for="Items[i].ListOrderDetailDto[j].selected" />
-                  </td>
-                }
-                else
-                {
-                  <td style="width:5%">
-                    <input disabled class="uk-checkbox" type="checkbox" asp-for="Items[i].ListOrderDetailDto[j].selected" />
-                  </td>
-                }
-                @Html.HiddenFor(model => model.Items[i].ListOrderDetailDto[j].Id)
-                <td>@Model.Items[i].ListOrderDetailDto[j].ItemNumber</td>
-                <td>@Model.Items[i].ListOrderDetailDto[j].Quantity</td>
-                @Html.HiddenFor(model => model.Items[i].ListOrderDetailDto[j].Quantity)
-                @{
-                  if (Model.Items[i].Complete == true)
-                  {
-                    <td>
-                      <input readonly type="number" asp-for="Items[i].ListOrderDetailDto[j].ReviseQuantity" class=" uk-input" />
-                    </td>
-                  }
-                  else
-                  {
-                    <td>
-                      <input type="number" asp-for="Items[i].ListOrderDetailDto[j].ReviseQuantity" class=" uk-input" />
-                      <span class=" uk-text-danger" asp-validation-for="Items[i].ListOrderDetailDto[j].ReviseQuantity"></span>
-                    </td>
-                  }
-                }
-
-              </tr>
-            }
-          </tbody>
-        </table>
-      </div>
-      <br />
-    }
-
-    <div class="uk-align-right">
-      <ul class="uk-pagination">
-        @{
-          if (ViewBag.pageIndex > 1)
-          {
-            <li><a asp-action="Index" asp-controller="ProgressCheck" asp-route-pageIndex="@(ViewBag.pageIndex - 1)" class="page-link"><span uk-pagination-previous></span></a></li>
-          }
-          for (var i = 1; i <= Model.PageCount; i++)
-          {
-            if (i == ViewBag.pageIndex)
-            {
-              <li class="uk-disabled">
-                <a asp-action="Index" asp-controller="ProgressCheck" asp-route-pageIndex="@i" class="page-link"><u>@i</u></a>
-              </li>
-            }
-            else
-            {
-              <li class="uk-active">
-                <a asp-action="Index" asp-controller="ProgressCheck" asp-route-pageIndex="@i" class="page-link">@i</a>
-              </li>
-            }
-          }
-          if (ViewBag.pageIndex < Model.PageCount)
-          {
-            <li><a asp-action="Index" asp-controller="ProgressCheck" asp-route-pageIndex="@(ViewBag.pageIndex + 1)" class="page-link"><span uk-pagination-next></span></a></li>
-          }
-        }
-
-      </ul>
-    </div>
+    <partial name="_SearchingPartial" model="Model" />
   </div>
-}
-@if (ViewBag.check == 1)
-{
-  <button type="button" uk-toggle="target: #modal-center" id="openmodal" hidden="hidden">Open</button>
-  <div id="modal-center" class="uk-flex-top" uk-modal>
-    <div class="uk-modal-dialog uk-modal-body uk-margin-auto-vertical">
-      <button class="uk-modal-close-default" type="button" uk-close></button>
-      @foreach (var item in ViewBag.POUpdate)
-      {
-        <p class="uk-text-success uk-text-bold">Your PO @item has been successfully updated</p>
-      }
-    </div>
-  </div>
-}
+</form>
 @foreach (var item in ViewBag.VNPorts)
 {
   <p class="vnPorts" hidden="hidden">@item</p>
@@ -387,11 +183,12 @@
       }
     }
   };
-  $("#modal-center").on({
-    'hide.uk.modal': function () {
-      window.location.href = "/ProgressCheck";
-    }
-  });
+  showup = function showup() {
+    $(document).ready(function () {
+      $('#openmodal').trigger('click');
+      changePorts();
+    });
+  }
 </script>
 
 

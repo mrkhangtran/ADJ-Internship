@@ -44,8 +44,10 @@ namespace WebApp.Controllers
     {
       ViewBag.Check = 0;
       bool checkedItem = false;
+      bool check = false;
       List<string> POUpdate = new List<string>();
-      PagedListResult<ProgressCheckDto> lstPrc = await _prcService.ListProgressCheckDtoAsync();
+      PagedListResult<ProgressCheckDto> lstPrc = new PagedListResult<ProgressCheckDto>();
+      lstPrc.Items = new List<ProgressCheckDto>();
       GetItemSearchDto getSearchItem = await _prcService.SearchItem();
       ViewBag.Suppliers = getSearchItem.Suppliers;
       ViewBag.VNPorts = new List<string> { "Cẩm Phả", "Cửa Lò", "Hải Phòng", "Hòn Gai", "Nghi Sơn" };
@@ -55,6 +57,7 @@ namespace WebApp.Controllers
       ViewBag.Depts = getSearchItem.Depts;
       ViewBag.Status = getSearchItem.Status;
       ViewBag.POUpdate = POUpdate;
+
       for (int i = 0; i < progressCheckDTOs.Items.Count(); i++)
       {
         for (int j = 0; j < progressCheckDTOs.Items[i].ListOrderDetailDto.Count(); j++)
@@ -85,19 +88,30 @@ namespace WebApp.Controllers
           }
           if (item.selected == true || item.ListOrderDetailDto.Where(x => x.selected == true).ToList().Count > 0)
           {
-            await _prcService.CreateOrUpdateProgressCheckAsync(item);
+            var temp = await _prcService.CreateOrUpdateProgressCheckAsync(item);
+            temp.ShipDate = item.ShipDate;
+            lstPrc.Items.Add(temp);
             POUpdate.Add(item.PONumber);
             ViewBag.Check = 1;
             checkedItem = true;
+            check = true;
           }
         }
-        lstPrc = progressCheckDTOs;
+        lstPrc.PageCount = progressCheckDTOs.PageCount;
       }
       else
       {
         lstPrc = progressCheckDTOs;
+        lstPrc.PageCount = progressCheckDTOs.PageCount;
+        ViewBag.Check = 2;
       }
-      return View("Index", lstPrc);
+      if (check == false)
+      {
+        lstPrc.PageCount = progressCheckDTOs.PageCount;
+        lstPrc = progressCheckDTOs;
+        return PartialView("_AchievePartial", lstPrc);
+      }
+      return PartialView("_AchievePartial", lstPrc);
     }
   }
 }

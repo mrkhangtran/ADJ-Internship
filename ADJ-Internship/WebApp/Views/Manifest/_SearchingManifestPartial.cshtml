@@ -10,13 +10,14 @@ else
   @for (var i = 0; i < Model.Items.Count(); i++)
   {
     @Html.HiddenFor(model => model.Items[i].Id, new { Value = Model.Items[i].Id })
+    @Html.HiddenFor(model => model.PageCount, new { Value = Model.PageCount })
     <br />
     <br />
     <div class="uk-grid uk-card uk-card-default uk-card-body">
-      <table class="uk-table uk-table-striped uk-table-middle uk-table-small">
+      <table class="uk-table uk-table-striped uk-table-middle uk-table-small uk-width-1-2">
         <thead>
           <tr>
-            <td style="width:5%"></td>
+            <td style="width:45px"></td>
             <td>
               Container
             </td>
@@ -24,7 +25,7 @@ else
               Size
             </td>
             <td>
-              Loading
+              Mode
             </td>
             <td>
               Pack Type
@@ -33,14 +34,14 @@ else
         </thead>
         <tbody>
           <tr>
-            <td style="width:5%">
+            <td style="width:45px">
               @if (Model.Items[i].Id == 0)
               {
                 <input class="uk-checkbox" type="checkbox" asp-for="Items[i].selectedContainer" />
               }
               else
               {
-                <input disabled class="uk-checkbox" type="checkbox" asp-for="Items[i].selectedContainer" />
+                <input disabled class="uk-checkbox" />
               }
             </td>
             <td>
@@ -49,6 +50,7 @@ else
                 {
                   <input id="validationName" asp-for="Items[i].Name" class="validationName uk-input" />
                   <span class=" uk-text-danger" asp-validation-for="Items[i].Name" id="validationShipQuantity"></span>
+                  <span class=" uk-text-danger">@ViewBag.nameUnique</span>
                 }
                 else
                 {
@@ -90,7 +92,7 @@ else
       <table class="uk-table uk-table-striped uk-table-middle uk-table-small">
         <thead>
           <tr>
-            <td style="width:5%"></td>
+            <td style="width:69px"></td>
             <td>
               Vendor
             </td>
@@ -130,9 +132,9 @@ else
             <td>
               Net Weight
             </td>
-            <td>
+            @*<td>
               Gross Weight
-            </td>
+            </td>*@
             <td>
               Manifested
             </td>
@@ -142,10 +144,15 @@ else
           @for (var j = 0; j < Model.Items[i].Manifests.Count(); j++)
           {
             @Html.HiddenFor(model => model.Items[i].Manifests[j].BookingId, new { Value = Model.Items[i].Manifests[j].BookingId })
+            @Html.HiddenFor(model => model.Items[i].Manifests[j].PONumber, new { Value = Model.Items[i].Manifests[j].PONumber })
             @Html.HiddenFor(model => model.Items[i].Manifests[j].ItemNumber, new { Value = Model.Items[i].Manifests[j].ItemNumber })
             @Html.HiddenFor(model => model.Items[i].Manifests[j].BookingQuantity, new { Value = Model.Items[i].Manifests[j].BookingQuantity })
             @Html.HiddenFor(model => model.Items[i].Manifests[j].Id, new { Value = Model.Items[i].Manifests[j].Id })
             @Html.HiddenFor(model => model.Items[i].Manifests[j].OpenQuantity, new { Value = Model.Items[i].Manifests[j].OpenQuantity })
+            @Html.HiddenFor(model => model.Items[i].Manifests[j].Carrier, new { Value = Model.Items[i].Manifests[j].Carrier })
+            @Html.HiddenFor(model => model.Items[i].Manifests[j].Vendor, new { Value = Model.Items[i].Manifests[j].Vendor })
+            @Html.HiddenFor(model => model.Items[i].Manifests[j].Manifested, new { Value = Model.Items[i].Manifests[j].Manifested })
+            @Html.HiddenFor(model => model.Items[i].Manifests[j].ETDDate, new { Value = Model.Items[i].Manifests[j].ETDDate })
             <tr>
               <td style="width:5%">
                 @if (Model.Items[i].Id == 0)
@@ -154,7 +161,7 @@ else
                 }
                 else
                 {
-                  <input disabled class="uk-checkbox" type="checkbox" asp-for="Items[i].Manifests[j].selectedItem" />
+                  <input disabled class="uk-checkbox" />
                 }
               </td>
               <td>
@@ -183,11 +190,12 @@ else
                   if (Model.Items[i].Id > 0)
                   {
                     @Model.Items[i].Manifests[j].ShipQuantity
+                    @Html.HiddenFor(model => model.Items[i].Manifests[j].ShipQuantity, new { Value = Model.Items[i].Manifests[j].ShipQuantity })
                   }
                   else
                   {
                     <input type="number" value="0" id="@(Model.Items[i].Manifests[j].ItemNumber)" asp-for="Items[i].Manifests[j].ShipQuantity" class="validationShipQuantity uk-input" />
-                    <span class=" uk-text-danger" asp-validation-for="Items[i].Manifests[j].ShipQuantity" id="validationShipQuantity" hidden></span>
+                    <span class=" uk-text-danger" asp-validation-for="Items[i].Manifests[j].ShipQuantity" id="validationShipQuantity"></span>
                   }
                 }
               </td>
@@ -206,9 +214,9 @@ else
               <td>
                 <input id="@("netWeight"+@Model.Items[i].Manifests[j].ItemNumber)" asp-for="Items[i].Manifests[j].NetWeight" readonly class=" uk-input" />
               </td>
-              <td>
+              @*<td>
                 @Model.Items[i].Manifests[j].GrossWeight
-              </td>
+              </td>*@
               <td>
                 @Model.Items[i].Manifests[j].Manifested
               </td>

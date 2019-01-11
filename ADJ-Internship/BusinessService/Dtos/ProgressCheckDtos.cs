@@ -80,6 +80,7 @@ namespace ADJ.BusinessService.Dtos
     public decimal Quantity { get; set; }
 
     [ReviseQuantityvalidate("Quantity")]
+    [StringLength(10)]
     public decimal ReviseQuantity { get; set; }
 
     [Required]
