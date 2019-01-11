@@ -179,10 +179,24 @@
                   @Model.PODetails.Items[i].ItemNumber
                 </td>
                 <td class="uk-text-truncate" title=@Model.PODetails.Items[i].Description>
-                  @Model.PODetails.Items[i].Description
+                  @if (Model.PODetails.Items[i].Description == null)
+                  {
+                    <span>N/A</span>
+                  }
+                  else
+                  {
+                    <span>@Model.PODetails.Items[i].Description</span>
+                  }
                 </td>
                 <td class="uk-text-truncate" title=@Model.PODetails.Items[i].Tariff>
-                  @Model.PODetails.Items[i].Tariff
+                  @if (Model.PODetails.Items[i].Tariff == null)
+                  {
+                    <span>N/A</span>
+                  }
+                  else
+                  {
+                    <span>@Model.PODetails.Items[i].Tariff</span>
+                  }
                 </td>
                 <td>
                   @Model.PODetails.Items[i].Quantity
@@ -209,13 +223,34 @@
                   @Model.PODetails.Items[i].TotalRetailPrice.ToString("0.00")
                 </td>
                 <td>
-                  @Model.PODetails.Items[i].Warehouse
+                  @if (Model.PODetails.Items[i].Warehouse == null)
+                  {
+                    <span>N/A</span>
+                  }
+                  else
+                  {
+                    <span>@Model.PODetails.Items[i].Warehouse</span>
+                  }
                 </td>
                 <td>
-                  @Model.PODetails.Items[i].Size
+                  @if (Model.PODetails.Items[i].Size == null)
+                  {
+                    <span>N/A</span>
+                  }
+                  else
+                  {
+                    <span>@Model.PODetails.Items[i].Size</span>
+                  }
                 </td>
                 <td>
-                  @Model.PODetails.Items[i].Colour
+                  @if (Model.PODetails.Items[i].Colour == null)
+                  {
+                    <span>N/A</span>
+                  }
+                  else
+                  {
+                    <span>@Model.PODetails.Items[i].Colour</span>
+                  }
                 </td>
                 <td>
                   <button type="button" value="@i" name="method" class="uk-button-secondary itemButton"><span uk-icon="icon: pencil; ratio: 1"></span></button>
