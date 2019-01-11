@@ -28,11 +28,6 @@ namespace WebApp.Controllers
 
       model.OrderDetails = await _bookingService.ConvertToResultAsync(await _bookingService.ListShipmentFilterAsync(null, "HongKong", "Aberdeen", null, null, null, null, null, null));
 
-      if (model.OrderDetails.Count == 0)
-      {
-        ViewBag.ShowModal = "NoResult";
-      }
-
       return View(model);
     }
 
@@ -50,10 +45,6 @@ namespace WebApp.Controllers
       if (model.OrderDetails.Count > 0)
       {
         model.OrderDetails = await _bookingService.UpdatePackType(model.OrderDetails);
-      }
-      else
-      {
-        ViewBag.ShowModal = "NoResult";
       }
 
       return PartialView("_Result", model);

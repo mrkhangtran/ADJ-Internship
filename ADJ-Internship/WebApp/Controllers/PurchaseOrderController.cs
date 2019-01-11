@@ -115,6 +115,14 @@ namespace ADJ.WebApp.Controllers
       if (ModelState.IsValid)
       {
         if (viewName != "Edit") { addModel.orderDetails = addModel.PODetails.Items; }
+
+        if (addModel.Buyer == null) { addModel.Buyer = "N/A"; }
+        if (addModel.Department == null) { addModel.Department = "N/A"; }
+        if (addModel.Vendor == null) { addModel.Vendor = "N/A"; }
+        if (addModel.Company == null) { addModel.Company = "N/A"; }
+        if (addModel.Factory == null) { addModel.Factory = "N/A"; }
+        if (addModel.OrderType == null) { addModel.OrderType = "N/A"; }
+
         await _poService.CreateOrUpdateOrderAsync(addModel);
 
         if (viewName == "Edit")
@@ -170,6 +178,12 @@ namespace ADJ.WebApp.Controllers
             ViewBag.ItemId = -1;
             return PartialView("_OrderDetail", addModel);
           }
+
+          if (addModel.SingleOrderDetail.Description == null) { addModel.SingleOrderDetail.Description = "N/A"; }
+          //if (addModel.SingleOrderDetail.Tariff == null) { addModel.SingleOrderDetail.Tariff = "N/A"; }
+          if (addModel.SingleOrderDetail.Warehouse == null) { addModel.SingleOrderDetail.Warehouse = "N/A"; }
+          if (addModel.SingleOrderDetail.Size == null) { addModel.SingleOrderDetail.Size = "N/A"; }
+          if (addModel.SingleOrderDetail.Colour == null) { addModel.SingleOrderDetail.Colour = "N/A"; }
 
           addModel.PODetails.Items.Add(addModel.SingleOrderDetail);
           ViewBag.ItemId = -2;

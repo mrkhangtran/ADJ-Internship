@@ -12,9 +12,6 @@
         case "Updated":
           <p>Your container details are successfully updated.</p>
           break;
-        case "NoResult":
-          <p>No match results were found. Please try again.</p>
-          break;
         case "NoItem":
           <p>Please select at least 1 item.</p>
           break;
@@ -28,175 +25,171 @@
   </div>
 }
 
-<input asp-for="FilterDto.Status" value=@Model.FilterDto.Status type="hidden" />
 
-@if (Model.ResultDtos != null)
+@if ((Model.ResultDtos != null) && (Model.ResultDtos.Items != null) && (Model.ResultDtos.Items.Count > 0))
 {
-  if (Model.ResultDtos.Items != null)
+  <input asp-for="FilterDto.Status" value=@Model.FilterDto.Status type="hidden" />
+
+  int start = 0;
+  int groupId = 0;
+  Model.ContainerInfoDtos = new List<ADJ.BusinessService.Dtos.ContainerInfoDto>();
+
+  if (ViewBag.ContinuedFromPrevious)
   {
-    int start = 0;
-    int groupId = 0;
-    Model.ContainerInfoDtos = new List<ADJ.BusinessService.Dtos.ContainerInfoDto>();
+    <p>Group continued from previous page</p>
+  }
 
-    if (ViewBag.ContinuedFromPrevious)
+  for (int i = 0; i < Model.ResultDtos.Items.Count; i++)
+  {
+    if ((i + 1 < Model.ResultDtos.Items.Count) || (i == (Model.ResultDtos.Items.Count - 1)))
     {
-      <p>Group continued from previous page</p>
-    }
 
-    for (int i = 0; i < Model.ResultDtos.Items.Count; i++)
-    {
-      if ((i + 1 < Model.ResultDtos.Items.Count) || (i == (Model.ResultDtos.Items.Count - 1)))
+
+      if ((i == (Model.ResultDtos.Items.Count - 1)) || (Model.ResultDtos.Items[i].OriginPort.CompareTo(Model.ResultDtos.Items[i + 1].OriginPort) != 0)
+        || (Model.ResultDtos.Items[i].DestinationPort.CompareTo(Model.ResultDtos.Items[i + 1].DestinationPort) != 0)
+        || (Model.ResultDtos.Items[i].Mode.CompareTo(Model.ResultDtos.Items[i + 1].Mode) != 0)
+        || (Model.ResultDtos.Items[i].Carrier.CompareTo(Model.ResultDtos.Items[i + 1].Carrier) != 0)
+        || (Model.ResultDtos.Items[i].ETD.CompareTo(Model.ResultDtos.Items[i + 1].ETD) != 0)
+        || (Model.ResultDtos.Items[i].ETA.CompareTo(Model.ResultDtos.Items[i + 1].ETA) != 0))
       {
-
-
-        if ((i == (Model.ResultDtos.Items.Count - 1)) || (Model.ResultDtos.Items[i].OriginPort.CompareTo(Model.ResultDtos.Items[i + 1].OriginPort) != 0)
-          || (Model.ResultDtos.Items[i].DestinationPort.CompareTo(Model.ResultDtos.Items[i + 1].DestinationPort) != 0)
-          || (Model.ResultDtos.Items[i].Mode.CompareTo(Model.ResultDtos.Items[i + 1].Mode) != 0)
-          || (Model.ResultDtos.Items[i].Carrier.CompareTo(Model.ResultDtos.Items[i + 1].Carrier) != 0)
-          || (Model.ResultDtos.Items[i].ETD.CompareTo(Model.ResultDtos.Items[i + 1].ETD) != 0)
-          || (Model.ResultDtos.Items[i].ETA.CompareTo(Model.ResultDtos.Items[i + 1].ETA) != 0))
-        {
-          ADJ.BusinessService.Dtos.ContainerInfoDto containerInfo = new ADJ.BusinessService.Dtos.ContainerInfoDto();
-          Model.ContainerInfoDtos.Add(containerInfo);
-          <div class="uk-grid">
-            <table class="uk-table uk-table-small uk-table-middle uk-table-striped">
-              <thead>
-                <tr>
-                  <td>
-                    <label asp-for="ResultDtos.Items[start].OriginPort"></label>
-                  </td>
-                  <td>
-                    <label asp-for="ResultDtos.Items[start].DestinationPort"></label>
-                  </td>
-                  <td>
-                    <label asp-for="ResultDtos.Items[start].Mode"></label>
-                  </td>
-                  <td>
-                    <label asp-for="ResultDtos.Items[start].Carrier"></label>
-                  </td>
-                  <td>
-                    <label asp-for="ResultDtos.Items[start].ETD"></label>
-                  </td>
-                  <td>
-                    <label asp-for="ResultDtos.Items[start].ETA"></label>
-                  </td>
-                </tr>
-              </thead>
+        ADJ.BusinessService.Dtos.ContainerInfoDto containerInfo = new ADJ.BusinessService.Dtos.ContainerInfoDto();
+        Model.ContainerInfoDtos.Add(containerInfo);
+        <div class="uk-grid">
+          <table class="uk-table uk-table-small uk-table-middle uk-table-striped" style="table-layout: fixed">
+            <thead>
               <tr>
-                @if (Model.FilterDto.Status == ADJ.Common.ContainerStatus.Despatch.ToString())
-                {
-                  <td>
-                    @Model.ResultDtos.Items[start].OriginPort
-                  </td>
-                  <td>
-                    @Model.ResultDtos.Items[start].DestinationPort
-                  </td>
-                  <td>
-                    @Model.ResultDtos.Items[start].Mode
-                  </td>
-                  <td>
-                    @Model.ResultDtos.Items[start].Carrier
-                  </td>
-                }
-                else
-                {
-                  <td>
-                    <select asp-for="ContainerInfoDtos[groupId].OriginPort" value=@Model.ResultDtos.Items[start].OriginPort class="uk-select ports"></select>
-                    <span asp-validation-for="ContainerInfoDtos[groupId].OriginPort" class="uk-alert-danger"></span>
-                  </td>
-                  <td>
-                    <select asp-for="ContainerInfoDtos[groupId].DestinationPort" value=@Model.ResultDtos.Items[start].DestinationPort class="uk-select ports"></select>
-                    <span asp-validation-for="ContainerInfoDtos[groupId].DestinationPort" class="uk-alert-danger"></span>
-                  </td>
-                  <td>
-                    <select asp-for="ContainerInfoDtos[groupId].Mode" asp-items="new SelectList(ViewBag.Modes)" value=@Model.ResultDtos.Items[start].Mode class="uk-select">
-                      <option selected>@Model.ResultDtos.Items[start].Mode</option>
-                    </select>
-                  </td>
-                  <td>
-                    <select asp-for="ContainerInfoDtos[groupId].Carrier" asp-items="new SelectList(ViewBag.Carriers)" value=@Model.ResultDtos.Items[start].Carrier class="uk-select">
-                      <option selected>@Model.ResultDtos.Items[start].Carrier</option>
-                    </select>
-                  </td>
-                }
                 <td>
-                  @Model.ResultDtos.Items[start].ETD.ToString("MM/dd/yyyy")
+                  <label asp-for="ResultDtos.Items[start].OriginPort"></label>
                 </td>
                 <td>
-                  @Model.ResultDtos.Items[start].ETD.ToString("MM/dd/yyyy")
+                  <label asp-for="ResultDtos.Items[start].DestinationPort"></label>
+                </td>
+                <td>
+                  <label asp-for="ResultDtos.Items[start].Mode"></label>
+                </td>
+                <td>
+                  <label asp-for="ResultDtos.Items[start].Carrier"></label>
+                </td>
+                <td>
+                  <label asp-for="ResultDtos.Items[start].ETD"></label>
+                </td>
+                <td>
+                  <label asp-for="ResultDtos.Items[start].ETA"></label>
                 </td>
               </tr>
-            </table>
-
-            <table class="uk-table uk-table-small uk-table-middle uk-table-striped uk-width-1-2">
-              <thead>
-                <tr>
-                  <td>
-                    <input type="checkbox" class="uk-checkbox checkAll" id="checkAll_@i" />
-                  </td>
-                  <td>
-                    <label asp-for="ResultDtos.Items[start].Name"></label>
-                  </td>
-                  <td>
-                    <label asp-for="ResultDtos.Items[start].Size"></label>
-                  </td>
-                  <td>
-                    <label asp-for="ResultDtos.Items[start].Status"></label>
-                  </td>
-                </tr>
-              </thead>
-              @for (int j = start; j < i + 1; j++)
+            </thead>
+            <tr>
+              @if (Model.FilterDto.Status == ADJ.Common.ContainerStatus.Despatch.ToString())
               {
-                <tr>
-                  <td style="display: none">
-                    <input asp-for="ResultDtos.Items[j].Id" value=@Model.ResultDtos.Items[j].Id type="hidden" />
-                    <input asp-for="ResultDtos.Items[j].GroupId" value=@groupId type="hidden" />
-                    <input asp-for="ResultDtos.Items[j].ContainerId" value=@Model.ResultDtos.Items[j].ContainerId type="hidden" />
-                    <input asp-for="ResultDtos.Items[j].BookingId" value=@Model.ResultDtos.Items[j].BookingId type="hidden" />
-
-                    <input asp-for="ResultDtos.Items[j].OriginPort" value=@Model.ResultDtos.Items[j].OriginPort type="hidden" />
-                    <input asp-for="ResultDtos.Items[j].DestinationPort" value=@Model.ResultDtos.Items[j].DestinationPort type="hidden" />
-                    <input asp-for="ResultDtos.Items[j].Mode" value=@Model.ResultDtos.Items[j].Mode type="hidden" />
-                    <input asp-for="ResultDtos.Items[j].Carrier" value=@Model.ResultDtos.Items[j].Carrier type="hidden" />
-                    <input asp-for="ResultDtos.Items[j].ETD" value=@Model.ResultDtos.Items[j].ETD type="hidden" />
-                    <input asp-for="ResultDtos.Items[j].ETA" value=@Model.ResultDtos.Items[j].ETA type="hidden" />
-
-                    <input asp-for="ResultDtos.Items[j].Name" value=@Model.ResultDtos.Items[j].Name type="hidden" />
-                    <input asp-for="ResultDtos.Items[j].Size" value=@Model.ResultDtos.Items[j].Size type="hidden" />
-                    <input asp-for="ResultDtos.Items[j].Status" value=@Model.ResultDtos.Items[j].Status type="hidden" />
-                  </td>
-                  <td>
-                    @if (Model.ResultDtos.Items[j].Status == ADJ.Common.ContainerStatus.Pending)
-                    {
-                      <input asp-for="ResultDtos.Items[j].Selected" type="checkbox" class="uk-checkbox checkBox_@i" />
-                    }
-                  </td>
-                  <td>@Model.ResultDtos.Items[j].Name</td>
-                  <td>@Model.ResultDtos.Items[j].Size</td>
-                  <td>@Model.ResultDtos.Items[j].Status</td>
-                </tr>
+                <td>
+                  @Model.ResultDtos.Items[start].OriginPort
+                </td>
+                <td>
+                  @Model.ResultDtos.Items[start].DestinationPort
+                </td>
+                <td>
+                  @Model.ResultDtos.Items[start].Mode
+                </td>
+                <td>
+                  @Model.ResultDtos.Items[start].Carrier
+                </td>
               }
-            </table>
-          </div>
+              else
+              {
+                <td>
+                  <select asp-for="ContainerInfoDtos[groupId].OriginPort" value=@Model.ResultDtos.Items[start].OriginPort class="uk-select ports"></select>
+                  <span asp-validation-for="ContainerInfoDtos[groupId].OriginPort" class="uk-alert-danger"></span>
+                </td>
+                <td>
+                  <select asp-for="ContainerInfoDtos[groupId].DestinationPort" value=@Model.ResultDtos.Items[start].DestinationPort class="uk-select ports"></select>
+                  <span asp-validation-for="ContainerInfoDtos[groupId].DestinationPort" class="uk-alert-danger"></span>
+                </td>
+                <td>
+                  <select asp-for="ContainerInfoDtos[groupId].Mode" asp-items="new SelectList(ViewBag.Modes)" value=@Model.ResultDtos.Items[start].Mode class="uk-select">
+                    <option selected>@Model.ResultDtos.Items[start].Mode</option>
+                  </select>
+                </td>
+                <td>
+                  <select asp-for="ContainerInfoDtos[groupId].Carrier" asp-items="new SelectList(ViewBag.Carriers)" value=@Model.ResultDtos.Items[start].Carrier class="uk-select">
+                    <option selected>@Model.ResultDtos.Items[start].Carrier</option>
+                  </select>
+                </td>
+              }
+              <td>
+                @Model.ResultDtos.Items[start].ETD.ToString("MM/dd/yyyy")
+              </td>
+              <td>
+                @Model.ResultDtos.Items[start].ETD.ToString("MM/dd/yyyy")
+              </td>
+            </tr>
+          </table>
 
-          if (i != Model.ResultDtos.Items.Count - 1)
-          { <hr /> }
+          <table class="uk-table uk-table-small uk-table-middle uk-table-striped uk-width-1-2">
+            <thead>
+              <tr>
+                <td width="2%">
+                  <input type="checkbox" class="uk-checkbox checkAll" id="checkAll_@i" />
+                </td>
+                <td width="18%">
+                  <label asp-for="ResultDtos.Items[start].Name"></label>
+                </td>
+                <td width="20%">
+                  <label asp-for="ResultDtos.Items[start].Size"></label>
+                </td>
+                <td width="20%">
+                  <label asp-for="ResultDtos.Items[start].Status"></label>
+                </td>
+              </tr>
+            </thead>
+            @for (int j = start; j < i + 1; j++)
+            {
+              <tr>
+                <td style="display: none">
+                  <input asp-for="ResultDtos.Items[j].Id" value=@Model.ResultDtos.Items[j].Id type="hidden" />
+                  <input asp-for="ResultDtos.Items[j].GroupId" value=@groupId type="hidden" />
+                  <input asp-for="ResultDtos.Items[j].ContainerId" value=@Model.ResultDtos.Items[j].ContainerId type="hidden" />
+                  <input asp-for="ResultDtos.Items[j].BookingId" value=@Model.ResultDtos.Items[j].BookingId type="hidden" />
 
-          groupId++;
-          start = i + 1;
-        }
+                  <input asp-for="ResultDtos.Items[j].OriginPort" value=@Model.ResultDtos.Items[j].OriginPort type="hidden" />
+                  <input asp-for="ResultDtos.Items[j].DestinationPort" value=@Model.ResultDtos.Items[j].DestinationPort type="hidden" />
+                  <input asp-for="ResultDtos.Items[j].Mode" value=@Model.ResultDtos.Items[j].Mode type="hidden" />
+                  <input asp-for="ResultDtos.Items[j].Carrier" value=@Model.ResultDtos.Items[j].Carrier type="hidden" />
+                  <input asp-for="ResultDtos.Items[j].ETD" value=@Model.ResultDtos.Items[j].ETD type="hidden" />
+                  <input asp-for="ResultDtos.Items[j].ETA" value=@Model.ResultDtos.Items[j].ETA type="hidden" />
+
+                  <input asp-for="ResultDtos.Items[j].Name" value=@Model.ResultDtos.Items[j].Name type="hidden" />
+                  <input asp-for="ResultDtos.Items[j].Size" value=@Model.ResultDtos.Items[j].Size type="hidden" />
+                  <input asp-for="ResultDtos.Items[j].Status" value=@Model.ResultDtos.Items[j].Status type="hidden" />
+                </td>
+                <td>
+                  @if (Model.ResultDtos.Items[j].Status == ADJ.Common.ContainerStatus.Pending)
+                  {
+                    <input asp-for="ResultDtos.Items[j].Selected" type="checkbox" class="uk-checkbox checkBox_@i" />
+                  }
+                </td>
+                <td>@Model.ResultDtos.Items[j].Name</td>
+                <td>@Model.ResultDtos.Items[j].Size</td>
+                <td>@Model.ResultDtos.Items[j].Status</td>
+              </tr>
+            }
+          </table>
+        </div>
+
+        if (i != Model.ResultDtos.Items.Count - 1)
+        { <hr /> }
+
+        groupId++;
+        start = i + 1;
       }
     }
-
-    if (ViewBag.ToBeContinued)
-    {
-      <p>Group continues on the next page...</p>
-    }
   }
-}
 
-<!--Paging-->
-@{
+  if (ViewBag.ToBeContinued)
+  {
+    <p>Group continues on the next page...</p>
+  }
+
+  <!--Paging-->
   int currentPage = ViewBag.Page;
   int totalPage = Model.ResultDtos.PageCount;
 
@@ -224,3 +217,8 @@
     }
   </ul>
 }
+else
+{
+  <h4>No match results were found. Please try again.</h4>
+}
+

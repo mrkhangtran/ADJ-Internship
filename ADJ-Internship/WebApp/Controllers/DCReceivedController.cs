@@ -28,11 +28,6 @@ namespace WebApp.Controllers
 
       model.ResultDtos = await _dcReceivedService.ListContainerFilterAsync(null, null, null, null, null, null, null, null, null);
 
-      if (model.ResultDtos.Items.Count == 0)
-      {
-        ViewBag.ShowModal = "NoResult";
-      }
-
       return View(model);
     }
 
@@ -48,11 +43,6 @@ namespace WebApp.Controllers
 
       model.ResultDtos = await _dcReceivedService.ListContainerFilterAsync(pageIndex, model.FilterDtos.Container, model.FilterDtos.DC, model.FilterDtos.BookingDateFrom, 
         model.FilterDtos.BookingDateTo, model.FilterDtos.DeliveryDateFrom, model.FilterDtos.DeliveryDateTo, model.FilterDtos.BookingRef, model.FilterDtos.Status);
-
-      if (model.ResultDtos.Items.Count == 0)
-      {
-        ViewBag.ShowModal = "NoResult";
-      }
 
       return PartialView("_Result", model);
     }

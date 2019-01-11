@@ -10,6 +10,7 @@ using AutoMapper;
 using LinqKit;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
@@ -109,6 +110,8 @@ namespace ADJ.BusinessService.Implementations
       rs.Items = await ConvertToResultAsync(result.Items);
       rs.PageCount = result.PageCount;
       rs.TotalCount = result.TotalCount;
+
+      rs.Items = rs.Items.OrderBy(p => p.ContainerName).ToList();
 
       return rs;
     }

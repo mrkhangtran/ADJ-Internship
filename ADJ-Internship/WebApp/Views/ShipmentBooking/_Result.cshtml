@@ -32,9 +32,6 @@
 
           <span>@message</span>
           break;
-        case "NoResult":
-          <p>Cannot find any record match filter.</p>
-          break;
         case "NoItem":
           <p>Please select at least 1 item.</p>
           break;
@@ -46,6 +43,8 @@
 
     </div>
   </div>
+
+
 }
 
 <!--Booking-->
@@ -132,157 +131,155 @@
 </div>
 
 <br />
-
-@if (Model.OrderDetails != null)
-{
-  @if (Model.OrderDetails.Count > 0)
+<div class="uk-card uk-card-default uk-card-body">
+  @if ((Model.OrderDetails != null) && (Model.OrderDetails.Count > 0))
   {
-    <div class="uk-card uk-card-default uk-card-body">
-      @{
-        int pageSize = ViewBag.PageSize;
-        int currentPage = ViewBag.Page;
-        int totalPage = Model.OrderDetails.Count / pageSize;
-        @if (Model.OrderDetails.Count % pageSize > 0) { totalPage++; }
+    int pageSize = ViewBag.PageSize;
+    int currentPage = ViewBag.Page;
+    int totalPage = Model.OrderDetails.Count / pageSize;
+    @if (Model.OrderDetails.Count % pageSize > 0) { totalPage++; }
 
-        int total = Model.OrderDetails.Count;
-        int start = (currentPage - 1) * pageSize;
-        int end = currentPage * pageSize;
-        if (end > total) { end = total; }
+    int total = Model.OrderDetails.Count;
+    int start = (currentPage - 1) * pageSize;
+    int end = currentPage * pageSize;
+    if (end > total) { end = total; }
 
-        <!--Item Detail-->
-        <table class="uk-table uk-table-striped uk-table-small uk-table-middle  uk-table-hover">
-          <!--header-->
-          <thead>
-            <tr>
-              <th>
-                <input type="checkbox" class="uk-checkbox" id="checkAll" />
-              </th>
-              <th>
-                <label asp-for="OrderDetails[0].PONumber"></label>
-              </th>
-              <th>
-                <label asp-for="OrderDetails[0].ItemNumber"></label>
-              </th>
-              <th>
-                <label asp-for="OrderDetails[0].Vendor"></label>
-              </th>
-              <th>
-                <label asp-for="OrderDetails[0].Quantity"></label>
-              </th>
-              <th>
-                <label asp-for="OrderDetails[0].BookingQuantity"></label>
-              </th>
-              <th>
-                <label asp-for="OrderDetails[0].BookingCartons"></label>
-              </th>
-              <th>
-                <label asp-for="OrderDetails[0].BookingCube"></label>
-              </th>
-              <th>
-                <label asp-for="OrderDetails[0].PackType"></label>
-              </th>
-              <th>
-                <label asp-for="OrderDetails[0].POShipDate"></label>
-              </th>
-              <th>
-                <label asp-for="OrderDetails[0].Status"></label>
-              </th>
-            </tr>
-          </thead>
+    <!--Item Detail-->
+    <table class="uk-table uk-table-striped uk-table-small uk-table-middle  uk-table-hover">
+      <!--header-->
+      <thead>
+        <tr>
+          <th>
+            <input type="checkbox" class="uk-checkbox" id="checkAll" />
+          </th>
+          <th>
+            <label asp-for="OrderDetails[0].PONumber"></label>
+          </th>
+          <th>
+            <label asp-for="OrderDetails[0].ItemNumber"></label>
+          </th>
+          <th>
+            <label asp-for="OrderDetails[0].Vendor"></label>
+          </th>
+          <th>
+            <label asp-for="OrderDetails[0].Quantity"></label>
+          </th>
+          <th>
+            <label asp-for="OrderDetails[0].BookingQuantity"></label>
+          </th>
+          <th>
+            <label asp-for="OrderDetails[0].BookingCartons"></label>
+          </th>
+          <th>
+            <label asp-for="OrderDetails[0].BookingCube"></label>
+          </th>
+          <th>
+            <label asp-for="OrderDetails[0].PackType"></label>
+          </th>
+          <th>
+            <label asp-for="OrderDetails[0].POShipDate"></label>
+          </th>
+          <th>
+            <label asp-for="OrderDetails[0].Status"></label>
+          </th>
+        </tr>
+      </thead>
 
-          <tbody>
-            <!--filter result-->
-            @for (int i = 0; i < Model.OrderDetails.Count(); i++)
+      <tbody>
+        <!--filter result-->
+        @for (int i = 0; i < Model.OrderDetails.Count(); i++)
+        {
+          <tr>
+            <td style="display: none">
+              <input type="hidden" asp-for="OrderDetails[i].OrderId" />
+              <input type="hidden" asp-for="OrderDetails[i].PONumber" />
+              <input type="hidden" asp-for="OrderDetails[i].ItemNumber" />
+              <input type="hidden" asp-for="OrderDetails[i].Vendor" />
+              <input type="hidden" asp-for="OrderDetails[i].Quantity" />
+              <input type="hidden" asp-for="OrderDetails[i].BookingQuantity" />
+              <input type="hidden" asp-for="OrderDetails[i].Cartons" />
+              <input type="hidden" asp-for="OrderDetails[i].Cube" />
+              <input type="hidden" asp-for="OrderDetails[i].POShipDate" id="ShipDate_@i" string=@Model.OrderDetails[i].POShipDate.ToString("yyyyMMdd") />
+              <input type="hidden" asp-for="OrderDetails[i].DeliveryDate" id="DeliveryDate_@i" string=@Model.OrderDetails[i].DeliveryDate.ToString("yyyyMMdd") />
+              <input type="hidden" asp-for="OrderDetails[i].Status" />
+            </td>
+
+            @if ((i >= start) && (i < end))
             {
-              <tr>
-                <td style="display: none">
-                  <input type="hidden" asp-for="OrderDetails[i].OrderId" />
-                  <input type="hidden" asp-for="OrderDetails[i].PONumber" />
-                  <input type="hidden" asp-for="OrderDetails[i].ItemNumber" />
-                  <input type="hidden" asp-for="OrderDetails[i].Vendor" />
-                  <input type="hidden" asp-for="OrderDetails[i].Quantity" />
-                  <input type="hidden" asp-for="OrderDetails[i].BookingQuantity" />
-                  <input type="hidden" asp-for="OrderDetails[i].Cartons" />
-                  <input type="hidden" asp-for="OrderDetails[i].Cube" />
-                  <input type="hidden" asp-for="OrderDetails[i].POShipDate" id="ShipDate_@i" string=@Model.OrderDetails[i].POShipDate.ToString("yyyyMMdd") />
-                  <input type="hidden" asp-for="OrderDetails[i].DeliveryDate" id="DeliveryDate_@i" string=@Model.OrderDetails[i].DeliveryDate.ToString("yyyyMMdd") />
-                  <input type="hidden" asp-for="OrderDetails[i].Status" />
-                </td>
-
-                @if ((i >= start) && (i < end))
-                {
-                  <td>
-                    <input type="checkbox" asp-for="OrderDetails[i].Selected" class="uk-checkbox booking checkBoxes" />
-                  </td>
-                  <td>
-                    @Model.OrderDetails[i].PONumber
-                  </td>
-                  <td>
-                    @Model.OrderDetails[i].ItemNumber
-                  </td>
-                  <td>
-                    @Model.OrderDetails[i].Vendor
-                  </td>
-                  <td>
-                    @Model.OrderDetails[i].Quantity
-                  </td>
-                  <td>
-                    @Model.OrderDetails[i].BookingQuantity
-                  </td>
-                  <td>
-                    @Model.OrderDetails[i].BookingCartons
-                  </td>
-                  <td>
-                    @Model.OrderDetails[i].BookingCube
-                  </td>
-                  <td>
-                    <select asp-for="OrderDetails[i].PackType" asp-items="new SelectList(ViewBag.PackTypes)" class="uk-select booking"></select>
-                    <span asp-validation-for="OrderDetails[i].PackType" class="uk-alert-danger"></span>
-                  </td>
-                  <td>
-                    @Model.OrderDetails[i].POShipDate.ToString("MM/dd/yyyy")
-                  </td>
-                  <td>
-                    @Model.OrderDetails[i].Status
-                  </td>
-                }
-                else
-                {
-                  <td style="display: none">
-                    <input type="checkbox" asp-for="OrderDetails[i].Selected" hidden="hidden" />
-                    <input type="hidden" asp-for="OrderDetails[i].PackType" />
-                  </td>
-                }
-              </tr>
-            }
-          </tbody>
-        </table>
-
-        <!--Paging-->
-        <ul class="uk-pagination uk-flex-right">
-          @if (currentPage > 1)
-          {
-            <li><a value="Previous @(currentPage - 1)" name="method" class="paging"><span uk-pagination-previous></span></a></li>
-          }
-
-          @for (int i = 1; i <= totalPage; i++)
-          {
-            if (i == currentPage)
-            {
-              <li class="uk-disabled"><a value="Page @i" name="method" class="paging"><u>@i</u></a></li>
+              <td>
+                <input type="checkbox" asp-for="OrderDetails[i].Selected" class="uk-checkbox booking checkBoxes" />
+              </td>
+              <td>
+                @Model.OrderDetails[i].PONumber
+              </td>
+              <td>
+                @Model.OrderDetails[i].ItemNumber
+              </td>
+              <td>
+                @Model.OrderDetails[i].Vendor
+              </td>
+              <td>
+                @Model.OrderDetails[i].Quantity
+              </td>
+              <td>
+                @Model.OrderDetails[i].BookingQuantity
+              </td>
+              <td>
+                @Model.OrderDetails[i].BookingCartons
+              </td>
+              <td>
+                @Model.OrderDetails[i].BookingCube
+              </td>
+              <td>
+                <select asp-for="OrderDetails[i].PackType" asp-items="new SelectList(ViewBag.PackTypes)" class="uk-select booking"></select>
+                <span asp-validation-for="OrderDetails[i].PackType" class="uk-alert-danger"></span>
+              </td>
+              <td>
+                @Model.OrderDetails[i].POShipDate.ToString("MM/dd/yyyy")
+              </td>
+              <td>
+                @Model.OrderDetails[i].Status
+              </td>
             }
             else
             {
-              <li><a value="Page @i" name="method" class="paging">@i</a></li>
+              <td style="display: none">
+                <input type="checkbox" asp-for="OrderDetails[i].Selected" hidden="hidden" />
+                <input type="hidden" asp-for="OrderDetails[i].PackType" />
+              </td>
             }
-          }
+          </tr>
+        }
+      </tbody>
+    </table>
 
-          @if (currentPage < totalPage)
-          {
-            <li><a value="Next @(currentPage + 1)" name="method" class="paging"><span uk-pagination-next></span></a></li>
-          }
-        </ul>
+    <!--Paging-->
+    <ul class="uk-pagination uk-flex-right">
+      @if (currentPage > 1)
+      {
+        <li><a value="Previous @(currentPage - 1)" name="method" class="paging"><span uk-pagination-previous></span></a></li>
       }
-    </div>
+
+      @for (int i = 1; i <= totalPage; i++)
+      {
+        if (i == currentPage)
+        {
+          <li class="uk-disabled"><a value="Page @i" name="method" class="paging"><u>@i</u></a></li>
+        }
+        else
+        {
+          <li><a value="Page @i" name="method" class="paging">@i</a></li>
+        }
+      }
+
+      @if (currentPage < totalPage)
+      {
+        <li><a value="Next @(currentPage + 1)" name="method" class="paging"><span uk-pagination-next></span></a></li>
+      }
+    </ul>
   }
-}
+  else
+  {
+    <h4>Cannot find any record match filter.</h4>
+  }
+</div>

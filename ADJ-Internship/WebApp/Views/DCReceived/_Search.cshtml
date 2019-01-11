@@ -1,6 +1,11 @@
 ﻿@model ADJ.BusinessService.Dtos.DCReceivedDtos;
 
-<table class="uk-table uk-table-small uk-table-middle" style="table-layout: fixed; text-align: left">
+<style>
+  table#searchTable tr td:nth-child(2n+1) {
+    text-align: right;
+  }
+</style>
+<table id="searchTable" class="uk-table uk-table-small uk-table-middle" style="table-layout: fixed; text-align: left">
   <tr>
     <td width="15%">
       <label asp-for="FilterDtos.Container"></label>
@@ -10,6 +15,7 @@
       <span asp-validation-for="FilterDtos.Container" class="uk-alert-danger"></span>
     </td>
     <td width="5%"></td>
+    <td style="display:none"></td>
     <td width="15%">
       <label asp-for="FilterDtos.DC"></label>
     </td>
@@ -30,6 +36,7 @@
       <span asp-validation-for="FilterDtos.BookingDateFrom" class="uk-alert-danger"></span>
     </td>
     <td></td>
+    <td style="display:none"></td>
     <td>
       <label asp-for="FilterDtos.DeliveryDateFrom"></label>
     </td>
@@ -50,6 +57,7 @@
       <span asp-validation-for="FilterDtos.BookingDateTo" class="uk-alert-danger"></span>
     </td>
     <td></td>
+    <td style="display:none"></td>
     <td>
       <label asp-for="FilterDtos.DeliveryDateTo"></label>
     </td>
@@ -67,6 +75,7 @@
       <span asp-validation-for="FilterDtos.BookingRef" class="uk-alert-danger"></span>
     </td>
     <td></td>
+    <td style="display:none"></td>
     <td>
       <label asp-for="FilterDtos.Status"></label>
     </td>

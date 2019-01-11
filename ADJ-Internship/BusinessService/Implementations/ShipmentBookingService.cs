@@ -163,7 +163,7 @@ namespace ADJ.BusinessService.Implementations
         result.Add(output);
       }
 
-      return result;
+      return result.OrderBy(p => p.PONumber).ThenBy(p => p.ItemNumber).ToList();
     }
 
     public async Task<List<ShipmentBookingDtos>> CreateOrUpdateBookingAsync(ShipmentBookingDtos booking)
