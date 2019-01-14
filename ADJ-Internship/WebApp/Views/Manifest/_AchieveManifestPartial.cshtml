@@ -266,15 +266,15 @@
         {
           <p class="uk-text-danger">Ship Quantity is invalid, please try again</p>
         }
-        if (ViewBag.modalResult == "empty")
+        else if (ViewBag.modalResult == "empty")
         {
           <p class="uk-text-danger">Please check your container.</p>
         }
-        if (ViewBag.modalResult == "zero")
+        else if (ViewBag.modalResult == "zero")
         {
           <p class="uk-text-danger">Please enter your ship quantity.</p>
         }
-        if (ViewBag.modalResult == "emptybooking")
+        else if (ViewBag.modalResult == "emptybooking")
         {
           <p class="uk-text-danger">Please check your shipment booking .</p>
         }

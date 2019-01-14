@@ -136,7 +136,7 @@ else
                     }
                     else
                     {
-                      <input name="@("client"+Model.Items[i].ContainerId)" id="@("client"+Model.Items[i].ContainerId)" asp-for="Items[i].Client" class="client uk-input" />
+                      <input id="@("client"+Model.Items[i].ContainerId)" asp-for="Items[i].Client" class="client uk-input" />
                       <div id="clientvalidate">
                         <span class="client uk-text-danger" asp-validation-for="Items[i].Client"></span>
                       </div>
@@ -184,7 +184,7 @@ else
                     }
                     else
                     {
-                      <input name="@("bookingref"+Model.Items[i].ContainerId)" id="@("bookingref"+Model.Items[i].ContainerId)" asp-for="Items[i].BookingRef" class="bookingref uk-input" />
+                      <input id="@("bookingref"+Model.Items[i].ContainerId)" asp-for="Items[i].BookingRef" class="bookingref uk-input" />
                       <div id="bookingrefvalidate">
                         <span class="bookingref uk-text-danger" asp-validation-for="Items[i].BookingRef"></span>
                       </div>

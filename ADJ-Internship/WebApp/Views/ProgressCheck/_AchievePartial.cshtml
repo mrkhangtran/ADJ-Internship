@@ -27,9 +27,24 @@
       <tbody>
         <tr>
           <td style="width:69px"></td>
-          <td>@Model.Items[i].Supplier</td>
-          <td>@Model.Items[i].Factory</td>
+          @if (Model.Items[i].Supplier != null)
+          {
+            <td>@Model.Items[i].Supplier</td>
+          }
+          else
+          {
+            <td>N/A</td>
+          }
+          @if (Model.Items[i].Factory != null)
+          {
+            <td>@Model.Items[i].Factory</td>
+          }
+          else
+          {
+            <td>N/A</td>
+          }
         </tr>
+
       </tbody>
     </table>
     <table class="uk-table uk-table-striped uk-table-middle uk-table-small">
