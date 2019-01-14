@@ -12,9 +12,9 @@ namespace ADJ.WebApp.Controllers
 {
   public class PurchaseOrderController : Controller
   {
-
     private readonly IPurchaseOrderService _poService;
     private int pageSize = 5;
+    private long maxNumber = 9999999999;
 
     public PurchaseOrderController(IPurchaseOrderService poService)
     {
@@ -79,7 +79,7 @@ namespace ADJ.WebApp.Controllers
 
       if (!(await _poService.UniquePONumAsync(addModel.PONumber, addModel.Id)))
       {
-        ViewBag.PONumberError = "PO Number must be unique.";
+        ViewBag.PONumberError = "PO Number must be unique. Available: " + await NextAvailablePONum(addModel.PONumber, addModel.Id);
         return View(viewName, addModel);
       }
 
@@ -97,7 +97,7 @@ namespace ADJ.WebApp.Controllers
         string error = "Item(s) number: ";
         for (int i = 0; i < invalid.Count; i++)
         {
-          if (i != invalid.Count -1) { error += i + ", "; }
+          if (i != invalid.Count - 1) { error += i + ", "; }
           else { error += i; }
         }
 
@@ -115,13 +115,6 @@ namespace ADJ.WebApp.Controllers
       if (ModelState.IsValid)
       {
         if (viewName != "Edit") { addModel.orderDetails = addModel.PODetails.Items; }
-
-        if (addModel.Buyer == null) { addModel.Buyer = "N/A"; }
-        if (addModel.Department == null) { addModel.Department = "N/A"; }
-        if (addModel.Vendor == null) { addModel.Vendor = "N/A"; }
-        if (addModel.Company == null) { addModel.Company = "N/A"; }
-        if (addModel.Factory == null) { addModel.Factory = "N/A"; }
-        if (addModel.OrderType == null) { addModel.OrderType = "N/A"; }
 
         await _poService.CreateOrUpdateOrderAsync(addModel);
 
@@ -174,16 +167,10 @@ namespace ADJ.WebApp.Controllers
 
           if ((!UniqueItemNumber(-1, addModel.SingleOrderDetail.ItemNumber, addModel.PODetails.Items)) || (!(await _poService.UniqueItemNumAsync(addModel.SingleOrderDetail.ItemNumber, addModel.SingleOrderDetail.Id))))
           {
-            ViewBag.ItemNumberError = "Item Number must be unique.";
+            ViewBag.ItemNumberError = "Item Number must be unique. Available: " + await NextAvailableItemNum(addModel.SingleOrderDetail.ItemNumber, -1, addModel.PODetails.Items);
             ViewBag.ItemId = -1;
             return PartialView("_OrderDetail", addModel);
           }
-
-          if (addModel.SingleOrderDetail.Description == null) { addModel.SingleOrderDetail.Description = "N/A"; }
-          //if (addModel.SingleOrderDetail.Tariff == null) { addModel.SingleOrderDetail.Tariff = "N/A"; }
-          if (addModel.SingleOrderDetail.Warehouse == null) { addModel.SingleOrderDetail.Warehouse = "N/A"; }
-          if (addModel.SingleOrderDetail.Size == null) { addModel.SingleOrderDetail.Size = "N/A"; }
-          if (addModel.SingleOrderDetail.Colour == null) { addModel.SingleOrderDetail.Colour = "N/A"; }
 
           addModel.PODetails.Items.Add(addModel.SingleOrderDetail);
           ViewBag.ItemId = -2;
@@ -197,7 +184,7 @@ namespace ADJ.WebApp.Controllers
           {
             if ((!UniqueItemNumber(itemId, addModel.SingleOrderDetail.ItemNumber, addModel.PODetails.Items)) || (!(await _poService.UniqueItemNumAsync(addModel.SingleOrderDetail.ItemNumber, addModel.SingleOrderDetail.Id))))
             {
-              ViewBag.ItemNumberError = "Item Number must be unique.";
+              ViewBag.ItemNumberError = "Item Number must be unique. Available: " + await NextAvailableItemNum(addModel.SingleOrderDetail.ItemNumber, itemId, addModel.PODetails.Items);
               ViewBag.ItemId = itemId;
               return PartialView("_OrderDetail", addModel);
             }
@@ -353,6 +340,48 @@ namespace ADJ.WebApp.Controllers
       }
 
       return orderDetailDTOs;
+    }
+
+    //suggest next available PONumber
+    private async Task<string> NextAvailableItemNum(string input, int itemId, List<OrderDetailDTO> orderDetails)
+    {
+      long output = long.Parse(input) + 1;
+
+      if (output > maxNumber)
+      {
+        output = 0;
+      }
+
+      string outputString = output.ToString().PadLeft(input.Length, '0');
+
+      while ((!UniqueItemNumber(itemId, outputString, orderDetails)) || (!(await _poService.UniqueItemNumAsync(outputString, itemId))))
+      {
+        output++;
+        outputString = output.ToString().PadLeft(input.Length, '0');
+      }
+
+      return outputString;
+    }
+
+    //suggest next available PONumber
+    private async Task<string> NextAvailablePONum(string input, int id)
+    {
+      long output = long.Parse(input) + 1;
+
+      if (output > maxNumber)
+      {
+        output = 0;
+      }
+
+      string outputString = output.ToString().PadLeft(input.Length, '0');
+
+      while (!(await _poService.UniquePONumAsync(outputString, id)))
+      {
+        output++;
+        outputString = output.ToString().PadLeft(input.Length, '0');
+      }
+
+      return outputString;
     }
 
     //check if ItemNumber is unique within list of items on view ONLY, NOT compare with database

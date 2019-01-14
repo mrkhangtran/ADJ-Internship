@@ -86,11 +86,38 @@
             }
           </td>
           <td>@Model.ResultDtos.Items[i].ContainerName</td>
-          <td>@Model.ResultDtos.Items[i].DC</td>
-          <td>@Model.ResultDtos.Items[i].Haulier</td>
+          <td>
+            @if (Model.ResultDtos.Items[i].DC == null)
+            {
+              <span>N/A</span>
+            }
+            else
+            {
+              <span>@Model.ResultDtos.Items[i].DC</span>
+            }
+          </td>
+          <td>
+            @if (Model.ResultDtos.Items[i].Haulier == null)
+            {
+              <span>N/A</span>
+            }
+            else
+            {
+              <span>@Model.ResultDtos.Items[i].Haulier</span>
+            }
+          </td>
           <td>@Model.ResultDtos.Items[i].BookingDate.ToString("MM/dd/yyyy")</td>
           <td>@Model.ResultDtos.Items[i].BookingTime</td>
-          <td>@Model.ResultDtos.Items[i].BookingRef</td>
+          <td>
+            @if (Model.ResultDtos.Items[i].BookingRef == null)
+            {
+              <span>N/A</span>
+            }
+            else
+            {
+              <span>@Model.ResultDtos.Items[i].BookingRef</span>
+            }
+          </td>
           @if (Model.ResultDtos.Items[i].Status == ADJ.Common.ContainerStatus.DCBookingReceived)
           {
             <td>
@@ -147,6 +174,6 @@
 }
 else
 {
-  <h4>No match results were found. Please try again.</h4>
+  <p class="uk-text-meta uk-text-large">No matching results were found. Please try again</p>
 }
 
