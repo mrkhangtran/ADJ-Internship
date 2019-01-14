@@ -216,7 +216,14 @@
                 @Model.OrderDetails[i].ItemNumber
               </td>
               <td>
-                @Model.OrderDetails[i].Vendor
+                @if (Model.OrderDetails[i].Vendor == null)
+                {
+                  <span>N/A</span>
+                }
+                else
+                {
+                  <span>@Model.OrderDetails[i].Vendor</span>
+                }
               </td>
               <td>
                 @Model.OrderDetails[i].Quantity
@@ -280,6 +287,6 @@
   }
   else
   {
-    <h4>Cannot find any record match filter.</h4>
+    <p class="uk-text-meta uk-text-large">No matching results were found. Please try again</p>
   }
 </div>
