@@ -81,18 +81,24 @@ namespace ADJ.BusinessService.Dtos
 
     public bool Selected { get; set; }
 
+    [Display(Name = "Container Name")]
     public string ContainerName { get; set; }
 
     public string DC { get; set; }
 
     public string Haulier { get; set; }
 
+    [Display(Name = "Booking Date")]
     public DateTime BookingDate { get; set; }
 
+    [Display(Name = "Booking Time")]
     public string BookingTime { get; set; }
 
+    [Display(Name = "Booking Ref")]
     public string BookingRef { get; set; }
 
     public ContainerStatus Status { get; set; }
+
+    public string StatusDescription { get; set; }
   }
 }

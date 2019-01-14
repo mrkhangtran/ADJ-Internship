@@ -1,4 +1,6 @@
-﻿namespace ADJ.Common
+﻿using System.ComponentModel;
+
+namespace ADJ.Common
 {
   public enum SchoolReviewStatus
   {
@@ -27,8 +29,11 @@
   public enum OrderStatus
   {
     New,
+    [Description("Awaiting Booking")]
     AwaitingBooking,
+    [Description("Booking Made")]
     BookingMade,
+    [Description("Partly Manifested")]
     PartlyManifested,
     Manifested,
     Pending
@@ -39,6 +44,7 @@
     Pending,
     Despatch,
     Arrived,
+    [Description("DC Booking Received")]
     DCBookingReceived,
     Delivered,
   }

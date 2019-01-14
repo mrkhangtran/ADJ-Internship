@@ -76,7 +76,7 @@ namespace ADJ.BusinessService.Implementations
 
       if ((ETAFrom != null) || (ETATo != null))
       {
-        status = ContainerStatus.Despatch.ToString();
+        status = ContainerStatus.Despatch.GetDescription<ContainerStatus>();
 
         if (ETAFrom != null)
         {
@@ -93,7 +93,7 @@ namespace ADJ.BusinessService.Implementations
 
       if (status != null)
       {
-        Expression<Func<Container, bool>> filter = x => x.Status.ToString() == status;
+        Expression<Func<Container, bool>> filter = x => x.Status.GetDescription<ContainerStatus>() == status;
         All = All.And(filter);
       }
       else
@@ -158,106 +158,10 @@ namespace ADJ.BusinessService.Implementations
         result.Add(output);
       }
 
-      return Sort(result);
-    }
+      result = result.OrderBy(p => p.DestinationPort).ThenBy(p => p.Origin).ThenBy(p => p.Mode).ThenBy(p => p.Carrier).ThenBy(p => p.ArrivalDate).ThenBy(p => p.Container).ToList();
 
-    public List<ConfirmArrivalResultDtos> Sort(List<ConfirmArrivalResultDtos> input)
-    {
-      //Order by Destination Port (property number = 0)
-      quickSort(input, 0, input.Count - 1, 0);
+      return result;
 
-      //Order by Origin (property number = 1)
-      //Order by Mode (property number = 2)
-      //Order by Carrier (property number = 3)
-      //Order by Arrival Date (property number = 4)
-      for (int property = 1; property < 5; property++)
-      {
-        int start = 0;
-        for (int i = 0; i < input.Count; i++)
-        {
-          if ((i + 1 < input.Count) || (i == input.Count - 1))
-          {
-            bool different = false;
-            if (i != input.Count - 1)
-            {
-              for (int j = property - 1; j >= 0; j--)
-              {
-                var currentProperty = typeof(ConfirmArrivalResultDtos).GetProperties()[j];
-                if (currentProperty.GetValue(input[i]).ToString().CompareTo(currentProperty.GetValue(input[i + 1]).ToString()) != 0)
-                {
-                  different = true;
-                  break;
-                }
-              }
-            }
-
-            if ((i == input.Count - 1) || (different))
-            {
-              quickSort(input, start, i, property);
-              start = i + 1;
-            }
-          }
-        }
-      }
-
-      return input;
-    }
-
-    public static void quickSort(List<ConfirmArrivalResultDtos> A, int left, int right, int property)
-    {
-      if (left > right || left < 0 || right < 0) return;
-
-      int index = partition(A, left, right, property);
-
-      if (index != -1)
-      {
-        quickSort(A, left, index - 1, property);
-        quickSort(A, index + 1, right, property);
-      }
-    }
-
-    private static int partition(List<ConfirmArrivalResultDtos> A, int left, int right, int property)
-    {
-      if (left > right) return -1;
-
-      int end = left;
-
-      if (property != 4)
-      {
-        var currentProperty = typeof(ConfirmArrivalResultDtos).GetProperties()[property];
-        string pivot = currentProperty.GetValue(A[right]).ToString();    // choose last one to pivot, easy to code
-        for (int i = left; i < right; i++)
-        {
-          if (currentProperty.GetValue(A[i]).ToString().CompareTo(pivot) < 0)
-          {
-            swap(A, i, end);
-            end++;
-          }
-        }
-      }
-      else
-      {
-        DateTime pivot = A[right].ArrivalDate;    // choose last one to pivot, easy to code
-        for (int i = left; i < right; i++)
-        {
-          if (A[i].ArrivalDate.CompareTo(pivot) < 0)
-          {
-            swap(A, i, end);
-            end++;
-          }
-        }
-      }
-
-      swap(A, end, right);
-
-      return end;
-    }
-
-    private static void swap(List<ConfirmArrivalResultDtos> A, int left, int right)
-    {
-      var tmp = A[left];
-      A[left] = A[right];
-      A[right] = tmp;
     }
 
     public async Task<ConfirmArrivalDtos> CreateOrUpdateCAAsync(int containerId, DateTime arrivalDate)

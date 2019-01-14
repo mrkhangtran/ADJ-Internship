@@ -17,20 +17,13 @@
 <body>
   <div uk-grid class="divtong" id="background">
     <!-- start menu-left -->
-    <div class="uk-background-secondary uk-text-muted uk-width-1-5 menu-left">
-      <div class="uk-grid menu-left-header">
-        <div>
-          <a href="~/Home" class="uk-link-heading uk-link-reset"><span class="fa fa-home"></span> Adjuno Internship</a>
-          <!-- end menu-left-header -->
-        </div>
+    <div class="uk-background-secondary uk-text-muted uk-width-1-6 menu-left">
+      <div class="uk-grid menu-left-header" style="text-align: left; padding: 5%">
+        <a href="~/Home" class="uk-link-heading uk-link-reset">
+          <img src="~/images/GrooveTech_blue.png"/>
+        </a>
+        <!-- end menu-left-header -->
       </div>
-      @*welcome text*@
-      <div class="uk-grid welcome uk-accordion-title">
-        <div>
-          
-          <p style="font-size:20px;"><span uk-icon="user"></span>Welcome to Groove</p>
-        </div>
-      </div>	<!-- end welcome -->
 
       <ul uk-accordion>
         <li class="item">
@@ -75,8 +68,8 @@
     </div>
 
 
-    <div class="uk-width-4-5 content-right">
-      <partial name="_LoginPartial" />
+    <div class="uk-width-5-6 content-right">
+      @*<partial name="_LoginPartial" />*@
 
       @RenderBody()
 
@@ -120,8 +113,8 @@
             asp-fallback-src="~/lib/uikit/uikit-icons.min.js"
             asp-fallback-test="window.jQuery">
     </script>
-
     <script src="~/js/site.min.js" asp-append-version="true"></script>
+    <script src="~/js/Index.js"></script>
   </environment>
 
   @RenderSection("Scripts", required: false)

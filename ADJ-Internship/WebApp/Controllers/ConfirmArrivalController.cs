@@ -27,11 +27,6 @@ namespace WebApp.Controllers
 
       model.Containers = await _CAService.ListContainerFilterAsync(null, null, null, null, null, null, null, null);
 
-      if (model.Containers.Items.Count == 0)
-      {
-        ViewBag.ShowModal = "NoResult";
-      }
-
       PagedListResult<ConfirmArrivalResultDtos> nextPage = new PagedListResult<ConfirmArrivalResultDtos>();
       nextPage = await _CAService.ListContainerFilterAsync(2, null, null, null, null, null, null, null);
 
@@ -58,11 +53,6 @@ namespace WebApp.Controllers
 
       model.Containers = await _CAService.ListContainerFilterAsync(pageIndex, model.FilterDtos.ETAFrom, model.FilterDtos.ETATo, model.FilterDtos.Origin,
         model.FilterDtos.Mode, model.FilterDtos.Vendor, model.FilterDtos.Container, model.FilterDtos.Status);
-
-      if (model.Containers.Items.Count == 0)
-      {
-        ViewBag.ShowModal = "NoResult";
-      }
 
       PagedListResult<ConfirmArrivalResultDtos> nextPage = new PagedListResult<ConfirmArrivalResultDtos>();
       PagedListResult<ConfirmArrivalResultDtos> previousPage = new PagedListResult<ConfirmArrivalResultDtos>();
@@ -116,7 +106,7 @@ namespace WebApp.Controllers
                 }
               }
 
-              model.Containers.Items = _CAService.Sort(model.Containers.Items);
+              model.Containers.Items = model.Containers.Items.OrderBy(p => p.DestinationPort).ThenBy(p => p.Origin).ThenBy(p => p.Mode).ThenBy(p => p.Carrier).ThenBy(p => p.ArrivalDate).ThenBy(p => p.Container).ToList();
               ModelState.Clear();
               ViewBag.ShowModal = "Updated";
             }
@@ -163,9 +153,9 @@ namespace WebApp.Controllers
 
     public void SetDropDownList()
     {
-      ViewBag.Modes = new List<string> { "Road", "Sea", "Air" };
-      ViewBag.Origins = new List<string> { "HongKong", "Vietnam" };
-      ViewBag.Statuses = new List<string> { ContainerStatus.Despatch.ToString(), ContainerStatus.Arrived.ToString() };
+      ViewBag.Modes = new List<string> { "Air", "Road", "Sea" };
+      ViewBag.Origins = new List<string> { "Hong Kong", "Vietnam" };
+      ViewBag.Statuses = new List<string> { ContainerStatus.Despatch.GetDescription<ContainerStatus>(), ContainerStatus.Arrived.GetDescription<ContainerStatus>() };
 
       ViewBag.ContinuedFromPrevious = false;
       ViewBag.ToBeContinued = false;

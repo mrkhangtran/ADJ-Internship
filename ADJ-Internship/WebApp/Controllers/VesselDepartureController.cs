@@ -13,12 +13,10 @@ namespace WebApp.Controllers
   public class VesselDepartureController : Controller
   {
     private readonly IVesselDepartureService _vesselDepartureService;
-    private readonly int pageSize;
 
     public VesselDepartureController(IVesselDepartureService vesselDepartureService)
     {
       _vesselDepartureService = vesselDepartureService;
-      pageSize = 3;
     }
 
     public async Task<ActionResult> Index()
@@ -29,11 +27,6 @@ namespace WebApp.Controllers
       model.ResultDtos = new PagedListResult<ContainerDto>();
 
       model.ResultDtos = await _vesselDepartureService.ListContainerDtoAsync(null, null, null, null, null, null, null);
-
-      if (model.ResultDtos.Items.Count == 0)
-      {
-        ViewBag.ShowModal = "NoResult";
-      }
 
       PagedListResult<ContainerDto> nextPage = new PagedListResult<ContainerDto>();
       nextPage = await _vesselDepartureService.ListContainerDtoAsync(2, null, null, null, null, null, null);
@@ -61,11 +54,6 @@ namespace WebApp.Controllers
 
       model.ResultDtos = await _vesselDepartureService.ListContainerDtoAsync(pageIndex, model.FilterDto.Origin, model.FilterDto.OriginPort, model.FilterDto.Container, 
         model.FilterDto.Status, model.FilterDto.ETDFrom, model.FilterDto.ETDTo);
-
-      if (model.ResultDtos.Items.Count == 0)
-      {
-        ViewBag.ShowModal = "NoResult";
-      }
 
       PagedListResult<ContainerDto> nextPage = new PagedListResult<ContainerDto>();
       PagedListResult<ContainerDto> previousPage = new PagedListResult<ContainerDto>();
@@ -123,7 +111,7 @@ namespace WebApp.Controllers
                   item.Status = ContainerStatus.Despatch;
                 }
               }
-              model.ResultDtos.Items = _vesselDepartureService.Sort(model.ResultDtos.Items);
+              model.ResultDtos.Items = model.ResultDtos.Items.OrderBy(p => p.OriginPort).ThenBy(p => p.DestinationPort).ThenBy(p => p.Mode).ThenBy(p => p.Carrier).ThenBy(p => p.ETD).ThenBy(p => p.ETA).ThenBy(p => p.Name).ToList();
 
               ModelState.Clear();
               ViewBag.ShowModal = "Updated";
@@ -171,9 +159,9 @@ namespace WebApp.Controllers
 
     public void SetDropDownList()
     {
-      ViewBag.Origins = new List<string> { "HongKong", "Vietnam" };
-      ViewBag.Modes = new List<string> { "Road", "Sea", "Air" };
-      ViewBag.Statuses = new List<string> { ContainerStatus.Despatch.ToString(), ContainerStatus.Pending.ToString() };
+      ViewBag.Origins = new List<string> { "Hong Kong", "Vietnam" };
+      ViewBag.Modes = new List<string> { "Air", "Road", "Sea" };
+      ViewBag.Statuses = new List<string> { ContainerStatus.Despatch.GetDescription<ContainerStatus>(), ContainerStatus.Pending.GetDescription<ContainerStatus>() };
       ViewBag.Carriers = new List<string> { "DHL", "EMS", "Kerry Express", "TNT", "USPS", "ViettelPost" };
       ViewBag.VNPorts = new List<string> { "Cẩm Phả", "Cửa Lò", "Hải Phòng", "Hòn Gai", "Nghi Sơn" };
       ViewBag.HKPorts = new List<string> { "Aberdeen", "Crooked Harbour", "Double Haven", "Gin Drinkers Bay", "Inner Port Shelter" };
