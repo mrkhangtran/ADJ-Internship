@@ -230,14 +230,21 @@
     </div>
   </div>
 }
-@if (ViewBag.ShowResult == "invalid")
+@if (ViewBag.ShowResult != null)
 {
   string result = ViewBag.modalResult;
   <button type="button" uk-toggle="target: #modal-success" id="successmodal" hidden="hidden">Open</button>
   <div id="modal-success" class="uk-flex-top" uk-modal>
     <div class="uk-modal-dialog uk-modal-body uk-margin-auto-vertical">
       <button class="uk-modal-close-default" type="button" uk-close></button>
-      <p class="uk-text-danger">Your value is invalid</p>
+      @if (ViewBag.ShowResult == "invalid")
+      {
+        <p class="uk-text-danger">Your value is invalid</p>
+      }
+      @if (ViewBag.ShowResult == "empty")
+      {
+        <p class="uk-text-danger">Please enter your booking ref or client</p>
+      }
     </div>
   </div>
 }

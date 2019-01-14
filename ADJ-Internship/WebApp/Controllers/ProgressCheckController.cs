@@ -43,7 +43,6 @@ namespace WebApp.Controllers
     public async Task<ActionResult> CreateOrUpdate(PagedListResult<ProgressCheckDto> progressCheckDTOs)
     {
       ViewBag.Check = 0;
-      bool checkedItem = false;
       bool check = false;
       List<string> POUpdate = new List<string>();
       PagedListResult<ProgressCheckDto> lstPrc = new PagedListResult<ProgressCheckDto>();
@@ -92,8 +91,7 @@ namespace WebApp.Controllers
             temp.ShipDate = item.ShipDate;
             lstPrc.Items.Add(temp);
             POUpdate.Add(item.PONumber);
-            ViewBag.Check = 1;
-            checkedItem = true;
+            ViewBag.Check = "success";
             check = true;
           }
           else
@@ -107,14 +105,14 @@ namespace WebApp.Controllers
       {
         lstPrc = progressCheckDTOs;
         lstPrc.PageCount = progressCheckDTOs.PageCount;
-        ViewBag.Check = 2;
+        ViewBag.Check = "invalid";
       }
-      if (check == false)
-      {
-        lstPrc.PageCount = progressCheckDTOs.PageCount;
-        lstPrc = progressCheckDTOs;
-        return PartialView("_AchievePartial", lstPrc);
-      }
+      //if (check == false)
+      //{
+      //  lstPrc.PageCount = progressCheckDTOs.PageCount;
+      //  lstPrc = progressCheckDTOs;
+      //  return PartialView("_AchievePartial", lstPrc);
+      //}
       return PartialView("_AchievePartial", lstPrc);
     }
   }

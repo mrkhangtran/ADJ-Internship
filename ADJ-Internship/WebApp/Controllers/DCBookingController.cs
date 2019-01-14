@@ -46,6 +46,18 @@ namespace WebApp.Controllers
           ModelState[bookingdate].ValidationState = ModelState[id].ValidationState;
         }
       }
+      for (int i = 0; i < pagedListResult.Items.Count(); i++)
+      {
+        if (pagedListResult.Items[i].selected == true)
+        {
+          if(pagedListResult.Items[i].Client==null|| pagedListResult.Items[i].BookingRef == null)
+          {
+            ViewBag.ShowResult = "empty";
+            return PartialView("_AvchieveDCBookingPartial", pagedListResult);
+          }
+        }
+
+      }
       if (ModelState.IsValid)
       {
         for (int i = 0; i < pagedListResult.Items.Count(); i++)
