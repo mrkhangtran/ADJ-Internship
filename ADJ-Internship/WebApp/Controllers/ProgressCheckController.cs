@@ -77,6 +77,16 @@ namespace WebApp.Controllers
           }
         }
       }
+      //foreach (var item in progressCheckDTOs.Items)
+      //{
+      //  if (item.ListOrderDetailDto.Where(p => p.selected == true).Count() == 0)
+      //  {
+      //    lstPrc.PageCount = progressCheckDTOs.PageCount;
+      //    lstPrc = progressCheckDTOs;
+      //    ViewBag.Check = "empty";
+      //    return PartialView("_AchievePartial", lstPrc);
+      //  }
+      //}
       if (ModelState.IsValid)
       {
         foreach (var item in progressCheckDTOs.Items)
@@ -107,12 +117,6 @@ namespace WebApp.Controllers
         lstPrc.PageCount = progressCheckDTOs.PageCount;
         ViewBag.Check = "invalid";
       }
-      //if (check == false)
-      //{
-      //  lstPrc.PageCount = progressCheckDTOs.PageCount;
-      //  lstPrc = progressCheckDTOs;
-      //  return PartialView("_AchievePartial", lstPrc);
-      //}
       return PartialView("_AchievePartial", lstPrc);
     }
   }

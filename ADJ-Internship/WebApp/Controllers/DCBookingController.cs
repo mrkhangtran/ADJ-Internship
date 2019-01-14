@@ -36,6 +36,11 @@ namespace WebApp.Controllers
     }
     public async Task<ActionResult> CreateOrUpdate(PagedListResult<DCBookingDtos> pagedListResult)
     {
+      ViewBag.DC = new List<string> { "Market Hong Kong", "Gas Customer Center", "JSI Logistics" };
+      ViewBag.Haulier = new List<string> { "123 Cargo", "Cargo Core" };
+      SearchingDCBooking searchingDCBooking = await _dCBookingService.getItem();
+      ViewBag.DestPort = searchingDCBooking.DestinationPort;
+      ViewBag.Status = searchingDCBooking.Status;
       ViewBag.ShowResult = 0;
       for (int i = 0; i < pagedListResult.Items.Count(); i++)
       {
@@ -46,17 +51,13 @@ namespace WebApp.Controllers
           ModelState[bookingdate].ValidationState = ModelState[id].ValidationState;
         }
       }
-      for (int i = 0; i < pagedListResult.Items.Count(); i++)
+      foreach(var item in pagedListResult.Items)
       {
-        if (pagedListResult.Items[i].selected == true)
+        if(item.Id==0 && item.selected == false)
         {
-          if(pagedListResult.Items[i].Client==null|| pagedListResult.Items[i].BookingRef == null)
-          {
-            ViewBag.ShowResult = "empty";
-            return PartialView("_AvchieveDCBookingPartial", pagedListResult);
-          }
+          ViewBag.ShowResult = "empty";
+          return PartialView("_AvchieveDCBookingPartial", pagedListResult);
         }
-
       }
       if (ModelState.IsValid)
       {
@@ -73,11 +74,7 @@ namespace WebApp.Controllers
       {
         ViewBag.ShowResult = "invalid";
       }
-      ViewBag.DC = new List<string> { "Market Hong Kong", "Gas Customer Center", "JSI Logistics" };
-      ViewBag.Haulier = new List<string> { "123 Cargo", "Cargo Core" };
-      SearchingDCBooking searchingDCBooking = await _dCBookingService.getItem();
-      ViewBag.DestPort = searchingDCBooking.DestinationPort;
-      ViewBag.Status = searchingDCBooking.Status;
+     
       return PartialView("_AvchieveDCBookingPartial", pagedListResult);
     }
   }

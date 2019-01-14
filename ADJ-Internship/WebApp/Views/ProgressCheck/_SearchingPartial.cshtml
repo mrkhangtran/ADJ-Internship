@@ -50,14 +50,14 @@ else
             else
             {
               <td>N/A</td>
-            }          
+            }
           </tr>
         </tbody>
       </table>
       <table class="uk-table uk-table-striped uk-table-middle uk-table-small">
         <thead>
           <tr>
-            <td style="width:69px"></td>
+            <td style="width:50px"></td>
             <td>
               PO Number
             </td>
@@ -83,18 +83,12 @@ else
         </thead>
         <tbody>
           <tr>
-            @if (Model.Items[i].Complete == false)
-            {
-              <td style="width:69px">
-                <input class="uk-checkbox" type="checkbox" asp-for="Items[i].selected" />
-              </td>
-            }
-            else
-            {
-              <td style="width:69px">
-                <input disabled class="uk-checkbox" type="checkbox" />
-              </td>
-            }
+            <td style="width:50px">
+              @if (Model.Items[i].Complete == false)
+              {
+                <input asp-for="Items[i].selected" class="uk-checkbox" />
+              }          
+            </td>
             <td>@Model.Items[i].PONumber</td>
             <td>@Model.Items[i].POQuantity</td>
             <td>@Model.Items[i].EstQtyToShip</td>
@@ -138,7 +132,7 @@ else
       <table class="uk-table uk-table-striped uk-table-middle uk-table-small uk-width-2-3">
         <thead>
           <tr>
-            <td style="width:69px"></td>
+            <td style="width:50px"></td>
             <td>
               Item Number
             </td>
@@ -157,18 +151,12 @@ else
             @Html.HiddenFor(model => model.Items[i].ListOrderDetailDto[j].Quantity)
             @Html.HiddenFor(model => model.Items[i].ListOrderDetailDto[j].ItemNumber)
             <tr>
-              @if (Model.Items[i].Complete == false)
-              {
-                <td style="width:69px">
-                  <input class="uk-checkbox" type="checkbox" asp-for="Items[i].ListOrderDetailDto[j].selected" />
-                </td>
-              }
-              else
-              {
-                <td style="width:69px">
-                  <input disabled class="uk-checkbox" type="checkbox" />
-                </td>
-              }
+              <td>
+                @if (Model.Items[i].Complete == false)
+                {
+                  <input asp-for="Items[i].ListOrderDetailDto[j].selected" class="uk-checkbox" />
+                }             
+              </td>
               <td>@Model.Items[i].ListOrderDetailDto[j].ItemNumber</td>
               <td>@Model.Items[i].ListOrderDetailDto[j].Quantity</td>
               @{

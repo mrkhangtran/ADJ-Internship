@@ -51,6 +51,8 @@ namespace ADJ.BusinessService.Implementations
     {
       PagedListResult<DCBookingDtos> pagedListResult = new PagedListResult<DCBookingDtos>();
       Expression<Func<Container, bool>> All = c => c.Id > 0;
+      Expression<Func<Container, bool>> filter1 = x => x.Status != ContainerStatus.Delivered;
+      All = All.And(filter1);
       if (DestinationPort != null)
       {
         Expression<Func<Container, bool>> filter = x => x.ArriveOfDespatch.DestinationPort == DestinationPort;
@@ -88,7 +90,7 @@ namespace ADJ.BusinessService.Implementations
       }
       if (Status != null)
       {
-        Expression<Func<Container, bool>> filter = x => x.Status.ToString() == Status;
+        Expression<Func<Container, bool>> filter = x => x.Status.GetDescription<ContainerStatus>() == Status;
         All = All.And(filter);
       }
       if (Container != null)
@@ -112,7 +114,7 @@ namespace ADJ.BusinessService.Implementations
             Name = container.Name,
             DestPort = arriveOfDispatch[0].DestinationPort,
             ArrivalDate = confirmArrival[0].ArrivalDate,
-            Status = container.Status.ToString(),
+            Status = container.Status.GetDescription<ContainerStatus>(),
             BookingDate = confirmArrival[0].ArrivalDate
           };
           foreach (var manifest in container.Manifests)
@@ -142,7 +144,7 @@ namespace ADJ.BusinessService.Implementations
     public async Task<SearchingDCBooking> getItem()
     {
       var list =  _containerRepository.Query(true).SelectAsync(x => x.ArriveOfDespatch.DestinationPort).Result.Distinct();
-      List<string> status = new List<string> {ContainerStatus.Arrived.ToString(),ContainerStatus.DCBookingReceived.ToString() };   
+      List<string> status = new List<string> {ContainerStatus.Arrived.GetDescription<ContainerStatus>(),ContainerStatus.DCBookingReceived.GetDescription<ContainerStatus>() };   
       SearchingDCBooking searchingDCBooking = new SearchingDCBooking()
       {
         DestinationPort = list,

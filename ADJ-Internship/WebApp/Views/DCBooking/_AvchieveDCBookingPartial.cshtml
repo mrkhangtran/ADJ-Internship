@@ -60,11 +60,7 @@
               <td style="width:5%">
                 @if (Model.Items[i].Id == 0)
                 {
-                  <input type="checkbox" class="uk-checkbox" />
-                }
-                else
-                {
-                  <input disabled asp-for="Items[i].selected" class="uk-checkbox" />
+                  <input type="checkbox" id="@Model.Items[i].ContainerId" asp-for="Items[i].selected" class="checkrequired uk-checkbox" />
                 }
               </td>
               <td>
@@ -128,8 +124,10 @@
                   }
                   else
                   {
-                    <input asp-for="Items[i].Client" class="client uk-input" />
-                    <span class="client uk-text-danger" asp-validation-for="Items[i].Client"></span>
+                    <input style="text-align:center" id="@("client"+Model.Items[i].ContainerId)" asp-for="Items[i].Client" class="client uk-input" />
+                    <div id="clientvalidate">
+                      <span class="client uk-text-danger" asp-validation-for="Items[i].Client"></span>
+                    </div>
                   }
                 }
 
@@ -158,7 +156,7 @@
                   }
                   else
                   {
-                    <input asp-for="Items[i].BookingTime" class="bookingtime uk-input" placeholder="ex: 10:45" />
+                    <input style="text-align:center" asp-for="Items[i].BookingTime" class="bookingtime uk-input" placeholder="ex: 10:45" />
                     <span class="bookingtimeinvalid uk-text-danger" asp-validation-for="Items[i].BookingTime"></span>
                   }
                 }
@@ -174,8 +172,10 @@
                   }
                   else
                   {
-                    <input asp-for="Items[i].BookingRef" class="bookingref uk-input" />
-                    <span class="bookingref uk-text-danger" asp-validation-for="Items[i].BookingRef"></span>
+                    <input style="text-align:center" id="@("bookingref"+Model.Items[i].ContainerId)" asp-for="Items[i].BookingRef" class="bookingref uk-input" />
+                    <div id="bookingrefvalidate">
+                      <span class="bookingref uk-text-danger" asp-validation-for="Items[i].BookingRef"></span>
+                    </div>
                   }
                 }
               </td>
@@ -221,29 +221,27 @@
 </div>
 @if (ViewBag.ShowResult == "success")
 {
-  string result = ViewBag.modalResult;
   <button type="button" uk-toggle="target: #modal-success" id="successmodal" hidden="hidden">Open</button>
   <div id="modal-success" class="uk-flex-top" uk-modal>
     <div class="uk-modal-dialog uk-modal-body uk-margin-auto-vertical">
       <button class="uk-modal-close-default" type="button" uk-close></button>
-      <p class="uk-text-success">Your Delivery is successfully made</p>
+      <p class="uk-text-success uk-text-bold">Your Delivery is successfully made</p>
     </div>
   </div>
 }
 @if (ViewBag.ShowResult != null)
 {
-  string result = ViewBag.modalResult;
   <button type="button" uk-toggle="target: #modal-success" id="successmodal" hidden="hidden">Open</button>
   <div id="modal-success" class="uk-flex-top" uk-modal>
     <div class="uk-modal-dialog uk-modal-body uk-margin-auto-vertical">
       <button class="uk-modal-close-default" type="button" uk-close></button>
       @if (ViewBag.ShowResult == "invalid")
       {
-        <p class="uk-text-danger">Your value is invalid</p>
+        <p class="uk-text-danger uk-text-bold">Your value is invalid</p>
       }
       @if (ViewBag.ShowResult == "empty")
       {
-        <p class="uk-text-danger">Please enter your booking ref or client</p>
+        <p class="uk-text-danger uk-text-bold">Please check your container</p>
       }
     </div>
   </div>

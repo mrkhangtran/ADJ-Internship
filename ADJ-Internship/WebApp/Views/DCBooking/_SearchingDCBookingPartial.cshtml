@@ -70,10 +70,6 @@ else
                   {
                     <input type="checkbox" id="@Model.Items[i].ContainerId" asp-for="Items[i].selected" class="checkrequired uk-checkbox" />
                   }
-                  else
-                  {
-                    <input disabled class="uk-checkbox" />
-                  }
                 </td>
                 <td>
                   @Model.Items[i].Name
@@ -136,7 +132,7 @@ else
                     }
                     else
                     {
-                      <input id="@("client"+Model.Items[i].ContainerId)" asp-for="Items[i].Client" class="client uk-input" />
+                      <input style="text-align:center"  id="@("client"+Model.Items[i].ContainerId)" asp-for="Items[i].Client" class="client uk-input" />
                       <div id="clientvalidate">
                         <span class="client uk-text-danger" asp-validation-for="Items[i].Client"></span>
                       </div>
@@ -168,7 +164,7 @@ else
                     }
                     else
                     {
-                      <input asp-for="Items[i].BookingTime" class="bookingtime uk-input" placeholder="ex: 10:45" />
+                      <input style="text-align:center" asp-for="Items[i].BookingTime" class="bookingtime uk-input" placeholder="ex: 10:45" />
                       <span class="bookingtimeinvalid uk-text-danger" asp-validation-for="Items[i].BookingTime"></span>
                     }
                   }
@@ -184,7 +180,7 @@ else
                     }
                     else
                     {
-                      <input id="@("bookingref"+Model.Items[i].ContainerId)" asp-for="Items[i].BookingRef" class="bookingref uk-input" />
+                      <input  style="text-align:center" id="@("bookingref"+Model.Items[i].ContainerId)" asp-for="Items[i].BookingRef" class="bookingref uk-input" />
                       <div id="bookingrefvalidate">
                         <span class="bookingref uk-text-danger" asp-validation-for="Items[i].BookingRef"></span>
                       </div>

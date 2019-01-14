@@ -37,11 +37,7 @@ else
             <td style="width:45px">
               @if (Model.Items[i].Id == 0)
               {
-                <input class="uk-checkbox" type="checkbox" asp-for="Items[i].selectedContainer" />
-              }
-              else
-              {
-                <input disabled class="uk-checkbox" />
+                <input class="uk-checkbox" asp-for="Items[i].selectedContainer" />
               }
             </td>
             <td>
@@ -92,7 +88,7 @@ else
       <table class="uk-table uk-table-striped uk-table-middle uk-table-small">
         <thead>
           <tr>
-            <td style="width:69px"></td>
+            <td style="width:40px"></td>
             <td>
               Vendor
             </td>
@@ -154,14 +150,10 @@ else
             @Html.HiddenFor(model => model.Items[i].Manifests[j].Manifested, new { Value = Model.Items[i].Manifests[j].Manifested })
             @Html.HiddenFor(model => model.Items[i].Manifests[j].ETDDate, new { Value = Model.Items[i].Manifests[j].ETDDate })
             <tr>
-              <td style="width:5%">
+              <td style="width:45px">
                 @if (Model.Items[i].Id == 0)
                 {
-                  <input class="uk-checkbox" type="checkbox" asp-for="Items[i].Manifests[j].selectedItem" />
-                }
-                else
-                {
-                  <input disabled class="uk-checkbox" />
+                  <input class="uk-checkbox" asp-for="Items[i].Manifests[j].selectedItem" />
                 }
               </td>
 
