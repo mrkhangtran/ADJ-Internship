@@ -68,11 +68,7 @@ else
                 <td style="width:5%">
                   @if (Model.Items[i].Id == 0)
                   {
-                    <input type="checkbox" asp-for="Items[i].selected" class="uk-checkbox" />
-                  }
-                  else
-                  {
-                    <input disabled class="uk-checkbox" />
+                    <input type="checkbox" id="@Model.Items[i].ContainerId" asp-for="Items[i].selected" class="checkrequired uk-checkbox" />
                   }
                 </td>
                 <td>
@@ -136,8 +132,10 @@ else
                     }
                     else
                     {
-                      <input asp-for="Items[i].Client" class="client uk-input" />
-                      <span class="client uk-text-danger" asp-validation-for="Items[i].Client"></span>
+                      <input style="text-align:center"  id="@("client"+Model.Items[i].ContainerId)" asp-for="Items[i].Client" class="client uk-input" />
+                      <div id="clientvalidate">
+                        <span class="client uk-text-danger" asp-validation-for="Items[i].Client"></span>
+                      </div>
                     }
                   }
 
@@ -166,7 +164,7 @@ else
                     }
                     else
                     {
-                      <input asp-for="Items[i].BookingTime" class="bookingtime uk-input" placeholder="ex: 10:45" />
+                      <input style="text-align:center" asp-for="Items[i].BookingTime" class="bookingtime uk-input" placeholder="ex: 10:45" />
                       <span class="bookingtimeinvalid uk-text-danger" asp-validation-for="Items[i].BookingTime"></span>
                     }
                   }
@@ -182,8 +180,10 @@ else
                     }
                     else
                     {
-                      <input asp-for="Items[i].BookingRef" class="bookingref uk-input" />
-                      <span class="bookingref uk-text-danger" asp-validation-for="Items[i].BookingRef"></span>
+                      <input  style="text-align:center" id="@("bookingref"+Model.Items[i].ContainerId)" asp-for="Items[i].BookingRef" class="bookingref uk-input" />
+                      <div id="bookingrefvalidate">
+                        <span class="bookingref uk-text-danger" asp-validation-for="Items[i].BookingRef"></span>
+                      </div>
                     }
                   }
                 </td>

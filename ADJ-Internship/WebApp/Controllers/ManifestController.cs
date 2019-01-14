@@ -95,7 +95,7 @@ namespace WebApp.Controllers
           pagedListResult = shipmentManifestDtos;
           return PartialView("_AchieveManifestPartial", pagedListResult);
         }
-        if (manifest.selectedContainer == true && manifest.Manifests.Where(p => p.selectedItem == false).Count() > 0)
+        if (manifest.selectedContainer == true && manifest.Manifests.Where(p => p.selectedItem == true).Count() == 0)
         {
           ViewBag.modalResult = "emptybooking";
           pagedListResult = shipmentManifestDtos;

@@ -27,15 +27,29 @@
       <tbody>
         <tr>
           <td style="width:69px"></td>
-          <td>@Model.Items[i].Supplier</td>
-          <td>@Model.Items[i].Factory</td>
+          @if (Model.Items[i].Supplier != null)
+          {
+            <td>@Model.Items[i].Supplier</td>
+          }
+          else
+          {
+            <td>N/A</td>
+          }
+          @if (Model.Items[i].Factory != null)
+          {
+            <td>@Model.Items[i].Factory</td>
+          }
+          else
+          {
+            <td>N/A</td>
+          }
         </tr>
       </tbody>
     </table>
     <table class="uk-table uk-table-striped uk-table-middle uk-table-small">
       <thead>
         <tr>
-          <td style="width:69px"></td>
+          <td style="width:50px"></td>
           <td>
             PO Number
           </td>
@@ -61,18 +75,12 @@
       </thead>
       <tbody>
         <tr>
-          @if (Model.Items[i].Complete == false)
-          {
-            <td style="width:69px">
-              <input class="uk-checkbox" type="checkbox" asp-for="Items[i].selected" />
-            </td>
-          }
-          else
-          {
-            <td style="width:69px">
-              <input disabled class="uk-checkbox" type="checkbox" />
-            </td>
-          }
+          <td style="width:50px">
+            @if (Model.Items[i].Complete == false)
+            {
+              <input asp-for="Items[i].selected" class="uk-checkbox" />
+            }
+          </td>
           <td>@Model.Items[i].PONumber</td>
           <td>@Model.Items[i].POQuantity</td>
           <td>@Model.Items[i].EstQtyToShip</td>
@@ -135,18 +143,12 @@
           @Html.HiddenFor(model => model.Items[i].ListOrderDetailDto[j].Quantity)
           @Html.HiddenFor(model => model.Items[i].ListOrderDetailDto[j].ItemNumber)
           <tr>
-            @if (Model.Items[i].Complete == false)
-            {
-              <td style="width:69px">
-                <input class="uk-checkbox" type="checkbox" asp-for="Items[i].ListOrderDetailDto[j].selected" />
-              </td>
-            }
-            else
-            {
-              <td style="width:69px">
-                <input disabled class="uk-checkbox" type="checkbox" />
-              </td>
-            }
+            <td>
+              @if (Model.Items[i].Complete == false)
+              {
+                <input asp-for="Items[i].ListOrderDetailDto[j].selected" class="uk-checkbox" />
+              }
+            </td>
             <td>@Model.Items[i].ListOrderDetailDto[j].ItemNumber</td>
             <td>@Model.Items[i].ListOrderDetailDto[j].Quantity</td>
             @{
@@ -203,7 +205,7 @@
 
   </ul>
 </div>
-@if (ViewBag.check == 1)
+@if (ViewBag.check == "success")
 {
   <button type="button" uk-toggle="target: #modal-center" id="openmodal" hidden="hidden">Open</button>
   <div id="modal-center" class="uk-flex-top" uk-modal>
@@ -216,15 +218,20 @@
     </div>
   </div>
 }
-@if (ViewBag.check == 2)
+@if (ViewBag.check != null)
 {
   <button type="button" uk-toggle="target: #modal-center" id="openmodal" hidden="hidden">Open</button>
   <div id="modal-center" class="uk-flex-top" uk-modal>
     <div class="uk-modal-dialog uk-modal-body uk-margin-auto-vertical">
       <button class="uk-modal-close-default" type="button" uk-close></button>
-
-      <p class="uk-text-danger uk-text-bold">Invalid value.Please try again</p>
-
+      @if (ViewBag.check == "invalid")
+      {
+        <p class="uk-text-danger uk-text-bold">Invalid value.Please try again</p>
+      }
+      @if (ViewBag.check == "empty")
+      {
+        <p class="uk-text-danger uk-text-bold">Please check your item number</p>
+      }
     </div>
   </div>
 }

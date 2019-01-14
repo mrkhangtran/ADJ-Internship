@@ -264,19 +264,19 @@
       @{
         if (ViewBag.modalResult == "invalid")
         {
-          <p class="uk-text-danger">Ship Quantity is invalid, please try again</p>
+          <p class="uk-text-danger uk-text-bold">Ship Quantity is invalid, please try again</p>
         }
-        if (ViewBag.modalResult == "empty")
+        else if (ViewBag.modalResult == "empty")
         {
-          <p class="uk-text-danger">Please check your container.</p>
+          <p class="uk-text-danger uk-text-bold">Please check your container.</p>
         }
-        if (ViewBag.modalResult == "zero")
+        else if (ViewBag.modalResult == "zero")
         {
-          <p class="uk-text-danger">Please enter your ship quantity.</p>
+          <p class="uk-text-danger uk-text-bold">Please enter your ship quantity.</p>
         }
-        if (ViewBag.modalResult == "emptybooking")
+        else if (ViewBag.modalResult == "emptybooking")
         {
-          <p class="uk-text-danger">Please check your shipment booking .</p>
+          <p class="uk-text-danger uk-text-bold">Please check your shipment booking .</p>
         }
       }
     </div>
@@ -288,7 +288,7 @@
   <div id="modal-success" class="uk-flex-top" uk-modal>
     <div class="uk-modal-dialog uk-modal-body uk-margin-auto-vertical">
       <button class="uk-modal-close-default" type="button" uk-close></button>
-      <p class="uk-text-success">Your shipment is successfully manifested</p>
+      <p class="uk-text-success uk-text-bold">Your shipment is successfully manifested</p>
     </div>
   </div>
 }

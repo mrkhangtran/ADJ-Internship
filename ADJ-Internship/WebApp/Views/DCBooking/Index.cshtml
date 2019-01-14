@@ -137,32 +137,14 @@
       $('#successmodal').trigger('click');
     });
   }
-  //$('#dcbooking').submit(function () {
-  //  var check = 0;
-  //  var blank = document.getElementsByClassName("client");
-  //  for (i = 0; i < blank.length; i++) {
-  //    if (blank[i].value == "") {
-  //      check++;
-  //      break;
-  //    }
-  //  }
-  //  var blank = document.getElementsByClassName("bookingtime");
-  //  for (i = 0; i < blank.length; i++) {
-  //    if (blank[i].value == "") {
-  //      check++;
-  //      break;
-  //    }
-  //  }
-  //  var blank = document.getElementsByClassName("bookingref");
-  //  for (i = 0; i < blank.length; i++) {
-  //    if (blank[i].value == "") {
-  //      check++;
-  //      break;
-  //    }
-  //  }
-  //  if (check > 0) {
-  //    alert("Some fields are empty or contain an improper value. Please try again.");
-  //  }
-  //});
+  $(document.body).on('change', '.checkrequired', function () {
+    if (this.checked==true) {
+      var id = $(this).attr("id");
+      var bookingref = "#bookingref" + id;
+      var client = "#client" + id;
+      $(client).attr("required", "required");
+      $(bookingref).attr("required", "required");
+    }
+  });
 </script>
 

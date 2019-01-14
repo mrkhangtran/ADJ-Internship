@@ -88,8 +88,8 @@ namespace ADJ.BusinessService.Implementations
       }
       if (Status != null)
       {
-        Expression<Func<Container, bool>> filterStatus = x => x.Manifests.Where(p => p.Booking.Status.ToString() == Status).Count() > 0;
-        Expression<Func<Booking, bool>> filter = x => x.Status.ToString() == Status;
+        Expression<Func<Container, bool>> filterStatus = x => x.Manifests.Where(p => p.Booking.Status.GetDescription<OrderStatus>() == Status).Count() > 0;
+        Expression<Func<Booking, bool>> filter = x => x.Status.GetDescription<OrderStatus>() == Status;
         AllBooking = AllBooking.And(filter);
         All = All.And(filterStatus);
       }
@@ -160,7 +160,7 @@ namespace ADJ.BusinessService.Implementations
             BookingCube = item.Booking.Quantity * (decimal)item.Booking.Cube,
             ShipCube = item.Quantity * (decimal)item.Cube,
             NetWeight = item.Quantity * (decimal)item.KGS,
-            Manifested = item.Booking.Status.ToString(),
+            Manifested = item.Booking.Status.GetDescription<OrderStatus>(),
           };
           itemManifests.Add(itemManifest);
         }
@@ -204,7 +204,7 @@ namespace ADJ.BusinessService.Implementations
               BookingCartons = bookingNoContainer.Quantity * (decimal)bookingNoContainer.Cartons,
               OpenQuantity = bookingNoContainer.Quantity,
               BookingCube = bookingNoContainer.Quantity * (decimal)bookingNoContainer.Cube,
-              Manifested = bookingNoContainer.Status.ToString(),
+              Manifested = bookingNoContainer.Status.GetDescription<OrderStatus>(),
               BookingId = bookingNoContainer.Id,
               Cube=bookingNoContainer.Cube,
               Carton=bookingNoContainer.Cartons,
@@ -225,7 +225,7 @@ namespace ADJ.BusinessService.Implementations
               BookingQuantity = bookingNoContainer.Quantity,
               BookingCartons = bookingNoContainer.Quantity * (decimal)bookingNoContainer.Cartons,
               BookingCube = bookingNoContainer.Quantity * (decimal)bookingNoContainer.Cube,
-              Manifested = bookingNoContainer.Status.ToString(),
+              Manifested = bookingNoContainer.Status.GetDescription<OrderStatus>(),
               BookingId = bookingNoContainer.Id,
               Cube = bookingNoContainer.Cube,
               Carton = bookingNoContainer.Cartons,
@@ -270,7 +270,8 @@ namespace ADJ.BusinessService.Implementations
               BookingCube = item.Booking.Quantity * (decimal)item.Booking.Cube,
               ShipCube = item.Quantity * (decimal)item.Cube,
               NetWeight = item.Quantity * (decimal)item.KGS,
-              Manifested = item.Booking.Status.ToString(),
+              Manifested = item.Booking.Status.GetDescription<OrderStatus>(),
+
             };
             itemManifests.Add(itemManifest);
           }
@@ -310,7 +311,7 @@ namespace ADJ.BusinessService.Implementations
       var DestinationPort = bookingModels.Select(x => x.PortOfDelivery).Distinct();
       var OriginPorts = bookingModels.Select(x => x.PortOfLoading).Distinct();
       var Carriers = bookingModels.Select(x => x.Carrier).Distinct();
-      List<string> status = Enum.GetNames(typeof(OrderStatus)).ToList();
+      List<string> status = new List<string> {OrderStatus.BookingMade.GetDescription<OrderStatus>(), OrderStatus.PartlyManifested.GetDescription<OrderStatus>(), OrderStatus.Manifested.GetDescription<OrderStatus>() };
       SearchingManifestItem getSearchItemDTO = new SearchingManifestItem()
       {
         DestinationPort = DestinationPort,
