@@ -159,7 +159,7 @@
       var id = $(this).attr("id");
       var bookingref = "#bookingref" + id;
       var client = "#client" + id;
-      $('#dcbooking').validate({ 
+      $('#dcbooking').validate({
         rules: {
           bookingref: {
             required: true,
@@ -171,8 +171,6 @@
       });
       $('#bookingrefvalidate').append('<span class="uk-text-danger"> The booking ref is required</span>')
       $('#clientvalidate').append('<span class="uk-text-danger"> The client is required</span>')
-
-
     }
   });
 </script>

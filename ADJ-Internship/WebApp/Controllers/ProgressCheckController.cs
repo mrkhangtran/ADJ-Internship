@@ -25,7 +25,7 @@ namespace WebApp.Controllers
       ViewBag.Suppliers = getSearchItem.Suppliers;
       ViewBag.VNPorts = new List<string> { "Cẩm Phả", "Cửa Lò", "Hải Phòng", "Hòn Gai", "Nghi Sơn" };
       ViewBag.HKPorts = new List<string> { "Aberdeen", "Crooked Harbour", "Double Haven", "Gin Drinkers Bay", "Inner Port Shelter" };
-      ViewBag.Origins = new List<string> { "HongKong", "Vietnam" };
+      ViewBag.Origins = new List<string> { "Hong Kong", "Vietnam" };
       ViewBag.Factories = getSearchItem.Factories;
       ViewBag.Depts = getSearchItem.Depts;
       ViewBag.Status = getSearchItem.Status;
