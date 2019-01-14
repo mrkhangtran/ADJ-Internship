@@ -62,7 +62,7 @@ namespace ADJ.BusinessService.Dtos
     //DropList of Boxed/Carton
     public string PackType { get; set; }
 
-    public float Quantity { get; set; }
+    public decimal Quantity { get; set; }
 
     public float Cartons { get; set; }
 
@@ -126,7 +126,7 @@ namespace ADJ.BusinessService.Dtos
     public string Vendor { get; set; }
 
     [Display(Name = "PO Quantity")]
-    public float Quantity { get; set; }
+    public decimal Quantity { get; set; }
 
     //equal Revise Quantity
     [Display(Name = "Booking Quantity")]

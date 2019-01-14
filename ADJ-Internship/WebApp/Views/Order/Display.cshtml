@@ -64,9 +64,18 @@
               <td>@i.Origin</td>
               <td>@i.PortOfLoading</td>
               <td>@i.PortOfDelivery</td>
-              <td>@i.Vendor</td>
+              <td>
+                @if (i.Vendor == null)
+                {
+                  <span>N/A</span>
+                }
+                else
+                {
+                  @i.Vendor
+                }
+              </td>
               <td>@i.ShipDate.ToString("MM/dd/yyyy")</td>
-              <td>@i.POQuantity</td>
+              <td>@i.POQuantity.ToString("N0")</td>
               <td>@i.Status</td>
               <td>@i.DeliveryDate.ToString("MM/dd/yyyy")</td>
               <td>

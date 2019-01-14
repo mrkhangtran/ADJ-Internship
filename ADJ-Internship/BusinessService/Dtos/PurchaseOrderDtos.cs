@@ -124,7 +124,7 @@ namespace ADJ.BusinessService.Dtos
     public DateTime DeliveryDate { get; set; } = DefaultDate;
 
     //sum of all PODetails Quantity 
-    public float POQuantity { get; set; }
+    public decimal POQuantity { get; set; }
 
     //Default value = "New"
     public OrderStatus Status { get; set; }
@@ -171,9 +171,9 @@ namespace ADJ.BusinessService.Dtos
 
     [Required]
     [Display(Name = "Item Quantity")]
-    [Range(0, double.MaxValue, ErrorMessage = "Value should not be negative")]
-    [RegularExpression(@"^\d+$", ErrorMessage = "Must be an integer")]
-    public float Quantity { get; set; }
+    //[Range(0, 9999999999, ErrorMessage = "Must be between 0 and 9999999999")]
+    //[RegularExpression(@"^\d+$", ErrorMessage = "Must be an integer")]
+    public decimal Quantity { get; set; }
 
     public decimal ReviseQuantity { get; set; }
 

@@ -76,6 +76,12 @@ function GetLatestDeliveryDate() {
           latest = deliveryDate;
         }
       }
+      else {
+        latest = new Date();
+        latest.setDate(latest.getDate() + 2);
+        latest = DatetoString(latest);
+        break;
+      }
     }
   }
 
@@ -109,6 +115,10 @@ function GetEarliestShipDate() {
         if (shipDate < earliest) {
           earliest = shipDate;
         }
+      }
+      else {
+        earliest = today;
+        break;
       }
     }
   }

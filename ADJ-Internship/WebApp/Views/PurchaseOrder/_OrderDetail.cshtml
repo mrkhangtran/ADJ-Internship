@@ -2,10 +2,26 @@
 
 <div uk-grid>
   <div uk-card class="uk-width-1-6">
-    <button type="button" value="AddItem" name="method" class="uk-button uk-button-primary itemButton">Add Item</button>
+    @{
+      bool progressChecked = false;
+      foreach (var item in Model.PODetails.Items)
+      {
+        if ((decimal)item.Quantity == item.ReviseQuantity)
+        {
+          progressChecked = true;
+          break;
+        }
+      }
+      if (progressChecked)
+      {
+        <button type="button" value="AddItem" name="method" class="uk-button uk-button-primary itemButton" disabled>Add Item</button>
+      }
+      else
+      {
+        <button type="button" value="AddItem" name="method" class="uk-button uk-button-primary itemButton">Add Item</button>
+      }
+    }
   </div>
-
-
 </div>
 
 <div style="overflow-x: auto">
@@ -84,8 +100,8 @@
           <span asp-validation-for="SingleOrderDetail.Tariff" class="uk-alert-danger"></span>
         </td>
         <td>
-          <input asp-for="SingleOrderDetail.Quantity" class="uk-input newItem" id="Quantity" onkeyup="getTotalUnit(); getTotalRetail()" />
-          <span asp-validation-for="SingleOrderDetail.Quantity" class="uk-alert-danger"></span>
+          <input asp-for="SingleOrderDetail.Quantity" value=@Model.SingleOrderDetail.Quantity.ToString() class="uk-input newItem" id="Quantity" onkeyup="getTotalUnit(); getTotalRetail()" />
+          <span asp-validation-for="SingleOrderDetail.Quantity" class="uk-alert-danger" id="quantityError"></span>
         </td>
         <td>
           <input asp-for="SingleOrderDetail.Cartons" class="uk-input newItem" />
@@ -255,8 +271,11 @@
                     }
                   </td>
                   <td>
-                    <button type="button" value="@i" name="method" class="uk-button-secondary itemButton"><span uk-icon="icon: pencil; ratio: 1" style="width: 20px"></span></button>
-                    <button type="button" value="Delete @i" name="method" class="uk-button-secondary itemButton"><span uk-icon="icon: trash; ratio: 1" style="width: 20px"></span></button>
+                    @if ((decimal)Model.PODetails.Items[i].Quantity != Model.PODetails.Items[i].ReviseQuantity)
+                    {
+                      <button type="button" value="@i" name="method" class="uk-button-secondary itemButton"><span uk-icon="icon: pencil; ratio: 1" style="width: 20px"></span></button>
+                      <button type="button" value="Delete @i" name="method" class="uk-button-secondary itemButton"><span uk-icon="icon: trash; ratio: 1" style="width: 20px"></span></button>
+                    }
                   </td>
                 }
                 else
@@ -280,8 +299,8 @@
                     <span asp-validation-for="SingleOrderDetail.Tariff" class="uk-alert-danger"></span>
                   </td>
                   <td>
-                    <input asp-for="SingleOrderDetail.Quantity" class="uk-input newItem" id="Quantity" onkeyup="getTotalUnit(); getTotalRetail()" />
-                    <span asp-validation-for="SingleOrderDetail.Quantity" class="uk-alert-danger"></span>
+                    <input asp-for="SingleOrderDetail.Quantity" value=@Model.SingleOrderDetail.Quantity.ToString() class="uk-input newItem" id="Quantity" onkeyup="getTotalUnit(); getTotalRetail()" />
+                    <span asp-validation-for="SingleOrderDetail.Quantity" class="uk-alert-danger" id="quantityError"></span>
                   </td>
                   <td>
                     <input asp-for="SingleOrderDetail.Cartons" class="uk-input newItem" />
