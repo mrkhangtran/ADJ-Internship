@@ -15,6 +15,26 @@ $(document.body).on('click', '.itemButton', function () {
     newItem.push($(this).val());
   });
 
+  if (parseFloat(newItem[7]) < 0) {
+    document.getElementById("quantityError").innerHTML = "Must be a positive value.";
+    return false;
+  }
+
+  if (parseFloat(newItem[7]) == 0) {
+    document.getElementById("quantityError").innerHTML = "Must not be zero.";
+    return false;
+  }
+
+  if (parseFloat(newItem[7]) > 9999999999) {
+    document.getElementById("quantityError").innerHTML = "Must be less than 10 digits.";
+    return false;
+  }
+
+  if (String(newItem[7]).includes('.')) {
+    document.getElementById("quantityError").innerHTML = "Must be an integer.";
+    return false;
+  }
+
   var orderDetails = [];
   var items = document.getElementsByClassName("itemProperty");
   $.each(items, function () {

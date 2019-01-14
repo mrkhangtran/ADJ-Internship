@@ -324,7 +324,7 @@ namespace ADJ.WebApp.Controllers
         orderDetail.ItemNumber = orderDetailStrings[4 + (i * totalProperty)];
         orderDetail.Description = orderDetailStrings[5 + (i * totalProperty)];
         orderDetail.Tariff = orderDetailStrings[6 + (i * totalProperty)];
-        orderDetail.Quantity = float.Parse(orderDetailStrings[7 + (i * totalProperty)]);
+        orderDetail.Quantity = decimal.Parse(orderDetailStrings[7 + (i * totalProperty)]);
         orderDetail.Cartons = float.Parse(orderDetailStrings[8 + (i * totalProperty)]);
         orderDetail.Cube = float.Parse(orderDetailStrings[9 + (i * totalProperty)]);
         orderDetail.KGS = float.Parse(orderDetailStrings[10 + (i * totalProperty)]);

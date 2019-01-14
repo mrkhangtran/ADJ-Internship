@@ -134,9 +134,21 @@ namespace ADJ.BusinessService.Implementations
         Booking booking = await _shipmentBookingDataProvider.GetByIdAsync((item.Manifests.ToList())[0].BookingId);
         List<ArriveOfDespatch> arriveOfDespatch = await _arriveOfDespatchRepository.Query(x => x.ContainerId == item.Id, false).SelectAsync();
 
+        List<Manifest> manifests = item.Manifests.ToList();
+        DateTime minETD = DateTime.MaxValue;
+        DateTime minETA = DateTime.MaxValue;
+        foreach (var manifestItem in manifests)
+        {
+          Booking book = await _shipmentBookingDataProvider.GetByIdAsync(manifestItem.BookingId);
+          if (book.ETA < minETA) { minETA = book.ETA; }
+          if (book.ETD < minETD) { minETD = book.ETD; }
+        }
+
         if (item.Status == ContainerStatus.Pending)
         {
           output = Mapper.Map<ContainerDto>(booking);
+          output.ETA = minETA;
+          output.ETD = minETD;
           output.OriginPort = booking.PortOfLoading;
           output.DestinationPort = booking.PortOfDelivery;
         }

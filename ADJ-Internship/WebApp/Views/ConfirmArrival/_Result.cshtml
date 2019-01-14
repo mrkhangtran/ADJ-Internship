@@ -139,7 +139,16 @@
                     <input asp-for="Containers.Items[j].Selected" type="checkbox" class="uk-checkbox checkBox_@i" />
                   }
                 </td>
-                <td>@Model.Containers.Items[j].Vendor</td>
+                <td>
+                  @if (Model.Containers.Items[j].Vendor == null)
+                  {
+                    <span>N/A</span>
+                  }
+                  else
+                  {
+                    @Model.Containers.Items[j].Vendor
+                  }
+                </td>
                 <td>@Model.Containers.Items[j].Container</td>
                 <td>@Model.Containers.Items[j].Status</td>
               </tr>
