@@ -6,16 +6,14 @@
   <button type="button" uk-toggle="target: #resultModal" id="openmodal" hidden="hidden">Open</button>
 
   <div id="resultModal" uk-modal>
-    <div class="uk-modal-dialog uk-modal-body">
+    <div class="uk-modal-dialog uk-modal-body uk-margin-auto-vertical">
       @switch (modal)
       {
         case "Updated":
-          <p>Delivery event is achieve successfully. Thank you.</p>
-          break;
-        case "NoResult":
+          <p class="uk-text-success uk-text-bold">Delivery event is achieve successfully. Thank you.</p>
           break;
         case "NoItem":
-          <p>Please select at least 1 item.</p>
+          <p class="uk-text-danger uk-text-bold">Please select at least 1 item.</p>
           break;
       }
 

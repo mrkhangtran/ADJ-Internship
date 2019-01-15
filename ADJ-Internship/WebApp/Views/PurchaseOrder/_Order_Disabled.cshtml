@@ -1,38 +1,4 @@
 ﻿@model ADJ.BusinessService.Dtos.OrderDTO;
-<!--Popup-->
-@if (ViewBag.Modal_method != null)
-{
-  string method = ViewBag.Modal_method;
-  <button type="button" uk-toggle="target: #resultModal" id="openmodal" hidden="hidden">Open</button>
-
-  <div id="resultModal" uk-modal>
-    <div class="uk-modal-dialog uk-modal-body uk-margin-auto-vertical">
-      <!--Modal content-->
-      <p class="uk-text-success uk-text-bold">
-        The Purchase Order number @ViewBag.Modal_id is
-        @{
-          string message = null;
-          switch (method)
-          {
-            case "Create":
-              message += "created";
-              break;
-            case "Edit":
-              message += "edited";
-              break;
-            case "Copy":
-              message += "copied";
-              break;
-          }
-        }
-        @message successfully. Thank you.
-      </p>
-      <p class="uk-text-right">
-        <button class="uk-button uk-button-default uk-modal-close" type="button">Close</button>
-      </p>
-    </div>
-  </div>
-}
 
 <table class="uk-table uk-table-small uk-table-middle" style="text-align: right">
   <tr>
@@ -40,7 +6,7 @@
       <label asp-for="PONumber"></label>
     </td>
     <td>
-      <input readonly asp-for="PONumber" class="uk-input" id="to" onkeyup="copy2()" />
+      <input disabled asp-for="PONumber" class="uk-input" id="to" onkeyup="copy2()" />
     </td>
     <td>
       <label asp-for="Vendor"></label>
@@ -53,7 +19,7 @@
         }
         else
         {
-          <input readonly asp-for="Vendor" class="uk-input" />
+          <input disabled asp-for="Vendor" class="uk-input" />
         }
       </div>
     </td>
@@ -61,7 +27,7 @@
       <label asp-for="Mode"></label>
     </td>
     <td>
-      <input readonly asp-for="Mode" value=@Model.Mode class="uk-input" />
+      <input disabled asp-for="Mode" value=@Model.Mode class="uk-input" />
     </td>
   </tr>
   <tr>
@@ -69,7 +35,7 @@
       <label asp-for="OrderDate"></label>
     </td>
     <td>
-      <input readonly asp-for="OrderDate" value="@Model.OrderDate.ToString("MM/dd/yyyy")" type="text" class="uk-input" />
+      <input disabled value=@Model.OrderDate class="uk-input" />
     </td>
     <td>
       <label asp-for="Company"></label>
@@ -81,14 +47,14 @@
       }
       else
       {
-        <input readonly asp-for="Company" class="uk-input" />
+        <input disabled asp-for="Company" class="uk-input" />
       }
     </td>
     <td>
       <label asp-for="ShipDate"></label>
     </td>
     <td>
-      <input readonly asp-for="ShipDate" value="@Model.ShipDate.ToString("MM/dd/yyyy")" type="text" class="uk-input" />
+      <input disabled value=@Model.ShipDate class="uk-input" />
     </td>
   </tr>
   <tr>
@@ -102,20 +68,20 @@
       }
       else
       {
-        <input readonly asp-for="Buyer" class="uk-input" />
+        <input disabled asp-for="Buyer" class="uk-input" />
       }
     </td>
     <td>
       <label asp-for="Origin"></label>
     </td>
     <td>
-      <input readonly asp-for="Origin" value=@Model.Origin class="uk-input" />
+      <input disabled asp-for="Origin" value=@Model.Origin class="uk-input" />
     </td>
     <td>
       <label asp-for="LatestShipDate"></label>
     </td>
     <td>
-      <input readonly asp-for="LatestShipDate" value="@Model.LatestShipDate.ToString("MM/dd/yyyy")" type="text" class="uk-input" />
+      <input disabled value=@Model.LatestShipDate class="uk-input" />
     </td>
   </tr>
   <tr>
@@ -123,19 +89,19 @@
       <label asp-for="Currency"></label>
     </td>
     <td>
-      <input readonly asp-for="Currency" value=@Model.Currency class="uk-input" />
+      <input disabled asp-for="Currency" value=@Model.Currency class="uk-input" />
     </td>
     <td>
       <label asp-for="PortOfLoading"></label>
     </td>
     <td>
-      <input readonly asp-for="PortOfLoading" value=@Model.PortOfLoading class="uk-input" />
+      <input disabled asp-for="PortOfLoading" value=@Model.PortOfLoading class="uk-input" />
     </td>
     <td>
       <label asp-for="DeliveryDate"></label>
     </td>
     <td>
-      <input readonly asp-for="DeliveryDate" value=@Model.DeliveryDate.ToString("MM/dd/yyyy") type="text" class="uk-input" />
+      <input disabled value=@Model.DeliveryDate class="uk-input" />
     </td>
   </tr>
   <tr>
@@ -143,13 +109,13 @@
       <label asp-for="Season"></label>
     </td>
     <td>
-      <input readonly asp-for="Season" value=@Model.Season class="uk-input">
+      <input disabled asp-for="Season" value=@Model.Season class="uk-input">
     </td>
     <td>
       <label asp-for="PortOfDelivery"></label>
     </td>
     <td>
-      <input readonly asp-for="PortOfDelivery" value=@Model.PortOfDelivery class="uk-input" />
+      <input disabled asp-for="PortOfDelivery" value=@Model.PortOfDelivery class="uk-input" />
     </td>
     <td>
       <label asp-for="OrderType"></label>
@@ -161,7 +127,7 @@
       }
       else
       {
-        <input readonly asp-for="OrderType" class="uk-input" />
+        <input disabled asp-for="OrderType" class="uk-input" />
       }
     </td>
   </tr>
@@ -176,7 +142,7 @@
       }
       else
       {
-        <input readonly asp-for="Department" class="uk-input" />
+        <input disabled asp-for="Department" class="uk-input" />
       }
     </td>
     <td>
@@ -189,14 +155,14 @@
       }
       else
       {
-        <input readonly asp-for="Factory" class="uk-input" />
+        <input disabled asp-for="Factory" class="uk-input" />
       }
     </td>
     <td>
       <label asp-for="Status"></label>
     </td>
     <td>
-      <input readonly asp-for="Status" value=@Model.Status class="uk-input" />
+      <input disabled asp-for="Status" value=@Model.Status class="uk-input" />
     </td>
   </tr>
 </table>

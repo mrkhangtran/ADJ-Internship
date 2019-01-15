@@ -46,7 +46,6 @@ namespace ADJ.BusinessService.Dtos
 
     [Required]
     [Display(Name = "PO Number")]
-    [StringLength(10, ErrorMessage = "Cannot be longer than 10 characters")]
     [RegularExpression("^[0-9]+$", ErrorMessage = "Numbers only")]
     public string PONumber { get; set; }
 
@@ -57,7 +56,6 @@ namespace ADJ.BusinessService.Dtos
     [NotInThePast(ErrorMessage = "Cannot be set in the past")]
     public DateTime OrderDate { get; set; } = DefaultDate;
 
-    [StringLength(30, ErrorMessage = "Cannot be longer than 30 characters")]
     [RegularExpression("^[a-zA-Z0-9 ]+$", ErrorMessage = "Letters and numbers only")]
     public string Buyer { get; set; }
 
@@ -67,15 +65,12 @@ namespace ADJ.BusinessService.Dtos
     //Droplist from 2010 to 2020
     public string Season { get; set; }
 
-    [StringLength(30, ErrorMessage = "Cannot be longer than 30 characters")]
     [RegularExpression("^[a-zA-Z0-9 ]+$", ErrorMessage = "Letters and numbers only")]
     public string Department { get; set; }
 
-    [StringLength(30, ErrorMessage = "Cannot be longer than 30 characters")]
     [RegularExpression("^[a-zA-Z0-9 ]+$", ErrorMessage = "Letters and numbers only")]
     public string Vendor { get; set; }
 
-    [StringLength(30, ErrorMessage = "Cannot be longer than 30 characters")]
     [RegularExpression("^[a-zA-Z0-9 ]+$", ErrorMessage = "Letters and numbers only")]
     public string Company { get; set; }
 
@@ -95,11 +90,9 @@ namespace ADJ.BusinessService.Dtos
     public string PortOfDelivery { get; set; }
 
     [Display(Name = "Order Type")]
-    [StringLength(30, ErrorMessage = "Cannot be longer than 30 characters")]
     [RegularExpression("^[a-zA-Z0-9 ]+$", ErrorMessage = "Letters and numbers only")]
     public string OrderType { get; set; }
 
-    [StringLength(30, ErrorMessage = "Cannot be longer than 30 characters")]
     [RegularExpression("^[a-zA-Z0-9 ]+$", ErrorMessage = "Letters and numbers only")]
     public string Factory { get; set; }
 
@@ -149,23 +142,18 @@ namespace ADJ.BusinessService.Dtos
 
     [Required]
     [Display(Name = "Item Number")]
-    [StringLength(10, ErrorMessage = "Cannot be longer than 10 characters")]
     [RegularExpression("^[0-9]+$", ErrorMessage = "Numbers only")]
     public string ItemNumber { get; set; }
 
-    [StringLength(255)]
     [RegularExpression("^[a-zA-Z0-9 ]+$", ErrorMessage = "Letters and numbers only")]
     public string Description { get; set; } = "";
 
-    [StringLength(30)]
     [RegularExpression("^[a-zA-Z0-9 ]+$", ErrorMessage = "Letters and numbers only")]
     public string Warehouse { get; set; } = "";
 
-    [StringLength(30)]
     [RegularExpression("^[a-zA-Z0-9 ]+$", ErrorMessage = "Letters and numbers only")]
     public string Colour { get; set; } = "";
 
-    [StringLength(30)]
     [RegularExpression("^[a-zA-Z0-9 ]+$", ErrorMessage = "Letters and numbers only")]
     public string Size { get; set; } = "";
 
@@ -179,12 +167,12 @@ namespace ADJ.BusinessService.Dtos
 
     [Required]
     [Range(0, float.MaxValue, ErrorMessage = "Value should not be negative")]
-    [RegularExpression(@"^\d+$", ErrorMessage = "Must be an integer")]
+    [RegularExpression(@"^[-+]?\d+(\.[0]+)?$", ErrorMessage = "Must be an integer")]
     public float Cartons { get; set; }
 
     [Required]
     [Range(0, float.MaxValue, ErrorMessage = "Value should not be negative")]
-    [RegularExpression(@"^\d+$", ErrorMessage = "Must be an integer")]
+    [RegularExpression(@"^[-+]?\d+(\.[0]+)?$", ErrorMessage = "Must be an integer")]
     public float Cube { get; set; }
 
     [Required]

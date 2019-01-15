@@ -124,6 +124,7 @@ namespace ADJ.WebApp.Controllers
           foreach (var i in addModel.PODetails.Items)
           {
             i.OrderId = addModel.Id;
+            if (i.Quantity == i.ReviseQuantity) { i.Status = OrderStatus.AwaitingBooking; }
             await _poService.CreateOrUpdateOrderDetailAsync(i);
           }
         }
@@ -410,7 +411,7 @@ namespace ADJ.WebApp.Controllers
     {
       ViewBag.PageSize = pageSize;
       ViewBag.Seasons = SeasonList();
-      ViewBag.VNPorts = new List<string> { "Cẩm Phả", "Cửa Lò", "Hải Phòng", "Hòn Gai", "Nghi Sơn" };
+      ViewBag.VNPorts = new List<string> { "Cam Pha", "Cua Lo", "Hai Phong", "Hon Gai", "Nghi Son" };
       ViewBag.HKPorts = new List<string> { "Aberdeen", "Crooked Harbour", "Double Haven", "Gin Drinkers Bay", "Inner Port Shelter" };
       ViewBag.Modes = new List<string> { "Air", "Road", "Sea" };
       ViewBag.Origins = new List<string> { "Hong Kong", "Vietnam" };

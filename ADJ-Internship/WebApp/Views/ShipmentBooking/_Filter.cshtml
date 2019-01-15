@@ -30,8 +30,9 @@
       <label asp-for="FilterDtos.Vendor"></label>
     </td>
     <td width="30%">
-      <input asp-for="FilterDtos.Vendor" class="uk-input filters" />
+      <input asp-for="FilterDtos.Vendor" class="uk-input filters maxLength" id="vendor" maxlength="31"/>
       <span asp-validation-for="FilterDtos.Vendor" class="uk-alert-danger"></span>
+      <span class="uk-alert-danger" id="vendorError"></span>
     </td>
     <td width="15%" style="text-align: center">
       <button type="button" value="Search" class="uk-button uk-button-primary searchButton">Search</button>
@@ -51,8 +52,9 @@
       <label asp-for="FilterDtos.Warehouse"></label>
     </td>
     <td>
-      <input asp-for="FilterDtos.Warehouse" class="uk-input filters" />
+      <input asp-for="FilterDtos.Warehouse" class="uk-input filters maxLength" id="warehouse" maxlength="31" />
       <span asp-validation-for="FilterDtos.Warehouse" class="uk-alert-danger"></span>
+      <span class="uk-alert-danger" id="warehouseError"></span>
     </td>
     <td></td>
   </tr>
@@ -84,8 +86,9 @@
       <label asp-for="FilterDtos.PONumber"></label>
     </td>
     <td>
-      <input asp-for="FilterDtos.PONumber" class="uk-input filters" />
+      <input asp-for="FilterDtos.PONumber" class="uk-input filters maxLength" id="poNumber" maxlength="11"/>
       <span asp-validation-for="FilterDtos.PONumber" class="uk-alert-danger"></span>
+      <span class="uk-alert-danger" id="poNumberError"></span>
     </td>
     <td></td>
     <td style="display: none"></td>
@@ -93,8 +96,9 @@
       <label asp-for="FilterDtos.ItemNumber"></label>
     </td>
     <td>
-      <input asp-for="FilterDtos.ItemNumber" class="uk-input filters" />
+      <input asp-for="FilterDtos.ItemNumber" class="uk-input filters maxLength" id="itemNumber" maxlength="11"/>
       <span asp-validation-for="FilterDtos.ItemNumber" class="uk-alert-danger"></span>
+      <span class="uk-alert-danger" id="itemNumberError"></span>
     </td>
     <td></td>
   </tr>
