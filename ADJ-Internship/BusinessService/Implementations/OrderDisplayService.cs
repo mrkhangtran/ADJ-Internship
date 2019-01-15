@@ -57,9 +57,9 @@ namespace ADJ.BusinessService.Implementations
 
     }
 
-    public float TotalQuantity(OrderDTO order)
+    public decimal TotalQuantity(OrderDTO order)
     {
-      float total = 0;
+      decimal total = 0;
 
       foreach (var item in order.orderDetails)
       {

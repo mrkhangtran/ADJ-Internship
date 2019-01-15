@@ -78,6 +78,7 @@
             <input type="hidden" asp-for="ResultDtos.Items[i].BookingTime" value=@Model.ResultDtos.Items[i].BookingTime />
             <input type="hidden" asp-for="ResultDtos.Items[i].BookingRef" value=@Model.ResultDtos.Items[i].BookingRef />
             <input type="hidden" asp-for="ResultDtos.Items[i].Status" value=@Model.ResultDtos.Items[i].Status />
+            <input type="hidden" asp-for="ResultDtos.Items[i].StatusDescription" value=@Model.ResultDtos.Items[i].StatusDescription />
           </td>
           <td>
             @if (Model.ResultDtos.Items[i].Status == ADJ.Common.ContainerStatus.DCBookingReceived)
@@ -158,7 +159,7 @@
     {
       if (i == currentPage)
       {
-        <li class="uk-disabled"><a value="@i" name="page" class="paging">@i</a></li>
+        <li class="uk-disabled"><a value="@i" name="page" class="paging"><u>@i</u></a></li>
       }
       else
       {

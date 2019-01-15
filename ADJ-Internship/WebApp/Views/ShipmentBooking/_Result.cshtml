@@ -202,6 +202,7 @@
               <input type="hidden" asp-for="OrderDetails[i].POShipDate" id="ShipDate_@i" string=@Model.OrderDetails[i].POShipDate.ToString("yyyyMMdd") />
               <input type="hidden" asp-for="OrderDetails[i].DeliveryDate" id="DeliveryDate_@i" string=@Model.OrderDetails[i].DeliveryDate.ToString("yyyyMMdd") />
               <input type="hidden" asp-for="OrderDetails[i].Status" />
+              <input type="hidden" asp-for="OrderDetails[i].StatusDescription" />
             </td>
 
             @if ((i >= start) && (i < end))
@@ -226,7 +227,7 @@
                 }
               </td>
               <td>
-                @Model.OrderDetails[i].Quantity
+                @Model.OrderDetails[i].Quantity.ToString("N0")
               </td>
               <td>
                 @Model.OrderDetails[i].BookingQuantity
