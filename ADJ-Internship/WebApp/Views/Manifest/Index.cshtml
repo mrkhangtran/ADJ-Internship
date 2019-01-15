@@ -16,18 +16,18 @@
       <table class="manifestSearch uk-table">
         <tbody>
           <tr>
-            <td><label>Destination Port</label></td>
-            <td>
-              <div class="uk-form-select" data-uk-form-select>
-                @Html.DropDownList("DestinationPort", new SelectList(ViewBag.Dest), new { @id = "DestinationPort", @class = "uk-select" })
-              </div>
-            </td>
-          </tr>
-          <tr>
             <td><label>Origin Port</label></td>
             <td>
               <div class="uk-form-select" data-uk-form-select>
                 @Html.DropDownList("OriginPorts", new SelectList(ViewBag.OriginPorts), new { @id = "OriginPorts", @class = "uk-select" })
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td><label>Destination Port</label></td>
+            <td>
+              <div class="uk-form-select" data-uk-form-select>
+                @Html.DropDownList("DestinationPort", new SelectList(ViewBag.Dest), new { @id = "DestinationPort", @class = "uk-select" })
               </div>
             </td>
           </tr>

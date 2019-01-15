@@ -114,6 +114,7 @@ else
                 Open Quantity
               </td>
               <td>
+                <span style="color: red">*</span>
                 Ship Quantity
               </td>
               <td>
@@ -181,16 +182,16 @@ else
                   @Model.Items[i].Manifests[j].ETDDate.ToString("MM/dd/yyyy")
                 </td>
                 <td>
-                  @Model.Items[i].Manifests[j].BookingQuantity
+                  @Model.Items[i].Manifests[j].BookingQuantity.ToString("N0")
                 </td>
                 <td>
-                  @Model.Items[i].Manifests[j].OpenQuantity
+                  @Model.Items[i].Manifests[j].OpenQuantity.ToString("N0")
                 </td>
                 <td>
                   @{
                     if (Model.Items[i].Id > 0)
                     {
-                      @Model.Items[i].Manifests[j].ShipQuantity
+                      @Model.Items[i].Manifests[j].ShipQuantity.ToString("N0")
                       @Html.HiddenFor(model => model.Items[i].Manifests[j].ShipQuantity, new { Value = Model.Items[i].Manifests[j].ShipQuantity })
                     }
                     else
@@ -201,19 +202,19 @@ else
                   }
                 </td>
                 <td>
-                  @Model.Items[i].Manifests[j].BookingCartons
+                  @Model.Items[i].Manifests[j].BookingCartons.ToString("N0")
                 </td>
                 <td>
-                  <input id="@("shipCarton"+@Model.Items[i].Manifests[j].ItemNumber)" asp-for="Items[i].Manifests[j].ShipCartons" readonly class=" uk-input" />
+                  <input id="@("shipCarton"+@Model.Items[i].Manifests[j].ItemNumber)" value="0" asp-for="Items[i].Manifests[j].ShipCartons" readonly class=" uk-input" />
                 </td>
                 <td>
-                  @Model.Items[i].Manifests[j].BookingCube
+                  @Model.Items[i].Manifests[j].BookingCube.ToString("N0")
                 </td>
                 <td>
-                  <input id="@("shipCube"+@Model.Items[i].Manifests[j].ItemNumber)" asp-for="Items[i].Manifests[j].ShipCube" readonly class=" uk-input" />
+                  <input id="@("shipCube"+@Model.Items[i].Manifests[j].ItemNumber)" value="0" asp-for="Items[i].Manifests[j].ShipCube" readonly class=" uk-input" />
                 </td>
                 <td>
-                  <input id="@("netWeight"+@Model.Items[i].Manifests[j].ItemNumber)" asp-for="Items[i].Manifests[j].NetWeight" readonly class=" uk-input" />
+                  <input id="@("netWeight"+@Model.Items[i].Manifests[j].ItemNumber)" value="0" asp-for="Items[i].Manifests[j].NetWeight" readonly class=" uk-input" />
                 </td>
                 @*<td>
                     @Model.Items[i].Manifests[j].GrossWeight

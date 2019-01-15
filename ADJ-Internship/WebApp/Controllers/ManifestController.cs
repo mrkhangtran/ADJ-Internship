@@ -38,6 +38,10 @@ namespace WebApp.Controllers
       ViewBag.pageIndex = current;
       PagedListResult<ShipmentManifestsDtos> listManifest = await _manifestService.ListManifestDtoAsync(current, 2, DestinationPort, OriginPort, Carrier, ETDFrom, ETDTo, Status, Vendor, PONumber, Item);
       listManifest.CurrentFilter = current.ToString();
+      foreach (var item in listManifest.Items)
+      {
+        item.Manifests.OrderBy(p => p.PONumber).ThenBy(a => a.ItemNumber);
+      }
       if (checkClick == true)
       {
         return PartialView("_SearchingManifestPartial", listManifest);

@@ -23,7 +23,7 @@ namespace WebApp.Controllers
       string check = PONumberSearch + ItemSearch + Vendor + Factories + Origins + OriginPorts + Depts + Status;
       GetItemSearchDto getSearchItem = await _prcService.SearchItem();
       ViewBag.Suppliers = getSearchItem.Suppliers;
-      ViewBag.VNPorts = new List<string> { "Cẩm Phả", "Cửa Lò", "Hải Phòng", "Hòn Gai", "Nghi Sơn" };
+      ViewBag.VNPorts = new List<string> { "Cam Pha", "Cua Lo", "Hai Phong", "Hon Gai", "Nghi Son" };
       ViewBag.HKPorts = new List<string> { "Aberdeen", "Crooked Harbour", "Double Haven", "Gin Drinkers Bay", "Inner Port Shelter" };
       ViewBag.Origins = new List<string> { "Hong Kong", "Vietnam" };
       ViewBag.Factories = getSearchItem.Factories;
@@ -33,6 +33,10 @@ namespace WebApp.Controllers
       ViewBag.pageIndex = current;
       PagedListResult<ProgressCheckDto> lstPrc = await _prcService.ListProgressCheckDtoAsync(current, 2, PONumberSearch, ItemSearch, Vendor, Factories, Origins, OriginPorts, Depts, Status);
       lstPrc.CurrentFilter = current.ToString();
+      foreach(var item in lstPrc.Items)
+      {
+        item.ListOrderDetailDto.OrderBy(p => p.ItemNumber);
+      }
       if (checkClick == true)
       {
         return PartialView("_SearchingPartial", lstPrc);
@@ -51,7 +55,7 @@ namespace WebApp.Controllers
       lstPrc.PageCount = progressCheckDTOs.PageCount;
       GetItemSearchDto getSearchItem = await _prcService.SearchItem();
       ViewBag.Suppliers = getSearchItem.Suppliers;
-      ViewBag.VNPorts = new List<string> { "Cẩm Phả", "Cửa Lò", "Hải Phòng", "Hòn Gai", "Nghi Sơn" };
+      ViewBag.VNPorts = new List<string> { "Cam Pha", "Cua Lo", "Hai Phong", "Hon Gai", "Nghi Son" };
       ViewBag.HKPorts = new List<string> { "Aberdeen", "Crooked Harbour", "Double Haven", "Gin Drinkers Bay", "Inner Port Shelter" };
       ViewBag.Origins = new List<string> { "HongKong", "Vietnam" };
       ViewBag.Factories = getSearchItem.Factories;
@@ -79,6 +83,14 @@ namespace WebApp.Controllers
             ModelState[reviseQuantity].ValidationState = ModelState[id].ValidationState;
           }
         }
+      }
+      if(progressCheckDTOs.Items.Where(p=>p.selected==true).Count()==0 && progressCheckDTOs.Items.Where(x => x.ListOrderDetailDto.Where(a => a.selected == true).Count() > 0).Count() == 0)
+      {
+        ViewBag.Check = "empty";
+        lstPrc = progressCheckDTOs;
+        lstPrc.Items[0].Complete = true;
+        lstPrc.Items[1].Complete = true;
+        return PartialView("_AchievePartial", lstPrc);
       }
       if (ModelState.IsValid)
       {

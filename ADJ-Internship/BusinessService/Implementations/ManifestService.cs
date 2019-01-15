@@ -308,8 +308,8 @@ namespace ADJ.BusinessService.Implementations
     {
       var lst = await _shipmentBookingDataProvider.ListAsync();
       List<Booking> bookingModels = lst.Items;
-      var DestinationPort = bookingModels.Select(x => x.PortOfDelivery).Distinct();
-      var OriginPorts = bookingModels.Select(x => x.PortOfLoading).Distinct();
+      var DestinationPort = new List<string> { "Crooked Harbour", "Aberdeen", "Double Haven", "Gin Drinkers Bay", "Inner Port Shelter", "Cam Pha", "Cua Lo", "Hai Phong", "Hon Gai", "Nghi Son" };
+      var OriginPorts = new List<string> { "Aberdeen", "Crooked Harbour", "Double Haven", "Gin Drinkers Bay", "Inner Port Shelter", "Cam Pha", "Cua Lo", "Hai Phong", "Hon Gai", "Nghi Son" };
       var Carriers = bookingModels.Select(x => x.Carrier).Distinct();
       List<string> status = new List<string> {OrderStatus.BookingMade.GetDescription<OrderStatus>(), OrderStatus.PartlyManifested.GetDescription<OrderStatus>(), OrderStatus.Manifested.GetDescription<OrderStatus>() };
       SearchingManifestItem getSearchItemDTO = new SearchingManifestItem()

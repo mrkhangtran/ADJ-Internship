@@ -175,7 +175,7 @@ namespace ADJ.BusinessService.Implementations
         rs.ShipCube += manifest.Quantity * (decimal)manifest.Cube;
         rs.ShipQuantity += manifest.Quantity;
       }
-      rs.Status = container.Status.ToString();
+      rs.Status = container.Status.GetDescription<ContainerStatus>() ;
       return rs;
     }
   }
