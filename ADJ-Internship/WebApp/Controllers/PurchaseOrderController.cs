@@ -111,6 +111,27 @@ namespace ADJ.WebApp.Controllers
         return View(viewName, addModel);
       }
 
+      if ((viewName == "Edit") && (addModel.PODetails != null) && (addModel.PODetails.Items != null) && (addModel.PODetails.Items.Count > 0))
+      {
+        bool progressCheck = false;
+        foreach (var item in addModel.PODetails.Items)
+        {
+          if ((item.ReviseQuantity > 0) && (item.ReviseQuantity == item.Quantity))
+          {
+            progressCheck = true;
+            break;
+          }
+        }
+
+        if (progressCheck)
+        {
+          ModelState["OrderDate"].ValidationState = ModelState["Id"].ValidationState;
+          ModelState["ShipDate"].ValidationState = ModelState["Id"].ValidationState;
+          ModelState["LatestShipDate"].ValidationState = ModelState["Id"].ValidationState;
+          ModelState["DeliveryDate"].ValidationState = ModelState["Id"].ValidationState;
+        }
+      }
+
       //add/update model into database
       if (ModelState.IsValid)
       {

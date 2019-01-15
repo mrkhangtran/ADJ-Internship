@@ -203,8 +203,8 @@
               <input type="hidden" asp-for="OrderDetails[i].BookingQuantity" />
               <input type="hidden" asp-for="OrderDetails[i].Cartons" />
               <input type="hidden" asp-for="OrderDetails[i].Cube" />
-              <input type="hidden" asp-for="OrderDetails[i].POShipDate" id="ShipDate_@i" string=@Model.OrderDetails[i].POShipDate.ToString("yyyyMMdd") />
-              <input type="hidden" asp-for="OrderDetails[i].DeliveryDate" id="DeliveryDate_@i" string=@Model.OrderDetails[i].DeliveryDate.ToString("yyyyMMdd") />
+              <input type="hidden" asp-for="OrderDetails[i].POShipDate"/>
+              <input type="hidden" asp-for="OrderDetails[i].DeliveryDate"/>
               <input type="hidden" asp-for="OrderDetails[i].Status" />
               <input type="hidden" asp-for="OrderDetails[i].StatusDescription" />
             </td>
@@ -256,7 +256,9 @@
                 <select asp-for="OrderDetails[i].PackType" asp-items="new SelectList(ViewBag.PackTypes)" class="uk-select booking"></select>
                 <span asp-validation-for="OrderDetails[i].PackType" class="uk-alert-danger"></span>
               </td>
-              <td>
+              <td >
+                <span id="ShipDate_@(i-start)" string=@Model.OrderDetails[i].POShipDate.ToString("yyyyMMdd") ></span>
+                <span id="DeliveryDate_@(i-start)" string=@Model.OrderDetails[i].DeliveryDate.ToString("yyyyMMdd") ></span>
                 @Model.OrderDetails[i].POShipDate.ToString("MM/dd/yyyy")
               </td>
               <td>

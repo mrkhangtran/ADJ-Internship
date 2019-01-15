@@ -40,7 +40,8 @@
       <label asp-for="PONumber"></label>
     </td>
     <td>
-      <input readonly asp-for="PONumber" class="uk-input" id="to" onkeyup="copy2()" />
+      <input disabled value="@Model.PONumber" class="uk-input" />
+      <input type="hidden" asp-for="PONumber" class="uk-input" />
     </td>
     <td>
       <label asp-for="Vendor"></label>
@@ -53,7 +54,8 @@
         }
         else
         {
-          <input readonly asp-for="Vendor" class="uk-input" />
+          <input disabled value="@Model.Vendor" class="uk-input" />
+          <input type="hidden" asp-for="Vendor" class="uk-input" />
         }
       </div>
     </td>
@@ -61,7 +63,8 @@
       <label asp-for="Mode"></label>
     </td>
     <td>
-      <input readonly asp-for="Mode" value=@Model.Mode class="uk-input" />
+      <input disabled value=@Model.Mode class="uk-input" />
+      <input type="hidden" asp-for="Mode" class="uk-input" />
     </td>
   </tr>
   <tr>
@@ -69,7 +72,8 @@
       <label asp-for="OrderDate"></label>
     </td>
     <td>
-      <input readonly asp-for="OrderDate" value="@Model.OrderDate.ToString("MM/dd/yyyy")" type="text" class="uk-input" />
+      <input disabled value="@Model.OrderDate.ToString("MM/dd/yyyy")" type="text" class="uk-input" />
+      <input type="hidden" asp-for="OrderDate" class="uk-input" />
     </td>
     <td>
       <label asp-for="Company"></label>
@@ -81,14 +85,16 @@
       }
       else
       {
-        <input readonly asp-for="Company" class="uk-input" />
+        <input disabled value="@Model.Company" class="uk-input" />
+        <input type="hidden" asp-for="Company" class="uk-input" />
       }
     </td>
     <td>
       <label asp-for="ShipDate"></label>
     </td>
     <td>
-      <input readonly asp-for="ShipDate" value="@Model.ShipDate.ToString("MM/dd/yyyy")" type="text" class="uk-input" />
+      <input disabled value="@Model.ShipDate.ToString("MM/dd/yyyy")" type="text" class="uk-input" />
+      <input type="hidden" asp-for="ShipDate" class="uk-input" />
     </td>
   </tr>
   <tr>
@@ -102,20 +108,23 @@
       }
       else
       {
-        <input readonly asp-for="Buyer" class="uk-input" />
+        <input disabled value="@Model.Buyer" class="uk-input" />
+        <input type="hidden" asp-for="Buyer" class="uk-input" />
       }
     </td>
     <td>
       <label asp-for="Origin"></label>
     </td>
     <td>
-      <input readonly asp-for="Origin" value=@Model.Origin class="uk-input" />
+      <input disabled value=@Model.Origin class="uk-input" />
+      <input type="hidden" asp-for="Origin" class="uk-input" />
     </td>
     <td>
       <label asp-for="LatestShipDate"></label>
     </td>
     <td>
-      <input readonly asp-for="LatestShipDate" value="@Model.LatestShipDate.ToString("MM/dd/yyyy")" type="text" class="uk-input" />
+      <input disabled value="@Model.LatestShipDate.ToString("MM/dd/yyyy")" type="text" class="uk-input" />
+      <input type="hidden" asp-for="LatestShipDate" class="uk-input" />
     </td>
   </tr>
   <tr>
@@ -123,19 +132,22 @@
       <label asp-for="Currency"></label>
     </td>
     <td>
-      <input readonly asp-for="Currency" value=@Model.Currency class="uk-input" />
+      <input disabled value=@Model.Currency class="uk-input" />
+      <input type="hidden" asp-for="Currency" class="uk-input" />
     </td>
     <td>
       <label asp-for="PortOfLoading"></label>
     </td>
     <td>
-      <input readonly asp-for="PortOfLoading" value=@Model.PortOfLoading class="uk-input" />
+      <input disabled value=@Model.PortOfLoading class="uk-input" />
+      <input type="hidden" asp-for="PortOfLoading" class="uk-input" />
     </td>
     <td>
       <label asp-for="DeliveryDate"></label>
     </td>
     <td>
-      <input readonly asp-for="DeliveryDate" value=@Model.DeliveryDate.ToString("MM/dd/yyyy") type="text" class="uk-input" />
+      <input disabled value=@Model.DeliveryDate.ToString("MM/dd/yyyy") type="text" class="uk-input" />
+      <input type="hidden" asp-for="DeliveryDate" class="uk-input" />
     </td>
   </tr>
   <tr>
@@ -143,13 +155,15 @@
       <label asp-for="Season"></label>
     </td>
     <td>
-      <input readonly asp-for="Season" value=@Model.Season class="uk-input">
+      <input disabled value=@Model.Season class="uk-input">
+      <input type="hidden" asp-for="Season" class="uk-input" />
     </td>
     <td>
       <label asp-for="PortOfDelivery"></label>
     </td>
     <td>
-      <input readonly asp-for="PortOfDelivery" value=@Model.PortOfDelivery class="uk-input" />
+      <input disabled value=@Model.PortOfDelivery class="uk-input" />
+      <input type="hidden" asp-for="PortOfDelivery" class="uk-input" />
     </td>
     <td>
       <label asp-for="OrderType"></label>
@@ -161,7 +175,8 @@
       }
       else
       {
-        <input readonly asp-for="OrderType" class="uk-input" />
+        <input disabled value="@Model.OrderType" class="uk-input" />
+        <input type="hidden" asp-for="OrderType" class="uk-input" />
       }
     </td>
   </tr>
@@ -176,7 +191,8 @@
       }
       else
       {
-        <input readonly asp-for="Department" class="uk-input" />
+        <input disabled value="@Model.Department" class="uk-input" />
+        <input type="hidden" asp-for="Department" class="uk-input" />
       }
     </td>
     <td>
@@ -189,14 +205,16 @@
       }
       else
       {
-        <input readonly asp-for="Factory" class="uk-input" />
+        <input disabled value="@Model.Factory" class="uk-input" />
+        <input type="hidden" asp-for="Factory" class="uk-input" />
       }
     </td>
     <td>
       <label asp-for="Status"></label>
     </td>
     <td>
-      <input readonly asp-for="Status" value=@Model.Status class="uk-input" />
+      <input disabled value=@Model.Status class="uk-input" />
+      <input type="hidden" asp-for="Status" class="uk-input" />
     </td>
   </tr>
 </table>
