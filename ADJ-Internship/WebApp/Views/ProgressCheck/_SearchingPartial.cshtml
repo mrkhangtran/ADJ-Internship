@@ -172,8 +172,7 @@ else
                 {
                   <td>
                     <input id="@Model.Items[i].ListOrderDetailDto[j].ItemNumber"  maxlength="10" asp-for="Items[i].ListOrderDetailDto[j].ReviseQuantity" value="@Model.Items[i].ListOrderDetailDto[j].ReviseQuantity.ToString("N0")" class=" reviseQuantity uk-input" />
-                    @*<span class=" uk-text-danger" asp-validation-for="Items[i].ListOrderDetailDto[j].ReviseQuantity"></span>*@
-                    <div id="@("message")"></div>
+                    <span class=" uk-text-danger" asp-validation-for="Items[i].ListOrderDetailDto[j].ReviseQuantity"></span>             
                   </td>
                 }
               }
