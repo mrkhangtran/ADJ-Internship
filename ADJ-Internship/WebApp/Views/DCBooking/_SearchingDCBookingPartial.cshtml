@@ -39,15 +39,19 @@ else
             Haulier
           </td>
           <td>
+            <span style="color: red">*</span>
             Client
           </td>
           <td>
+            <span style="color: red">*</span>
             Booking Date
           </td>
           <td>
+            <span style="color: red">*</span>
             Booking Time
           </td>
           <td>
+            <span style="color: red">*</span>
             Booking Ref
           </td>
           <td>
@@ -64,6 +68,7 @@ else
               @Html.HiddenFor(model => model.Items[i].Id, new { Value = Model.Items[i].Id })
               @Html.HiddenFor(model => model.Items[i].ContainerId, new { Value = Model.Items[i].ContainerId })
               @Html.HiddenFor(model => model.PageCount, new { Value = Model.PageCount })
+              @Html.HiddenFor(model => model.CurrentFilter)
               <tr>
                 <td style="width:5%">
                   @if (Model.Items[i].Id == 0)
@@ -132,7 +137,7 @@ else
                     }
                     else
                     {
-                      <input style="text-align:center"  id="@("client"+Model.Items[i].ContainerId)" asp-for="Items[i].Client" class="client uk-input" />
+                      <input style="text-align:center" id="@("client"+Model.Items[i].ContainerId)" asp-for="Items[i].Client" class="client uk-input" />
                       <div id="clientvalidate">
                         <span class="client uk-text-danger" asp-validation-for="Items[i].Client"></span>
                       </div>
@@ -180,7 +185,7 @@ else
                     }
                     else
                     {
-                      <input  style="text-align:center" id="@("bookingref"+Model.Items[i].ContainerId)" asp-for="Items[i].BookingRef" class="bookingref uk-input" />
+                      <input style="text-align:center" id="@("bookingref"+Model.Items[i].ContainerId)" asp-for="Items[i].BookingRef" class="bookingref uk-input" />
                       <div id="bookingrefvalidate">
                         <span class="bookingref uk-text-danger" asp-validation-for="Items[i].BookingRef"></span>
                       </div>

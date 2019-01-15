@@ -28,6 +28,7 @@ namespace WebApp.Controllers
       int current = pageIndex ?? 1;
       ViewBag.pageIndex = current;
       PagedListResult<DCBookingDtos> pagedListResult = await _dCBookingService.ListDCBookingDtosAsync(current, 10, DestinationPort, bookingref, bookingdatefrom, bookingdateto, DC, arrivaldatefrom, arrivaldateto, Status, Container);
+      pagedListResult.CurrentFilter = current.ToString();
       if (checkClick == true)
       {
         return PartialView("_SearchingDCBookingPartial", pagedListResult);
@@ -42,6 +43,8 @@ namespace WebApp.Controllers
       ViewBag.DestPort = searchingDCBooking.DestinationPort;
       ViewBag.Status = searchingDCBooking.Status;
       ViewBag.ShowResult = 0;
+      int current =int.Parse(pagedListResult.CurrentFilter);
+      ViewBag.pageIndex = current;
       for (int i = 0; i < pagedListResult.Items.Count(); i++)
       {
         if (pagedListResult.Items[i].selected == false)

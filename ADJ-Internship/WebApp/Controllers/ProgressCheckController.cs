@@ -32,6 +32,7 @@ namespace WebApp.Controllers
       int current = pageIndex ?? 1;
       ViewBag.pageIndex = current;
       PagedListResult<ProgressCheckDto> lstPrc = await _prcService.ListProgressCheckDtoAsync(current, 2, PONumberSearch, ItemSearch, Vendor, Factories, Origins, OriginPorts, Depts, Status);
+      lstPrc.CurrentFilter = current.ToString();
       if (checkClick == true)
       {
         return PartialView("_SearchingPartial", lstPrc);
@@ -47,6 +48,7 @@ namespace WebApp.Controllers
       List<string> POUpdate = new List<string>();
       PagedListResult<ProgressCheckDto> lstPrc = new PagedListResult<ProgressCheckDto>();
       lstPrc.Items = new List<ProgressCheckDto>();
+      lstPrc.PageCount = progressCheckDTOs.PageCount;
       GetItemSearchDto getSearchItem = await _prcService.SearchItem();
       ViewBag.Suppliers = getSearchItem.Suppliers;
       ViewBag.VNPorts = new List<string> { "Cẩm Phả", "Cửa Lò", "Hải Phòng", "Hòn Gai", "Nghi Sơn" };
@@ -56,7 +58,8 @@ namespace WebApp.Controllers
       ViewBag.Depts = getSearchItem.Depts;
       ViewBag.Status = getSearchItem.Status;
       ViewBag.POUpdate = POUpdate;
-
+      int current = int.Parse(progressCheckDTOs.CurrentFilter);
+      ViewBag.pageIndex = current;
       for (int i = 0; i < progressCheckDTOs.Items.Count(); i++)
       {
         for (int j = 0; j < progressCheckDTOs.Items[i].ListOrderDetailDto.Count(); j++)
@@ -77,16 +80,6 @@ namespace WebApp.Controllers
           }
         }
       }
-      //foreach (var item in progressCheckDTOs.Items)
-      //{
-      //  if (item.ListOrderDetailDto.Where(p => p.selected == true).Count() == 0)
-      //  {
-      //    lstPrc.PageCount = progressCheckDTOs.PageCount;
-      //    lstPrc = progressCheckDTOs;
-      //    ViewBag.Check = "empty";
-      //    return PartialView("_AchievePartial", lstPrc);
-      //  }
-      //}
       if (ModelState.IsValid)
       {
         foreach (var item in progressCheckDTOs.Items)
@@ -109,12 +102,10 @@ namespace WebApp.Controllers
             lstPrc.Items.Add(item);
           }
         }
-        lstPrc.PageCount = progressCheckDTOs.PageCount;
       }
       else
       {
         lstPrc = progressCheckDTOs;
-        lstPrc.PageCount = progressCheckDTOs.PageCount;
         ViewBag.Check = "invalid";
       }
       return PartialView("_AchievePartial", lstPrc);

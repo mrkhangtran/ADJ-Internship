@@ -56,6 +56,7 @@
             @Html.HiddenFor(model => model.Items[i].Id, new { Value = Model.Items[i].Id })
             @Html.HiddenFor(model => model.Items[i].ContainerId, new { Value = Model.Items[i].ContainerId })
             @Html.HiddenFor(model => model.PageCount, new { Value = Model.PageCount })
+            @Html.HiddenFor(model=>model.CurrentFilter)
             <tr>
               <td style="width:5%">
                 @if (Model.Items[i].Id == 0)

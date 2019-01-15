@@ -20,6 +20,7 @@ else
       @Html.HiddenFor(model => model.Items[i].Factory)
       @Html.HiddenFor(model => model.Items[i].EstQtyToShip)
       @Html.HiddenFor(model => model.Items[i].Complete)
+      @Html.HiddenFor(model => model.CurrentFilter)
       <table class="uk-table uk-table-striped uk-table-middle uk-table-small uk-width-1-2">
         <thead>
           <tr>
@@ -87,11 +88,11 @@ else
               @if (Model.Items[i].Complete == false)
               {
                 <input asp-for="Items[i].selected" class="uk-checkbox" />
-              }          
+              }
             </td>
             <td>@Model.Items[i].PONumber</td>
-            <td>@Model.Items[i].POQuantity</td>
-            <td>@Model.Items[i].EstQtyToShip</td>
+            <td>@Model.Items[i].POQuantity.ToString("N0")</td>
+            <td>@Model.Items[i].EstQtyToShip.ToString("N0")</td>
             <td>@Model.Items[i].ShipDate.ToString("MM/dd/yyyy")</td>
             @{
               if (Model.Items[i].Complete == true)
@@ -155,10 +156,10 @@ else
                 @if (Model.Items[i].Complete == false)
                 {
                   <input asp-for="Items[i].ListOrderDetailDto[j].selected" class="uk-checkbox" />
-                }             
+                }
               </td>
               <td>@Model.Items[i].ListOrderDetailDto[j].ItemNumber</td>
-              <td>@Model.Items[i].ListOrderDetailDto[j].Quantity</td>
+              <td>@Model.Items[i].ListOrderDetailDto[j].Quantity.ToString("N0")</td>
               @{
                 if (Model.Items[i].Complete == true)
                 {
