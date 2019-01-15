@@ -163,7 +163,7 @@
               else
               {
                 <td>
-                  <input type="number" asp-for="Items[i].ListOrderDetailDto[j].ReviseQuantity" class=" uk-input" />
+                  <input maxlength="10" asp-for="Items[i].ListOrderDetailDto[j].ReviseQuantity" class=" uk-input" />
                   <span class=" uk-text-danger" asp-validation-for="Items[i].ListOrderDetailDto[j].ReviseQuantity"></span>
                 </td>
               }

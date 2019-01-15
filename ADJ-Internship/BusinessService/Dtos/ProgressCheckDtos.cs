@@ -80,6 +80,8 @@ namespace ADJ.BusinessService.Dtos
     public decimal Quantity { get; set; }
 
     [ReviseQuantityvalidate("Quantity")]
+    [Range(0,double.MaxValue,ErrorMessage = "Value should not be negative")]
+    [RegularExpression(@"^[-+]?\d+(\.[0]+)?$", ErrorMessage = "Must be an integer")]
     public decimal ReviseQuantity { get; set; }
 
     [Required]
