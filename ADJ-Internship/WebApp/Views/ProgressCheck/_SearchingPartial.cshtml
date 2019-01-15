@@ -153,7 +153,7 @@ else
             @Html.HiddenFor(model => model.Items[i].ListOrderDetailDto[j].ItemNumber)
             <tr>
               <td>
-                @if (Model.Items[i].Complete == false)
+                @if (Model.Items[i].Complete == false && Model.Items[i].ListOrderDetailDto[j].Quantity != Model.Items[i].ListOrderDetailDto[j].ReviseQuantity)
                 {
                   <input asp-for="Items[i].ListOrderDetailDto[j].selected" class="uk-checkbox" />
                 }
@@ -161,7 +161,7 @@ else
               <td>@Model.Items[i].ListOrderDetailDto[j].ItemNumber</td>
               <td>@Model.Items[i].ListOrderDetailDto[j].Quantity.ToString("N0")</td>
               @{
-                if (Model.Items[i].Complete == true)
+                if (Model.Items[i].Complete == true || Model.Items[i].ListOrderDetailDto[j].Quantity == Model.Items[i].ListOrderDetailDto[j].ReviseQuantity)
                 {
                   <td>
                     @Model.Items[i].ListOrderDetailDto[j].ReviseQuantity.ToString("N0")
@@ -171,8 +171,9 @@ else
                 else
                 {
                   <td>
-                    <input maxlength="10" asp-for="Items[i].ListOrderDetailDto[j].ReviseQuantity" class=" uk-input" />
-                    <span class=" uk-text-danger" asp-validation-for="Items[i].ListOrderDetailDto[j].ReviseQuantity"></span>
+                    <input id="@Model.Items[i].ListOrderDetailDto[j].ItemNumber"  maxlength="10" asp-for="Items[i].ListOrderDetailDto[j].ReviseQuantity" value="@Model.Items[i].ListOrderDetailDto[j].ReviseQuantity.ToString("N0")" class=" reviseQuantity uk-input" />
+                    @*<span class=" uk-text-danger" asp-validation-for="Items[i].ListOrderDetailDto[j].ReviseQuantity"></span>*@
+                    <div id="@("message")"></div>
                   </td>
                 }
               }

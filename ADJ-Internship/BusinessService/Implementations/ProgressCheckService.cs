@@ -217,7 +217,7 @@ namespace ADJ.BusinessService.Implementations
           }
           else
           {
-            temp += orderDetail.ReviseQuantity;
+            item.ReviseQuantity = orderDetail.ReviseQuantity;
           }
         }
         entity.EstQtyToShip = temp;

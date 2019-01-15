@@ -43,7 +43,7 @@ namespace WebApp.Controllers
       ViewBag.DestPort = new List<string> { "Crooked Harbour", "Aberdeen", "Double Haven", "Gin Drinkers Bay", "Inner Port Shelter", "Cam Pha", "Cua Lo", "Hai Phong", "Hon Gai", "Nghi Son" };
       ViewBag.Status = searchingDCBooking.Status;
       ViewBag.ShowResult = 0;
-      int current =int.Parse(pagedListResult.CurrentFilter);
+      int current = int.Parse(pagedListResult.CurrentFilter);
       ViewBag.pageIndex = current;
       for (int i = 0; i < pagedListResult.Items.Count(); i++)
       {
@@ -54,13 +54,11 @@ namespace WebApp.Controllers
           ModelState[bookingdate].ValidationState = ModelState[id].ValidationState;
         }
       }
-      foreach(var item in pagedListResult.Items)
+
+      if (pagedListResult.Items.Where(p => p.Id == 0).Count() > 0 && pagedListResult.Items.Where(p => p.selected == true).Count() == 0)
       {
-        if(item.Id==0 && item.selected == false)
-        {
-          ViewBag.ShowResult = "empty";
-          return PartialView("_AvchieveDCBookingPartial", pagedListResult);
-        }
+        ViewBag.ShowResult = "empty";
+        return PartialView("_AvchieveDCBookingPartial", pagedListResult);
       }
       if (ModelState.IsValid)
       {
@@ -77,7 +75,7 @@ namespace WebApp.Controllers
       {
         ViewBag.ShowResult = "invalid";
       }
-     
+
       return PartialView("_AvchieveDCBookingPartial", pagedListResult);
     }
   }

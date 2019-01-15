@@ -33,7 +33,7 @@ namespace WebApp.Controllers
       ViewBag.pageIndex = current;
       PagedListResult<ProgressCheckDto> lstPrc = await _prcService.ListProgressCheckDtoAsync(current, 2, PONumberSearch, ItemSearch, Vendor, Factories, Origins, OriginPorts, Depts, Status);
       lstPrc.CurrentFilter = current.ToString();
-      foreach(var item in lstPrc.Items)
+      foreach (var item in lstPrc.Items)
       {
         item.ListOrderDetailDto.OrderBy(p => p.ItemNumber);
       }
@@ -84,12 +84,22 @@ namespace WebApp.Controllers
           }
         }
       }
-      if(progressCheckDTOs.Items.Where(p=>p.selected==true).Count()==0 && progressCheckDTOs.Items.Where(x => x.ListOrderDetailDto.Where(a => a.selected == true).Count() > 0).Count() == 0)
+      if (progressCheckDTOs.Items.Where(p => p.selected == true).Count() == 0 && progressCheckDTOs.Items.Where(x => x.ListOrderDetailDto.Where(a => a.selected == true).Count() > 0).Count() == 0)
       {
         ViewBag.Check = "empty";
         lstPrc = progressCheckDTOs;
-        lstPrc.Items[0].Complete = true;
-        lstPrc.Items[1].Complete = true;
+        foreach (var i in progressCheckDTOs.Items)
+        {
+          decimal temp = 0;
+          foreach(var j in i.ListOrderDetailDto)
+          {
+            temp += j.ReviseQuantity;
+          }
+          if (i.POQuantity == temp)
+          {
+            i.Complete = true;
+          }
+        }
         return PartialView("_AchievePartial", lstPrc);
       }
       if (ModelState.IsValid)
