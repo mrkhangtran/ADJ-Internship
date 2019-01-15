@@ -115,7 +115,7 @@ namespace ADJ.BusinessService.Implementations
         All = All.And(filterItem);
       }
       Expression<Func<Booking, bool>> filterBooking = p => p.PortOfLoading == OriginPort && p.PortOfDelivery == DestinationPort && p.Carrier == Carrier;
-      var containers = await _containerDataProvider.ListAsync(All, null, true, pageIndex, pageSize);
+      var containers = await _containerDataProvider.ListAsync(All, "Name", true, pageIndex, pageSize);
       AllBooking = AllBooking.And(filterBooking);
       var bookings = await _shipmentBookingDataProvider.ListAsync(AllBooking, null, true);
       var previous = await _containerDataProvider.ListAsync(All, null, true, pageIndex, pageSize);
