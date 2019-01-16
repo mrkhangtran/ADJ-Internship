@@ -23,11 +23,12 @@ namespace WebApp.Controllers
       ViewBag.DC = new List<string> { "Market Hong Kong", "Gas Customer Center", "JSI Logistics" };
       ViewBag.Haulier = new List<string> { "123 Cargo", "Cargo Core" };
       SearchingDCBooking searchingDCBooking = await _dCBookingService.getItem();
-      ViewBag.DestPort = searchingDCBooking.DestinationPort;
+      ViewBag.DestPort = new List<string> { "Crooked Harbour", "Aberdeen", "Double Haven", "Gin Drinkers Bay", "Inner Port Shelter", "Cam Pha", "Cua Lo", "Hai Phong", "Hon Gai", "Nghi Son" };
       ViewBag.Status = searchingDCBooking.Status;
       int current = pageIndex ?? 1;
       ViewBag.pageIndex = current;
       PagedListResult<DCBookingDtos> pagedListResult = await _dCBookingService.ListDCBookingDtosAsync(current, 10, DestinationPort, bookingref, bookingdatefrom, bookingdateto, DC, arrivaldatefrom, arrivaldateto, Status, Container);
+      pagedListResult.CurrentFilter = current.ToString();
       if (checkClick == true)
       {
         return PartialView("_SearchingDCBookingPartial", pagedListResult);
@@ -39,9 +40,11 @@ namespace WebApp.Controllers
       ViewBag.DC = new List<string> { "Market Hong Kong", "Gas Customer Center", "JSI Logistics" };
       ViewBag.Haulier = new List<string> { "123 Cargo", "Cargo Core" };
       SearchingDCBooking searchingDCBooking = await _dCBookingService.getItem();
-      ViewBag.DestPort = searchingDCBooking.DestinationPort;
+      ViewBag.DestPort = new List<string> { "Crooked Harbour", "Aberdeen", "Double Haven", "Gin Drinkers Bay", "Inner Port Shelter", "Cam Pha", "Cua Lo", "Hai Phong", "Hon Gai", "Nghi Son" };
       ViewBag.Status = searchingDCBooking.Status;
-      ViewBag.ShowResult = 0;
+      ViewBag.ShowResult = "empty";
+      int current = int.Parse(pagedListResult.CurrentFilter);
+      ViewBag.pageIndex = current;
       for (int i = 0; i < pagedListResult.Items.Count(); i++)
       {
         if (pagedListResult.Items[i].selected == false)
@@ -49,14 +52,6 @@ namespace WebApp.Controllers
           string bookingdate = "Items[" + i + "].BookingDate";
           string id = "Items[" + i + "].Id";
           ModelState[bookingdate].ValidationState = ModelState[id].ValidationState;
-        }
-      }
-      foreach(var item in pagedListResult.Items)
-      {
-        if(item.Id==0 && item.selected == false)
-        {
-          ViewBag.ShowResult = "empty";
-          return PartialView("_AvchieveDCBookingPartial", pagedListResult);
         }
       }
       if (ModelState.IsValid)
@@ -74,7 +69,7 @@ namespace WebApp.Controllers
       {
         ViewBag.ShowResult = "invalid";
       }
-     
+
       return PartialView("_AvchieveDCBookingPartial", pagedListResult);
     }
   }

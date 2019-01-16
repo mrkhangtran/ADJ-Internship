@@ -37,6 +37,11 @@ namespace WebApp.Controllers
       }
       ViewBag.pageIndex = current;
       PagedListResult<ShipmentManifestsDtos> listManifest = await _manifestService.ListManifestDtoAsync(current, 2, DestinationPort, OriginPort, Carrier, ETDFrom, ETDTo, Status, Vendor, PONumber, Item);
+      listManifest.CurrentFilter = current.ToString();
+      foreach (var item in listManifest.Items)
+      {
+        item.Manifests.OrderBy(p => p.PONumber).ThenBy(a => a.ItemNumber);
+      }
       if (checkClick == true)
       {
         return PartialView("_SearchingManifestPartial", listManifest);
@@ -59,6 +64,9 @@ namespace WebApp.Controllers
       string OriginPort = searchItem.OriginPorts.First();
       string Carrier = searchItem.Carriers.First();
       PagedListResult<ShipmentManifestsDtos> pagedListResult = new PagedListResult<ShipmentManifestsDtos>();
+      int current = int.Parse(shipmentManifestDtos.CurrentFilter);
+      ViewBag.pageIndex = current;
+      pagedListResult.CurrentFilter = shipmentManifestDtos.CurrentFilter;
       for (int i = 0; i < shipmentManifestDtos.Items.Count(); i++)
       {
         for (int j = 0; j < shipmentManifestDtos.Items[i].Manifests.Count(); j++)

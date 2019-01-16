@@ -94,7 +94,7 @@ namespace ADJ.BusinessService.Implementations
         Expression<Func<Order, bool>> filterItem = x => x.OrderDetails.Where(p => p.ItemNumber == ItemSearch).Count() > 0;
         All = All.And(filterItem);
       }
-      var GetPageResult = await _orderDataProvider.ListAsync(All, null, true, pageIndex, pageSize);
+      var GetPageResult = await _orderDataProvider.ListAsync(All, "PONumber", true, pageIndex, pageSize);
       List<Order> orders = GetPageResult.Items;
       foreach (var order in orders)
       {
@@ -217,7 +217,7 @@ namespace ADJ.BusinessService.Implementations
           }
           else
           {
-            temp += orderDetail.ReviseQuantity;
+            item.ReviseQuantity = orderDetail.ReviseQuantity;
           }
         }
         entity.EstQtyToShip = temp;

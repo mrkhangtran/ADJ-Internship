@@ -98,7 +98,7 @@ namespace ADJ.BusinessService.Implementations
         Expression<Func<Container, bool>> filter = x => x.Name == Container;
         All = All.And(filter);
       }
-      var listContainer = await _containerDataProvider.ListAsync(All, null, true, pageIndex, pageSize);
+      var listContainer = await _containerDataProvider.ListAsync(All, "Name", true, pageIndex, pageSize);
       List<Container> containers = listContainer.Items;
       List<DCBookingDtos> dCBookingDtos = new List<DCBookingDtos>();
       foreach (var container in containers)
@@ -175,7 +175,7 @@ namespace ADJ.BusinessService.Implementations
         rs.ShipCube += manifest.Quantity * (decimal)manifest.Cube;
         rs.ShipQuantity += manifest.Quantity;
       }
-      rs.Status = container.Status.ToString();
+      rs.Status = container.Status.GetDescription<ContainerStatus>() ;
       return rs;
     }
   }
