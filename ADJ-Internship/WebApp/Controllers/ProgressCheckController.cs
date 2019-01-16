@@ -47,7 +47,7 @@ namespace WebApp.Controllers
     [HttpPost]
     public async Task<ActionResult> CreateOrUpdate(PagedListResult<ProgressCheckDto> progressCheckDTOs)
     {
-      ViewBag.Check = 0;
+      ViewBag.Check = "empty";
       bool check = false;
       List<string> POUpdate = new List<string>();
       PagedListResult<ProgressCheckDto> lstPrc = new PagedListResult<ProgressCheckDto>();
@@ -75,32 +75,8 @@ namespace WebApp.Controllers
             string id = "Items[" + i + "].Id";
             ModelState[inspectionDate].ValidationState = ModelState[id].ValidationState;
             ModelState[intDate].ValidationState = ModelState[id].ValidationState;
-          }
-          if (progressCheckDTOs.Items[i].ListOrderDetailDto[j].selected == false)
-          {
-            string reviseQuantity = "Items[" + i + "].ListOrderDetailDto[" + j + "].ReviseQuantity";
-            string id = "Items[" + i + "].Id";
-            ModelState[reviseQuantity].ValidationState = ModelState[id].ValidationState;
-          }
+          }        
         }
-      }
-      if (progressCheckDTOs.Items.Where(p => p.selected == true).Count() == 0 && progressCheckDTOs.Items.Where(x => x.ListOrderDetailDto.Where(a => a.selected == true).Count() > 0).Count() == 0)
-      {
-        ViewBag.Check = "empty";
-        lstPrc = progressCheckDTOs;
-        foreach (var i in progressCheckDTOs.Items)
-        {
-          decimal temp = 0;
-          foreach(var j in i.ListOrderDetailDto)
-          {
-            temp += j.ReviseQuantity;
-          }
-          if (i.POQuantity == temp)
-          {
-            i.Complete = true;
-          }
-        }
-        return PartialView("_AchievePartial", lstPrc);
       }
       if (ModelState.IsValid)
       {

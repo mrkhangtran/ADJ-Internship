@@ -145,7 +145,7 @@
             <td>
               @if (Model.Items[i].Complete == false && Model.Items[i].ListOrderDetailDto[j].Quantity != Model.Items[i].ListOrderDetailDto[j].ReviseQuantity)
               {
-                <input asp-for="Items[i].ListOrderDetailDto[j].selected" class="revise uk-checkbox" />
+                <input asp-for="Items[i].ListOrderDetailDto[j].selected" class="uk-checkbox" />
               }
             </td>
             <td>@Model.Items[i].ListOrderDetailDto[j].ItemNumber</td>
@@ -161,7 +161,7 @@
               else
               {
                 <td>
-                  <input maxlength="10" asp-for="Items[i].ListOrderDetailDto[j].ReviseQuantity" value="@Model.Items[i].ListOrderDetailDto[j].ReviseQuantity.ToString("N0")" class=" uk-input" />
+                  <input id="@Model.Items[i].ListOrderDetailDto[j].ItemNumber" maxlength="10" asp-for="Items[i].ListOrderDetailDto[j].ReviseQuantity" value="@Model.Items[i].ListOrderDetailDto[j].ReviseQuantity.ToString("N0")" class=" reviseQuantity uk-input" />
                   <span class=" uk-text-danger" asp-validation-for="Items[i].ListOrderDetailDto[j].ReviseQuantity"></span>
                 </td>
               }
