@@ -28,6 +28,8 @@
 @if ((Model.Containers != null) && (Model.Containers.Items != null) && (Model.Containers.Items.Count > 0))
 {
   <input asp-for="FilterDtos.Status" value=@Model.FilterDtos.Status type="hidden" />
+  <input asp-for="Containers.PageCount" type="hidden" />
+  <input asp-for="Containers.TotalCount" type="hidden" />
 
   int start = 0;
   int groupId = 0;

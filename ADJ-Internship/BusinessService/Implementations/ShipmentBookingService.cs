@@ -263,6 +263,12 @@ namespace ADJ.BusinessService.Implementations
         if (item.Selected)
         {
           {
+            List<Booking> booking = await _bookingRepository.Query(x => x.ItemNumber == item.ItemNumber, false).SelectAsync();
+            if (booking.Count > 0)
+            {
+              item.ShipmentID = booking[0].ShipmentID;
+            }
+
             item.Status = OrderStatus.BookingMade;
             item.StatusDescription = OrderStatus.BookingMade.GetDescription<OrderStatus>();
 
@@ -290,6 +296,18 @@ namespace ADJ.BusinessService.Implementations
         }
 
       await UnitOfWork.SaveChangesAsync();
+
+      foreach (var item in input.OrderDetails)
+        if (item.Selected)
+        {
+          {
+            List<Booking> booking = await _bookingRepository.Query(x => x.ItemNumber == item.ItemNumber, false).SelectAsync();
+            if (booking.Count > 0)
+            {
+              item.ShipmentID = booking[0].ShipmentID;
+            }
+          }
+        }
 
       return input;
     }
