@@ -119,13 +119,13 @@
                   }
                 </td>
                 <td>
-                  @Model.PODetails.Items[i].Quantity
+                  @Model.PODetails.Items[i].Quantity.ToString("N0")
                 </td>
                 <td>
-                  @Model.PODetails.Items[i].Cartons
+                  @Model.PODetails.Items[i].Cartons.ToString("N0")
                 </td>
                 <td>
-                  @Model.PODetails.Items[i].Cube
+                  @Model.PODetails.Items[i].Cube.ToString("N0")
                 </td>
                 <td>
                   @Model.PODetails.Items[i].KGS.ToString("0.00")

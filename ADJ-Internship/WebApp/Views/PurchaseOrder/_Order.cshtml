@@ -6,26 +6,27 @@
   <button type="button" uk-toggle="target: #resultModal" id="openmodal" hidden="hidden">Open</button>
 
   <div id="resultModal" uk-modal>
-    <div class="uk-modal-dialog uk-modal-body">
+    <div class="uk-modal-dialog uk-modal-body uk-margin-auto-vertical">
       <!--Modal content-->
-      The Purchase Order number @ViewBag.Modal_id is
-      @{
-        string message = null;
-        switch (method)
-        {
-          case "Create":
-            message += "created";
-            break;
-          case "Edit":
-            message += "edited";
-            break;
-          case "Copy":
-            message += "copied";
-            break;
+      <p class="uk-text-success uk-text-bold">
+        The Purchase Order number @ViewBag.Modal_id is
+        @{
+          string message = null;
+          switch (method)
+          {
+            case "Create":
+              message += "created";
+              break;
+            case "Edit":
+              message += "edited";
+              break;
+            case "Copy":
+              message += "copied";
+              break;
+          }
         }
-      }
-      @message successfully. Thank you.
-
+        @message successfully. Thank you.
+      </p>
       <p class="uk-text-right">
         <button class="uk-button uk-button-default uk-modal-close" type="button">Close</button>
       </p>
@@ -45,7 +46,7 @@
 
 <!--Order Table-->
 <style>
-  table#orderTable tr td:nth-child(2n+1){
+  table#orderTable tr td:nth-child(2n+1) {
     text-align: right;
   }
 </style>
@@ -67,16 +68,18 @@
       <span style="color: red">*</span> <label asp-for="PONumber"></label>
     </td>
     <td>
-      <input asp-for="PONumber" class="uk-input" id="to" onkeyup="copy2()" />
+      <input asp-for="PONumber" class="uk-input maxLength" id="poNumber" maxlength="11" />
       <span asp-validation-for="PONumber" class="uk-alert-danger"></span>
       <span class="uk-alert-danger">@ViewBag.PONumberError</span>
+      <span class="uk-alert-danger" id="poNumberError"></span>
     </td>
     <td>
       <label asp-for="Vendor"></label>
     </td>
     <td>
-      <input asp-for="Vendor" class="uk-input" />
+      <input asp-for="Vendor" class="uk-input maxLength" id="vendor" maxlength="31" />
       <span asp-validation-for="Vendor" class="uk-alert-danger"></span>
+      <span class="uk-alert-danger" id="vendorError"></span>
     </td>
     <td>
       <label asp-for="Mode"></label>
@@ -98,8 +101,9 @@
       <label asp-for="Company"></label>
     </td>
     <td>
-      <input asp-for="Company" class="uk-input" />
+      <input asp-for="Company" class="uk-input maxLength" id="company" maxlength="31" />
       <span asp-validation-for="Company" class="uk-alert-danger"></span>
+      <span class="uk-alert-danger" id="companyError"></span>
     </td>
     <td>
       <label asp-for="ShipDate"></label>
@@ -114,8 +118,9 @@
       <label asp-for="Buyer"></label>
     </td>
     <td>
-      <input asp-for="Buyer" class="uk-input" />
+      <input asp-for="Buyer" class="uk-input maxLength" id="buyer" maxlength="31" />
       <span asp-validation-for="Buyer" class="uk-alert-danger"></span>
+      <span class="uk-alert-danger" id="buyerError"></span>
     </td>
     <td>
       <label asp-for="Origin"></label>
@@ -174,8 +179,9 @@
       <label asp-for="OrderType"></label>
     </td>
     <td>
-      <input asp-for="OrderType" class="uk-input" />
+      <input asp-for="OrderType" class="uk-input maxLength" id="orderType" maxlength="31" />
       <span asp-validation-for="OrderType" class="uk-alert-danger"></span>
+      <span class="uk-alert-danger" id="orderTypeError"></span>
     </td>
   </tr>
   <tr>
@@ -183,15 +189,17 @@
       <label asp-for="Department"></label>
     </td>
     <td>
-      <input asp-for="Department" class="uk-input" />
+      <input asp-for="Department" class="uk-input maxLength" id="department" maxlength="31" />
       <span asp-validation-for="Department" class="uk-alert-danger"></span>
+      <span class="uk-alert-danger" id="departmentError"></span>
     </td>
     <td>
       <label asp-for="Factory"></label>
     </td>
     <td>
-      <input asp-for="Factory" class="uk-input" />
+      <input asp-for="Factory" class="uk-input maxLength" id="factory" maxlength="31" />
       <span asp-validation-for="Factory" class="uk-alert-danger"></span>
+      <span class="uk-alert-danger" id="factoryError"></span>
     </td>
     <td>
       <label asp-for="Status"></label>

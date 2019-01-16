@@ -29,7 +29,6 @@ namespace ADJ.BusinessService.Dtos
     [Display(Name = "Origin Port")]
     public string OriginPort { get; set; }
 
-    [StringLength(10)]
     [RegularExpression("^[a-zA-Z0-9 ]+$", ErrorMessage = "Letters and numbers only")]
     public string Container { get; set; }
 

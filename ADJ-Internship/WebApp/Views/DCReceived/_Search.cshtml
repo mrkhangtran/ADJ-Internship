@@ -11,8 +11,9 @@
       <label asp-for="FilterDtos.Container"></label>
     </td>
     <td width="25%">
-      <input asp-for="FilterDtos.Container" class="uk-input filters" />
+      <input asp-for="FilterDtos.Container" class="uk-input filters maxLenght" id="container" maxlength="11" />
       <span asp-validation-for="FilterDtos.Container" class="uk-alert-danger"></span>
+      <span class="uk-alert-danger" id="containerError"></span>
     </td>
     <td width="5%"></td>
     <td style="display:none"></td>
@@ -20,7 +21,9 @@
       <label asp-for="FilterDtos.DC"></label>
     </td>
     <td width="25%">
-      <input asp-for="FilterDtos.DC" class="uk-input filters" />
+      <select asp-for="FilterDtos.DC" asp-items="new SelectList(ViewBag.DCs)" class="uk-select filters">
+        <option selected value="">Any</option>
+      </select>
       <span asp-validation-for="FilterDtos.DC" class="uk-alert-danger"></span>
     </td>
     <td width="15%" style="text-align: center">
@@ -71,8 +74,9 @@
       <label asp-for="FilterDtos.BookingRef"></label>
     </td>
     <td>
-      <input asp-for="FilterDtos.BookingRef" class="uk-input filters" />
+      <input asp-for="FilterDtos.BookingRef" class="uk-input filters maxLenght" id="bookingRef" maxlength="11" />
       <span asp-validation-for="FilterDtos.BookingRef" class="uk-alert-danger"></span>
+      <span class="uk-alert-danger" id="bookingRefError"></span>
     </td>
     <td></td>
     <td style="display:none"></td>

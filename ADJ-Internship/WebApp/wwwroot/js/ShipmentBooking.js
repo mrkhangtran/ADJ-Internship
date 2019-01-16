@@ -1,4 +1,25 @@
-﻿$(document.body).on('click', '.checkBoxes', function () {
+﻿$(document.body).on('keyup', '.maxLength', function () {
+  var maxLength = $(this).attr('maxlength');
+  var length = $(this).val().length;
+  var id = $(this).attr('id') + "Error";
+
+  if (length > maxLength - 1) {
+    document.getElementById(id).innerHTML = "Cannot be longer than " + (maxLength - 1) + " characters.";
+    var currentValue = "" + document.getElementById($(this).attr('id')).value;
+    currentValue = currentValue.substr(0, currentValue.length - 1);
+    document.getElementById($(this).attr('id')).value = currentValue;
+  }
+  else {
+    document.getElementById(id).innerHTML = "";
+  };
+});
+
+$(document.body).on('focusout', '.maxLength', function () {
+  var id = $(this).attr('id') + "Error";
+  document.getElementById(id).innerHTML = "";
+});
+
+$(document.body).on('click', '.checkBoxes', function () {
   GetEarliestShipDate();
   GetLatestDeliveryDate();
 });
@@ -260,6 +281,14 @@ function changePorts() {
 
   for (i = 0; i < ports.length; i++) {
     ports[i].options.length = 0;
+    var optgroup = ports[i].getElementsByTagName('optgroup');
+    while (optgroup.length > 0) {
+      ports[i].removeChild(optgroup[0]);
+    }
+    if (i > 1) {
+      $(document.createElement('optgroup')).attr('label', origin).appendTo(ports[i]);
+    }
+
     if (ports[i].attributes.value != null) {
       var currentValue = ports[i].attributes.value.nodeValue;
     }
@@ -269,6 +298,23 @@ function changePorts() {
     for (j = 0; j < options.length; j++) {
       if ((currentValue == null) || (currentValue != options[j])) {
         ports[i].options[ports[i].options.length] = new Option(options[j], options[j]);
+      }
+    }
+
+    if (i > 1) {
+      if (origin == "Vietnam") {
+        $(document.createElement('optgroup')).attr('label', "Hong Kong").appendTo(ports[i]);
+
+        $.each(hkPorts, function () {
+          ports[i].options[ports[i].options.length] = new Option($(this).text(), $(this).text());
+        });
+      }
+      else if (origin == "Hong Kong") {
+        $(document.createElement('optgroup')).attr('label', "Vietnam").appendTo(ports[i]);
+
+        $.each(vnPorts, function () {
+          ports[i].options[ports[i].options.length] = new Option($(this).text(), $(this).text());
+        });
       }
     }
   }

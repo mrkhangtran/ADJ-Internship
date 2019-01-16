@@ -32,8 +32,9 @@
       <label asp-for="FilterDto.Container"></label>
     </td>
     <td width="30%">
-      <input asp-for="FilterDto.Container" class="uk-input filters" />
+      <input asp-for="FilterDto.Container" class="uk-input filters maxLength" id="container" maxlength="11" />
       <span asp-validation-for="FilterDto.Container" class="uk-alert-danger"></span>
+      <span class="uk-alert-danger" id="containerError"></span>
     </td>
     <td width="15%" style="text-align: center">
       <button class="uk-button uk-button-primary">Search</button>

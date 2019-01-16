@@ -1,0 +1,168 @@
+﻿@model ADJ.BusinessService.Dtos.OrderDTO;
+
+<table class="uk-table uk-table-small uk-table-middle" style="text-align: right">
+  <tr>
+    <td>
+      <label asp-for="PONumber"></label>
+    </td>
+    <td>
+      <input disabled asp-for="PONumber" class="uk-input" id="to" onkeyup="copy2()" />
+    </td>
+    <td>
+      <label asp-for="Vendor"></label>
+    </td>
+    <td>
+      <div>
+        @if (Model.Vendor == null)
+        {
+          <input disabled asp-for="Vendor" class="uk-input" value="N/A" />
+        }
+        else
+        {
+          <input disabled asp-for="Vendor" class="uk-input" />
+        }
+      </div>
+    </td>
+    <td>
+      <label asp-for="Mode"></label>
+    </td>
+    <td>
+      <input disabled asp-for="Mode" value=@Model.Mode class="uk-input" />
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <label asp-for="OrderDate"></label>
+    </td>
+    <td>
+      <input disabled value=@Model.OrderDate class="uk-input" />
+    </td>
+    <td>
+      <label asp-for="Company"></label>
+    </td>
+    <td>
+      @if (Model.Company == null)
+      {
+        <input disabled asp-for="Company" class="uk-input" value="N/A" />
+      }
+      else
+      {
+        <input disabled asp-for="Company" class="uk-input" />
+      }
+    </td>
+    <td>
+      <label asp-for="ShipDate"></label>
+    </td>
+    <td>
+      <input disabled value=@Model.ShipDate class="uk-input" />
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <label asp-for="Buyer"></label>
+    </td>
+    <td>
+      @if (Model.Buyer == null)
+      {
+        <input disabled asp-for="Buyer" class="uk-input" value="N/A" />
+      }
+      else
+      {
+        <input disabled asp-for="Buyer" class="uk-input" />
+      }
+    </td>
+    <td>
+      <label asp-for="Origin"></label>
+    </td>
+    <td>
+      <input disabled asp-for="Origin" value=@Model.Origin class="uk-input" />
+    </td>
+    <td>
+      <label asp-for="LatestShipDate"></label>
+    </td>
+    <td>
+      <input disabled value=@Model.LatestShipDate class="uk-input" />
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <label asp-for="Currency"></label>
+    </td>
+    <td>
+      <input disabled asp-for="Currency" value=@Model.Currency class="uk-input" />
+    </td>
+    <td>
+      <label asp-for="PortOfLoading"></label>
+    </td>
+    <td>
+      <input disabled asp-for="PortOfLoading" value=@Model.PortOfLoading class="uk-input" />
+    </td>
+    <td>
+      <label asp-for="DeliveryDate"></label>
+    </td>
+    <td>
+      <input disabled value=@Model.DeliveryDate class="uk-input" />
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <label asp-for="Season"></label>
+    </td>
+    <td>
+      <input disabled asp-for="Season" value=@Model.Season class="uk-input">
+    </td>
+    <td>
+      <label asp-for="PortOfDelivery"></label>
+    </td>
+    <td>
+      <input disabled asp-for="PortOfDelivery" value=@Model.PortOfDelivery class="uk-input" />
+    </td>
+    <td>
+      <label asp-for="OrderType"></label>
+    </td>
+    <td>
+      @if (Model.OrderType == null)
+      {
+        <input disabled asp-for="OrderType" class="uk-input" value="N/A" />
+      }
+      else
+      {
+        <input disabled asp-for="OrderType" class="uk-input" />
+      }
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <label asp-for="Department"></label>
+    </td>
+    <td>
+      @if (Model.Department == null)
+      {
+        <input disabled asp-for="Department" class="uk-input" value="N/A" />
+      }
+      else
+      {
+        <input disabled asp-for="Department" class="uk-input" />
+      }
+    </td>
+    <td>
+      <label asp-for="Factory"></label>
+    </td>
+    <td>
+      @if (Model.Factory == null)
+      {
+        <input disabled asp-for="Factory" class="uk-input" value="N/A" />
+      }
+      else
+      {
+        <input disabled asp-for="Factory" class="uk-input" />
+      }
+    </td>
+    <td>
+      <label asp-for="Status"></label>
+    </td>
+    <td>
+      <input disabled asp-for="Status" value=@Model.Status class="uk-input" />
+    </td>
+  </tr>
+</table>
