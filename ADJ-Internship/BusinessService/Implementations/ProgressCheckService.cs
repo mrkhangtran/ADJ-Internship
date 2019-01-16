@@ -251,7 +251,7 @@ namespace ADJ.BusinessService.Implementations
       var originports = orderModels.Select(x => x.PortOfLoading).Distinct();
       var factories = orderModels.Select(x => x.Factory).Distinct();
       var depts = orderModels.Select(x => x.Department).Distinct();
-      List<string> status = new List<string>{ OrderStatus.New.GetDescription<OrderStatus>(), OrderStatus.New.GetDescription<OrderStatus>() };
+      List<string> status = Enum.GetNames(typeof(OrderStatus)).ToList();
       GetItemSearchDto getSearchItemDTO = new GetItemSearchDto()
       {
         Suppliers = suppliers,
