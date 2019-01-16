@@ -97,7 +97,7 @@ namespace WebApp.Controllers
     public void SetDropDownList()
     {
       ViewBag.DCs = new List<string> { "Market Hong Kong", "Gas Customer Center", "JSI Logistics" };
-      ViewBag.Statuses = new List<string> { ContainerStatus.Despatch.GetDescription<ContainerStatus>(), ContainerStatus.Arrived.GetDescription<ContainerStatus>() };
+      ViewBag.Statuses = new List<string> { ContainerStatus.DCBookingReceived.GetDescription<ContainerStatus>(), ContainerStatus.Delivered.GetDescription<ContainerStatus>() };
 
       ViewBag.Page = 1;
     }
