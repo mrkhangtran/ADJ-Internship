@@ -79,6 +79,8 @@ namespace ADJ.BusinessService.Dtos
     [Required]
     public decimal Quantity { get; set; }
 
+    [Range(0, double.MaxValue, ErrorMessage = "Value should not be negative")]
+    [RegularExpression(@"^[-+]?\d+(\.[0]+)?$", ErrorMessage = "Must be an integer")]
     [ReviseQuantityvalidate("Quantity")]
     public decimal ReviseQuantity { get; set; }
 

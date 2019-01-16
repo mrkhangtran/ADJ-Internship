@@ -54,6 +54,8 @@ namespace ADJ.BusinessService.Dtos
     public decimal OpenQuantity { get; set; }     //= Booking Quantity - Total Ship Quantity (recorded in database)
 
     [Required]
+    [Range(0,double.MaxValue,ErrorMessage = "Value should not be negative")]
+    [RegularExpression(@"^[-+]?\d+(\.[0]+)?$", ErrorMessage = "Must be an integer")]
     [QuantityValidation("OpenQuantity")]
     public decimal ShipQuantity { get; set; }
 

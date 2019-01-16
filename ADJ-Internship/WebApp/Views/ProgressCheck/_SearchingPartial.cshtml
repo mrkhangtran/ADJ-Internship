@@ -20,6 +20,7 @@ else
       @Html.HiddenFor(model => model.Items[i].Factory)
       @Html.HiddenFor(model => model.Items[i].EstQtyToShip)
       @Html.HiddenFor(model => model.Items[i].Complete)
+      @Html.HiddenFor(model => model.CurrentFilter)
       <table class="uk-table uk-table-striped uk-table-middle uk-table-small uk-width-1-2">
         <thead>
           <tr>
@@ -87,11 +88,11 @@ else
               @if (Model.Items[i].Complete == false)
               {
                 <input asp-for="Items[i].selected" class="uk-checkbox" />
-              }          
+              }
             </td>
             <td>@Model.Items[i].PONumber</td>
-            <td>@Model.Items[i].POQuantity</td>
-            <td>@Model.Items[i].EstQtyToShip</td>
+            <td>@Model.Items[i].POQuantity.ToString("N0")</td>
+            <td>@Model.Items[i].EstQtyToShip.ToString("N0")</td>
             <td>@Model.Items[i].ShipDate.ToString("MM/dd/yyyy")</td>
             @{
               if (Model.Items[i].Complete == true)
@@ -152,25 +153,26 @@ else
             @Html.HiddenFor(model => model.Items[i].ListOrderDetailDto[j].ItemNumber)
             <tr>
               <td>
-                @if (Model.Items[i].Complete == false)
+                @if (Model.Items[i].Complete == false && Model.Items[i].ListOrderDetailDto[j].Quantity != Model.Items[i].ListOrderDetailDto[j].ReviseQuantity)
                 {
                   <input asp-for="Items[i].ListOrderDetailDto[j].selected" class="uk-checkbox" />
-                }             
+                }
               </td>
               <td>@Model.Items[i].ListOrderDetailDto[j].ItemNumber</td>
-              <td>@Model.Items[i].ListOrderDetailDto[j].Quantity</td>
+              <td>@Model.Items[i].ListOrderDetailDto[j].Quantity.ToString("N0")</td>
               @{
-                if (Model.Items[i].Complete == true)
+                if (Model.Items[i].Complete == true || Model.Items[i].ListOrderDetailDto[j].Quantity == Model.Items[i].ListOrderDetailDto[j].ReviseQuantity)
                 {
                   <td>
-                    <input readonly type="number" asp-for="Items[i].ListOrderDetailDto[j].ReviseQuantity" class=" uk-input" />
+                    @Model.Items[i].ListOrderDetailDto[j].ReviseQuantity.ToString("N0")
+                    @Html.HiddenFor(model=>model.Items[i].ListOrderDetailDto[j].ReviseQuantity)
                   </td>
                 }
                 else
                 {
                   <td>
-                    <input type="number" asp-for="Items[i].ListOrderDetailDto[j].ReviseQuantity" class=" uk-input" />
-                    <span class=" uk-text-danger" asp-validation-for="Items[i].ListOrderDetailDto[j].ReviseQuantity"></span>
+                    <input id="@Model.Items[i].ListOrderDetailDto[j].ItemNumber"  maxlength="10" asp-for="Items[i].ListOrderDetailDto[j].ReviseQuantity" value="@Model.Items[i].ListOrderDetailDto[j].ReviseQuantity.ToString("N0")" class=" reviseQuantity uk-input" />
+                    <span class=" uk-text-danger" asp-validation-for="Items[i].ListOrderDetailDto[j].ReviseQuantity"></span>             
                   </td>
                 }
               }
