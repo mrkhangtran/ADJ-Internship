@@ -203,10 +203,11 @@
               <input type="hidden" asp-for="OrderDetails[i].BookingQuantity" />
               <input type="hidden" asp-for="OrderDetails[i].Cartons" />
               <input type="hidden" asp-for="OrderDetails[i].Cube" />
-              <input type="hidden" asp-for="OrderDetails[i].POShipDate"/>
-              <input type="hidden" asp-for="OrderDetails[i].DeliveryDate"/>
+              <input type="hidden" asp-for="OrderDetails[i].POShipDate" />
+              <input type="hidden" asp-for="OrderDetails[i].DeliveryDate" />
               <input type="hidden" asp-for="OrderDetails[i].Status" />
               <input type="hidden" asp-for="OrderDetails[i].StatusDescription" />
+              <input type="hidden" asp-for="OrderDetails[i].ShipmentID" />
             </td>
 
             @if ((i >= start) && (i < end))
