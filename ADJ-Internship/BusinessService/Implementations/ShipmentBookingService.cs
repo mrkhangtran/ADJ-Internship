@@ -155,8 +155,8 @@ namespace ADJ.BusinessService.Implementations
         //get info from Order
         output.PONumber = order.Items[0].PONumber;
         output.Vendor = order.Items[0].Vendor;
-        //output.POShipDate = order.Items[0].ShipDate;
-        output.POShipDate = progressCheck[0].IntendedShipDate;
+        output.POShipDate = order.Items[0].ShipDate;
+        //output.POShipDate = progressCheck[0].IntendedShipDate;
         output.DeliveryDate = order.Items[0].DeliveryDate;
 
         //get info from OrderDetail
