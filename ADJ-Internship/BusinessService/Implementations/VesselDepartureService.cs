@@ -70,7 +70,7 @@ namespace ADJ.BusinessService.Implementations
 
       if (container != null)
       {
-        Expression<Func<Container, bool>> filter = x => x.Name == container;
+        Expression<Func<Container, bool>> filter = x => x.Name.Contains(container);
         All = All.And(filter);
       }
 

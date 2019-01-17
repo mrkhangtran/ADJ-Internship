@@ -64,25 +64,25 @@ namespace ADJ.BusinessService.Implementations
 
       if (vendor != null)
       {
-        Expression<Func<OrderDetail, bool>> filter = x => x.Order.Vendor == vendor;
+        Expression<Func<OrderDetail, bool>> filter = x => x.Order.Vendor.Contains(vendor);
         All = All.And(filter);
       }
 
       if (poNumber != null)
       {
-        Expression<Func<OrderDetail, bool>> filter = x => x.Order.PONumber == poNumber;
+        Expression<Func<OrderDetail, bool>> filter = x => x.Order.PONumber.Contains(poNumber);
         All = All.And(filter);
       }
 
       if (warehouse != null)
       {
-        Expression<Func<OrderDetail, bool>> filter = x => x.Warehouse == warehouse;
+        Expression<Func<OrderDetail, bool>> filter = x => x.Warehouse.Contains(warehouse);
         All = All.And(filter);
       }
 
       if (itemNumber != null)
       {
-        Expression<Func<OrderDetail, bool>> filter = x => x.ItemNumber == itemNumber;
+        Expression<Func<OrderDetail, bool>> filter = x => x.ItemNumber.Contains(itemNumber);
         All = All.And(filter);
       }
 
