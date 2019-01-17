@@ -10,7 +10,7 @@ namespace ADJ.BusinessService.Interfaces
   public interface IShipmentBookingService
   {
     Task<List<OrderDetailDTO>> ListShipmentFilterAsync(int? page, string origin = null, string originPort = null, string mode = null, string warehouse = null,
-      string status = null, string vendor = null, string poNumber = null, string itemNumber = null);
+      string status = null, string vendor = null, string poNumber = null, string itemNumber = null, string shipmentId = null);
     Task<List<ShipmentResultDtos>> UpdatePackType(List<ShipmentResultDtos> input);
 
     Task<List<ShipmentBookingDtos>> CreateOrUpdateBookingAsync(ShipmentBookingDtos booking);

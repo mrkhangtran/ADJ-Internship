@@ -26,21 +26,21 @@ namespace WebApp.Controllers
       ShipmentBookingDtos model = new ShipmentBookingDtos();
       model.OrderDetails = new List<ShipmentResultDtos>();
 
-      model.OrderDetails = await _bookingService.ConvertToResultAsync(await _bookingService.ListShipmentFilterAsync(null, "Hong Kong", "Aberdeen", null, null, null, null, null, null));
+      model.OrderDetails = await _bookingService.ConvertToResultAsync(await _bookingService.ListShipmentFilterAsync(null, "Hong Kong", "Aberdeen", null, null, null, null, null, null, null));
 
       return View(model);
     }
 
     [HttpPost]
     public async Task<ActionResult> Filter(int? page, string origin = null, string originPort = null, string mode = null, string warehouse = null,
-      string status = null, string vendor = null, string poNumber = null, string itemNumber = null)
+      string status = null, string vendor = null, string poNumber = null, string itemNumber = null, string shipmentId = null)
     {
       SetDropDownList();
 
       ShipmentBookingDtos model = new ShipmentBookingDtos();
       model.OrderDetails = new List<ShipmentResultDtos>();
 
-      model.OrderDetails = await _bookingService.ConvertToResultAsync(await _bookingService.ListShipmentFilterAsync(page, origin, originPort, mode, warehouse, status, vendor, poNumber, itemNumber));
+      model.OrderDetails = await _bookingService.ConvertToResultAsync(await _bookingService.ListShipmentFilterAsync(page, origin, originPort, mode, warehouse, status, vendor, poNumber, itemNumber, shipmentId));
 
       if (model.OrderDetails.Count > 0)
       {

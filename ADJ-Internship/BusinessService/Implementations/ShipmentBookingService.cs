@@ -49,7 +49,7 @@ namespace ADJ.BusinessService.Implementations
     }
 
     public async Task<List<OrderDetailDTO>> ListShipmentFilterAsync(int? page, string origin = null, string originPort = null, string mode = null, string warehouse = null,
-      string status = null, string vendor = null, string poNumber = null, string itemNumber = null)
+      string status = null, string vendor = null, string poNumber = null, string itemNumber = null, string shipmentId = null)
     {
       if (page == null) { page = 1; }
 
@@ -119,6 +119,34 @@ namespace ADJ.BusinessService.Implementations
       }
 
       PagedListResult<OrderDetail> result = await _orderDetailDataProvider.ListAsync(All, null, true);
+
+      if (shipmentId != null)
+      {
+        Expression<Func<Booking, bool>> booking = x => x.ShipmentID.ToString().Contains(shipmentId);
+        PagedListResult<Booking> resultBooking = await _bookingDataProvider.ListAsync(booking, null, true);
+        PagedListResult<OrderDetail> finalResult = new PagedListResult<OrderDetail>();
+        finalResult.Items = new List<OrderDetail>();
+
+        foreach (var orderDetail in result.Items)
+        {
+          bool add = false;
+          foreach (var item in resultBooking.Items)
+          {
+            if (item.ItemNumber == orderDetail.ItemNumber)
+            {
+              add = true;
+              break;
+            }
+          }
+
+          if (add)
+          {
+            finalResult.Items.Add(orderDetail);
+          }
+        }
+
+        result.Items = finalResult.Items;
+      }
 
       return Mapper.Map<List<OrderDetailDTO>>(result.Items);
     }
