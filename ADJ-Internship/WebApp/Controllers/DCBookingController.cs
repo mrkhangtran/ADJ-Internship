@@ -60,14 +60,15 @@ namespace WebApp.Controllers
       }
       if (ModelState.IsValid)
       {
-        for (int i = 0; i < pagedListResult.Items.Count(); i++)
+        foreach(var item in pagedListResult.Items)
         {
-          if (pagedListResult.Items[i].selected == true)
+          if (item.selected == true)
           {
-            pagedListResult.Items[i] = await _dCBookingService.CreateOrUpdate(pagedListResult.Items[i]);
+            await _dCBookingService.CreateOrUpdate(item);
             ViewBag.ShowResult = "success";
           }
         }
+        ModelState.Clear();
       }
       else
       {

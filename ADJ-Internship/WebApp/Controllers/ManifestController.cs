@@ -51,7 +51,7 @@ namespace WebApp.Controllers
     [HttpPost]
     public async Task<ActionResult> CreateOrUpdate(string pageIndex, PagedListResult<ShipmentManifestsDtos> shipmentManifestDtos)
     {
-      ViewBag.modalResult = null;
+      ViewBag.modalResult = "empty";
       ViewBag.Size = new List<string> { "20GP", "40HC" };
       ViewBag.PackType = new List<string> { "Boxed", "Carton" };
       ViewBag.Loading = new List<string> { "ROAD", "SEA", "AIR" };
@@ -109,19 +109,19 @@ namespace WebApp.Controllers
           pagedListResult = shipmentManifestDtos;
           return PartialView("_AchieveManifestPartial", pagedListResult);
         }
-        if (manifest.selectedContainer == true && manifest.Manifests.Where(p => p.selectedItem == true).Count() == 0)
-        {
-          ViewBag.modalResult = "emptybooking";
-          pagedListResult = shipmentManifestDtos;
-          return PartialView("_AchieveManifestPartial", pagedListResult);
-        }
+        //if (manifest.selectedContainer == true && manifest.Manifests.Where(p => p.selectedItem == true).Count() == 0)
+        //{
+        //  ViewBag.modalResult = "emptybooking";
+        //  pagedListResult = shipmentManifestDtos;
+        //  return PartialView("_AchieveManifestPartial", pagedListResult);
+        //}
       }
-      if (shipmentManifestDtos.Items.Where(p => p.selectedContainer == false).Count() == 2)
-      {
-        ViewBag.modalResult = "empty";
-        pagedListResult = shipmentManifestDtos;
-        return PartialView("_AchieveManifestPartial", pagedListResult);
-      }
+      //if (shipmentManifestDtos.Items.Where(p => p.selectedContainer == false).Count() == 2)
+      //{
+      //  ViewBag.modalResult = "empty";
+      //  pagedListResult = shipmentManifestDtos;
+      //  return PartialView("_AchieveManifestPartial", pagedListResult);
+      //}
       if (ViewBag.nameUnique == null)
       {
         if (ModelState.IsValid)

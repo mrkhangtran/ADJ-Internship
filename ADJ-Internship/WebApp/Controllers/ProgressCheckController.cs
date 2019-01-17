@@ -31,6 +31,10 @@ namespace WebApp.Controllers
       ViewBag.Status = getSearchItem.Status;
       int current = pageIndex ?? 1;
       ViewBag.pageIndex = current;
+      if (Origins == null)
+      {
+        Origins = "Hong Kong";
+      }
       PagedListResult<ProgressCheckDto> lstPrc = await _prcService.ListProgressCheckDtoAsync(current, 2, PONumberSearch, ItemSearch, Vendor, Factories, Origins, OriginPorts, Depts, Status);
       lstPrc.CurrentFilter = current.ToString();
       foreach (var item in lstPrc.Items)
