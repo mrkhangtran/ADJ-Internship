@@ -29,6 +29,8 @@
 @if ((Model.ResultDtos != null) && (Model.ResultDtos.Items != null) && (Model.ResultDtos.Items.Count > 0))
 {
   <input asp-for="FilterDto.Status" value=@Model.FilterDto.Status type="hidden" />
+  <input asp-for="ResultDtos.PageCount" type="hidden" />
+  <input asp-for="ResultDtos.TotalCount" type="hidden" />
 
   int start = 0;
   int groupId = 0;
