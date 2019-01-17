@@ -136,6 +136,7 @@ namespace ADJ.BusinessService.Implementations
         output.Mode = item.Loading;
         //output.Carrier = booking.Carrier;
         output.Carrier = arriveOfDespatch[0].Carrier;
+        output.ETD = booking.ETD;
 
         output.Vendor = order.Vendor;
         output.Container = item.Name;
