@@ -163,14 +163,14 @@ else
                 {
                   <td>
                     @Model.Items[i].ListOrderDetailDto[j].ReviseQuantity.ToString("N0")
-                    @Html.HiddenFor(model=>model.Items[i].ListOrderDetailDto[j].ReviseQuantity)
+                    @Html.HiddenFor(model => model.Items[i].ListOrderDetailDto[j].ReviseQuantity)
                   </td>
                 }
                 else
                 {
                   <td>
-                    <input id="@Model.Items[i].ListOrderDetailDto[j].ItemNumber"  maxlength="10" asp-for="Items[i].ListOrderDetailDto[j].ReviseQuantity" value="@Model.Items[i].ListOrderDetailDto[j].ReviseQuantity.ToString("N0")" class=" reviseQuantity uk-input" />
-                    <span class=" uk-text-danger" asp-validation-for="Items[i].ListOrderDetailDto[j].ReviseQuantity"></span>             
+                    <input id="@Model.Items[i].ListOrderDetailDto[j].ItemNumber" maxlength="10" asp-for="Items[i].ListOrderDetailDto[j].ReviseQuantity" value="@Model.Items[i].ListOrderDetailDto[j].ReviseQuantity.ToString("N0")" class=" reviseQuantity uk-input" />
+                    <span class=" uk-text-danger" asp-validation-for="Items[i].ListOrderDetailDto[j].ReviseQuantity"></span>
                   </td>
                 }
               }

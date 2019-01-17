@@ -91,7 +91,7 @@ namespace WebApp.Controllers
         foreach (var i in progressCheckDTOs.Items)
         {
           decimal temp = 0;
-          foreach(var j in i.ListOrderDetailDto)
+          foreach (var j in i.ListOrderDetailDto)
           {
             temp += j.ReviseQuantity;
           }
@@ -106,15 +106,9 @@ namespace WebApp.Controllers
       {
         foreach (var item in progressCheckDTOs.Items)
         {
-          if (item.Id == 0 && item.selected == false && item.ListOrderDetailDto.Where(x => x.selected == true).ToList().Count > 0)
-          {
-            item.selected = true;
-          }
           if (item.selected == true || item.ListOrderDetailDto.Where(x => x.selected == true).ToList().Count > 0)
           {
-            var temp = await _prcService.CreateOrUpdateProgressCheckAsync(item);
-            temp.ShipDate = item.ShipDate;
-            lstPrc.Items.Add(temp);
+            await _prcService.CreateOrUpdateProgressCheckAsync(item);
             POUpdate.Add(item.PONumber);
             ViewBag.Check = "success";
             check = true;
@@ -124,13 +118,14 @@ namespace WebApp.Controllers
             lstPrc.Items.Add(item);
           }
         }
+        ModelState.Clear();
       }
       else
       {
         lstPrc = progressCheckDTOs;
         ViewBag.Check = "invalid";
       }
-      return PartialView("_AchievePartial", lstPrc);
+      return PartialView("_AchievePartial", progressCheckDTOs);
     }
   }
 }

@@ -240,6 +240,7 @@ namespace ADJ.BusinessService.Implementations
       rs.ShipDate = rq.ShipDate;
       rs.Supplier = rq.Supplier;
       rs.Factory = rq.Factory;
+      rs.Id = entity.Id;
       return rs;
     }
     public async Task<GetItemSearchDto> SearchItem()
