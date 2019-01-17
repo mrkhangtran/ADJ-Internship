@@ -24,6 +24,8 @@ namespace WebApp.Controllers
       ViewBag.Haulier = new List<string> { "123 Cargo", "Cargo Core" };
       SearchingDCBooking searchingDCBooking = await _dCBookingService.getItem();
       ViewBag.DestPort = new List<string> { "Crooked Harbour", "Aberdeen", "Double Haven", "Gin Drinkers Bay", "Inner Port Shelter", "Cam Pha", "Cua Lo", "Hai Phong", "Hon Gai", "Nghi Son" };
+      ViewBag.HongKongPorts = new List<string> { "Crooked Harbour", "Aberdeen", "Double Haven", "Gin Drinkers Bay", "Inner Port Shelter" };
+      ViewBag.VNPorts = new List<string> { "Cam Pha", "Cua Lo", "Hai Phong", "Hon Gai", "Nghi Son" };
       ViewBag.Status = searchingDCBooking.Status;
       int current = pageIndex ?? 1;
       ViewBag.pageIndex = current;
@@ -42,6 +44,8 @@ namespace WebApp.Controllers
       SearchingDCBooking searchingDCBooking = await _dCBookingService.getItem();
       ViewBag.DestPort = new List<string> { "Crooked Harbour", "Aberdeen", "Double Haven", "Gin Drinkers Bay", "Inner Port Shelter", "Cam Pha", "Cua Lo", "Hai Phong", "Hon Gai", "Nghi Son" };
       ViewBag.Status = searchingDCBooking.Status;
+      ViewBag.HongKongPorts = new List<string> { "Crooked Harbour", "Aberdeen", "Double Haven", "Gin Drinkers Bay", "Inner Port Shelter" };
+      ViewBag.VNPorts = new List<string> { "Cam Pha", "Cua Lo", "Hai Phong", "Hon Gai", "Nghi Son" };
       ViewBag.ShowResult = "empty";
       int current = int.Parse(pagedListResult.CurrentFilter);
       ViewBag.pageIndex = current;

@@ -19,7 +19,22 @@
             <td><label>Origin Port</label></td>
             <td>
               <div class="uk-form-select" data-uk-form-select>
-                @Html.DropDownList("OriginPorts", new SelectList(ViewBag.OriginPorts), new { @id = "OriginPorts", @class = "uk-select" })
+                @*@Html.DropDownList("OriginPorts", new SelectList(ViewBag.OriginPorts), new { @id = "OriginPorts", @class = "uk-select" })*@
+                <select id="OriginPorts" class="uk-select">
+                  <optgroup label="Hong Kong">
+                    @foreach (var item in ViewBag.HongKongPorts)
+                    {
+                      <option value="@item">@item</option>
+                    }
+                  </optgroup>
+                  <optgroup label="Vietnam">
+                    @foreach (var item in ViewBag.VNPorts)
+                    {
+                      <option value="@item">@item</option>
+                    }
+                  </optgroup>
+                </select>
+
               </div>
             </td>
           </tr>
@@ -27,7 +42,22 @@
             <td><label>Destination Port</label></td>
             <td>
               <div class="uk-form-select" data-uk-form-select>
-                @Html.DropDownList("DestinationPort", new SelectList(ViewBag.Dest), new { @id = "DestinationPort", @class = "uk-select" })
+                @*@Html.DropDownList("DestinationPort", new SelectList(ViewBag.Dest), new { @id = "DestinationPort", @class = "uk-select" })*@
+                <select id="DestinationPort" class="uk-select">
+                  <optgroup label="Hong Kong">
+                    @foreach (var item in ViewBag.HongKongPorts)
+                    {
+                      <option value="@item">@item</option>
+                    }
+                  </optgroup>
+                  <optgroup label="Vietnam">
+                    @foreach (var item in ViewBag.VNPorts)
+                    {
+                      <option value="@item">@item</option>
+                    }
+                  </optgroup>
+                </select>
+
               </div>
             </td>
           </tr>

@@ -26,6 +26,8 @@ namespace WebApp.Controllers
       SearchingManifestItem searchItem = await _manifestService.SearchItem();
       ViewBag.OriginPorts = searchItem.OriginPorts;
       ViewBag.Carriers = searchItem.Carriers;
+      ViewBag.HongKongPorts = new List<string> { "Crooked Harbour", "Aberdeen", "Double Haven", "Gin Drinkers Bay", "Inner Port Shelter" };
+      ViewBag.VNPorts = new List<string> { "Cam Pha", "Cua Lo", "Hai Phong", "Hon Gai", "Nghi Son" };
       ViewBag.Dest = searchItem.DestinationPort;
       ViewBag.Status = searchItem.Status;
       int current = pageIndex ?? 1;
@@ -60,6 +62,8 @@ namespace WebApp.Controllers
       ViewBag.Carriers = searchItem.Carriers;
       ViewBag.Dest = searchItem.DestinationPort;
       ViewBag.Status = searchItem.Status;
+      ViewBag.HongKongPorts = new List<string> { "Crooked Harbour", "Aberdeen", "Double Haven", "Gin Drinkers Bay", "Inner Port Shelter" };
+      ViewBag.VNPorts = new List<string> { "Cam Pha", "Cua Lo", "Hai Phong", "Hon Gai", "Nghi Son" };
       string DestinationPort = searchItem.DestinationPort.First();
       string OriginPort = searchItem.OriginPorts.First();
       string Carrier = searchItem.Carriers.First();

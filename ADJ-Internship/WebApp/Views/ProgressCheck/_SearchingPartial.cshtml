@@ -24,7 +24,6 @@ else
       <table class="uk-table uk-table-striped uk-table-middle uk-table-small uk-width-1-2">
         <thead>
           <tr>
-            <td style="width:69px"></td>
             <td>
               Vendor
             </td>
@@ -35,7 +34,6 @@ else
         </thead>
         <tbody>
           <tr>
-            <td style="width:69px"></td>
             @if (Model.Items[i].Supplier != null)
             {
               <td>@Model.Items[i].Supplier</td>
@@ -165,14 +163,14 @@ else
                 {
                   <td>
                     @Model.Items[i].ListOrderDetailDto[j].ReviseQuantity.ToString("N0")
-                    @Html.HiddenFor(model=>model.Items[i].ListOrderDetailDto[j].ReviseQuantity)
+                    @Html.HiddenFor(model => model.Items[i].ListOrderDetailDto[j].ReviseQuantity)
                   </td>
                 }
                 else
                 {
                   <td>
-                    <input id="@Model.Items[i].ListOrderDetailDto[j].ItemNumber"  maxlength="10" asp-for="Items[i].ListOrderDetailDto[j].ReviseQuantity" value="@Model.Items[i].ListOrderDetailDto[j].ReviseQuantity.ToString("N0")" class=" reviseQuantity uk-input" />
-                    <span class=" uk-text-danger" asp-validation-for="Items[i].ListOrderDetailDto[j].ReviseQuantity"></span>             
+                    <input id="@Model.Items[i].ListOrderDetailDto[j].ItemNumber" maxlength="10" asp-for="Items[i].ListOrderDetailDto[j].ReviseQuantity" value="@Model.Items[i].ListOrderDetailDto[j].ReviseQuantity.ToString("N0")" class=" reviseQuantity uk-input" />
+                    <span class=" uk-text-danger" asp-validation-for="Items[i].ListOrderDetailDto[j].ReviseQuantity"></span>
                   </td>
                 }
               }
