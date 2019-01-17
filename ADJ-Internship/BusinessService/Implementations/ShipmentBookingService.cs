@@ -28,10 +28,13 @@ namespace ADJ.BusinessService.Implementations
     private readonly IDataProvider<Booking> _bookingDataProvider;
     private readonly IShipmentBookingRepository _bookingRepository;
 
+    private readonly IProgressCheckRepository _progressCheckRepository;
+
     public ShipmentBookingService(IUnitOfWork unitOfWork, IMapper mapper, ApplicationContext appContext,
       IDataProvider<OrderDetail> poDetailDataProvider, IOrderDetailRepository orderdetailRepository,
       IDataProvider<Order> poDataProvider, IOrderRepository orderRepository,
-      IDataProvider<Booking> bookingDataProvider, IShipmentBookingRepository bookingRepository) : base(unitOfWork, mapper, appContext)
+      IDataProvider<Booking> bookingDataProvider, IShipmentBookingRepository bookingRepository,
+      IProgressCheckRepository progressCheckRepository) : base(unitOfWork, mapper, appContext)
     {
       _orderDetailDataProvider = poDetailDataProvider;
       _orderDetailRepository = orderdetailRepository;
@@ -41,6 +44,8 @@ namespace ADJ.BusinessService.Implementations
 
       _bookingDataProvider = bookingDataProvider;
       _bookingRepository = bookingRepository;
+
+      _progressCheckRepository = progressCheckRepository;
     }
 
     public async Task<List<OrderDetailDTO>> ListShipmentFilterAsync(int? page, string origin = null, string originPort = null, string mode = null, string warehouse = null,
@@ -145,11 +150,13 @@ namespace ADJ.BusinessService.Implementations
         int OrderId = item.OrderId;
         PagedListResult<Order> order = await _orderDataProvider.ListAsync(x => x.Id == OrderId, null, false);
         List<Booking> booking = await _bookingRepository.Query(x => x.ItemNumber == item.ItemNumber, false).SelectAsync();
+        List<ProgressCheck> progressCheck = await _progressCheckRepository.Query(x => x.OrderId == order.Items[0].Id, false).SelectAsync();
 
         //get info from Order
         output.PONumber = order.Items[0].PONumber;
         output.Vendor = order.Items[0].Vendor;
-        output.POShipDate = order.Items[0].ShipDate;
+        //output.POShipDate = order.Items[0].ShipDate;
+        output.POShipDate = progressCheck[0].IntendedShipDate;
         output.DeliveryDate = order.Items[0].DeliveryDate;
 
         //get info from OrderDetail
