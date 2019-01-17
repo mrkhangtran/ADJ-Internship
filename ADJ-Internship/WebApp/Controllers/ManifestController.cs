@@ -26,8 +26,6 @@ namespace WebApp.Controllers
       SearchingManifestItem searchItem = await _manifestService.SearchItem();
       ViewBag.OriginPorts = searchItem.OriginPorts;
       ViewBag.Carriers = searchItem.Carriers;
-      ViewBag.HongKongPorts = new List<string> { "Crooked Harbour", "Aberdeen", "Double Haven", "Gin Drinkers Bay", "Inner Port Shelter" };
-      ViewBag.VNPorts = new List<string> { "Cam Pha", "Cua Lo", "Hai Phong", "Hon Gai", "Nghi Son" };
       ViewBag.Dest = searchItem.DestinationPort;
       ViewBag.Status = searchItem.Status;
       int current = pageIndex ?? 1;
@@ -62,8 +60,6 @@ namespace WebApp.Controllers
       ViewBag.Carriers = searchItem.Carriers;
       ViewBag.Dest = searchItem.DestinationPort;
       ViewBag.Status = searchItem.Status;
-      ViewBag.HongKongPorts = new List<string> { "Crooked Harbour", "Aberdeen", "Double Haven", "Gin Drinkers Bay", "Inner Port Shelter" };
-      ViewBag.VNPorts = new List<string> { "Cam Pha", "Cua Lo", "Hai Phong", "Hon Gai", "Nghi Son" };
       string DestinationPort = searchItem.DestinationPort.First();
       string OriginPort = searchItem.OriginPorts.First();
       string Carrier = searchItem.Carriers.First();
@@ -79,13 +75,19 @@ namespace WebApp.Controllers
           {
             string shipQuantity = "Items[" + i + "].Manifests[" + j + "].ShipQuantity";
             string id = "Items[" + i + "].Manifests[" + j + "].Id";
-            ModelState[shipQuantity].ValidationState = ModelState[id].ValidationState;
+            if (ModelState.Keys.Contains(shipQuantity))
+            {
+              ModelState[shipQuantity].ValidationState = ModelState[id].ValidationState;
+            }
           }
           if (shipmentManifestDtos.Items[i].Manifests[j].selectedItem == false)
           {
             string shipQuantity = "Items[" + i + "].Manifests[" + j + "].ShipQuantity";
             string id = "Items[" + i + "].Manifests[" + j + "].Id";
-            ModelState[shipQuantity].ValidationState = ModelState[id].ValidationState;
+            if (ModelState.Keys.Contains(shipQuantity))
+            {
+              ModelState[shipQuantity].ValidationState = ModelState[id].ValidationState;
+            }
           }
           if (shipmentManifestDtos.Items[i].selectedContainer == true && shipmentManifestDtos.Items[i].Manifests[j].selectedItem == true)
           {

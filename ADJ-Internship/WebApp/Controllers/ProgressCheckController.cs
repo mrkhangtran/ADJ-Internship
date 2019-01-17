@@ -18,7 +18,7 @@ namespace WebApp.Controllers
       _prcService = prcService;
     }
     // GET: ProgressCheckDto
-    public async Task<ActionResult> Index(int? pageIndex, string PONumberSearch = null, string ItemSearch = null, string Vendor = null, string Factories = null, string Origins = null, string OriginPorts = null, string Depts = null, string Status = null, bool? checkClick = null)
+    public async Task<ActionResult> Index(int? pageIndex, string PONumberSearch = null, string ItemSearch = null, string Vendor = null, string Factories = null, string Origins = "Hong Kong", string OriginPorts = null, string Depts = null, string Status = null, bool? checkClick = null)
     {
       string check = PONumberSearch + ItemSearch + Vendor + Factories + Origins + OriginPorts + Depts + Status;
       GetItemSearchDto getSearchItem = await _prcService.SearchItem();

@@ -140,7 +140,7 @@ else
               </td>
             </tr>
           </thead>
-          <tbody>
+          <tbody>         
             @for (var j = 0; j < Model.Items[i].Manifests.Count(); j++)
             {
               @Html.HiddenFor(model => model.Items[i].Manifests[j].BookingId, new { Value = Model.Items[i].Manifests[j].BookingId })
@@ -157,7 +157,7 @@ else
                 <td style="width:45px">
                   @if (Model.Items[i].Id == 0)
                   {
-                    <input class="uk-checkbox" asp-for="Items[i].Manifests[j].selectedItem" />
+                    <input type="checkbox" class="uk-checkbox" asp-for="Items[i].Manifests[j].selectedItem" />
                   }
                 </td>
 
