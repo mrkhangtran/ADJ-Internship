@@ -102,8 +102,8 @@ namespace ADJ.BusinessService.Implementations
       }
       if (PONumber != null)
       {
-        Expression<Func<Container, bool>> filterPONumber = x => x.Manifests.Where(p => p.Booking.PONumber == PONumber).Count() > 0;
-        Expression<Func<Booking, bool>> filter = x => x.PONumber == PONumber;
+        Expression<Func<Container, bool>> filterPONumber = x => x.Manifests.Where(p => p.Booking.PONumber.Contains(PONumber)).Count() > 0;
+        Expression<Func<Booking, bool>> filter = x => x.PONumber.Contains(PONumber);
         AllBooking = AllBooking.And(filter);
         All = All.And(filterPONumber);
       }

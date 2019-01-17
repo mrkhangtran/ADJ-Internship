@@ -95,7 +95,7 @@ namespace ADJ.BusinessService.Implementations
       }
       if (Container != null)
       {
-        Expression<Func<Container, bool>> filter = x => x.Name == Container;
+        Expression<Func<Container, bool>> filter = x => x.Name.Contains(Container);
         All = All.And(filter);
       }
       var listContainer = await _containerDataProvider.ListAsync(All, "Name", true, pageIndex, pageSize);

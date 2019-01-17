@@ -49,7 +49,7 @@ namespace ADJ.BusinessService.Implementations
       if (PONumberSearch != null)
       {
         // add condition x.PO==POSearch
-        Expression<Func<Order, bool>> filterPO = x => x.PONumber == PONumberSearch;
+        Expression<Func<Order, bool>> filterPO = x => x.PONumber.Contains(PONumberSearch);
         //var test = a.And(a);
         All = All.And(filterPO);
 
@@ -91,7 +91,7 @@ namespace ADJ.BusinessService.Implementations
       }
       if (ItemSearch != null)
       {
-        Expression<Func<Order, bool>> filterItem = x => x.OrderDetails.Where(p => p.ItemNumber == ItemSearch).Count() > 0;
+        Expression<Func<Order, bool>> filterItem = x => x.OrderDetails.Where(p => p.ItemNumber.Contains(ItemSearch)).Count() > 0;
         All = All.And(filterItem);
       }
       var GetPageResult = await _orderDataProvider.ListAsync(All, "PONumber", true, pageIndex, pageSize);
