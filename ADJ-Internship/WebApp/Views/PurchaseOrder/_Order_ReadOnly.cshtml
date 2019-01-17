@@ -1,4 +1,38 @@
 ﻿@model ADJ.BusinessService.Dtos.OrderDTO;
+<!--Popup-->
+@if (ViewBag.Modal_method != null)
+{
+  string method = ViewBag.Modal_method;
+  <button type="button" uk-toggle="target: #resultModal" id="openmodal" hidden="hidden">Open</button>
+
+  <div id="resultModal" uk-modal>
+    <div class="uk-modal-dialog uk-modal-body uk-margin-auto-vertical">
+      <!--Modal content-->
+      <p class="uk-text-success uk-text-bold">
+        The Purchase Order number @ViewBag.Modal_id is
+        @{
+          string message = null;
+          switch (method)
+          {
+            case "Create":
+              message += "created";
+              break;
+            case "Edit":
+              message += "edited";
+              break;
+            case "Copy":
+              message += "copied";
+              break;
+          }
+        }
+        @message successfully. Thank you.
+      </p>
+      <p class="uk-text-right">
+        <button class="uk-button uk-button-default uk-modal-close" type="button">Close</button>
+      </p>
+    </div>
+  </div>
+}
 
 <table class="uk-table uk-table-small uk-table-middle" style="text-align: right">
   <tr>
@@ -6,7 +40,8 @@
       <label asp-for="PONumber"></label>
     </td>
     <td>
-      <input disabled asp-for="PONumber" class="uk-input" id="to" onkeyup="copy2()" />
+      <input disabled value="@Model.PONumber" class="uk-input" />
+      <input type="hidden" asp-for="PONumber" class="uk-input" />
     </td>
     <td>
       <label asp-for="Vendor"></label>
@@ -19,7 +54,8 @@
         }
         else
         {
-          <input disabled asp-for="Vendor" class="uk-input" />
+          <input disabled value="@Model.Vendor" class="uk-input" />
+          <input type="hidden" asp-for="Vendor" class="uk-input" />
         }
       </div>
     </td>
@@ -27,7 +63,8 @@
       <label asp-for="Mode"></label>
     </td>
     <td>
-      <input disabled asp-for="Mode" value=@Model.Mode class="uk-input" />
+      <input disabled value=@Model.Mode class="uk-input" />
+      <input type="hidden" asp-for="Mode" class="uk-input" />
     </td>
   </tr>
   <tr>
@@ -35,7 +72,8 @@
       <label asp-for="OrderDate"></label>
     </td>
     <td>
-      <input disabled value=@Model.OrderDate class="uk-input" />
+      <input disabled value="@Model.OrderDate.ToString("MM/dd/yyyy")" type="text" class="uk-input" />
+      <input type="hidden" asp-for="OrderDate" class="uk-input" />
     </td>
     <td>
       <label asp-for="Company"></label>
@@ -47,14 +85,16 @@
       }
       else
       {
-        <input disabled asp-for="Company" class="uk-input" />
+        <input disabled value="@Model.Company" class="uk-input" />
+        <input type="hidden" asp-for="Company" class="uk-input" />
       }
     </td>
     <td>
       <label asp-for="ShipDate"></label>
     </td>
     <td>
-      <input disabled value=@Model.ShipDate class="uk-input" />
+      <input disabled value="@Model.ShipDate.ToString("MM/dd/yyyy")" type="text" class="uk-input" />
+      <input type="hidden" asp-for="ShipDate" class="uk-input" />
     </td>
   </tr>
   <tr>
@@ -68,20 +108,23 @@
       }
       else
       {
-        <input disabled asp-for="Buyer" class="uk-input" />
+        <input disabled value="@Model.Buyer" class="uk-input" />
+        <input type="hidden" asp-for="Buyer" class="uk-input" />
       }
     </td>
     <td>
       <label asp-for="Origin"></label>
     </td>
     <td>
-      <input disabled asp-for="Origin" value=@Model.Origin class="uk-input" />
+      <input disabled value=@Model.Origin class="uk-input" />
+      <input type="hidden" asp-for="Origin" class="uk-input" />
     </td>
     <td>
       <label asp-for="LatestShipDate"></label>
     </td>
     <td>
-      <input disabled value=@Model.LatestShipDate class="uk-input" />
+      <input disabled value="@Model.LatestShipDate.ToString("MM/dd/yyyy")" type="text" class="uk-input" />
+      <input type="hidden" asp-for="LatestShipDate" class="uk-input" />
     </td>
   </tr>
   <tr>
@@ -89,19 +132,22 @@
       <label asp-for="Currency"></label>
     </td>
     <td>
-      <input disabled asp-for="Currency" value=@Model.Currency class="uk-input" />
+      <input disabled value=@Model.Currency class="uk-input" />
+      <input type="hidden" asp-for="Currency" class="uk-input" />
     </td>
     <td>
       <label asp-for="PortOfLoading"></label>
     </td>
     <td>
-      <input disabled asp-for="PortOfLoading" value=@Model.PortOfLoading class="uk-input" />
+      <input disabled value=@Model.PortOfLoading class="uk-input" />
+      <input type="hidden" asp-for="PortOfLoading" class="uk-input" />
     </td>
     <td>
       <label asp-for="DeliveryDate"></label>
     </td>
     <td>
-      <input disabled value=@Model.DeliveryDate class="uk-input" />
+      <input disabled value=@Model.DeliveryDate.ToString("MM/dd/yyyy") type="text" class="uk-input" />
+      <input type="hidden" asp-for="DeliveryDate" class="uk-input" />
     </td>
   </tr>
   <tr>
@@ -109,13 +155,15 @@
       <label asp-for="Season"></label>
     </td>
     <td>
-      <input disabled asp-for="Season" value=@Model.Season class="uk-input">
+      <input disabled value=@Model.Season class="uk-input">
+      <input type="hidden" asp-for="Season" class="uk-input" />
     </td>
     <td>
       <label asp-for="PortOfDelivery"></label>
     </td>
     <td>
-      <input disabled asp-for="PortOfDelivery" value=@Model.PortOfDelivery class="uk-input" />
+      <input disabled value=@Model.PortOfDelivery class="uk-input" />
+      <input type="hidden" asp-for="PortOfDelivery" class="uk-input" />
     </td>
     <td>
       <label asp-for="OrderType"></label>
@@ -127,7 +175,8 @@
       }
       else
       {
-        <input disabled asp-for="OrderType" class="uk-input" />
+        <input disabled value="@Model.OrderType" class="uk-input" />
+        <input type="hidden" asp-for="OrderType" class="uk-input" />
       }
     </td>
   </tr>
@@ -142,7 +191,8 @@
       }
       else
       {
-        <input disabled asp-for="Department" class="uk-input" />
+        <input disabled value="@Model.Department" class="uk-input" />
+        <input type="hidden" asp-for="Department" class="uk-input" />
       }
     </td>
     <td>
@@ -155,14 +205,16 @@
       }
       else
       {
-        <input disabled asp-for="Factory" class="uk-input" />
+        <input disabled value="@Model.Factory" class="uk-input" />
+        <input type="hidden" asp-for="Factory" class="uk-input" />
       }
     </td>
     <td>
       <label asp-for="Status"></label>
     </td>
     <td>
-      <input disabled asp-for="Status" value=@Model.Status class="uk-input" />
+      <input disabled value=@Model.Status class="uk-input" />
+      <input type="hidden" asp-for="Status" class="uk-input" />
     </td>
   </tr>
 </table>

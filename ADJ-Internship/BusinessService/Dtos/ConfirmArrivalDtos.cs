@@ -39,11 +39,9 @@ namespace ADJ.BusinessService.Dtos
     //DropList Road-Sea-Air
     public string Mode { get; set; }
 
-    [StringLength(30)]
     [RegularExpression("^[a-zA-Z0-9 ]+$", ErrorMessage = "Letters and numbers only")]
     public string Vendor { get; set; } = "";
 
-    [StringLength(10)]
     [RegularExpression("^[a-zA-Z0-9 ]+$", ErrorMessage = "Letters and numbers only")]
     public string Container { get; set; } = "";
 

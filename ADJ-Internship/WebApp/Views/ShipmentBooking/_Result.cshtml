@@ -6,12 +6,12 @@
   <button type="button" uk-toggle="target: #resultModal" id="openmodal" hidden="hidden">Open</button>
 
   <div id="resultModal" uk-modal>
-    <div class="uk-modal-dialog uk-modal-body">
+    <div class="uk-modal-dialog uk-modal-body uk-margin-auto-vertical">
       @switch (modal)
       {
         case "Updated":
           <h2 class="uk-modal-title">Shipment created</h2>
-          <p>Shipment contain following items: </p>
+          <p class="uk-text-success uk-text-bold">Shipment contain following items: </p>
 
           string message = "";
           for (int i = 0; i < Model.OrderDetails.Count; i++)
@@ -19,6 +19,7 @@
             if (Model.OrderDetails[i].Selected)
             {
               message += Model.OrderDetails[i].ItemNumber + ", ";
+              Model.OrderDetails[i].Selected = false;
             }
           }
           message = message.Remove(message.Length - 2);
@@ -30,10 +31,10 @@
             message += " and " + endMsg;
           }
 
-          <span>@message</span>
+          <span class="uk-text-success uk-text-bold">@message</span>
           break;
         case "NoItem":
-          <p>Please select at least 1 item.</p>
+          <p class="uk-text-danger uk-text-bold">Please select at least 1 item.</p>
           break;
       }
 
@@ -153,6 +154,9 @@
             <input type="checkbox" class="uk-checkbox" id="checkAll" />
           </th>
           <th>
+            <label asp-for="OrderDetails[0].ShipmentID"></label>
+          </th>
+          <th>
             <label asp-for="OrderDetails[0].PONumber"></label>
           </th>
           <th>
@@ -199,16 +203,27 @@
               <input type="hidden" asp-for="OrderDetails[i].BookingQuantity" />
               <input type="hidden" asp-for="OrderDetails[i].Cartons" />
               <input type="hidden" asp-for="OrderDetails[i].Cube" />
-              <input type="hidden" asp-for="OrderDetails[i].POShipDate" id="ShipDate_@i" string=@Model.OrderDetails[i].POShipDate.ToString("yyyyMMdd") />
-              <input type="hidden" asp-for="OrderDetails[i].DeliveryDate" id="DeliveryDate_@i" string=@Model.OrderDetails[i].DeliveryDate.ToString("yyyyMMdd") />
+              <input type="hidden" asp-for="OrderDetails[i].POShipDate" />
+              <input type="hidden" asp-for="OrderDetails[i].DeliveryDate" />
               <input type="hidden" asp-for="OrderDetails[i].Status" />
               <input type="hidden" asp-for="OrderDetails[i].StatusDescription" />
+              <input type="hidden" asp-for="OrderDetails[i].ShipmentID" />
             </td>
 
             @if ((i >= start) && (i < end))
             {
               <td>
                 <input type="checkbox" asp-for="OrderDetails[i].Selected" class="uk-checkbox booking checkBoxes" />
+              </td>
+              <td class="uk-text-truncate" title="@Model.OrderDetails[i].ShipmentID.ToString()">
+                @if (Model.OrderDetails[i].Status == ADJ.Common.OrderStatus.BookingMade)
+                {
+                  @Model.OrderDetails[i].ShipmentID.ToString()
+                }
+                else
+                {
+                  <span>N/A</span>
+                }
               </td>
               <td>
                 @Model.OrderDetails[i].PONumber
@@ -230,7 +245,7 @@
                 @Model.OrderDetails[i].Quantity.ToString("N0")
               </td>
               <td>
-                @Model.OrderDetails[i].BookingQuantity
+                @Model.OrderDetails[i].BookingQuantity.ToString("N0")
               </td>
               <td>
                 @Model.OrderDetails[i].BookingCartons
@@ -242,7 +257,9 @@
                 <select asp-for="OrderDetails[i].PackType" asp-items="new SelectList(ViewBag.PackTypes)" class="uk-select booking"></select>
                 <span asp-validation-for="OrderDetails[i].PackType" class="uk-alert-danger"></span>
               </td>
-              <td>
+              <td >
+                <span id="ShipDate_@(i-start)" string=@Model.OrderDetails[i].POShipDate.ToString("yyyyMMdd") ></span>
+                <span id="DeliveryDate_@(i-start)" string=@Model.OrderDetails[i].DeliveryDate.ToString("yyyyMMdd") ></span>
                 @Model.OrderDetails[i].POShipDate.ToString("MM/dd/yyyy")
               </td>
               <td>

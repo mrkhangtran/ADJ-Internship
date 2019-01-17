@@ -89,24 +89,20 @@ namespace ADJ.BusinessService.Dtos
     //DropList Road-Sea-Air
     public string Mode { get; set; }
 
-    [StringLength(30)]
     [RegularExpression("^[a-zA-Z0-9 ]+$", ErrorMessage = "Letters and numbers only")]
     public string Warehouse { get; set; } = "";
 
     //DropList of Awaiting_Booking and Booking_Made
     public string Status { get; set; }
 
-    [StringLength(30)]
     [RegularExpression("^[a-zA-Z0-9 ]+$", ErrorMessage = "Letters and numbers only")]
     public string Vendor { get; set; } = "";
 
     [Display(Name = "PO Number")]
-    [StringLength(10, ErrorMessage = "Cannot be longer than 10 characters")]
     [RegularExpression("^[0-9]+$", ErrorMessage = "Numbers only")]
     public string PONumber { get; set; }
 
     [Display(Name = "Item Number")]
-    [StringLength(10, ErrorMessage = "Cannot be longer than 10 characters")]
     [RegularExpression("^[0-9]+$", ErrorMessage = "Numbers only")]
     public string ItemNumber { get; set; }
 
@@ -167,6 +163,9 @@ namespace ADJ.BusinessService.Dtos
     public OrderStatus Status { get; set; }
 
     public string StatusDescription { get; set; }
+
+    [Display(Name = "Shipment ID")]
+    public Guid ShipmentID { get; set; }
 
     public int OrderId { get; set; }
   }

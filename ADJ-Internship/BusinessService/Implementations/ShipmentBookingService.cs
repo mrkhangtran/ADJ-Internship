@@ -141,10 +141,12 @@ namespace ADJ.BusinessService.Implementations
       foreach (var item in input)
       {
         //map OrderDetailDTO to ShipmentResult
-        //get info from Order
         ShipmentResultDtos output = new ShipmentResultDtos();
         int OrderId = item.OrderId;
         PagedListResult<Order> order = await _orderDataProvider.ListAsync(x => x.Id == OrderId, null, false);
+        List<Booking> booking = await _bookingRepository.Query(x => x.ItemNumber == item.ItemNumber, false).SelectAsync();
+
+        //get info from Order
         output.PONumber = order.Items[0].PONumber;
         output.Vendor = order.Items[0].Vendor;
         output.POShipDate = order.Items[0].ShipDate;
@@ -160,11 +162,17 @@ namespace ADJ.BusinessService.Implementations
         output.Cartons = item.Cartons;
         output.Cube = item.Cube;
 
+        //get info from Booking
+        if (booking.Count > 0)
+        {
+          output.ShipmentID = booking[0].ShipmentID;
+        }
+
         //add item to result
         result.Add(output);
       }
 
-      return result.OrderBy(p => p.PONumber).ThenBy(p => p.ItemNumber).ToList();
+      return result.OrderBy(p => p.ShipmentID).ThenBy(p => p.PONumber).ThenBy(p => p.ItemNumber).ToList();
     }
 
     public async Task<List<ShipmentBookingDtos>> CreateOrUpdateBookingAsync(ShipmentBookingDtos booking)

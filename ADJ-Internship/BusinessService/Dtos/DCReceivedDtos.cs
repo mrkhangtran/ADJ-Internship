@@ -20,7 +20,6 @@ namespace ADJ.BusinessService.Dtos
 
   public class DCReceivedFilterDtos
   {
-    [StringLength(10)]
     [RegularExpression("^[a-zA-Z0-9 ]+$", ErrorMessage = "Letters and numbers only")]
     public string Container { get; set; }
 
@@ -34,7 +33,6 @@ namespace ADJ.BusinessService.Dtos
     [SimilarOrLaterThanOtherDate("BookingDateFrom")]
     public DateTime? BookingDateTo { get; set; }
 
-    [StringLength(10)]
     [Display(Name = "Booking Ref")]
     [RegularExpression("^[a-zA-Z0-9 ]+$", ErrorMessage = "Letters and numbers only")]
     public string BookingRef { get; set; }
@@ -49,7 +47,6 @@ namespace ADJ.BusinessService.Dtos
     //Droplist of [DC Booking Received] and [ Delivered]
     public string Status { get; set; }
 
-    [StringLength(10)]
     [Display(Name = "Item Number")]
     [RegularExpression("^[a-zA-Z0-9 ]+$", ErrorMessage = "Letters and numbers only")]
     public string ItemNumber { get; set; }

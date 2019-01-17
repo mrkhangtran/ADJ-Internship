@@ -22,8 +22,9 @@
       <label asp-for="FilterDtos.Container"></label>
     </td>
     <td width="30%">
-      <input asp-for="FilterDtos.Container" class="uk-input filters" />
+      <input asp-for="FilterDtos.Container" class="uk-input filters maxLength" id="container" maxlength="11"/>
       <span asp-validation-for="FilterDtos.Container" class="uk-alert-danger"></span>
+      <span class="uk-alert-danger" id="containerError"></span>
     </td>
     <td width="15%" style="text-align: center">
       <button class="uk-button uk-button-primary">Search</button>
@@ -77,8 +78,9 @@
       <label asp-for="FilterDtos.Vendor"></label>
     </td>
     <td>
-      <input asp-for="FilterDtos.Vendor" class="uk-input filters" />
+      <input asp-for="FilterDtos.Vendor" class="uk-input filters maxLength" id="vendor" maxlength="31"/>
       <span asp-validation-for="FilterDtos.Vendor" class="uk-alert-danger"></span>
+      <span class="uk-alert-danger" id="vendorError"></span>
     </td>
     <td colspan="3"></td>
   </tr>
