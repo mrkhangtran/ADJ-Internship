@@ -19,22 +19,7 @@
             <td><label>Origin Port</label></td>
             <td>
               <div class="uk-form-select" data-uk-form-select>
-                @*@Html.DropDownList("OriginPorts", new SelectList(ViewBag.OriginPorts), new { @id = "OriginPorts", @class = "uk-select" })*@
-                <select id="OriginPorts" class="uk-select">
-                  <optgroup label="Hong Kong">
-                    @foreach (var item in ViewBag.HongKongPorts)
-                    {
-                      <option value="@item">@item</option>
-                    }
-                  </optgroup>
-                  <optgroup label="Vietnam">
-                    @foreach (var item in ViewBag.VNPorts)
-                    {
-                      <option value="@item">@item</option>
-                    }
-                  </optgroup>
-                </select>
-
+                @Html.DropDownList("OriginPorts", new SelectList(ViewBag.OriginPorts), new { @id = "OriginPorts", @class = "uk-select" })
               </div>
             </td>
           </tr>
@@ -42,22 +27,7 @@
             <td><label>Destination Port</label></td>
             <td>
               <div class="uk-form-select" data-uk-form-select>
-                @*@Html.DropDownList("DestinationPort", new SelectList(ViewBag.Dest), new { @id = "DestinationPort", @class = "uk-select" })*@
-                <select id="DestinationPort" class="uk-select">
-                  <optgroup label="Hong Kong">
-                    @foreach (var item in ViewBag.HongKongPorts)
-                    {
-                      <option value="@item">@item</option>
-                    }
-                  </optgroup>
-                  <optgroup label="Vietnam">
-                    @foreach (var item in ViewBag.VNPorts)
-                    {
-                      <option value="@item">@item</option>
-                    }
-                  </optgroup>
-                </select>
-
+                @Html.DropDownList("DestinationPort", new SelectList(ViewBag.Dest), new { @id = "DestinationPort", @class = "uk-select" })
               </div>
             </td>
           </tr>
@@ -147,6 +117,7 @@
 <script src="~/js/jquery-3.3.1.min.js"></script>
 <script type="text/javascript">
   $(document.body).on('click', '.filterItem', function () {
+    $('input[type="hidden"][value="false"]').remove();
     var pageIndex = $(this).attr("value");
         $.ajax({
             type: "GET",
@@ -165,7 +136,7 @@
               Vendor: $('#Vendor').val(),
               checkClick: true,
             },
-            success: function (data) {
+          success: function (data) {
                 $('#renderSearching').html(data);
             }
         });

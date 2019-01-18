@@ -259,7 +259,17 @@
     }
   </ul>
 </div>
-@if (ViewBag.modalResult != null)
+@if (ViewBag.modalResult == "success")
+{
+  <button type="button" uk-toggle="target: #modal-success" id="successmodal" hidden="hidden">Open</button>
+  <div id="modal-success" class="uk-flex-top" uk-modal>
+    <div class="uk-modal-dialog uk-modal-body uk-margin-auto-vertical">
+      <button class="uk-modal-close-default" type="button" uk-close></button>
+      <p class="uk-text-success uk-text-bold">Your shipment is successfully manifested</p>
+    </div>
+  </div>
+}
+@if (ViewBag.modalResult != "success")
 {
   <button type="button" uk-toggle="target: #modal-center" id="openmodal" hidden="hidden">Open</button>
   <div id="modal-center" class="uk-flex-top" uk-modal>
@@ -272,7 +282,7 @@
         }
         else if (ViewBag.modalResult == "empty")
         {
-          <p class="uk-text-danger uk-text-bold">Please check your container.</p>
+          <p class="uk-text-danger uk-text-bold">Please check your container or shipment booking.</p>
         }
         else if (ViewBag.modalResult == "zero")
         {
@@ -286,13 +296,4 @@
     </div>
   </div>
 }
-@if (ViewBag.modalResult == "success")
-{
-  <button type="button" uk-toggle="target: #modal-success" id="successmodal" hidden="hidden">Open</button>
-  <div id="modal-success" class="uk-flex-top" uk-modal>
-    <div class="uk-modal-dialog uk-modal-body uk-margin-auto-vertical">
-      <button class="uk-modal-close-default" type="button" uk-close></button>
-      <p class="uk-text-success uk-text-bold">Your shipment is successfully manifested</p>
-    </div>
-  </div>
-}
+

@@ -26,8 +26,6 @@ namespace WebApp.Controllers
       SearchingManifestItem searchItem = await _manifestService.SearchItem();
       ViewBag.OriginPorts = searchItem.OriginPorts;
       ViewBag.Carriers = searchItem.Carriers;
-      ViewBag.HongKongPorts = new List<string> { "Crooked Harbour", "Aberdeen", "Double Haven", "Gin Drinkers Bay", "Inner Port Shelter" };
-      ViewBag.VNPorts = new List<string> { "Cam Pha", "Cua Lo", "Hai Phong", "Hon Gai", "Nghi Son" };
       ViewBag.Dest = searchItem.DestinationPort;
       ViewBag.Status = searchItem.Status;
       int current = pageIndex ?? 1;
@@ -53,7 +51,7 @@ namespace WebApp.Controllers
     [HttpPost]
     public async Task<ActionResult> CreateOrUpdate(string pageIndex, PagedListResult<ShipmentManifestsDtos> shipmentManifestDtos)
     {
-      ViewBag.modalResult = null;
+      ViewBag.modalResult = "empty";
       ViewBag.Size = new List<string> { "20GP", "40HC" };
       ViewBag.PackType = new List<string> { "Boxed", "Carton" };
       ViewBag.Loading = new List<string> { "ROAD", "SEA", "AIR" };
@@ -62,8 +60,6 @@ namespace WebApp.Controllers
       ViewBag.Carriers = searchItem.Carriers;
       ViewBag.Dest = searchItem.DestinationPort;
       ViewBag.Status = searchItem.Status;
-      ViewBag.HongKongPorts = new List<string> { "Crooked Harbour", "Aberdeen", "Double Haven", "Gin Drinkers Bay", "Inner Port Shelter" };
-      ViewBag.VNPorts = new List<string> { "Cam Pha", "Cua Lo", "Hai Phong", "Hon Gai", "Nghi Son" };
       string DestinationPort = searchItem.DestinationPort.First();
       string OriginPort = searchItem.OriginPorts.First();
       string Carrier = searchItem.Carriers.First();
@@ -79,13 +75,19 @@ namespace WebApp.Controllers
           {
             string shipQuantity = "Items[" + i + "].Manifests[" + j + "].ShipQuantity";
             string id = "Items[" + i + "].Manifests[" + j + "].Id";
-            ModelState[shipQuantity].ValidationState = ModelState[id].ValidationState;
+            if (ModelState.Keys.Contains(shipQuantity))
+            {
+              ModelState[shipQuantity].ValidationState = ModelState[id].ValidationState;
+            }
           }
           if (shipmentManifestDtos.Items[i].Manifests[j].selectedItem == false)
           {
             string shipQuantity = "Items[" + i + "].Manifests[" + j + "].ShipQuantity";
             string id = "Items[" + i + "].Manifests[" + j + "].Id";
-            ModelState[shipQuantity].ValidationState = ModelState[id].ValidationState;
+            if (ModelState.Keys.Contains(shipQuantity))
+            {
+              ModelState[shipQuantity].ValidationState = ModelState[id].ValidationState;
+            }
           }
           if (shipmentManifestDtos.Items[i].selectedContainer == true && shipmentManifestDtos.Items[i].Manifests[j].selectedItem == true)
           {
@@ -107,19 +109,19 @@ namespace WebApp.Controllers
           pagedListResult = shipmentManifestDtos;
           return PartialView("_AchieveManifestPartial", pagedListResult);
         }
-        if (manifest.selectedContainer == true && manifest.Manifests.Where(p => p.selectedItem == true).Count() == 0)
-        {
-          ViewBag.modalResult = "emptybooking";
-          pagedListResult = shipmentManifestDtos;
-          return PartialView("_AchieveManifestPartial", pagedListResult);
-        }
+        //if (manifest.selectedContainer == true && manifest.Manifests.Where(p => p.selectedItem == true).Count() == 0)
+        //{
+        //  ViewBag.modalResult = "emptybooking";
+        //  pagedListResult = shipmentManifestDtos;
+        //  return PartialView("_AchieveManifestPartial", pagedListResult);
+        //}
       }
-      if (shipmentManifestDtos.Items.Where(p => p.selectedContainer == false).Count() == 2)
-      {
-        ViewBag.modalResult = "empty";
-        pagedListResult = shipmentManifestDtos;
-        return PartialView("_AchieveManifestPartial", pagedListResult);
-      }
+      //if (shipmentManifestDtos.Items.Where(p => p.selectedContainer == false).Count() == 2)
+      //{
+      //  ViewBag.modalResult = "empty";
+      //  pagedListResult = shipmentManifestDtos;
+      //  return PartialView("_AchieveManifestPartial", pagedListResult);
+      //}
       if (ViewBag.nameUnique == null)
       {
         if (ModelState.IsValid)

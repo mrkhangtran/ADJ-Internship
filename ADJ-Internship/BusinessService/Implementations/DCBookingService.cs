@@ -95,7 +95,7 @@ namespace ADJ.BusinessService.Implementations
       }
       if (Container != null)
       {
-        Expression<Func<Container, bool>> filter = x => x.Name == Container;
+        Expression<Func<Container, bool>> filter = x => x.Name.Contains(Container);
         All = All.And(filter);
       }
       var listContainer = await _containerDataProvider.ListAsync(All, "Name", true, pageIndex, pageSize);
@@ -115,7 +115,7 @@ namespace ADJ.BusinessService.Implementations
             DestPort = arriveOfDispatch[0].DestinationPort,
             ArrivalDate = confirmArrival[0].ArrivalDate,
             Status = container.Status.GetDescription<ContainerStatus>(),
-            BookingDate = confirmArrival[0].ArrivalDate
+            BookingDate = confirmArrival[0].ArrivalDate.AddDays(1)
           };
           foreach (var manifest in container.Manifests)
           {
@@ -165,7 +165,7 @@ namespace ADJ.BusinessService.Implementations
       container.Status = ContainerStatus.DCBookingReceived;
       _containerRepository.Update(container);
       await UnitOfWork.SaveChangesAsync();
-      var rs = Mapper.Map<DCBookingDtos>(entity);
+      var rs = rq;
       rs.Name = container.Name;
       rs.DestPort = Arrive[0].DestinationPort;
       rs.ArrivalDate = CA[0].ArrivalDate;
@@ -175,6 +175,7 @@ namespace ADJ.BusinessService.Implementations
         rs.ShipCube += manifest.Quantity * (decimal)manifest.Cube;
         rs.ShipQuantity += manifest.Quantity;
       }
+      rs.Id = entity.Id;
       rs.Status = container.Status.GetDescription<ContainerStatus>() ;
       return rs;
     }

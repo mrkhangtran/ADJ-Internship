@@ -1,5 +1,5 @@
 ﻿@model ADJ.Common.PagedListResult<ADJ.BusinessService.Dtos.DCBookingDtos>
-<form id="dcbooking" asp-action="CreateOrUpdate" asp-controller="DCBooking" data-ajax-complete="showup" data-ajax="true"
+<form id="dcbooking" asp-action="CreateOrUpdate" asp-controller="DCBooking" data-ajax-success="showup" data-ajax="true"
       data-ajax-method="POST"
       data-ajax-mode="replace"
       data-ajax-update="#renderSearching">
@@ -21,6 +21,7 @@
               <div class="uk-form-select" data-uk-form-select>
                 @*@Html.DropDownList("DestinationPort", new SelectList(ViewBag.DestPort), "Any", new { @id = "DestinationPort", @class = "uk-select" })*@
                 <select id="DestinationPort" class="uk-select">
+                  <option value="">Any</option>
                   <optgroup label="Hong Kong">
                     @foreach (var item in ViewBag.HongKongPorts)
                     {
