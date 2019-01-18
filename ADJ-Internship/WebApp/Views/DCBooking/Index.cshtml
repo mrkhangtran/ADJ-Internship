@@ -21,6 +21,7 @@
               <div class="uk-form-select" data-uk-form-select>
                 @*@Html.DropDownList("DestinationPort", new SelectList(ViewBag.DestPort), "Any", new { @id = "DestinationPort", @class = "uk-select" })*@
                 <select id="DestinationPort" class="uk-select">
+                  <option value="">Any</option>
                   <optgroup label="Hong Kong">
                     @foreach (var item in ViewBag.HongKongPorts)
                     {
