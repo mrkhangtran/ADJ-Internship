@@ -202,6 +202,7 @@ $(document.body).on('click', '.searchButton', function () {
     var status = filters[5];
     var poNumber = filters[6];
     var itemNumber = filters[7];
+    var shipmentId = filters[8];
 
     $.ajax({
       type: "POST",
@@ -214,7 +215,8 @@ $(document.body).on('click', '.searchButton', function () {
         status: status,
         vendor: vendor,
         poNumber: poNumber,
-        itemNumber: itemNumber
+        itemNumber: itemNumber,
+        shipmentId: shipmentId
       },
       url: "/ShipmentBooking/Filter",
       success: function (objOperations) {

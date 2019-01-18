@@ -64,13 +64,13 @@ namespace ADJ.BusinessService.Implementations
 
       if (vendor != null)
       {
-        Expression<Func<Container, bool>> filter = x => x.Manifests.Where(p => p.Booking.Order.Vendor == vendor).Count() > 0;
+        Expression<Func<Container, bool>> filter = x => x.Manifests.Where(p => p.Booking.Order.Vendor.Contains(vendor)).Count() > 0;
         All = All.And(filter);
       }
 
       if (container != null)
       {
-        Expression<Func<Container, bool>> filter = x => x.Name == container;
+        Expression<Func<Container, bool>> filter = x => x.Name.Contains(container);
         All = All.And(filter);
       }
 
@@ -136,6 +136,7 @@ namespace ADJ.BusinessService.Implementations
         output.Mode = item.Loading;
         //output.Carrier = booking.Carrier;
         output.Carrier = arriveOfDespatch[0].Carrier;
+        output.ETD = booking.ETD;
 
         output.Vendor = order.Vendor;
         output.Container = item.Name;

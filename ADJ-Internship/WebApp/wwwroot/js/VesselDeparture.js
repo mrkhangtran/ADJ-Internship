@@ -81,23 +81,45 @@ function changePortsResult() {
 
   for (i = 0; i < ports.length; i++) {
     ports[i].options.length = 0;
+
     if (ports[i].attributes.value != null) {
       var currentValue = ports[i].attributes.value.nodeValue;
     }
     if (currentValue != null) {
-      ports[i].options[ports[i].options.length] = new Option(currentValue, currentValue);
 
       if (isExist(currentValue, optionsVN)) {
+        if ((i % 2) != 0) {
+          $(document.createElement('optgroup')).attr('label', "Vietnam").appendTo(ports[i]);
+        }
+        ports[i].options[ports[i].options.length] = new Option(currentValue, currentValue);
         for (j = 0; j < optionsVN.length; j++) {
           if ((currentValue == null) || (currentValue != optionsVN[j])) {
             ports[i].options[ports[i].options.length] = new Option(optionsVN[j], optionsVN[j]);
           }
         }
+        if ((i % 2) != 0) {
+          $(document.createElement('optgroup')).attr('label', "Hong Kong").appendTo(ports[i]);
+
+          for (j = 0; j < optionsHK.length; j++) {
+            ports[i].options[ports[i].options.length] = new Option(optionsHK[j], optionsHK[j]);
+          }
+        }
       }
       else if (isExist(currentValue, optionsHK)) {
+        if ((i % 2) != 0) {
+          $(document.createElement('optgroup')).attr('label', "Hong Kong").appendTo(ports[i]);
+        }
+        ports[i].options[ports[i].options.length] = new Option(currentValue, currentValue);
         for (j = 0; j < optionsHK.length; j++) {
           if ((currentValue == null) || (currentValue != optionsHK[j])) {
             ports[i].options[ports[i].options.length] = new Option(optionsHK[j], optionsHK[j]);
+          }
+        }
+        if ((i % 2) != 0) {
+          $(document.createElement('optgroup')).attr('label', "Vietnam").appendTo(ports[i]);
+
+          for (j = 0; j < optionsVN.length; j++) {
+            ports[i].options[ports[i].options.length] = new Option(optionsVN[j], optionsVN[j]);
           }
         }
       }

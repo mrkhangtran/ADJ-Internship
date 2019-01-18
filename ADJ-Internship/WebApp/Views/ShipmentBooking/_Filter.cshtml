@@ -102,4 +102,14 @@
     </td>
     <td></td>
   </tr>
+  <tr>
+    <td>
+      <label asp-for="FilterDtos.ShipmentId"></label>
+    </td>
+    <td>
+      <input asp-for="FilterDtos.ShipmentId" class="uk-input filters maxLength" id="shipmentId" maxlength="35" />
+      <span asp-validation-for="FilterDtos.ShipmentId" class="uk-alert-danger"></span>
+      <span class="uk-alert-danger" id="shipmentIdError"></span>
+    </td>
+  </tr>
 </table>

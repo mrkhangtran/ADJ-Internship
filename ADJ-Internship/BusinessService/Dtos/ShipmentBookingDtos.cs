@@ -106,6 +106,9 @@ namespace ADJ.BusinessService.Dtos
     [RegularExpression("^[0-9]+$", ErrorMessage = "Numbers only")]
     public string ItemNumber { get; set; }
 
+    [Display(Name = "Shipment ID")]
+    public string ShipmentId { get; set; }
+
     public List<OrderDetailDTO> OrderDetails { get; set; }
   }
 

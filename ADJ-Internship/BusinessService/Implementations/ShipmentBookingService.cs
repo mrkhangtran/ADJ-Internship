@@ -49,7 +49,7 @@ namespace ADJ.BusinessService.Implementations
     }
 
     public async Task<List<OrderDetailDTO>> ListShipmentFilterAsync(int? page, string origin = null, string originPort = null, string mode = null, string warehouse = null,
-      string status = null, string vendor = null, string poNumber = null, string itemNumber = null)
+      string status = null, string vendor = null, string poNumber = null, string itemNumber = null, string shipmentId = null)
     {
       if (page == null) { page = 1; }
 
@@ -64,25 +64,25 @@ namespace ADJ.BusinessService.Implementations
 
       if (vendor != null)
       {
-        Expression<Func<OrderDetail, bool>> filter = x => x.Order.Vendor == vendor;
+        Expression<Func<OrderDetail, bool>> filter = x => x.Order.Vendor.Contains(vendor);
         All = All.And(filter);
       }
 
       if (poNumber != null)
       {
-        Expression<Func<OrderDetail, bool>> filter = x => x.Order.PONumber == poNumber;
+        Expression<Func<OrderDetail, bool>> filter = x => x.Order.PONumber.Contains(poNumber);
         All = All.And(filter);
       }
 
       if (warehouse != null)
       {
-        Expression<Func<OrderDetail, bool>> filter = x => x.Warehouse == warehouse;
+        Expression<Func<OrderDetail, bool>> filter = x => x.Warehouse.Contains(warehouse);
         All = All.And(filter);
       }
 
       if (itemNumber != null)
       {
-        Expression<Func<OrderDetail, bool>> filter = x => x.ItemNumber == itemNumber;
+        Expression<Func<OrderDetail, bool>> filter = x => x.ItemNumber.Contains(itemNumber);
         All = All.And(filter);
       }
 
@@ -119,6 +119,34 @@ namespace ADJ.BusinessService.Implementations
       }
 
       PagedListResult<OrderDetail> result = await _orderDetailDataProvider.ListAsync(All, null, true);
+
+      if (shipmentId != null)
+      {
+        Expression<Func<Booking, bool>> booking = x => x.ShipmentID.ToString().Contains(shipmentId);
+        PagedListResult<Booking> resultBooking = await _bookingDataProvider.ListAsync(booking, null, true);
+        PagedListResult<OrderDetail> finalResult = new PagedListResult<OrderDetail>();
+        finalResult.Items = new List<OrderDetail>();
+
+        foreach (var orderDetail in result.Items)
+        {
+          bool add = false;
+          foreach (var item in resultBooking.Items)
+          {
+            if (item.ItemNumber == orderDetail.ItemNumber)
+            {
+              add = true;
+              break;
+            }
+          }
+
+          if (add)
+          {
+            finalResult.Items.Add(orderDetail);
+          }
+        }
+
+        result.Items = finalResult.Items;
+      }
 
       return Mapper.Map<List<OrderDetailDTO>>(result.Items);
     }

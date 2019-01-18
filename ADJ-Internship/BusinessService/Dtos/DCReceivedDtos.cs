@@ -78,7 +78,7 @@ namespace ADJ.BusinessService.Dtos
 
     public bool Selected { get; set; }
 
-    [Display(Name = "Container Name")]
+    [Display(Name = "Container")]
     public string ContainerName { get; set; }
 
     public string DC { get; set; }

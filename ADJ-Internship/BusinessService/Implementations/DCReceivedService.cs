@@ -49,13 +49,13 @@ namespace ADJ.BusinessService.Implementations
 
       if (container != null)
       {
-        Expression<Func<Container, bool>> filter = x => x.Name == container;
+        Expression<Func<Container, bool>> filter = x => x.Name.Contains(container);
         All = All.And(filter);
       }
 
       if (DC != null)
       {
-        Expression<Func<Container, bool>> filter = x => x.DCBooking.DistributionCenter == DC;
+        Expression<Func<Container, bool>> filter = x => x.DCBooking.DistributionCenter.Contains(DC);
         All = All.And(filter);
       }
 
@@ -85,7 +85,7 @@ namespace ADJ.BusinessService.Implementations
 
       if (bookingRef != null)
       {
-        Expression<Func<Container, bool>> filter = x => x.DCBooking.BookingRef == bookingRef;
+        Expression<Func<Container, bool>> filter = x => x.DCBooking.BookingRef.Contains(bookingRef);
         All = All.And(filter);
       }
 

@@ -67,6 +67,7 @@ namespace ADJ.BusinessService.Dtos
 
     public string Carrier { get; set; }
 
+    [LaterThanOtherDate("ETD")]
     public DateTime ArrivalDate { get; set; }
 
     public bool Selected { get; set; }
@@ -78,5 +79,7 @@ namespace ADJ.BusinessService.Dtos
     public int GroupId { get; set; }
 
     public ContainerStatus Status { get; set; }
+
+    public DateTime ETD { get; set; }
   }
 }
