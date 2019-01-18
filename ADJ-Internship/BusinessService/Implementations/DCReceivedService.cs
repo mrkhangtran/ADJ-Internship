@@ -111,7 +111,7 @@ namespace ADJ.BusinessService.Implementations
       rs.PageCount = result.PageCount;
       rs.TotalCount = result.TotalCount;
 
-      rs.Items = rs.Items.OrderBy(p => p.ContainerName).ToList();
+      rs.Items = rs.Items.OrderBy(p => p.Status).ThenBy(p => p.ContainerName).ToList();
 
       return rs;
     }
