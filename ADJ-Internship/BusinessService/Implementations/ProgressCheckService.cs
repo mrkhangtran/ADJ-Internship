@@ -94,7 +94,7 @@ namespace ADJ.BusinessService.Implementations
         Expression<Func<Order, bool>> filterItem = x => x.OrderDetails.Where(p => p.ItemNumber.Contains(ItemSearch)).Count() > 0;
         All = All.And(filterItem);
       }
-      var GetPageResult = await _orderDataProvider.ListAsync(All, "PONumber", true, pageIndex, pageSize);
+      var GetPageResult = await _orderDataProvider.ListAsync(All, "Status", true, pageIndex, pageSize);
       List<Order> orders = GetPageResult.Items;
       foreach (var order in orders)
       {
@@ -156,6 +156,7 @@ namespace ADJ.BusinessService.Implementations
       if (rq.Id > 0)
       {
         entity = await _progresscheckRepository.GetByIdAsync(rq.Id, false);
+        Order order = await _orderRepository.GetByIdAsync(entity.OrderId, false);
         if (entity == null)
         {
           throw new AppException("Progress Check Not Found");
@@ -189,11 +190,13 @@ namespace ADJ.BusinessService.Implementations
         if (entity.EstQtyToShip == rq.POQuantity)
         {
           entity.Complete = true;
+          order.Status = OrderStatus.AwaitingBooking;
         }
         else
         {
           entity.Complete = false;
         }
+        _orderRepository.Update(order);
         _progresscheckRepository.Update(entity);
       }
       else
@@ -201,6 +204,7 @@ namespace ADJ.BusinessService.Implementations
         entity.InspectionDate = rq.InspectionDate;
         entity.IntendedShipDate = rq.IntendedShipDate;
         entity.OrderId = rq.OrderId;
+        Order order = await _orderRepository.GetByIdAsync(rq.OrderId,false);
         decimal temp = 0;
         foreach (var item in rq.ListOrderDetailDto)
         {
@@ -224,11 +228,13 @@ namespace ADJ.BusinessService.Implementations
         if (entity.EstQtyToShip == rq.POQuantity)
         {
           entity.Complete = true;
+          order.Status = OrderStatus.AwaitingBooking;
         }
         else
         {
           entity.Complete = false;
         }
+        _orderRepository.Update(order);
         _progresscheckRepository.Insert(entity);
       }
 
