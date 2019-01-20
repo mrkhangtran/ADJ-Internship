@@ -104,14 +104,14 @@ namespace ADJ.BusinessService.Implementations
         All = All1.Or(All2);
       }
 
-      PagedListResult<Container> result = await _containerDataProvider.ListAsync(All, null, true, page, pageSize);
+      PagedListResult<Container> result = await _containerDataProvider.ListAsync(All, "Status", true, page, pageSize);
 
       PagedListResult<DCReceivedResultDtos> rs = new PagedListResult<DCReceivedResultDtos>();
       rs.Items = await ConvertToResultAsync(result.Items);
       rs.PageCount = result.PageCount;
       rs.TotalCount = result.TotalCount;
 
-      rs.Items = rs.Items.OrderBy(p => p.ContainerName).ToList();
+      rs.Items = rs.Items.OrderBy(p => p.Status).ThenBy(p => p.ContainerName).ToList();
 
       return rs;
     }
