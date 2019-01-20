@@ -98,7 +98,7 @@ namespace ADJ.BusinessService.Implementations
         Expression<Func<Container, bool>> filter = x => x.Name.Contains(Container);
         All = All.And(filter);
       }
-      var listContainer = await _containerDataProvider.ListAsync(All, "Name", true, pageIndex, pageSize);
+      var listContainer = await _containerDataProvider.ListAsync(All, "Status", true, pageIndex, pageSize);
       List<Container> containers = listContainer.Items;
       List<DCBookingDtos> dCBookingDtos = new List<DCBookingDtos>();
       foreach (var container in containers)
@@ -136,7 +136,7 @@ namespace ADJ.BusinessService.Implementations
           dCBookingDtos.Add(dCBookingDto);
         }
       }
-      pagedListResult.Items = dCBookingDtos;
+      pagedListResult.Items = dCBookingDtos.OrderBy(p=>p.Status).ThenBy(x=>x.Container).ToList();
       pagedListResult.TotalCount = listContainer.TotalCount;
       pagedListResult.PageCount = listContainer.PageCount;
       return pagedListResult;
